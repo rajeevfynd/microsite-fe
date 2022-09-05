@@ -1,10 +1,14 @@
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getSiteFooter } from '../../../service/landing-page-service'
+import "./../index.css"
 
-export default class FooterHome extends React.Component {
-  render() {
-    return (
-      <div>{getSiteFooter()}</div>
-    )
-  }
+const FooterHome = () => {
+  return (
+    <>
+      <div className='footer'>{getSiteFooter()}</div>
+    </>
+  )
 }
+
+export default FooterHome;

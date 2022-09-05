@@ -1,5 +1,6 @@
 import { MenuProps } from "antd";
-import { MenuRoute } from "../models/menuRoute";
+import { MenuRoute } from "../models/menu-route";
+
 
 export const menuRoutes: MenuRoute[] = [
     {
@@ -123,9 +124,14 @@ export const menuItems:MenuProps['items'] = [
                 label: 'R Samman',
             },
             {
+                key: 'leaders-appreciation-center',
+                label: 'Leaders Appreciation Center'
+            },
+            {
                 key: 'rnr-placeholder',
                 label: 'R&R Placeholder'
             }
+            
         ]
     }
 ]

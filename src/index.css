@@ -1,0 +1,21 @@
+.header{
+    padding: 1% 5%;
+    height: 100%;
+}
+.footer{
+    padding: 1%;
+    width: 100%;
+    background: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+.content{
+    margin: 0 0 0 1%;
+    padding: 1%;
+    height: 100%;
+    background: white;
+}
+.menu{
+    padding: 1% 4%;
+}

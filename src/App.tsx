@@ -1,14 +1,17 @@
-import {Layout, Menu } from "antd/lib";
+import {Layout } from "antd/lib";
 import * as React from "react";
-import {BrowserRouter, Routes, Route, Link} from "react-router-dom" ;
+import {BrowserRouter, Routes, Route, Link, useNavigate} from "react-router-dom" ;
 import "antd/dist/antd.css";
+import "./index.css";
 import HeaderHome from "./screens/landing-page/views/header-home";
 const {Header, Footer, Sider, Content} = Layout;
-import { getMenuItems, navigateOnMenuSelect } from './service/landing-page-service'
 import FooterHome from "./screens/landing-page/views/footer-home";
+import MenuHome from "./screens/landing-page/views/menu-home";
 
-export default class App extends React.Component{
-    render() {
+function abc(){
+    console.log('abc')
+}
+const App = () => {
     return (
         <>
             <BrowserRouter>
@@ -17,12 +20,12 @@ export default class App extends React.Component{
                     <HeaderHome></HeaderHome>
                 </Header>
             </Layout>
-            <Layout style={{padding: '1% 4%'}}>
+            <Layout className="menu">
                 <Sider width={400}>
-                    <Menu theme='light' mode='inline' style={{padding:'1%',height:'100%'}} items={getMenuItems()} onSelect={e => navigateOnMenuSelect(e)}/>
+                    <MenuHome></MenuHome>
                 </Sider>
                 <Content>
-                    <div style={{margin:'0 0 0 1%', padding:'1%', height:'100%', background:'white'}}>
+                    <div className="content">
                         <Routes>
                             <Route path='/head' element={<FooterHome></FooterHome>}></Route>
                         </Routes>
@@ -31,7 +34,7 @@ export default class App extends React.Component{
             </Layout>
             <Layout>
                 <Footer className="footer">
-                    <div style={{margin:'1%', padding:'1%', height:'100%', background:'white'}}>
+                    <div className="footer">
                         <FooterHome></FooterHome>
                     </div>
                 </Footer>
@@ -39,5 +42,5 @@ export default class App extends React.Component{
             </BrowserRouter>
         </>
     )
-  }
 }
+export default App;

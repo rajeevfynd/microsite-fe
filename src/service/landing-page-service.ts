@@ -19,12 +19,3 @@ export function getMenuRoutes(): MenuRoute[] {
 export function getMenuRoute(key:string): MenuRoute {
     return getMenuRoutes().find( (menuRoute: MenuRoute) => menuRoute.key==key )
 }
-export function navigateOnMenuSelect(e: SelectInfo){
-    let menuRoute = getMenuRoute(e.key);
-    if(menuRoute.isExternalLink){
-        console.log('Open the link in new tab ',menuRoute.navigateTo)
-    }
-    else{
-        console.log('Navigate to ',menuRoute.navigateTo)
-    }
-}
