@@ -1,9 +1,13 @@
 import * as React from "react";
+import {BrowserRouter as Router} from 'react-router-dom'
+import BaseRouter from "./routes";
 
 function App() {
     return (
         <div>
-            <p>Boilerplate</p>
+            <Router>
+                <BaseRouter/>
+            </Router>
         </div>
     )
   }
