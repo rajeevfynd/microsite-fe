@@ -1,11 +1,16 @@
 import * as React from "react";
+import {BrowserRouter, Routes, Route, Link, useNavigate} from "react-router-dom" ;
+import "antd/dist/antd.css";
+import "./index.css";
+import { GlobalRouter } from "./Route";
 
-function App() {
+const App = () => {
     return (
-        <div>
-            <p>Boilerplate</p>
-        </div>
+        <>
+            <BrowserRouter>
+                <GlobalRouter></GlobalRouter>
+            </BrowserRouter>
+        </>
     )
-  }
-
-export default App
+}
+export default App;
