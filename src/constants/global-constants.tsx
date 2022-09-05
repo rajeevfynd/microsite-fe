@@ -1,3 +1,3 @@
-const COURSES_URL = "http://127.0.0.1:8081/course"
+const BE_URL = ""
 
-export default COURSES_URL
+export default BE_URL
