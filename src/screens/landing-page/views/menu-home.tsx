@@ -4,6 +4,7 @@ import { getMenuItems, getMenuRoute } from '../../../service/landing-page-servic
 import { useNavigate } from 'react-router-dom';
 import { SelectInfo } from 'rc-menu/lib/interface';
 import { MenuRoute } from '../../../models/menu-route';
+import './../index.css'
 
 export default function MenuHome() {
     const navigate = useNavigate()
@@ -14,7 +15,6 @@ export default function MenuHome() {
         }
         else{
             navigate(menuRoute.navigateTo)
-            
         }
         return menuRoute.navigateTo;
     }

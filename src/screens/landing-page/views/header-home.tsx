@@ -5,7 +5,7 @@ import './../index.css'
 const HeaderHome = () => {
   return (
       <>
-          <h1 className='title'>{getSiteTitle()}</h1>
+          <h1 className='header-title'>{getSiteTitle()}</h1>
       </>
   )
 }

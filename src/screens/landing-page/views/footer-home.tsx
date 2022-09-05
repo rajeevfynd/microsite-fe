@@ -6,7 +6,7 @@ import "./../index.css"
 const FooterHome = () => {
   return (
     <>
-      <div className='footer'>{getSiteFooter()}</div>
+      <div className='footer-content'>{getSiteFooter()}</div>
     </>
   )
 }

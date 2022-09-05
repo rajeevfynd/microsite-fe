@@ -1,7 +1,33 @@
-.title{
+.header{
+    padding: 1% 5%;
+    height: 100%;
+}
+.header-title{
+    
     color: #f5f5f5;
 }
+
+.body{
+    padding: 1% 4%;
+}
+
+.content{
+    margin: 0 0 0 1%;
+    padding: 1%;
+    height: 100%;
+    width: 100%;
+    background: white;
+}
+
 .footer{
+    padding: 1%;
+    width: 100%;
+    background: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+.footer-content{
     text-align: center;
     text-decoration: underline;
     font-style: italic;
