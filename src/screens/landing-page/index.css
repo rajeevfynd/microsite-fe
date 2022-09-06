@@ -2,9 +2,21 @@
     padding: 1% 5%;
     height: 100%;
 }
-.header-title{
-    
+.header-text{
     color: #f5f5f5;
+}
+.title{
+    margin: 6%;
+    text-align: left;
+}
+.username{
+    text-align: right;
+}
+.username-container{
+    margin: 6%;
+}
+.pro-pic{
+    border-radius: 100%;
 }
 
 .body{
@@ -13,7 +25,7 @@
 
 .content{
     margin: 0 0 0 1%;
-    padding: 1%;
+    padding: 2% 5%;
     height: 100%;
     width: 100%;
     background: white;
