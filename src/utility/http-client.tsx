@@ -3,31 +3,12 @@
 // access-token, Cookie // Start a loader, exception handling {error: true, data: {message: "", errorCode: ""}}, 
 /*
 the client can be extended as follows according to the need for configuration:-
-
-`class req extends httpClient{
-    public constructor(token: headerType){
-        super(COURSES_URL,token);
-        this._initializeRequestInterceptor();
-    }
-    public getter = () => this.instance.get('/');
-
-    private _initializeRequestInterceptor = () => {
-        this.instance.interceptors.request.use(
-          this._handleRequest,
-          this._handleError,
-        );
-    };
-};`
-
-const token: headerType= {
-    Authorizartion: "Token"
-};
-const reqs = new req(token)
-reqs.getter().then( res=>console.log(res));
-
+const reqs = new req(baseurl,config)
+reqs.get().then( res=>console.log(res));
 */
+
 import axios, {AxiosResponse, AxiosInstance, AxiosRequestConfig }from 'axios'
-import {headerType} from './../models/header-type'
+import {configType} from '../models/config-type'
 
 declare module 'axios' {
     export interface AxiosRequestConfig {
@@ -35,16 +16,16 @@ declare module 'axios' {
     }
   }
 
-abstract class httpClient{
+class httpClient{
     protected readonly instance: AxiosInstance;
-    header: headerType; //header type class
+    config: configType; //header type class
 
-    public constructor(baseURL: string,header: headerType) {
+    public constructor(baseURL: string,config: configType) {
         this.instance = axios.create({
             baseURL,
             handlerEnabled: true
         });
-        this.header = header;
+        this.config = config;
     }
     
     protected _handleResponse = ({ data }: AxiosResponse) => data;
@@ -52,9 +33,34 @@ abstract class httpClient{
     protected _handleError = (error: any) => Promise.reject((error: any)=> console.log(error.status));
 
     protected _handleRequest = (config: AxiosRequestConfig) => {
-        config.headers['Authorization'] = this.header.Authorizartion;
+        config.headers['Authorization'] = this.config.headerAuthorization;
+        config.headers["Content-type"] = this.config.contentType
         return config;
     };
+
+    public get = (url: string) => {
+        this.instance.interceptors.request.use(
+            this._handleRequest,
+            this._handleError,
+        );
+        return this.instance.get(url);
+    }
+
+    public post = (url: string, body: any) => {
+        this.instance.interceptors.request.use(
+            this._handleRequest,
+            this._handleError,
+        );
+        return this.instance.post(url, body);
+    }
+
+    public put = (url: string, body: any) => {
+        this.instance.interceptors.request.use(
+            this._handleRequest,
+            this._handleError,
+        );
+        this.instance.put(url, body);
+    }
 }
 
 export default httpClient;
