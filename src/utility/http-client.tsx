@@ -59,7 +59,7 @@ class httpClient{
             this._handleRequest,
             this._handleError,
         );
-        this.instance.put(url, body);
+        return this.instance.put(url, body);
     }
 }
 
