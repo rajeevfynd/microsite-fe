@@ -1,11 +1,10 @@
 import { menuItems, menuRoutes } from "../constants/landing-page-menu-items";
-import { SITE_TITLE, SITE_FOOTER } from "../constants/string-constants";
+import { SITE_TITLE, SITE_FOOTER, DEFAUL_PRO_PIC_URL } from "../constants/string-constants";
 import { MenuRoute } from "../models/menu-route";
 import { MenuProps } from "antd";
 
 // returns menu items after authorization check
 export function getMenuItems(): MenuProps['items'] {
-
     return menuItems
 }
 
@@ -17,6 +16,11 @@ export function getSiteTitle(): string{
 // returns site footer
 export function getSiteFooter(): string{
     return SITE_FOOTER
+}
+
+//
+export function getDefaulProPicUrl(): string{
+    return DEFAUL_PRO_PIC_URL
 }
 
 // returns menu routes
