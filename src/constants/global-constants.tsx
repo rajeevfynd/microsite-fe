@@ -1,3 +1,3 @@
-const BE_URL = ""
+const BACKEND_URL = ""
 
-export default BE_URL
+export default BACKEND_URL;

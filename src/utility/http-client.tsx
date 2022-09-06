@@ -61,6 +61,14 @@ class httpClient{
         );
         return this.instance.put(url, body);
     }
+
+    public delete = (url: string) =>{
+        this.instance.interceptors.request.use(
+            this._handleRequest,
+            this._handleError,
+        );
+        return this.instance.delete(url);
+    }
 }
 
 export default httpClient;
