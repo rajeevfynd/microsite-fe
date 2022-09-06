@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { InductionRouter } from './induction-router'
 
 export const Induction = () => {
   return (
     <>
-      <h3>Induction</h3>
+      <InductionRouter></InductionRouter>
     </>
   )
 }
