@@ -3,13 +3,10 @@ import { EditOutlined } from '@ant-design/icons';
 import ReactPlayer from 'react-player'
 import { getWelcomeFileUrl, setWelcomeFileUrl } from '../../../../../service/induction-service'
 import "./../index.css"
-import { Button, Col, Input, Modal, Row } from 'antd';
+import { Button, Col, Input, Modal, Row, message } from 'antd';
 import { isUserAuthorized } from '../../../../../service/user-service';
 
 export const Welcome = () => {
-  function updateUrl(e: React.ChangeEvent<HTMLInputElement>){
-    setUrl(e.target.value)
-  }
   const [open, setOpen] = React.useState(false);
   const [url, setUrl] = React.useState(getWelcomeFileUrl())
   return (
@@ -27,10 +24,11 @@ export const Welcome = () => {
           <Input.Group size='large' className='modal-welcome-url-update'>
             <Row>
               <Col span={15}>
-                <Input defaultValue={url} onChange={(e) => updateUrl(e)}></Input>
+                <Input defaultValue={url} onChange={(e) => setUrl(e.target.value)}></Input>
               </Col>
               <Col>
-                <Button type='primary' size='large' onClick={() => setWelcomeFileUrl(url)}>Update</Button>
+                <Button type='primary' size='large' 
+                onClick = {() => { let status=setWelcomeFileUrl(url); status.isUpdated? message.success(status.message): message.error(status.message); setOpen(!status.isUpdated)}}>Update</Button>
               </Col>
             </Row>
             </Input.Group>
