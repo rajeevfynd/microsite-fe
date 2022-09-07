@@ -3,7 +3,7 @@ import { EditOutlined } from '@ant-design/icons';
 import ReactPlayer from 'react-player'
 import { getWelcomeFileUrl, setWelcomeFileUrl } from '../../../../../service/induction-service'
 import "./../index.css"
-import { Button, Col, Input, Row } from 'antd';
+import { Button, Col, Input, Modal, Row } from 'antd';
 import { isUserAuthorized } from '../../../../../service/user-service';
 
 export const Welcome = () => {
@@ -18,15 +18,15 @@ export const Welcome = () => {
         <div className='video-player'>
             <ReactPlayer controls url={getWelcomeFileUrl()}></ReactPlayer>
         </div>
+
         { isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && <>
         <div className='update-welcome'>
           <a onClick={()=>{setOpen(!open)}}>Update Welcome File <EditOutlined /></a>
-        {
-          open && 
-          <div>
-            <Input.Group size='large'>
+        </div>
+        <Modal title="Update Welcome Message File URL" visible={open} footer={null} onCancel={() => setOpen(!open)}>
+          <Input.Group size='large' className='modal-welcome-url-update'>
             <Row>
-              <Col span='12'>
+              <Col span={15}>
                 <Input defaultValue={url} onChange={(e) => updateUrl(e)}></Input>
               </Col>
               <Col>
@@ -34,9 +34,7 @@ export const Welcome = () => {
               </Col>
             </Row>
             </Input.Group>
-          </div>
-        }
-        </div>
+          </Modal>
         </>
       }
     </>
