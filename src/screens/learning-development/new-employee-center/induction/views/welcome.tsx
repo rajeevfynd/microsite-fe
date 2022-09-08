@@ -15,21 +15,36 @@ export const Welcome = () => {
     <>
       <h1>Welcome to Jio</h1>
       <div className='video-player'>
-        <ReactPlayer playing={!getIsCompleted()} url={getWelcomeFileUrl()} onEnded={()=>setIsCompleted(true)}></ReactPlayer>
+        <ReactPlayer 
+          playing={!getIsCompleted()}
+          url={getWelcomeFileUrl()}
+          onEnded={()=>setIsCompleted(true)}
+        />
       </div>
 
       { 
         isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && 
         <>
           <div className='update-welcome'>
-            <Button onClick={()=>{setIsModalOpen(!isModalOpen)}}>Update File <EditOutlined /></Button>
+            <Button onClick={()=>{setIsModalOpen(!isModalOpen)}}>Update File <EditOutlined/></Button>
           </div>
 
-          <Modal title="Update Welcome Message File URL" visible={isModalOpen} footer={null} onCancel={() => setIsModalOpen(!isModalOpen)}>
-            <Input.Group size='large' className='modal-welcome-url-update'>
+          <Modal 
+            title="Update Welcome Message File URL" 
+            visible={isModalOpen} 
+            footer={null} 
+            onCancel={() => setIsModalOpen(!isModalOpen)}
+          >
+            <Input.Group 
+              size='large' 
+              className='modal-welcome-url-update'
+            >
               <Row>
                 <Col span={15}>
-                  <Input defaultValue={url} onChange={(e) => setUrl(e.target.value)}></Input>
+                  <Input 
+                    defaultValue={url} 
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
                 </Col>
                 <Col>
                   <Button type='primary' 
