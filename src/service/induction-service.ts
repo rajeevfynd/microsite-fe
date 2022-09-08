@@ -7,13 +7,13 @@ export function getWelcomeFileUrl(): string{
 // returns true if updated, false if anything went wrong
 export function setWelcomeFileUrl(url: string){
     console.log(url)
-    return false? { 
-        isUpdated : true,
-        message : 'Successfully updated'
-    }
-    :
-    {
-        isUpdated: false,
-        message: 'Failed! Try again later'
-    }
+    return true
+}
+
+export function setIsCompleted(isCompleted :boolean){
+    console.log('video completed')
+}
+
+export function getIsCompleted(){
+    return true
 }
