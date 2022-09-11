@@ -1,12 +1,17 @@
 import * as React from 'react';
 import 'antd/dist/antd.css';
-import { Col, Row, Card, List, Divider, Button } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { Col, Row, Card, List, Divider, Button, Modal, Checkbox, Form, Input, Select } from 'antd';
+import { PlusCircleOutlined, LockOutlined, UserOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+const { Option } = Select;
 
 
 
 
 const AddSkill = () => {
+    const [isModalOpen, setIsModalOpen] = React.useState(true);
+
+    const [newSkillGroup, setNewSkillGroup] = React.useState(true);
+    const [selectSkillGroup, setSelectSkillGroup] = React.useState(true);
 
 
 
@@ -45,9 +50,26 @@ const AddSkill = () => {
         },
     ];
 
-    const handleAddSkill = () => {
-        console.log("add skill");
-    }
+
+
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const onFinish = (values: any) => {
+        console.log('Received values of form: ', values);
+    };
+
+
+    // const handleNewSkillGroupName = (event.target) => {
+    //     console.log(event.target.value);
+    // }
+
     return (
 
         <div style={{
@@ -60,7 +82,6 @@ const AddSkill = () => {
             <List
                 grid={{ gutter: 16, column: 2 }}
                 dataSource={jsonData}
-
                 renderItem={item => (
 
                     <List.Item>
@@ -89,7 +110,7 @@ const AddSkill = () => {
                             </Card>
                             : <Card bordered={true}
                                 hoverable={true}
-                                onClick={() => handleAddSkill()}
+                                onClick={() => showModal()}
                                 style={{ height: 200 }}
 
                             >
@@ -109,6 +130,107 @@ const AddSkill = () => {
                 )
                 }
             />
+
+
+            <Modal visible={isModalOpen} footer={null} onCancel={handleCancel}>
+                <Divider />
+                <Form
+                    layout={'vertical'}
+                    onFinish={onFinish}
+                >
+                    <Form.Item
+                        name="Create New Skill Group"
+                        label="Create New Skill Group"
+                        rules={[{ required: true, message: 'Please enter new skill group!' }]}
+                    >
+                        <Input placeholder="Skill Group Name" />
+                    </Form.Item>
+
+                    {/*  */}
+                    <Form.Item name="Skill Group" label="Skill Group" rules={[{ required: true, message: 'Please select existing skill group!' }]}>
+                        <Select
+                            placeholder="Select An Existing Skill Group"
+                        // onChange={onGenderChange}
+                        >
+                            <Option value="male">male</Option>
+                            <Option value="female">female</Option>
+                            <Option value="other">other</Option>
+                        </Select>
+                    </Form.Item>
+
+                    {/*  */}
+                    <Form.List
+                        name="Skills"
+                        rules={[
+                            {
+                                validator: async (_, names) => {
+                                    if (!names || names.length < 2) {
+                                        return Promise.reject(new Error('At least 2 skills'));
+                                    }
+                                },
+                            },
+                        ]}
+                    >
+                        {(fields, { add, remove }, { errors }) => (
+                            <>
+                                {fields.map((field, index) => (
+                                    <Form.Item
+                                        label="Skill"
+                                        name="Skill"
+                                        required={true}
+                                        key={field.key}
+                                    >
+                                        <Form.Item
+                                            {...field}
+                                            validateTrigger={['onChange', 'onBlur']}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    whitespace: true,
+                                                    message: "Please enter skill's name or delete this field.",
+                                                },
+                                            ]}
+                                            noStyle
+                                        >
+                                            <Input placeholder="Skill Name" style={{ width: '90%' }} />
+                                        </Form.Item>
+                                        {fields.length > 1 ? (
+                                            <MinusCircleOutlined
+                                                style={{
+                                                    margin: "0 8px",
+                                                    fontSize: "24px",
+                                                    cursor: "pointer"
+                                                }}
+                                                onClick={() => remove(field.name)}
+                                            />
+                                        ) : null}
+                                    </Form.Item>
+                                ))}
+                                <Form.Item>
+                                    <Button
+                                        type="dashed"
+                                        onClick={() => add()}
+                                        block
+                                        icon={<PlusOutlined />}
+
+                                    >
+                                        Add Skill Field
+                                    </Button>
+                                    <Form.ErrorList errors={errors} />
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                    {/*  */}
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" block>
+                            Create
+                        </Button>
+                    </Form.Item>
+                </Form>
+                <Divider />
+            </Modal>
         </div >
     )
 }
