@@ -68,6 +68,24 @@ export const menuRoutes: MenuRoute[] = [
         isExternalLink: false,
         navigateTo: '/rnr/placeholder',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+    },
+    {
+        key:'my-surveys',
+        isExternalLink: false,
+        navigateTo: '/survey/my-surveys',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+    },
+    {
+        key:'created-surveys',
+        isExternalLink: false,
+        navigateTo: '/survey/created-surveys',
+        accessList: ['ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+    },
+    {
+        key:'new-survey',
+        isExternalLink: false,
+        navigateTo: '/survey/new-survey',
+        accessList: ['ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
     }
 ]
 
@@ -145,6 +163,24 @@ export const menuItems:MenuProps['items'] = [
                 label: 'R&R Placeholder'
             }
             
+        ]
+    },
+    {
+        key: 'surveys',
+        label: 'Surveys',
+        children:[
+            {
+                key: 'my-surveys',
+                label: 'My Surveys'
+            },
+            {
+                key: 'new-survey',
+                label: 'New Survey'
+            },
+            {
+                key: 'created-surveys',
+                label:"Created Surveys"
+            }
         ]
     }
 ]
