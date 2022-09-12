@@ -30,6 +30,7 @@
     width: 100%;
     background: white;
     overflow-x: scroll;
+    overflow-y: scroll;
 }
 
 .footer{

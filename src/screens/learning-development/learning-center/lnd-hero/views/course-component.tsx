@@ -17,7 +17,8 @@ function Courses (props: Courses){
     }}
     cover={<img alt="example" src="https://www.raisin.digital/wp-content/uploads/placeholder.svg" />}
   >
-    <Meta title={props.title} description={props.description} />
+    <Meta title={props.programTitle} description={props.programDescription} />
+    <p>Course Duration: {props.programDuration} days</p>
   </Card>)
 };
 

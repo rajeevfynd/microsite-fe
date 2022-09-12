@@ -1,5 +1,8 @@
 export type Courses = {
-    description: string;
+    programDescription: string;
     id: number;
-    title: string;
+    programTitle: string;
+    programDuration: number;
+    rruDeeplink: string;
+    rruProgramID: string;
 };
