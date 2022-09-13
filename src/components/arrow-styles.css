@@ -1,0 +1,8 @@
+.arrow_button{
+    cursor: "pointer";
+    display: "flex";
+    flexDirection: "column";
+    justifyContent: "center";
+    right: "1%";
+    userSelect: "none";
+}

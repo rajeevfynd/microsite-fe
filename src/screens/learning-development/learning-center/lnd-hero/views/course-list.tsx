@@ -33,6 +33,7 @@ function Scrollable_courses(props: any) {
       programDuration: 0,
       rruDeeplink: "",
       rruProgramID: "",
+      thumbnail:"",
       }]});
 
     const fetchCourses = React.useCallback(async()=>{
@@ -42,8 +43,8 @@ function Scrollable_courses(props: any) {
         }
         const reqs = new httpClient(url,config)
         let response = await reqs.get("");
-        console.log(response.data.data.programs)
-        const Course:GetCourseResponse = {data: response.data.data.programs}
+        console.log(response.data.data)
+        const Course:GetCourseResponse = {data: response.data.data}
         setCourses(Course)
     },[])
 
@@ -69,13 +70,15 @@ function Scrollable_courses(props: any) {
                   programDescription,
                   programDuration,
                   rruDeeplink,
-                  rruProgramID }) => (<Courses_tag {... {
+                  rruProgramID,
+                  thumbnail }) => (<Courses_tag {... {
                     id,
                     programTitle,
                     programDescription,
                     programDuration,
                     rruDeeplink,
-                    rruProgramID}}/>))}
+                    rruProgramID,
+                    thumbnail}}/>))}
 
             </ScrollMenu>
             </Col>

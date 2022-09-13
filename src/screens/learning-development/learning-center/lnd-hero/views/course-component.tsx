@@ -6,16 +6,17 @@ import { Card } from 'antd';
 const { Meta } = Card;
 
 import { Courses } from '../../../../../models/course-type'
+import { ALT_THUMBNAIL } from '../../../../../constants/string-constants';
 
 function Courses (props: Courses){
-    console.log(props)
     return(
   <Card
     hoverable
     style={{
       width: 340,
+      height: 300
     }}
-    cover={<img alt="example" src="https://www.raisin.digital/wp-content/uploads/placeholder.svg" />}
+    cover={<img alt={ALT_THUMBNAIL} src={props.thumbnail} />}
   >
     <Meta title={props.programTitle} description={props.programDescription} />
     <p>Course Duration: {props.programDuration} days</p>

@@ -5,4 +5,5 @@ export type Courses = {
     programDuration: number;
     rruDeeplink: string;
     rruProgramID: string;
+    thumbnail: string;
 };

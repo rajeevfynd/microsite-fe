@@ -13,16 +13,11 @@ function Arrow({
 }) {
   return (
     <button
+      className="arrow-button"
       disabled={disabled}
       onClick={onClick}
       style={{
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        right: "1%",
-        opacity: disabled ? "0" : "1",
-        userSelect: "none"
+        opacity: disabled ? "0" : "1"
       }}
     >
       {children}
