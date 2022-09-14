@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { Button, Col, Input, Row , Collapse} from 'antd';
 import { isUserAuthorized } from '../../../../../service/user-service';
-import AddQnADropdown from './add-qna';
+import AddQnADropdown from './upload-qna-modal';
 import { FAQCollapse } from './faq-collapse';
+import AddQNAButton from './add-qna-modal';
+import App from './delete-confirm-modal';
+import EditQNA from './edit-qna-modal';
 
 
 export const FAQ = () => {
@@ -13,7 +16,7 @@ export const FAQ = () => {
             <Row justify="end">
                     { isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && <>
                         <div className='update-welcome'>
-                            <AddQnADropdown ></AddQnADropdown>
+                            <AddQNAButton ></AddQNAButton>
                         </div>
                         </>
                     }

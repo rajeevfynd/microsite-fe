@@ -1,6 +1,9 @@
 import * as React from 'react'
-import {Row, Col, Collapse} from 'antd';
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import {Row, Collapse, Modal} from 'antd';
+import EditQNAButton from './edit-qna-modal';
+import DeleteButton from './delete-confirm-modal';
+
+const { confirm } = Modal;
 
 
 const { Panel } = Collapse;
@@ -14,22 +17,11 @@ export const FAQCollapse = () => {
 
     const editOptions = () => (
         <div>
-            <EditTwoTone 
-                onClick={event => {
-                    // If you don't want click extra trigger collapse, you can prevent this:
-                    event.stopPropagation();
-                    console.log("Edit Clicked")
-                }}
-            />
-            &nbsp;&nbsp;
-            <DeleteTwoTone 
-                onClick={event => {
-                    // If you don't want click extra trigger collapse, you can prevent this:
-                    event.stopPropagation();
-                    console.log("Delete Clicked")
-                }}
-            />
-
+            <Row justify='end'>
+                <EditQNAButton></EditQNAButton>
+                &nbsp;&nbsp;
+                <DeleteButton></DeleteButton>
+            </Row>
         </div>
 
         
