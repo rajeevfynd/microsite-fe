@@ -33,7 +33,7 @@ function Scrollable_courses(props: any) {
       programDuration: 0,
       rruDeeplink: "",
       rruProgramID: "",
-      thumbnail:"",
+      thumbnailLink:"",
       }]});
 
     const fetchCourses = React.useCallback(async()=>{
@@ -71,14 +71,14 @@ function Scrollable_courses(props: any) {
                   programDuration,
                   rruDeeplink,
                   rruProgramID,
-                  thumbnail }) => (<Courses_tag {... {
+                  thumbnailLink }) => (<Courses_tag {... {
                     id,
                     programTitle,
                     programDescription,
                     programDuration,
                     rruDeeplink,
                     rruProgramID,
-                    thumbnail}}/>))}
+                    thumbnailLink}}/>))}
 
             </ScrollMenu>
             </Col>
