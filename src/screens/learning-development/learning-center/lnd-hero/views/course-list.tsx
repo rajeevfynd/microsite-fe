@@ -25,10 +25,8 @@ function Scrollable_courses(props: any) {
   if(props.props =="completed"){
     url = COMPLETED_COURSES_URL
   }
-  console.log(props)
     const [Courses,setCourses] = React.useState({data:[{
       programDescription: "",
-      id: 0,
       programTitle: "",
       programDuration: 0,
       rruDeeplink: "",
@@ -43,7 +41,6 @@ function Scrollable_courses(props: any) {
         }
         const reqs = new httpClient(url,config)
         let response = await reqs.get("");
-        console.log(response.data.data)
         const Course:GetCourseResponse = {data: response.data.data}
         setCourses(Course)
     },[])
@@ -52,8 +49,6 @@ function Scrollable_courses(props: any) {
         fetchCourses()
       }, [fetchCourses]);
 
-    console.log(Courses)
-    //console.log(items)
   
     return (
       <>
@@ -65,14 +60,12 @@ function Scrollable_courses(props: any) {
             RightArrow={RightArrow}
             >
                 {Courses.data.map(({ 
-                  id,
                   programTitle,
                   programDescription,
                   programDuration,
                   rruDeeplink,
                   rruProgramID,
                   thumbnailLink }) => (<Courses_tag {... {
-                    id,
                     programTitle,
                     programDescription,
                     programDuration,
