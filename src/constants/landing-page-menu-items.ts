@@ -129,6 +129,10 @@ export const menuItems:MenuProps['items'] = [
         ]
     },
     {
+        key: 'manager-section',
+        label: "Manage Section"
+    },
+    {
         key: 'rnr-section',
         label: 'R&R Section',
         children: [
@@ -146,5 +150,17 @@ export const menuItems:MenuProps['items'] = [
             }
             
         ]
+    },
+    {
+        key: 'employee-engagement-center',
+        label: 'Employee Engagement Center'
+    },
+    {
+        key: 'download-center',
+        label: 'Download Center'
+    },
+    {
+        key: 'information-center',
+        label: '3P Information Center'
     }
 ]

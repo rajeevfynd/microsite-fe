@@ -1,10 +1,24 @@
+import * as React from "react";
 import { menuItems, menuRoutes } from "../constants/landing-page-menu-items";
 import { SITE_TITLE, SITE_FOOTER, DEFAUL_PRO_PIC_URL } from "../constants/string-constants";
 import { MenuRoute } from "../models/menu-route";
-import { MenuProps } from "antd";
+
+// maps icons to menu items
+export function addIconMapItem(key:string,icon:object){
+    let item = getMenuItems().find((item:any)=>item.key==key)
+    item.icon = icon;
+}// accepts the 2 paths and returns true if both belong to same route
+function matchRoutes(path1:string, path2:string){
+    return path2.match(path1) != null
+}
+// returns key of menu route for specific path
+export function getMenuRouteKeyByPath(path: string){
+    let route = getMenuRoutes().find( (route: MenuRoute) => matchRoutes(route.navigateTo,path) )
+    return route != undefined ? route.key : ''
+}
 
 // returns menu items after authorization check
-export function getMenuItems(): MenuProps['items'] {
+export function getMenuItems():any[] {
     return menuItems
 }
 

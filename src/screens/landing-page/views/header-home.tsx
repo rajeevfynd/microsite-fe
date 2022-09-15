@@ -1,5 +1,4 @@
 import { Col, Row } from 'antd'
-import Layout from 'antd/lib/layout/layout'
 import * as React from 'react'
 import { getDefaulProPicUrl, getSiteTitle } from '../../../service/landing-page-service'
 import { getBasicUserDetails } from '../../../service/user-service'
@@ -23,8 +22,6 @@ const HeaderHome = () => {
           <Col>
           <Image
               className='pro-pic'
-              width={60}
-              height={60}
               src={getBasicUserDetails().proPicUrl}
               fallback={getDefaulProPicUrl()}
             />
