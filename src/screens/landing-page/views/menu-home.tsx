@@ -49,7 +49,7 @@ export default function MenuHome() {
                     theme='light' 
                     mode='inline' 
                     items={getMenuItems()} 
-                    defaultSelectedKeys={[getMenuRouteKeyByPath(location.pathname)]} 
+                    selectedKeys={getMenuRouteKeyByPath(location.pathname)} 
                     onSelect={e => navigateMenuOnSelect(e)}
                 />
             </Sider>

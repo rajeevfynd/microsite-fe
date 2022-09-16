@@ -12,9 +12,17 @@ function matchRoutes(path1:string, path2:string){
     return path2.match(path1) != null
 }
 // returns key of menu route for specific path
-export function getMenuRouteKeyByPath(path: string){
+export function getMenuRouteKeyByPath(path: string) : Array<string> {
     let route = getMenuRoutes().find( (route: MenuRoute) => matchRoutes(route.navigateTo,path) )
-    return route != undefined ? route.key : ''
+    let defaultKeys = []
+    if(route != undefined){
+        defaultKeys.push(route.key)
+    }
+    else{
+        defaultKeys.push('')
+    }
+    console.log(defaultKeys)
+    return defaultKeys
 }
 
 // returns menu items after authorization check
