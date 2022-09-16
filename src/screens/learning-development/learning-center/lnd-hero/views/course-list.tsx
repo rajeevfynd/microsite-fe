@@ -26,9 +26,9 @@ function Scrollable_courses(props: any) {
     url = COMPLETED_COURSES_URL
   }
     const [Courses,setCourses] = React.useState({data:[{
-      programDescription: "",
-      programTitle: "",
-      programDuration: 0,
+      description: "",
+      title: "",
+      duration: 0,
       rruDeeplink: "",
       rruProgramID: "",
       thumbnailLink:"",
@@ -60,15 +60,15 @@ function Scrollable_courses(props: any) {
             RightArrow={RightArrow}
             >
                 {Courses.data.map(({ 
-                  programTitle,
-                  programDescription,
-                  programDuration,
+                  title,
+                  description,
+                  duration,
                   rruDeeplink,
                   rruProgramID,
                   thumbnailLink }) => (<Courses_tag {... {
-                    programTitle,
-                    programDescription,
-                    programDuration,
+                    title,
+                    description,
+                    duration,
                     rruDeeplink,
                     rruProgramID,
                     thumbnailLink}}/>))}

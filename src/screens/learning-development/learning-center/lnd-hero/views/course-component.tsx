@@ -18,8 +18,8 @@ function Courses (props: Courses){
     }}
     cover={<img alt={ALT_THUMBNAIL} src={props.thumbnailLink} />}
   >
-    <Meta title={props.programTitle} description={props.programDescription} />
-    <p>Course Duration: {props.programDuration} days</p>
+    <Meta title={props.title} description={props.description} />
+    <p>Course Duration: {props.duration} days</p>
   </Card>)
 };
 
