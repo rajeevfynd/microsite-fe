@@ -1,8 +1,6 @@
-import { Button, Dropdown, Form, Input, Menu, Modal, Space, Tooltip } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Dropdown, Form, Input, Menu, Modal, Space } from 'antd';
 import * as React from 'react'
 import { useState } from 'react';
-import menu from 'antd/lib/menu';
 import UploadQNA from './upload-qna-modal';
 
 interface Values {
@@ -111,6 +109,3 @@ const AddQNAButton : React.FC = () => {
 };
 
 export default AddQNAButton;
-// .collection-create-form_last-form-item {
-//   margin-bottom: 0;
-// }

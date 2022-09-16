@@ -1,5 +1,5 @@
-import { Button, Form, Input, Modal, Radio, Tooltip } from 'antd';
-import { EditTwoTone, DeleteTwoTone, EditOutlined, ExclamationCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, Tooltip } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import * as React from 'react'
 import { useState } from 'react';
 
@@ -80,7 +80,7 @@ const EditQNAButton : React.FC = () => {
   return (
     <div>
       <Tooltip title="Edit">
-                <Button type="default" shape = "circle" size = "small" icon={<EditOutlined />} onClick={(event: { stopPropagation: () => void; }) => {
+                <Button type="default" shape = "circle" size = "small" icon={<EditOutlined />} onClick={(event) => {
                     event.stopPropagation();
                     setOpen(true);
                 }}/>
@@ -97,6 +97,3 @@ const EditQNAButton : React.FC = () => {
 };
 
 export default EditQNAButton;
-// .collection-create-form_last-form-item {
-//   margin-bottom: 0;
-// }

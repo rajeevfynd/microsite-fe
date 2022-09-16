@@ -3,6 +3,14 @@ import {Row, Collapse, Modal} from 'antd';
 import EditQNAButton from './edit-qna-modal';
 import DeleteButton from './delete-confirm-modal';
 
+
+interface qaList{
+    id : number,
+    question : string,
+    answer : string,
+    updated_at : string
+}
+
 const { confirm } = Modal;
 
 
@@ -23,61 +31,48 @@ export const FAQCollapse = () => {
                 <DeleteButton></DeleteButton>
             </Row>
         </div>
-
-        
       );
+
+
+      const quesAns: qaList[] = [
+        {
+            id:1,
+            question : "Question 1",
+            answer : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, delectus? Id error illo delectus nihil facilis quasi natus voluptatem libero? Alias nam praesentium nihil ipsum perferendis libero hic saepe vel.",
+            updated_at : "12 Sep 2022"
+        },
+        {
+            id:2,
+            question : "Question 2",
+            answer : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, delectus? Id error illo delectus nihil facilis quasi natus voluptatem libero? Alias nam praesentium nihil ipsum perferendis libero hic saepe vel.",
+            updated_at : "13 Sep 2022"
+        },
+        {
+            id:3,
+            question : "Question 3",
+            answer : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, delectus? Id error illo delectus nihil facilis quasi natus voluptatem libero? Alias nam praesentium nihil ipsum perferendis libero hic saepe vel.",
+            updated_at : "14 Sep 2022"
+        }
+      ]
 
     return (
           <div>
-              <Collapse  onChange={onChange}>
+              <Collapse defaultActiveKey={[1, 2, 3, 4]} onChange={onChange}>
+                {quesAns.map((quesAns: qaList) => (
 
-                  <Panel header="Question 1" key="1" extra={editOptions()}>
-                      <div>
-                        <Row>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque blanditiis dicta ea commodi, voluptate itaque voluptas inventore dignissimos odit et impedit minima quasi perferendis eligendi recusandae error fugiat rerum tempora.
+                <Panel header={quesAns.question} key= {quesAns.id} extra={editOptions()}>
+                        <div>
+                            <Row>
+                                {quesAns.answer}
+                            </Row>
+                            <p></p>
+                            <Row justify="end">
+                                Updated at {quesAns.updated_at}
+                            </Row>
+                        </div>
+                </Panel>
 
-                        </Row>
-                        <p></p>
-                        <Row justify="end">
-                            Updated two days ago
-                        </Row>
-                      </div>
-                  </Panel>
-
-                  <Panel header="Question 2" key="2" extra={editOptions()}>
-                      <div>
-                        <Row>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque blanditiis dicta ea commodi, voluptate itaque voluptas inventore dignissimos odit et impedit minima quasi perferendis eligendi recusandae error fugiat rerum tempora.
-
-                        </Row>
-                        <p></p>
-                        <Row justify="end">
-                            Updated a week ago
-                        </Row>
-                      </div>
-                  </Panel>
-
-                  <Panel header="Question 3" key="3" extra={editOptions()}>
-                  <div>
-                        <Row>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque blanditiis dicta ea commodi, voluptate itaque voluptas inventore dignissimos odit et impedit minima quasi perferendis eligendi recusandae error fugiat rerum tempora.
-
-                        </Row>
-                        <p></p>
-                        <Row justify="end">
-                            Updated a month ago
-                        </Row>
-                      </div>
-                  </Panel>
-
-                  <Panel header="Question 4" key="4" extra={editOptions()}>
-                  <div>
-                        <Row>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque blanditiis dicta ea commodi, voluptate itaque voluptas inventore dignissimos odit et impedit minima quasi perferendis eligendi recusandae error fugiat rerum tempora.
-
-                        </Row>
-                        <p></p>
-                        <Row justify="end">
-                            Updated a month ago
-                        </Row>
-                      </div>
-                  </Panel>
+                    ))}
 
               </Collapse>
   
