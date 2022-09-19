@@ -1,14 +1,15 @@
 import * as React from 'react';
 import 'antd/dist/antd.css';
-import { Col, Row, Card, List, Divider, Button, Modal, Checkbox, Form, Input, Select } from 'antd';
-import { PlusCircleOutlined, LockOutlined, UserOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Col, Row, Card, Avatar, List, Divider, Button, Modal, Checkbox, Form, Input, Select } from 'antd';
+import { PlusCircleOutlined, ExclamationCircleOutlined, MinusCircleFilled, LockOutlined, UserOutlined, MinusCircleOutlined, PlusOutlined, DeleteColumnOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Option } = Select;
+const { Meta } = Card;
 
 
 
 
 const AddSkill = () => {
-    const [isModalOpen, setIsModalOpen] = React.useState(true);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
 
     const [newSkillGroup, setNewSkillGroup] = React.useState(true);
     const [selectSkillGroup, setSelectSkillGroup] = React.useState(true);
@@ -52,6 +53,24 @@ const AddSkill = () => {
 
 
 
+    const { confirm } = Modal;
+
+    const showConfirm = (name: string, type: string) => {
+
+
+
+        confirm({
+            title: `Do you Want to delete this "${name}" ${type === "SKILL" ? "Skill" : "Course"}? `,
+            icon: <ExclamationCircleOutlined />,
+            // content: <p>{name}</p>,
+            onOk() {
+                console.log('OK');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -90,13 +109,23 @@ const AddSkill = () => {
 
                             <Card bordered={true}
                                 hoverable={true}
-                                title={item.skillGroup}
+                                // title={item.skillGroup}
                                 style={{ textAlign: "center" }}
                             >
+                                <div><Row style={{ justifyContent: "space-between" }}>
+                                    <Col flex={1} ><h5>{item.skillGroup}</h5></Col>
+                                    <Col style={{ alignItems: "end" }}> <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.skillGroup, "SKILL")} /></Col>
+                                </Row>
+                                </div>
+                                <Divider />
 
-                                <p>{item.skills.map((Skill) => <p>{Skill.name}</p>)}</p>
+                                <div>{item.skills.map((Skill) => <Row style={{ justifyContent: "space-between" }}>
+                                    <Col flex={1} ><h6>{Skill.name}</h6></Col>
+                                    <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(Skill.name, "COURSE")} /></Col>
+                                </Row>)}
+                                </div>
 
-                                {/* <Divider /> */}
+                                <Divider />
                                 <Button block>
                                     <Row justify="center" style={{ columnGap: 10 }}>
                                         <Col>
@@ -132,22 +161,22 @@ const AddSkill = () => {
             />
 
 
-            <Modal visible={isModalOpen} footer={null} onCancel={handleCancel}>
-                <Divider />
+            <Modal title="Add New Skill" visible={isModalOpen} footer={null} onCancel={handleCancel}>
+                {/* <Divider /> */}
                 <Form
                     layout={'vertical'}
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        name="Create New Skill Group"
-                        label="Create New Skill Group"
-                        rules={[{ required: true, message: 'Please enter new skill group!' }]}
+                        name="Create New Skill"
+                        // label="Create New Skill"
+                        rules={[{ required: true, message: 'Please enter new skill!' }]}
                     >
-                        <Input placeholder="Skill Group Name" />
+                        <Input placeholder="Skill Name" />
                     </Form.Item>
 
                     {/*  */}
-                    <Form.Item name="Skill Group" label="Skill Group" rules={[{ required: true, message: 'Please select existing skill group!' }]}>
+                    {/* <Form.Item name="Skill Group" label="Skill Group" rules={[{ required: true, message: 'Please select existing skill group!' }]}>
                         <Select
                             placeholder="Select An Existing Skill Group"
                         // onChange={onGenderChange}
@@ -156,10 +185,10 @@ const AddSkill = () => {
                             <Option value="female">female</Option>
                             <Option value="other">other</Option>
                         </Select>
-                    </Form.Item>
+                    </Form.Item> */}
 
                     {/*  */}
-                    <Form.List
+                    {/* <Form.List
                         name="Skills"
                         rules={[
                             {
@@ -220,7 +249,7 @@ const AddSkill = () => {
                                 </Form.Item>
                             </>
                         )}
-                    </Form.List>
+                    </Form.List> */}
                     {/*  */}
 
                     <Form.Item>
