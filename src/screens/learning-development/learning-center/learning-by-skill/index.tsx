@@ -1,10 +1,13 @@
 import * as React from 'react';
 
 import type { MenuProps } from 'antd';
-import { Layout, List, Card, Menu, Button, Badge } from 'antd';
+import { Layout, List, Card, Button, Badge } from 'antd';
 
 const { Content, Sider } = Layout;
 const { Meta } = Card;
+
+import { SkillList } from './views/skill-list';
+import { CourseList } from './views/skill-courses';
 
 export function LearningBySkill() {
 
@@ -57,7 +60,7 @@ export function LearningBySkill() {
           bottom: 0,
         }}
       >
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
+        <SkillList items={items}></SkillList>
       </Sider>
       <Layout
         style={{
@@ -67,67 +70,14 @@ export function LearningBySkill() {
         }}
 
       >
-        <Content style={{ margin: '2px 16px 0', height: '80vh' }}>
-          <div style={{ textAlign: 'center', background: '#fff', height: '80vh', }}>
+        <Content style={{ margin: '2px 16px 0', height: '80vh', textAlign: 'center', background: '#fff' }}>
 
-            <List
-              grid={{ gutter: 32 }}
-              dataSource={itemList}
-              renderItem={itemList => itemList.id <= 50 ? <List.Item>
+          <CourseList itemList={itemList} showModal={showModal}></CourseList>
 
-                {itemList.isCompleted ? <Badge.Ribbon color="green" text="Certified"> <Card
-                  style={{ width: 255, }}
-                  hoverable={true}
-                  cover={
-                    <img
-                      style={{ width: 255, height: 154 }}
-                      alt="example"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                    />
-                  }
-                >
-
-                  <Meta
-                    style={{ justifyContent: "center" }}
-                    title="Course title Course titleCourse titleCourse title "
-                    description="Course description Course titleCourse titleCourse titleCourse title jay "
-
-                  />
-
-                </Card>
-                  <Button block>View Course Details</Button>
-                </Badge.Ribbon>
-                  : <>  <Card
-                    style={{ width: 255, }}
-                    hoverable={true}
-                    cover={
-                      <img
-                        style={{ width: 255, height: 154 }}
-                        alt="example"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                      />
-                    }
-                  >
-
-                    <Meta
-                      style={{ justifyContent: "center" }}
-                      title="Course title Course titleCourse titleCourse title "
-                      description="Course description Course titleCourse titleCourse titleCourse title jay "
-                    />
-
-                  </Card>
-
-                    <Button type="primary" block onClick={() => showModal()}>View Course Details</Button>
-                  </>}
-
-              </List.Item> : null}
-            />
-
-            <div style={{ textAlign: 'center' }}> <Button block type='primary'>View More</Button></div>
-          </div>
+          <div style={{ textAlign: 'center' }}> <Button block type='primary'>View More</Button></div>
         </Content>
       </Layout>
-    </Layout>
+    </Layout >
   )
 };
 

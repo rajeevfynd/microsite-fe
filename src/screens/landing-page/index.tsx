@@ -17,7 +17,7 @@ const LandingPage = () => {
             </Layout>
             <Layout className='body'>
                 <div>
-                    <Sider width={300}>
+                    <Sider width={0}>
                         <MenuHome></MenuHome>
                     </Sider>
                 </div>
