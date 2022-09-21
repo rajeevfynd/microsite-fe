@@ -1,10 +1,16 @@
 import * as React from "react";
-import 'antd/dist/antd.css';
-import AddSkill from "./screens/learning-development/add-skill/add-skill";
-function App() {
+import {BrowserRouter, Routes, Route, Link, useNavigate} from "react-router-dom" ;
+import "antd/dist/antd.css";
+import "./index.css";
+import { GlobalRouter } from "./Route";
+
+const App = () => {
     return (
-        <AddSkill />
+        <>
+            <BrowserRouter>
+                <GlobalRouter></GlobalRouter>
+            </BrowserRouter>
+        </>
     )
 }
-
-export default App
+export default App;
