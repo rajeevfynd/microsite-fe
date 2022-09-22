@@ -152,6 +152,49 @@ export const AddSkill = () => {
 
     }, [])
 
+
+
+
+    React.useEffect(() => {
+// Api-> createNewTag
+        if (!Object.keys(skill).length) return;
+
+        (() => {
+            setIsLoading(true);
+
+            const source = Axios.CancelToken.source();
+            Axios.post(`http://localhost:8082/microsite/tag/`, skill, {
+                cancelToken: source.token,
+                headers: {},
+                handlerEnabled: false,
+            })
+                .then((response) => {
+
+                    if (!!Object.keys(response.data.data).length && response.status === 200) {
+                        setSkillList(skillList => [...skillList, response.data.data]);
+                        setIsLoading(false);
+                        setSkill({});
+                    }
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    if (Axios.isCancel(error)) {
+                    } else if (error.response) {
+                        console.log(error.response.data.error);
+                        window.alert(`${error.response.data.error.message}`);
+                    } else {
+                        console.log(error.message);
+                        window.alert(`${error.message}`);
+                    }
+                });
+
+            return () => {
+                source.cancel("Cancelling in cleanup");
+            };
+        })();
+
+    }, [skill])
+
     return (
         <>
             {isLoading ? "Loading" : <div style={{
