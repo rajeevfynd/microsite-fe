@@ -25,8 +25,10 @@ export function LearningBySkill() {
     setIsModalOpen(false);
   };
 
-  const myButton = () => {
-    return <Button type="primary" block >View Course Details</Button>
+  const addSkill = () => {
+    return <Button block style={{ background: "#001529", color: "#f5f5f5" }}>
+      Add Skill
+    </Button>
 
   }
 
@@ -81,6 +83,7 @@ export function LearningBySkill() {
             bottom: 0,
           }}
         >
+          {addSkill()}
           <SkillList items={skillList}></SkillList>
         </Sider>
         <Layout
