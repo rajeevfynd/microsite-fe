@@ -34,6 +34,12 @@ export const menuRoutes: MenuRoute[] = [
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
     },
     {
+        key:'addSkill',
+        isExternalLink: false,
+        navigateTo: '/lnd/learning-center/addSkill',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+    },
+    {
         key:'role',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/role',
@@ -103,6 +109,10 @@ export const menuItems:MenuProps['items'] = [
                     {
                         key:'lnd-hero',
                         label:'L&D Hero'
+                    },
+                    {
+                        key:'addSkill',
+                        label:'Add Skill'
                     },
                     {
                         key:'skill',
