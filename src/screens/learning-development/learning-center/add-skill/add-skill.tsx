@@ -7,18 +7,14 @@ const { confirm } = Modal;
 
 
 
-const AddSkill = (props: any) => {
+export const AddSkill = () => {
     const [isLoading, setIsLoading] = React.useState(false)
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [skillName, setSkillName] = React.useState("");
+    const [skill, setSkill] = React.useState({});
+    const [skillList, setSkillList] = React.useState([]);
+    const [buttonStatus, setButtonStatus] = React.useState(true);
 
-    const [newSkillGroup, setNewSkillGroup] = React.useState(true);
-    const [selectSkillGroup, setSelectSkillGroup] = React.useState(true);
-    const [skill, setSkill] = React.useState({
-        name: "",
-        type: Tagtype.skill,
-        status: TagStatus.active,
-        addedBy: 1111
-    });
 
 
     const jsonData = [
@@ -58,7 +54,6 @@ const AddSkill = (props: any) => {
 
 
 
-
     const showConfirm = (name: string, type: string) => {
         confirm({
             title: `Do you Want to delete this "${name}" ${type === "SKILL" ? "Skill" : "Course"}? `,
@@ -81,13 +76,52 @@ const AddSkill = (props: any) => {
         setIsModalOpen(false);
     };
 
+    function handleSkillChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const skillName = event.target.value;
 
+        const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
+
+        if (reg.test(skillName)) {
+            setSkillName(skillName);
+            setButtonStatus(false);
+        } else {
+            setButtonStatus(true);
+        }
+    }
+
+
+
+
+
+    const onFinish = (values: { skillName: string }) => {
+        const { skillName } = values;
+
+        const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
+
+        if (reg.test(skillName)) {
+            setSkill({
+                name: skillName,
+                type: Tagtype.skill,
+                status: TagStatus.active,
+                addedBy: 1111
+            });
+            setButtonStatus(true);
+            setIsModalOpen(false);
+        }
+
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed Skill Submission: ', errorInfo);
+    };
 
 
     React.useEffect(() => {
+        //Api -> getAllActiveSkillTags
         (() => {
+            setIsLoading(true);
             const source = Axios.CancelToken.source();
-            Axios.post(`http://localhost:8082/microsite/tag/`, {
+            Axios.get(`http://localhost:8082/microsite/tag/?tagType=${Tagtype.skill}`, {
                 cancelToken: source.token,
                 headers: {},
                 handlerEnabled: false
@@ -95,11 +129,10 @@ const AddSkill = (props: any) => {
                 .then((response) => {
 
                     if (!!response.data.data.length && response.status === 200) {
-                        // if (!!getFormattedDataForMenuItems(response.data.data).length) {
-                        //     setSkillList(getFormattedDataForMenuItems(response.data.data));
-                        // }
+                        setSkillList(response.data.data);
                         setIsLoading(false);
                     }
+                    setIsLoading(false);
                 })
                 .catch((error) => {
                     if (Axios.isCancel(error)) {
@@ -119,53 +152,14 @@ const AddSkill = (props: any) => {
 
     }, [])
 
-
-
-
-
-    function handleSkillChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const skillName = event.target.value;
-
-        const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$");
-
-        if (reg.test(skillName)) {
-            setSkill({
-                name: skillName,
-                type: skill.type,
-                status: skill.status,
-                addedBy: skill.addedBy
-            });
-        }
-    }
-
-    const onFinish = (values: { skillName: string }) => {
-        const { skillName } = values;
-
-        const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$");
-
-        if (reg.test(skillName)) {
-            console.log(skillName);
-
-            setSkill({
-                name: skillName,
-                type: Tagtype.skill,
-                status: TagStatus.active,
-                addedBy: 1111
-            });
-        }
-
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed Skill Submission: ', errorInfo);
-    };
-
-
     return (
         <>
             {isLoading ? "Loading" : <div style={{
                 margin: "auto",
             }}>
+
+                {skillList.map(data => <p key={data.id}>{data.name}</p>)}
+
                 <List
                     grid={{ gutter: 16, column: 2 }}
                     dataSource={jsonData}
@@ -244,13 +238,14 @@ const AddSkill = (props: any) => {
                             // label="Create New Skill"
                             rules={[{ required: true, message: 'Please enter new skill!' }]}
                         >
-                            <Input placeholder="Skill Name" value={skill.name} onChange={(event) => handleSkillChange(event)} />
+                            <Input placeholder="Skill Name" value={skillName} onChange={(event) => handleSkillChange(event)} />
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" block>
+                            <Button disabled={buttonStatus} type="primary" htmlType="submit" block>
                                 Create
                             </Button>
+
                         </Form.Item>
                     </Form>
                     <Divider />
@@ -260,7 +255,8 @@ const AddSkill = (props: any) => {
     )
 }
 
-export default AddSkill;
+
+
 
 
 
