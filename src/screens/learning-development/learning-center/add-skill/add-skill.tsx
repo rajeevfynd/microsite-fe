@@ -2,7 +2,7 @@ import * as React from 'react';
 import Axios from 'axios';
 import { Col, Row, Card, List, Divider, Button, Modal, Form, Input, Tag } from 'antd';
 import { PlusCircleOutlined, ExclamationCircleOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import { TagStatus, Tagtype } from '../../../../constants/tag';
+import { CardHelperData, TagStatus, Tagtype } from '../../../../constants/tag';
 const { confirm } = Modal;
 
 
@@ -13,60 +13,24 @@ export const AddSkill = () => {
     const [skillName, setSkillName] = React.useState("");
     const [skill, setSkill] = React.useState({});
     const [skillList, setSkillList] = React.useState([]);
+    const [skillId, setSkillId] = React.useState(null);
     const [buttonStatus, setButtonStatus] = React.useState(true);
 
 
 
-    const jsonData = [
-
-        {
-            "id": "1",
-            "name": "Communication",
-            "courses": [
-                { "id": "1", "name": "Email Writting" },
-                { "id": "2", "name": "Body Language" },
-                { "id": "2", "name": "Verbal Communication" }
-            ]
-        },
-        {
-            "id": "2",
-            "name": "Selling Skills",
-            "courses": [
-                { "id": "1", "name": "Negotiation Skill" },
-                { "id": "2", "name": "Sales Pitch Skill" }
-            ]
-        },
-        {
-            "id": "3",
-            "name": "Emerging Communication",
-            "courses": [
-                { "id": "1", "name": "Machine Learning" },
-                { "id": "2", "name": "Artificial Intelligence" }
-            ]
-        },
-        {
-            "id": 0,
-            "addSkill": "Add Skill",
-            "icon": "PlusCircleOutlined",
-            "type": "Button"
-        },
-    ];
-
-
-
-    const showConfirm = (name: string, type: string) => {
+    const showConfirm = (skillId: number, skillName: string, skillType: string) => {
         confirm({
-            title: `Do you Want to delete this "${name}" ${type === "SKILL" ? "Skill" : "Course"}? `,
+            title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Course"}? `,
             icon: <ExclamationCircleOutlined />,
             // content: <p>{name}</p>,
             onOk() {
-                console.log('OK');
+                setSkillId(skillId);
             },
             onCancel() {
-                console.log('Cancel');
             },
         });
     };
+
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -150,13 +114,13 @@ export const AddSkill = () => {
             };
         })();
 
-    }, [])
+    }, [skillId])
 
 
 
 
     React.useEffect(() => {
-// Api-> createNewTag
+        // Api-> createNewTag
         if (!Object.keys(skill).length) return;
 
         (() => {
@@ -195,55 +159,119 @@ export const AddSkill = () => {
 
     }, [skill])
 
+
+    React.useEffect(() => {
+        // Api-> deleteTag
+
+        if (!skillId) return;
+
+        (() => {
+            setIsLoading(true);
+
+            const source = Axios.CancelToken.source();
+            Axios.delete(`http://localhost:8082/microsite/tag/?tagId=${skillId}`, {
+                cancelToken: source.token,
+                headers: {},
+                handlerEnabled: false,
+            })
+                .then((response) => {
+                    if (!!Object.keys(response.data.data).length && response.status === 200) {
+                        setSkillId(null);
+                        setIsLoading(false);
+                    }
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    if (Axios.isCancel(error)) {
+                    } else if (error.response) {
+                        console.log(error.response.data.error);
+                        window.alert(`${error.response.data.error.message}`);
+                    } else {
+                        console.log(error.message);
+                        window.alert(`${error.message}`);
+                    }
+                });
+
+            return () => {
+                source.cancel("Cancelling in cleanup");
+            };
+        })();
+
+    }, [skillId])
+
     return (
         <>
             {isLoading ? "Loading" : <div style={{
                 margin: "auto",
             }}>
-
-                {skillList.map(data => <p key={data.id}>{data.name}</p>)}
-
-                <List
+                < List
                     grid={{ gutter: 16, column: 2 }}
-                    dataSource={jsonData}
+                    dataSource={CardHelperData}
                     renderItem={item => (
 
                         <List.Item>
-                            {item.id != 0 ?
+                            <Card bordered={true}
+                                hoverable={true}
+                                onClick={() => showModal()}
+                                style={{ height: 150 }}
+
+                            >
+                                <Row justify='center' >
+                                    <Col>
+                                        <b>{"Add Skill"}</b>
+                                    </Col>
+                                </Row>
+                                <Row justify='center'>
+                                    <Col>
+                                        <PlusCircleOutlined style={{ fontSize: 50 }} />
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </List.Item>
+                    )
+                    }
+                />
 
 
-                                <Card bordered={true}
-                                    hoverable={true}
-                                    style={{ textAlign: "center" }}
+                <List
+                    grid={{ gutter: 16, column: 2 }}
+                    dataSource={skillList}
+                    renderItem={item => (
 
-                                >
-                                    <div><Row style={{ justifyContent: "space-between" }}>
-                                        <Col flex={1} ><h5>{item.name}</h5></Col>
-                                        <Col style={{ alignItems: "end" }}>
-                                            <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.name, "SKILL")} />
+                        <List.Item>
+                            {item.id !== 0 ? <Card bordered={true}
+                                hoverable={true}
+                                style={{ textAlign: "center" }}
+
+                            >
+                                <div><Row style={{ justifyContent: "space-between" }}>
+                                    <Col flex={1} ><h5>{item.name}</h5></Col>
+                                    <Col style={{ alignItems: "end" }}>
+                                        <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.id, item.name, Tagtype.skill)} />
+                                    </Col>
+                                </Row>
+                                </div>
+                                <Divider />
+
+                                {/* Course List */}
+                                {/* <div>{item.courses.map((course) => <Row style={{ justifyContent: "space-between" }}>
+                                        <Col flex={1} ><h6>{course.name}</h6></Col>
+                                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} /></Col>
+                                    </Row>)}
+                                    </div> */}
+
+                                <Divider />
+                                <Button block>
+                                    <Row justify="center" style={{ columnGap: 10 }}>
+                                        <Col>
+                                            <p>{"Add Course"}</p>
+                                        </Col>
+                                        <Col>
+                                            <PlusCircleOutlined style={{ fontSize: 20 }} />
                                         </Col>
                                     </Row>
-                                    </div>
-                                    <Divider />
-
-                                    <div>{item.courses.map((Skill) => <Row style={{ justifyContent: "space-between" }}>
-                                        <Col flex={1} ><h6>{Skill.name}</h6></Col>
-                                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(Skill.name, "COURSE")} /></Col>
-                                    </Row>)}
-                                    </div>
-
-                                    <Divider />
-                                    <Button block>
-                                        <Row justify="center" style={{ columnGap: 10 }}>
-                                            <Col>
-                                                <p>{"Add Course"}</p>
-                                            </Col>
-                                            <Col>
-                                                <PlusCircleOutlined style={{ fontSize: 20 }} />
-                                            </Col>
-                                        </Row>
-                                    </Button>
-                                </Card>
+                                </Button>
+                            </Card>
                                 : <Card bordered={true}
                                     hoverable={true}
                                     onClick={() => showModal()}
@@ -266,7 +294,6 @@ export const AddSkill = () => {
                     )
                     }
                 />
-
 
                 <Modal title="Add New Skill" visible={isModalOpen} footer={null} onCancel={handleCancel}>
                     {/* <Divider /> */}
@@ -293,7 +320,7 @@ export const AddSkill = () => {
                     </Form>
                     <Divider />
                 </Modal>
-            </div >}
+            </ div >}
         </>
     )
 }
