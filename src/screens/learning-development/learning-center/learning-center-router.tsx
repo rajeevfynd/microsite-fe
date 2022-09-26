@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { AddSkill } from './add-skill/add-skill';
+import { AddSkill } from './add-skill';
 import { LearningBySkill } from './learning-by-skill';
 
 export const LNDCenterRouter = () => {
