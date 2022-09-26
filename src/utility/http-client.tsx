@@ -34,7 +34,7 @@ class HttpClient {
         if (error.response.status === 401) {
             window.location.href = AUTHORISATION_PATH;
         }
-        Promise.reject(error.response.data);
+        Promise.reject(error.response);
     }
 
     public get = (url: string) => {
