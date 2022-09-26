@@ -9,9 +9,9 @@ export const TagStatus = Object.freeze({
 })
 
 
-export const CardHelperData = [{
+export const CardHelperData = Object.freeze([{
     id: 0,
     name: "Add Skill",
     status: "ACTIVE",
     type: "SKILL",
-}]
+}])
