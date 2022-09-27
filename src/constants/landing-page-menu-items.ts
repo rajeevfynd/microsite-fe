@@ -7,67 +7,79 @@ export const menuRoutes: MenuRoute[] = [
         key: 'induction',
         isExternalLink: false,
         navigateTo: '/lnd/new-emp-center/induction/welcome',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','new-employee-center'],
+        children: []
     },
     {
         key: 'new-emp-survey',
         isExternalLink: false,
         navigateTo: '/lnd/new-emp-center/new-emp-survey',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','new-employee-center'],
     },
     {
         key: 'new-emp-faq',
         isExternalLink: false,
         navigateTo: '/lnd/new-emp-center/new-emp-faq',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','new-employee-center'],
     },
     {
-        key: 'lnd-hero',
+        key: 'learning-center',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/lnd-hero',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development'],
     },
     {
         key:'skill',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/skill',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','learning-center'],
     },
     {
         key:'role',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/role',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','learning-center'],
     },
     {
         key:'academy',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/academy',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development','learning-center'],
     },
     {
         key:'learning-passport',
         isExternalLink: false,
         navigateTo: '/lnd/learning-passport',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development']
     },
     {
         key:'learning-journey',
         isExternalLink: false,
         navigateTo: '/lnd/learning-journey',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['learning-and-development']
     },
     {
         key:'r-samman',
         isExternalLink: true,
         navigateTo: 'https://r-sammaan.ril.com/Pages/r-sammaan.aspx',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['rnr-section'],
     },
     {
         key:'rnr-placeholder',
         isExternalLink: false,
         navigateTo: '/rnr/placeholder',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['rnr-section']
     }
 ]
 
@@ -100,10 +112,6 @@ export const menuItems:MenuProps['items'] = [
                 key: 'learning-center',
                 label: 'Learning Center',
                 children: [
-                    {
-                        key:'lnd-hero',
-                        label:'L&D Hero'
-                    },
                     {
                         key:'skill',
                         label:'Skill'

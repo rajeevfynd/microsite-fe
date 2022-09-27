@@ -21,7 +21,6 @@ export function getMenuRouteKeyByPath(path: string) : Array<string> {
     else{
         defaultKeys.push('')
     }
-    console.log(defaultKeys)
     return defaultKeys
 }
 

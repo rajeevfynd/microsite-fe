@@ -2,19 +2,23 @@ import * as React from 'react'
 import { EditOutlined } from '@ant-design/icons';
 import ReactPlayer from 'react-player'
 import "./../index.css"
-import { Button, Col, Input, Modal, Row } from 'antd';
+import { Button, Col, Input, Modal, Row, Avatar, List, Progress } from 'antd';
 import { isUserAuthorized, getBasicUserDetails } from '../../../../../service/user-service';
 import { CompleteStatus } from '../../../../../models/complete-status';
+import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
+import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
 
 export const Welcome = () => {
 
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+  const [isJourneyModalOpen, setIsJourneyModalOpen] = React.useState(false);
   const [url, setUrl] = React.useState('')
   const [updatedUrl, setUpdatedUrl] = React.useState('')
-  const [play, setPlay] = React.useState(true)
-
+  const [play, setPlay] = React.useState(false)
+  const [inductionJourney, setInductionJourney] = React.useState({})
+  
   const setWelcomeFileUrl = (newUrl: string) => {
-    const fetchUrl = "http://localhost:8080/microsite/lnd/welcome-message/file-url"
+    const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/file-url"
     fetch(
       fetchUrl,
       {
@@ -31,26 +35,10 @@ export const Welcome = () => {
         if(!json.error){
           setUrl(newUrl)
         }
-        setIsModalOpen(json.error);
+        setIsEditModalOpen(json.error);
       }
     ))
   }
-
-  const getIsCompleted = () =>{
-    const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/status/"+ getBasicUserDetails().id.toString()
-    fetch(fetchUrl).then( res => {
-      res.json().then(
-        json => {
-          console.log(json)
-          if(!json.error){
-            let enumKey = json.data.status as keyof typeof CompleteStatus;
-            setPlay(CompleteStatus[enumKey] == CompleteStatus.INCOMPLETE)
-          }
-        }
-      )
-    })
-  }
-  
 
   const setIsCompleted = (newStatus: CompleteStatus) => {
     const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/status"
@@ -68,30 +56,74 @@ export const Welcome = () => {
         }
       }).then(res => res.json().then(
       json => {
-        console.log(json)
         if(!json.error){
           setPlay(false)
+          setIsJourneyModalOpen(true)
         }
       }
     ))
   }}
 
   const getWelcomeMsgUrl = () =>{
-    const fetchUrl = "http://localhost:8080/microsite/lnd/welcome-message/active-url";
+    const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/active/1";
     fetch(fetchUrl).then(res => {
       res.json().then(
         json => {
           if(!json.error){
             setUrl(json.data.fileUrl)
+            let enumKey = json.data.completeStatus as keyof typeof CompleteStatus;
+            setPlay(CompleteStatus[enumKey] == CompleteStatus.INCOMPLETE)
+            setIsJourneyModalOpen(CompleteStatus[enumKey] == CompleteStatus.COMPLETE)
           }
         }
       )
     })
   }
 
+  const processData = (data: JourneyDetailType) =>{
+    const processedData = processPrograms(data.programs, data.flow)
+    data.programs = processedData.programs;
+    data.progress = processedData.progress;
+    console.log(data)
+    setInductionJourney(data)
+  }
+
+  const processPrograms = (programs: ProgramType[], flow: string) =>{
+    
+    if(programs && programs.length > 0){
+      const progress = Math.round(programs.filter(program => program.status == 'COMPLETED').length * 100/programs.length);
+
+      if(flow == "SEQUENCE")
+        programs.every(program => {
+          program.isActive = true;
+          if(program.status != 'COMPLETED'){
+            return false;
+          }
+          return true;
+        })
+      
+      
+      return {
+        programs: programs,
+        progress: progress
+      };
+    }
+  }
+
+  const getInductionJourneyDetails = () =>{
+    const inductionUrl = "http://localhost:8080/microsite/lnd/journeys/induction/1"
+    fetch(inductionUrl).then(res =>{
+      res.json().then(json =>{
+        if(!json.error){
+          processData(json.data);
+        }
+      })
+    })
+  }
+
   React.useEffect( () => {
-    getIsCompleted();
     getWelcomeMsgUrl();
+    getInductionJourneyDetails();
   }, [])
 
   return (
@@ -104,21 +136,33 @@ export const Welcome = () => {
           onEnded={()=>setIsCompleted(CompleteStatus.COMPLETE)}
         />
       </div>
-      {!play && <a>Start/Continue with induction jounrey</a>}
 
       { 
         isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && 
         <>
           <div className='update-welcome'>
-            <Button onClick={()=>{setIsModalOpen(!isModalOpen)}}>Update File <EditOutlined/></Button>
+            <Button onClick={()=>{setIsEditModalOpen(!isEditModalOpen)}}>Update File <EditOutlined/></Button>
           </div>
+          <Modal 
+            title="Welcome"
+            visible={isJourneyModalOpen}
+            width={1400}
+            footer={
+              <Button type='primary' size='large'>Start Journey</Button>}
+            onCancel={()=>{
+              setIsJourneyModalOpen(!isJourneyModalOpen)
+            }}
+            >
+              <JourneyDetail details={inductionJourney}></JourneyDetail>
+          </Modal>
 
           <Modal 
+            width={700}
             title="Update Welcome Message File URL" 
-            visible={isModalOpen} 
+            visible={isEditModalOpen} 
             footer={null} 
             onCancel={() => {
-              setIsModalOpen(!isModalOpen)
+              setIsEditModalOpen(!isEditModalOpen)
             }}
           >
             <Input.Group 
