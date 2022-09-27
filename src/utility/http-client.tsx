@@ -20,9 +20,8 @@ declare module 'axios' {
 class HttpClient {
     protected readonly instance: AxiosInstance;
 
-    public constructor(baseURL: string) {
+    public constructor() {
         this.instance = axios.create({
-            baseURL,
             handlerEnabled: true
         });
     }
@@ -30,7 +29,6 @@ class HttpClient {
     protected _handleResponse = ({ data }: AxiosResponse) => data;
 
     protected _handleError = (error: AxiosError) => {
-        console.log(error.response.status);
         if (error.response.status === 401) {
             window.location.href = AUTHORISATION_PATH;
         }
@@ -70,7 +68,7 @@ class HttpClient {
     }
 }
 
-const httpInstance = new HttpClient("");
+const httpInstance = new HttpClient();
 
 export default httpInstance;
 
