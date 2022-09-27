@@ -7,6 +7,8 @@ import { isUserAuthorized, getBasicUserDetails } from '../../../../../service/us
 import { CompleteStatus } from '../../../../../models/complete-status';
 import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
 import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
+import { ProgressStatus } from '../../../../../models/progress-status';
+import { Flow } from '../../../../../models/flow';
 
 export const Welcome = () => {
 
@@ -65,7 +67,7 @@ export const Welcome = () => {
   }}
 
   const getWelcomeMsgUrl = () =>{
-    const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/active/1";
+    const fetchUrl = "http://localhost:8080/microsite/lnd/user-welcome-message/active/" + getBasicUserDetails().id.toString();
     fetch(fetchUrl).then(res => {
       res.json().then(
         json => {
@@ -89,14 +91,14 @@ export const Welcome = () => {
   }
 
   const processPrograms = (programs: ProgramType[], flow: string) =>{
-    
     if(programs && programs.length > 0){
       const progress = Math.round(programs.filter(program => program.status == 'COMPLETED').length * 100/programs.length);
-
-      if(flow == "SEQUENCE")
+      let flowKey = flow as keyof typeof Flow;
+      if(Flow[flowKey] == Flow.SEQUENCE)
         programs.every(program => {
           program.isActive = true;
-          if(program.status != 'COMPLETED'){
+          let enumKey = program.status as keyof typeof ProgressStatus;
+          if(ProgressStatus[enumKey] != ProgressStatus.COMPLETED){
             return false;
           }
           return true;
@@ -111,7 +113,7 @@ export const Welcome = () => {
   }
 
   const getInductionJourneyDetails = () =>{
-    const inductionUrl = "http://localhost:8080/microsite/lnd/journeys/induction/1"
+    const inductionUrl = "http://localhost:8080/microsite/lnd/journeys/induction/"+getBasicUserDetails().id.toString()
     fetch(inductionUrl).then(res =>{
       res.json().then(json =>{
         if(!json.error){
