@@ -103,8 +103,6 @@ export const Welcome = () => {
           }
           return true;
         })
-      
-      
       return {
         programs: programs,
         progress: progress
@@ -139,13 +137,7 @@ export const Welcome = () => {
         />
       </div>
 
-      { 
-        isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && 
-        <>
-          <div className='update-welcome'>
-            <Button onClick={()=>{setIsEditModalOpen(!isEditModalOpen)}}>Update File <EditOutlined/></Button>
-          </div>
-          <Modal 
+      <Modal 
             title="Welcome"
             visible={isJourneyModalOpen}
             width={1400}
@@ -157,6 +149,13 @@ export const Welcome = () => {
             >
               <JourneyDetail details={inductionJourney}></JourneyDetail>
           </Modal>
+
+      { 
+        isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && 
+        <>
+          <div className='update-welcome'>
+            <Button onClick={()=>{setIsEditModalOpen(!isEditModalOpen)}}>Update File <EditOutlined/></Button>
+          </div>
 
           <Modal 
             width={700}
