@@ -2,14 +2,12 @@ import { Layout } from 'antd/lib'
 import { Content, Footer, Header } from 'antd/lib/layout/layout'
 import Sider from 'antd/lib/layout/Sider'
 import * as React from 'react'
-import httpInstance from '../../utility/http-client'
 import { MenuRouter } from './menu-router'
 import FooterHome from './views/footer-home'
 import HeaderHome from './views/header-home'
 import MenuHome from './views/menu-home'
 
 const LandingPage = () => {
-    httpInstance.get("/microsite/hello")
     return (
         <>
             <Layout>
