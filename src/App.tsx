@@ -9,7 +9,6 @@ import { AUTHORISATION_PATH, AUTHORISATION_TOKEN_PARAM } from "./constants/globa
 
 const ProtectedRoutes = () => {
     const [cookies] = useCookies([AUTHORISATION_TOKEN_PARAM]);
-    console.log(cookies[AUTHORISATION_TOKEN_PARAM]);
     if (cookies[AUTHORISATION_TOKEN_PARAM] == null) {
         window.location.href = AUTHORISATION_PATH;
         return (<></>);
@@ -30,7 +29,6 @@ const LoginComponent = () => {
 }
 
 const App = () => {
-    console.log(process.env.REACT_APP_AUTH_URL);
     return (<>
         <BrowserRouter>
             <Routes>
