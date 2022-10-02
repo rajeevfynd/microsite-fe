@@ -7,69 +7,68 @@ const reqs = new req(baseurl,config)
 reqs.get().then( res=>console.log(res));
 */
 
-import axios, {AxiosResponse, AxiosInstance, AxiosRequestConfig }from 'axios'
-import {configType} from '../models/config-type'
+import axios, { AxiosResponse, AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
+import { AUTHORISATION_PATH } from '../constants/urls';
+import { configType } from '../models/config-type'
 
 declare module 'axios' {
     export interface AxiosRequestConfig {
-      handlerEnabled: boolean;
+        handlerEnabled: boolean;
     }
-  }
+}
 
-class httpClient{
+class HttpClient {
     protected readonly instance: AxiosInstance;
-    config: configType; //header type class
 
-    public constructor(baseURL: string,config: configType) {
+    public constructor() {
         this.instance = axios.create({
-            baseURL,
             handlerEnabled: true
         });
-        this.config = config;
     }
-    
-    protected _handleResponse = ({ data }: AxiosResponse) => data;
-    
-    protected _handleError = (error: any) => Promise.reject((error: any)=> console.log(error.status));
 
-    protected _handleRequest = (config: AxiosRequestConfig) => {
-        config.headers['Authorization'] = this.config.headerAuthorization;
-        config.headers["Content-type"] = this.config.contentType
-        return config;
-    };
+    protected _handleResponse = ({ data }: AxiosResponse) => data;
+
+    protected _handleError = (error: AxiosError) => {
+        if (error.response.status === 401) {
+            window.location.href = AUTHORISATION_PATH;
+        }
+        Promise.reject(error.response);
+    }
 
     public get = (url: string) => {
-        this.instance.interceptors.request.use(
-            this._handleRequest,
+        this.instance.interceptors.response.use(
+            this._handleResponse,
             this._handleError,
         );
         return this.instance.get(url);
     }
 
     public post = (url: string, body: any) => {
-        this.instance.interceptors.request.use(
-            this._handleRequest,
+        this.instance.interceptors.response.use(
+            this._handleResponse,
             this._handleError,
         );
         return this.instance.post(url, body);
     }
 
     public put = (url: string, body: any) => {
-        this.instance.interceptors.request.use(
-            this._handleRequest,
+        this.instance.interceptors.response.use(
+            this._handleResponse,
             this._handleError,
         );
         return this.instance.put(url, body);
     }
 
-    public delete = (url: string) =>{
-        this.instance.interceptors.request.use(
-            this._handleRequest,
+    public delete = (url: string) => {
+        this.instance.interceptors.response.use(
+            this._handleResponse,
             this._handleError,
         );
         return this.instance.delete(url);
     }
 }
 
-export default httpClient;
+const httpInstance = new HttpClient();
+
+export default httpInstance;
 
