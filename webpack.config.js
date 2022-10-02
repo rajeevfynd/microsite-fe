@@ -48,6 +48,13 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        proxy: {
+            '/microsite/**': {
+                target: 'http://localhost:8080',
+                secure: false,
+                changeOrigin: true
+            },
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }),

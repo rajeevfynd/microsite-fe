@@ -5,7 +5,8 @@ import "./index.css";
 import { GlobalRouter } from "./Route";
 import { useCookies } from 'react-cookie'
 import { useQuery } from "./utility/query-utils";
-import { AUTHORISATION_PATH, AUTHORISATION_TOKEN_PARAM } from "./constants/global-constants";
+import { AUTHORISATION_TOKEN_PARAM } from "./constants/global-constants";
+import { AUTHORISATION_PATH } from "./constants/urls";
 
 const ProtectedRoutes = () => {
     const [cookies] = useCookies([AUTHORISATION_TOKEN_PARAM]);

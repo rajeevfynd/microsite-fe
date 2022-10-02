@@ -8,7 +8,7 @@ reqs.get().then( res=>console.log(res));
 */
 
 import axios, { AxiosResponse, AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
-import { AUTHORISATION_PATH } from '../constants/global-constants';
+import { AUTHORISATION_PATH } from '../constants/urls';
 import { configType } from '../models/config-type'
 
 declare module 'axios' {
