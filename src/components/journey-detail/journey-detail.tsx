@@ -25,7 +25,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div className='list-scrollable'>
+        <div>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.programs}

@@ -1,11 +1,6 @@
 .update-welcome{
     margin: 1% 0;
 }
-.list-scrollable{
-    max-height: 30vh;
-    overflow-y: scroll;
-    padding: 0.5% 5%;
-}
 .li-incomplete{
     color: gray
 }
@@ -17,4 +12,14 @@
 }
 .details{
     padding: 0 2%;
+}
+.drop-down-btn{
+    font-size: x-large;
+    height: fit-content;
+    text-align: left;
+    width: 100%;
+}
+.abc{
+    padding: 2%;
+    transition: all .5s ease-in-out;
 }
