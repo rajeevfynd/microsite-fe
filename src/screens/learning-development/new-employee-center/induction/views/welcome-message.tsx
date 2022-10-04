@@ -18,7 +18,6 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
     }
 
     const setWelcomeFileUrl = (newUrl: string) => {
-      console.log(newUrl)
       const url = "/microsite/lnd/user-welcome-message/file-url"
       httpInstance.post(url, { fileUrl : newUrl})
         .then(res => {
@@ -30,21 +29,20 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
 
     const setIsCompleted = (newStatus: CompleteStatus) => {
         const url = "/microsite/lnd/user-welcome-message/status"
-        if(play){
-            console.log(CompleteStatus[newStatus])
+        if(!props.details.isCompleted){
             httpInstance.post(url, { status : CompleteStatus[newStatus] })
             .then(res => {
-                console.log(res.data)
-                setPlay(false)
+                console.log(res)
+                props.onComplete(true)
             })
-            props.onComplete(true)
+            
         }
     }
 
     React.useEffect( () => {
       setFileUrl(props.details.fileUrl)
       setPlay(!props.details.isCompleted)
-    })
+    },[])
 
   return (
     

@@ -9,7 +9,6 @@ import { Flow } from '../../../../../models/flow';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import httpInstance from '../../../../../utility/http-client';
 import { WelcomeMessage } from './welcome-message';
-import { getUser } from '../../../../../utility/user-utils';
 
 const { Text } = Typography;
 export const Welcome = () => {
@@ -17,18 +16,17 @@ export const Welcome = () => {
   const [inductionJourney, setInductionJourney] = React.useState({})
   const [activeCollapseKey, setActiveCollapseKey] = React.useState('');
   const [welcomeMessageDetails, setWelcomeMessageDetails] = React.useState({ isCompleted: false, fileUrl: '' })
-  const user = getUser();
 
   const getWelcomeMsgUrl = () => {
     const url = "/microsite/lnd/user-welcome-message/active"
     httpInstance.get(url).then(res => {
-      let enumKey = res.data.status as keyof typeof CompleteStatus;
+      let enumKey = res.data.completeStatus as keyof typeof CompleteStatus;
       setWelcomeMessageDetails({
         fileUrl: res.data.fileUrl,
         isCompleted: CompleteStatus[enumKey] != CompleteStatus.INCOMPLETE
       })
-      setActiveCollapseKey(() => { return CompleteStatus[enumKey] != CompleteStatus.INCOMPLETE ? '2' : '1' })
-    }).then(val => { console.log('prom', val) })
+      setActiveCollapseKey(() => { return (CompleteStatus[enumKey] == CompleteStatus.COMPLETE) ? '2' : '1' })
+    })
   }
 
   const processData = (data: JourneyDetailType | any) => {
@@ -59,10 +57,9 @@ export const Welcome = () => {
   }
 
   const getInductionJourneyDetails = () => {
-    console.log('hit journey api')
     const inductionUrl = "/microsite/lnd/journeys/induction"
     httpInstance.get(inductionUrl).then(res => {
-      processData(res);
+      processData(res.data);
     }
     )
   }
@@ -77,10 +74,11 @@ export const Welcome = () => {
   }
 
   const handleOnComplete = (isCompleted: boolean) => {
-    setWelcomeMessageDetails({
+    getWelcomeMsgUrl()
+    /*setWelcomeMessageDetails({
       fileUrl: welcomeMessageDetails.fileUrl,
       isCompleted: isCompleted
-    })
+    })*/
   }
 
   React.useEffect(() => {

@@ -38,8 +38,6 @@ class HttpClient {
         }
         Promise.reject(error.response);
     }
-    
-    //protected _handleError = (error: any) => Promise.reject((error: any)=> console.log(error.status));
 
     public get = (url: string) => {
         return this.instance.get(url);
