@@ -24,6 +24,10 @@ class HttpClient {
         this.instance = axios.create({
             handlerEnabled: true
         });
+        this.instance.interceptors.response.use(
+            this._handleResponse,
+            this._handleError,
+        );
     }
 
     protected _handleResponse = ({ data }: AxiosResponse) => {console.log(data); return data};
@@ -38,34 +42,18 @@ class HttpClient {
     //protected _handleError = (error: any) => Promise.reject((error: any)=> console.log(error.status));
 
     public get = (url: string) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.get(url);
     }
 
     public post = (url: string, body: any) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.post(url, body);
     }
 
     public put = (url: string, body: any) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.put(url, body);
     }
 
     public delete = (url: string) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.delete(url);
     }
 }
