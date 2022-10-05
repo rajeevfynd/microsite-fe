@@ -1,0 +1,59 @@
+import * as React from 'react'
+import type { MenuProps } from 'antd';
+import { Menu } from 'antd';
+import MenuItem from 'antd/lib/menu/MenuItem';
+import httpInstance from '../../../../../../utility/http-client';
+import { FaqCategoryPropType } from '../../../../../../models/faq-qna-details';
+
+
+export const CategoryList = (props : FaqCategoryPropType) => {
+
+    const [categoryList, setCategoryList] = React.useState([]);
+
+    const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
+
+    const onClick: MenuProps['onClick'] = e => {
+        updateActiveCategory(e.key.toString());
+    };
+
+    const updateActiveCategory = (key: String) => {
+        setcurrentActiveCategory(key);
+    }
+
+    const updateCategoryList = (data : any) => {
+        setCategoryList(data);
+    }
+
+    const getCategoryList = () => {
+
+        const url = "/microsite/faq"
+        httpInstance.get(url)
+            .then(response => {
+                setCategoryList(response.data.data)
+                updateActiveCategory(response.data.data[0].id.toString());
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    React.useEffect(() => {
+        getCategoryList();
+    }, [])
+
+    React.useEffect(() => {
+        props.onActiveCategoryUpdate(currentActiveCategory);
+    }, [currentActiveCategory])
+
+    return (<>
+        <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} mode="horizontal">
+            {categoryList.map((categoryList) => (
+                <MenuItem key={categoryList.id} > 
+                    {categoryList.category}
+                </MenuItem>
+            ))}
+        </Menu>
+
+    </>);
+};
+

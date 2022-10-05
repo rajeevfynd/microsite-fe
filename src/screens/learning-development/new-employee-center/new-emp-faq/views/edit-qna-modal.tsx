@@ -54,7 +54,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
           label="Question"
           rules={[{ required: true, message: 'Please input the Question!' }]}
         >
-          <Input type="textarea" />
+          <Input type="textarea"/>
         </Form.Item>
         <Form.Item 
             name="answer" 

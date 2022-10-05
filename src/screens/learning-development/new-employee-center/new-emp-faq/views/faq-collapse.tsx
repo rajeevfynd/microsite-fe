@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Row, Collapse, Modal} from 'antd';
 import EditQNAButton from './edit-qna-modal';
-import DeleteButton from './delete-confirm-modal';
+// import DeleteButton from './delete-confirm-modal';
 
 
 interface qaList{
@@ -28,7 +28,7 @@ export const FAQCollapse = () => {
             <Row justify='end'>
                 <EditQNAButton></EditQNAButton>
                 &nbsp;&nbsp;
-                <DeleteButton></DeleteButton>
+                {/* <DeleteButton></DeleteButton> */}
             </Row>
         </div>
       );

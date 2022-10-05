@@ -21,7 +21,7 @@ const showDeleteConfirm = (event: { stopPropagation: () => void; }) => {
   });
 };
 
-const DeleteButton : React.FC = () => (
+const DeleteButton = () => (
   <Space wrap>
 
     <Tooltip title="Delete">
