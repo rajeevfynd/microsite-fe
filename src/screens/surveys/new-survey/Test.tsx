@@ -1,44 +1,40 @@
-import { Select, Input, Checkbox, Button } from "antd";
+import { Select, Button } from "antd";
 
 import * as React from "react";
 
-import {
-  PlusCircleTwoTone,
-  DeleteOutlined,
-  CloseCircleFilled,
-  CopyFilled,
-} from "@ant-design/icons";
+import { DeleteOutlined, CopyFilled } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import RadioUi from "./options/RadioUI";
+import CheckBoxUi from "./options/CheckBoxUi";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const Test = () => {
+const Survey = () => {
   const { Option } = Select;
+  const params = useParams();
 
-  // const [value, setValue] = React.useState("SmallText");
+  const [surveyTitle, setSurveyTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const newQuestion = {
+    id: "",
     questionText: "",
     questionType: "",
-    Option: [{ optionText: "" }],
+    choice: [
+      {
+        id: "",
+        choiceText: "",
+      },
+    ],
   };
 
   const [Survey, setSurvey] = React.useState({
     questions: [newQuestion],
   });
 
-  const handleClick = (e: any) => {
-    e.preventdefault();
-
-    console.log(e);
-  };
-
-  const handleChange = (value: any) => {
-    console.log(`selected ${value}`);
-  };
-
   const handleAddOption = (i: number, j: number) => {
     console.log(i + " " + j);
     let t = Survey;
-    t.questions[i].Option.splice(j + 1, 0, { optionText: "" });
+    t.questions[i].choice.splice(j + 1, 0, { id: "", choiceText: "" });
     console.log(t);
     setSurvey({ ...t });
   };
@@ -50,15 +46,15 @@ const Test = () => {
   ) => {
     console.log(i + " " + j);
     let t = Survey;
-    t.questions[i].Option.splice(j, 0, { optionText: e.target.value });
-    t.questions[i].Option.splice(j + 1, 1);
+    t.questions[i].choice.splice(j, 0, { id: "", choiceText: e.target.value });
+    t.questions[i].choice.splice(j + 1, 1);
     console.log(t);
     setSurvey({ ...t });
   };
 
   const handleDeleteOption = (i: number, j: number) => {
     let t = Survey;
-    t.questions[i].Option.splice(j, 1);
+    t.questions[i].choice.splice(j, 1);
     console.log(t);
     setSurvey({ ...t });
   };
@@ -67,34 +63,15 @@ const Test = () => {
     return (
       <>
         <div className="form-check">
-          {Survey.questions[i].Option.map((op, j) => (
-            <>
-              <div className="row">
-                <div className="col-6">
-                  <>
-                    <input
-                      key={j}
-                      className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                    />
-                    <Input
-                      placeholder="Enter option"
-                      value={op.optionText}
-                      onChange={(e) => handleOPtionIn(e, i, j)}
-                    />
-                  </>
-                </div>
-                <div className="col-6">
-                  <PlusCircleTwoTone onClick={(e) => handleAddOption(i, j)} />{" "}
-                  <CloseCircleFilled
-                    style={{ color: "red" }}
-                    onClick={(e) => handleDeleteOption(i, j)}
-                  />
-                </div>
-              </div>
-              <br />
-            </>
+          {Survey.questions[i].choice.map((op, j) => (
+            <RadioUi
+              i={i}
+              j={j}
+              optionText={op.choiceText}
+              handleDeleteOption={handleDeleteOption}
+              handleAddOption={handleAddOption}
+              handleOPtionIn={handleOPtionIn}
+            />
           ))}
         </div>
       </>
@@ -110,38 +87,28 @@ const Test = () => {
     ];
     setSurvey({ ...Survey, questions: l });
   };
-
-  const checkBoxUi = () => {
+  const checkBoxUI = (i: number) => {
     return (
       <>
-        <div className="row">
-          <div className="col-6">
-            <Checkbox onChange={changeCheck}>
-              {" "}
-              <Input placeholder="Enter option" />{" "}
-            </Checkbox>
-          </div>
-          <div className="col-6">
-            <span onClick={(_e) => console.log("hi")}>
-              <PlusCircleTwoTone />{" "}
-            </span>
-            <span>
-              <CloseCircleFilled style={{ color: "red" }} />
-            </span>
-          </div>
-        </div>
+        {Survey.questions[i].choice.map((op, j) => (
+          <CheckBoxUi
+            i={i}
+            j={j}
+            optionText={op.choiceText}
+            handleDeleteOption={handleDeleteOption}
+            handleAddOption={handleAddOption}
+            handleOPtionIn={handleOPtionIn}
+          />
+        ))}
       </>
     );
-  };
-  const changeCheck = (e: CheckboxChangeEvent) => {
-    console.log(`checked = ${e.target.checked}`);
   };
   const handleSwitch = (v: string, i: number) => {
     switch (v) {
       case "radio":
         return radioUI(i);
       case "checkBox":
-        return checkBoxUi();
+        return checkBoxUI(i);
       default:
         return <TextArea></TextArea>;
     }
@@ -157,7 +124,6 @@ const Test = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     i: number
   ) => {
-    //console.log(e.target.name);
     let a = Survey.questions[i];
     a = { ...a, questionText: e.target.value };
     const l = [
@@ -190,6 +156,40 @@ const Test = () => {
     console.log(t);
     setSurvey({ ...t });
   };
+  function handleSubmit(): void {
+    const body = {
+      surveyTitle,
+      description,
+      questions: Survey.questions,
+    };
+
+    console.log(body);
+    // axios
+    //   .post("http://localhost:8082/microsite/survey/add/survey", body)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setDescription("");
+    //     setSurveyTitle("");
+    //     setSurvey({ questions: [newQuestion] });
+    //   })
+    //   .catch((err) => console.log(err.message));
+  }
+  React.useEffect(() => {
+    console.log("Inside useEffect");
+    if (params.id) {
+      axios
+        .get(`http://localhost:8082/microsite/survey/survey/${params.id}`)
+        .then((res) => {
+          setSurveyTitle(res.data.data.surveyTitle);
+          setDescription(res.data.data.description);
+          setSurvey({ questions: res.data.data.questions });
+        });
+    } else {
+      setDescription("");
+      setSurveyTitle("");
+      setSurvey({ questions: [newQuestion] });
+    }
+  }, [params.id]);
   return (
     <div className="question_form">
       <br></br>
@@ -198,16 +198,21 @@ const Test = () => {
           <div className="question_form_top">
             <input
               type="text"
-              //name="surveyTitle"
+              name="surveyTitle"
               className="question_form_top_name"
               style={{ color: "black" }}
-              placeholder="unititled document"
+              placeholder="Survey Title"
+              value={surveyTitle}
+              onChange={(e) => setSurveyTitle(e.target.value)}
             ></input>
             <input
               type="text"
               className="question_form_top_desc"
               style={{ color: "black" }}
-              placeholder="Form description"
+              placeholder="Survey description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
         </div>
@@ -216,10 +221,9 @@ const Test = () => {
             <>
               <form>
                 <div
-                  className="card "
-                  //onSelect={}
+                  className="card"
                   style={{
-                    borderLeft: "4px solid rgb(103, 58, 183)",
+                    borderLeft: "4px solid rgb(66, 90, 245)",
                   }}
                 >
                   <div className="card-header">
@@ -242,7 +246,11 @@ const Test = () => {
 
                       <div className="col-4">
                         <Select
-                          defaultValue={_q.questionType}
+                          defaultValue={
+                            _q.questionType.length < 1
+                              ? "TextArea"
+                              : _q.questionType
+                          }
                           onChange={(e) => handleSelect(e, _i)}
                         >
                           <Option value="radio">Radio</Option>
@@ -278,11 +286,15 @@ const Test = () => {
           <Button type="primary" onClick={(e) => addQuestion(e)}>
             Add Question
           </Button>
+          <div className="row" style={{ float: "right" }}>
+            <div className="btn btn-primary" onClick={() => handleSubmit()}>
+              {params.id ? "Save the Changes" : "Submit"}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="btn btn-sm btn-primary">Save Survey</div>
     </div>
   );
 };
 
-export default Test;
+export default Survey;

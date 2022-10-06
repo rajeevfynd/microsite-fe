@@ -1,5 +1,6 @@
 const Surveys = [
   {
+    id: 1,
     SurveyTile: "Survey1",
     Description: "This the test Survey",
     questions: [
@@ -41,3 +42,11 @@ const Surveys = [
   },
 ];
 export { Surveys };
+
+{
+  id: 1;
+  Surveys: [
+    { id: "1", name: "", desc: "", question: "" },
+    { id: "2", name: "", desc: "", question: "" },
+  ];
+}

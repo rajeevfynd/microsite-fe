@@ -21,8 +21,8 @@ const RadioUi = (props: radioProps) => {
         <div className="row">
           <div className="col-6">
             <>
-              <input
-                key={props.i}
+              <Input
+                //key={props.i}
                 className="form-check-input"
                 type="radio"
                 name="flexRadioDefault"

@@ -1,16 +1,16 @@
 import { Input } from "antd";
 import * as React from "react";
 type radioProps = {
+  i: number;
   optionText: string;
   qId: string;
-  handleRadioResponse(qId: string, answer: string): void;
+  radioAnswer: boolean;
 };
 
-const RadioUi = (props: radioProps) => {
+const ResRadioUi = (props: radioProps) => {
   const handleChange = (e: { target: { value: any } }) => {
     console.log(e.target.value);
     console.log(props.optionText);
-    props.handleRadioResponse(props.qId, props.optionText);
   };
   return (
     <div>
@@ -18,11 +18,13 @@ const RadioUi = (props: radioProps) => {
         <div className="row">
           <div className="col-6">
             <input
-              id={props.optionText}
+              key={props.i + 1}
               className="form-check-input"
               type="radio"
-              //name="flexRadioDefault"
+              name="flexRadioDefault"
               onChange={handleChange}
+              checked={props.radioAnswer}
+              disabled
             />
             {props.optionText}
           </div>
@@ -33,4 +35,4 @@ const RadioUi = (props: radioProps) => {
   );
 };
 
-export default RadioUi;
+export default ResRadioUi;
