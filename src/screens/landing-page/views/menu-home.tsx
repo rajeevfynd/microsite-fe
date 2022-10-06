@@ -38,7 +38,6 @@ export default function MenuHome() {
                     <Menu 
                         mode="inline" 
                         selectedKeys={getMenuRouteKeyByPath(location.pathname)} 
-                        
                         >
                         <Menu.SubMenu key='learning-and-development' title='Learning and Development' icon={<BookHalf/>}>
                             <Menu.SubMenu title='New Employee Center'>
@@ -73,7 +72,7 @@ export default function MenuHome() {
                                         Academy</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item>Learning Passport</Menu.Item>
-                            <Menu.Item>Learning Journey</Menu.Item>
+                            <Menu.Item onClick={()=>navigateTo('/lnd/learning-journey')}>Learning Journey</Menu.Item>
                         </Menu.SubMenu>
                         <Menu.Item icon={<PersonWorkspace/>}>Manager Section</Menu.Item>
                         <Menu.SubMenu icon={<ListColumns/>} title='Survey'>

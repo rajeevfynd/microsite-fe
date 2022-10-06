@@ -32,7 +32,6 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
         if(!props.details.isCompleted){
             httpInstance.post(url, { status : CompleteStatus[newStatus] })
             .then(res => {
-                console.log(res)
                 props.onComplete(true)
             })
             
@@ -47,7 +46,7 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
   return (
     
     <>
-        <div className='video-player abc'>
+        <div className='video-player'>
         <ReactPlayer 
           controls
           url={fileUrl}

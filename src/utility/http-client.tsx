@@ -30,7 +30,7 @@ class HttpClient {
         );
     }
 
-    protected _handleResponse = ({ data }: AxiosResponse) => {console.log(data); return data};
+    protected _handleResponse = ({ data }: AxiosResponse) => data;
     
     protected _handleError = (error: AxiosError) => {
         if (error.response.status === 401) {
