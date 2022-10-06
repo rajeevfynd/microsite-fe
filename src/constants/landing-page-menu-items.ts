@@ -33,55 +33,61 @@ export const menuRoutes: MenuRoute[] = [
         parents: ['learning-and-development'],
     },
     {
-        key:'skill',
+        key: 'skill',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/skill',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development','learning-center'],
     },
     {
-        key:'addSkill',
+        key: 'addSkill',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/addSkill',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER']
+        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER']
     },
     {
-        key:'role',
+        key: 'addCourse',
+        isExternalLink: false,
+        navigateTo: '/lnd/learning-center/addCourse',
+        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER']
+    },
+    {
+        key: 'role',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/role',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development','learning-center'],
     },
     {
-        key:'academy',
+        key: 'academy',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/academy',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development','learning-center'],
     },
     {
-        key:'learning-passport',
+        key: 'learning-passport',
         isExternalLink: false,
         navigateTo: '/lnd/learning-passport',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development']
     },
     {
-        key:'learning-journey',
+        key: 'learning-journey',
         isExternalLink: false,
         navigateTo: '/lnd/learning-journey',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development']
     },
     {
-        key:'r-samman',
+        key: 'r-samman',
         isExternalLink: true,
         navigateTo: 'https://r-sammaan.ril.com/Pages/r-sammaan.aspx',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['rnr-section'],
     },
     {
-        key:'rnr-placeholder',
+        key: 'rnr-placeholder',
         isExternalLink: false,
         navigateTo: '/rnr/placeholder',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
@@ -91,7 +97,7 @@ export const menuRoutes: MenuRoute[] = [
 
 // menu props is interface for antd menu for accepting menu items
 // all menu items will be listed in this constant
-export const menuItems:MenuProps['items'] = [
+export const menuItems: MenuProps['items'] = [
     {
         key: 'learning-and-development',
         label: 'Learning and Development',
@@ -119,24 +125,28 @@ export const menuItems:MenuProps['items'] = [
                 label: 'Learning Center',
                 children: [
                     {
-                        key:'lnd-hero',
-                        label:'L&D Hero'
+                        key: 'lnd-hero',
+                        label: 'L&D Hero'
                     },
                     {
-                        key:'addSkill',
-                        label:'Add Skill'
+                        key: 'addCourse',
+                        label: 'Add Course'
                     },
                     {
-                        key:'skill',
-                        label:'Skill'
+                        key: 'addSkill',
+                        label: 'Add Skill'
                     },
                     {
-                        key:'role',
-                        label:'Role'
+                        key: 'skill',
+                        label: 'Skill'
                     },
                     {
-                        key:'academy',
-                        label:'Academy'
+                        key: 'role',
+                        label: 'Role'
+                    },
+                    {
+                        key: 'academy',
+                        label: 'Academy'
                     }
                 ]
             },
@@ -170,7 +180,7 @@ export const menuItems:MenuProps['items'] = [
                 key: 'rnr-placeholder',
                 label: 'R&R Placeholder'
             }
-            
+
         ]
     },
     {
