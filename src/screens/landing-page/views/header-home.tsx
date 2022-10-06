@@ -8,12 +8,12 @@ import { getUser } from '../../../utility/user-utils';
 const HeaderHome = () => {
   
   const user:any = getUser()
-  const [fname, setFName] = React.useState('');
-  const [lname, setLName] = React.useState('')
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('')
   React.useEffect( ()=> {
     if(user){
-      setFName(user.firstName)
-      setLName(user.lastName)
+      setFirstName(user.firstName)
+      setLastName(user.lastName)
     }
   })
   
@@ -25,8 +25,8 @@ const HeaderHome = () => {
           </Col>
           <Col span={3} offset={16}>
             <div className='username-container'>
-              <h6 className='header-text username'>{fname}</h6>
-              <h6 className='header-text username'>{lname}</h6>
+              <h6 className='header-text username'>{firstName}</h6>
+              <h6 className='header-text username'>{lastName}</h6>
             </div>
           </Col>
           <Col>
