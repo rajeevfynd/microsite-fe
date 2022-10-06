@@ -1,16 +1,9 @@
-import { Button, Collapse, Typography, notification, Space } from "antd";
-import { Navigate } from "react-router-dom";
-import {
-  DeleteOutlined,
-  EditTwoTone,
-  InfoCircleFilled,
-} from "@ant-design/icons";
+import { Collapse, Typography, notification, Space } from "antd";
+import { EditTwoTone, InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import "../new-survey/questionForm.css";
 import axios from "axios";
-const { Panel } = Collapse;
-const { Text, Link } = Typography;
 
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";

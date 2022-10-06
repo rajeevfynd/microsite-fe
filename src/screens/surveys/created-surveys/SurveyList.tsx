@@ -1,5 +1,4 @@
-import { Button, Collapse, Typography, notification, Space } from "antd";
-import { Navigate } from "react-router-dom";
+import { Collapse, Typography, notification, Space } from "antd";
 import {
   DeleteOutlined,
   EditTwoTone,
@@ -31,8 +30,6 @@ interface Choice {
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
   let navigate = useNavigate();
-  const Text = "test";
-  const history = useNavigate();
 
   const [Surveys, setSurvey] = React.useState<surveyType[]>([
     {
@@ -49,18 +46,6 @@ function SurveyList() {
       ],
     },
   ]);
-  // {
-  //   id: "",
-  //   surveyTitle: "",
-  //   description: "",
-  //   questions: [
-  //     {
-  //       questionText: "",
-  //       questionType: "",
-  //       choice: [{ choiceText: "" }],
-  //     },
-  //   ],
-  // },
 
   const openNotificationWithIcon = (
     type: NotificationType,
@@ -71,7 +56,6 @@ function SurveyList() {
     });
   };
   const deleteSurvey = (id: string) => {
-    console.log("Survey ID", id);
     if (confirm("Do you really want to delete Survey")) {
       axios
         .delete(`http://localhost:8082/microsite/survey/delete/survey/${id}`)
@@ -89,7 +73,7 @@ function SurveyList() {
     axios
       .get("http://localhost:8082/microsite/survey/surveys")
       .then((res) => {
-        console.log("This is res.data ", res.data);
+        // console.log("This is res.data ", res.data);
         setSurvey(res.data.data);
       })
       .catch((err) => console.log(err.message));

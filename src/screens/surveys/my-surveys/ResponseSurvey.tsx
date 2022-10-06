@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import ResCheckBoxUi from "./options/ResCheckBoxUi";
 import ResRadioUi from "./options/ResRadioUi";
 const ResponseSurvey = () => {
-  let k = 10;
   /// two params surveyId and AssigneeID
   const params = useParams();
   const { Option } = Select;
@@ -46,24 +45,21 @@ const ResponseSurvey = () => {
     [key: string]: string[];
   }
 
-  const [response, setResponse] = React.useState<Dic>({
-    "4": ["mak", "rek"],
-  });
+  const [response, setResponse] = React.useState<Dic>({});
 
   const radioUI = (i: number) => {
-    let c = response[survey.questions[i].id];
-    console.log("radio", c[0]);
+    let answer = response[survey.questions[i].id];
     return (
       <>
         <div className="form-check">
           <div>
             {survey.questions[i].choice.map((op: { choiceText: string }) => (
               <ResRadioUi
-                key={k++}
+                key={i}
                 i={i}
                 optionText={op.choiceText}
                 qId={survey.questions[i].id}
-                radioAnswer={c[0] == op.choiceText ? true : false}
+                radioAnswer={answer[0] == op.choiceText ? true : false}
               />
             ))}
           </div>
@@ -73,26 +69,22 @@ const ResponseSurvey = () => {
   };
 
   const checkBoxUI = (i: number) => {
-    let k = survey.questions[i].id;
+    let questionID = survey.questions[i].id;
     return (
       <>
-        {/* {survey.questions[i].choice.map((op, _j) => (
-          <CheckBoxUi optionText={op.choiceText} />
-          //   <CheckBoxUi/>
-        ))} */}
         {
           <ResCheckBoxUi
             key={i.toString()}
             choice={survey.questions[i].choice}
-            qId={survey.questions[i].id}
-            checkAnswer={response[k]}
+            qId={questionID}
+            checkAnswer={response[questionID]}
           />
         }
       </>
     );
   };
-  const handleSwitch = (v: string, i: number) => {
-    switch (v) {
+  const handleSwitch = (questionType: string, i: number) => {
+    switch (questionType) {
       case "SINGLE_CHOICE":
         return radioUI(i);
       case "MULTIPLE_CHOICE":

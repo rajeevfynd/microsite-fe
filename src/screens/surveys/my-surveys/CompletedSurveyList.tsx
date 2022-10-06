@@ -1,10 +1,5 @@
-import { Button, Collapse, Typography, notification, Space } from "antd";
-import { Navigate } from "react-router-dom";
-import {
-  DeleteOutlined,
-  EditTwoTone,
-  InfoCircleFilled,
-} from "@ant-design/icons";
+import { Collapse, Typography, notification, Space } from "antd";
+import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import "../new-survey/questionForm.css";
@@ -103,5 +98,3 @@ function CompletedSurveyList() {
 }
 
 export default CompletedSurveyList;
-
-// /assignee/response/:id/:assigneeId

@@ -115,8 +115,8 @@ const Survey = () => {
       </>
     );
   };
-  const handleSwitch = (v: string, i: number) => {
-    switch (v) {
+  const handleSwitch = (questionType: string, i: number) => {
+    switch (questionType) {
       case "SINGLE_CHOICE":
         return radioUI(i);
       case "MULTIPLE_CHOICE":
@@ -136,15 +136,15 @@ const Survey = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     i: number
   ) => {
-    let a = Survey.questions[i];
-    a = { ...a, questionText: e.target.value };
+    let arr = Survey.questions[i];
+    arr = { ...arr, questionText: e.target.value };
     const l = [
       ...Survey.questions.slice(0, i),
-      a,
+      arr,
       ...Survey.questions.slice(i + 1, Survey.questions.length),
     ];
     setSurvey({ ...Survey, questions: l });
-    console.log(a.questionText);
+    console.log(arr.questionText);
   };
   const DeleteQuestion = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -164,11 +164,6 @@ const Survey = () => {
   ) => {
     let t = Survey;
     let q = t.questions[i];
-    // let choice = t.questions[i].choice;
-    // t.questions[i].choice.map((k, m) => {
-    //   q.choice.splice(m, 0, { ...k, id: "" });
-    // });
-    // questions[i]
     t.questions.splice(i + 1, 0, { ...q, id: "" });
     console.log(t);
     setSurvey({ ...t });
@@ -200,7 +195,6 @@ const Survey = () => {
         .post("http://localhost:8082/microsite/survey/add/survey", body)
         .then((res) => {
           openNotificationWithIcon("success", surveyTitle + " created");
-          console.log(res.data);
           setDescription("");
           setSurveyTitle("");
           setSurvey({ questions: [newQuestion] });
@@ -234,12 +228,6 @@ const Survey = () => {
     }
   }, [params.id]);
 
-  // React.useEffect(() => {
-  //   console.log("Empty []");
-  //   setIsLoading(true);
-  //   setIsLoading(false);
-  // });
-  // console.log("THIs survey", Survey);
   return (
     <>
       {isLoading ? (
@@ -350,22 +338,9 @@ const Survey = () => {
                   Add Question
                 </Button>
                 <div className="row" style={{ float: "right" }}>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    // onSubmit={(e) => handleSubmit(e)}
-                  >
+                  <button type="submit" className="btn btn-primary">
                     {params.id ? "Save the Changes" : "Submit"}
                   </button>
-                  {/* <div
-                   
-                  
-                   
-                    className="btn btn-primary"
-                    onClick={() => handleSubmit()}
-                  >
-                    {params.id ? "Save the Changes" : "Submit"}
-                  </div> */}
                 </div>
               </div>
             </div>
