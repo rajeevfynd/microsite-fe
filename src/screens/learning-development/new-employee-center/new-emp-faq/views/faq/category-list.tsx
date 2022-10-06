@@ -12,6 +12,9 @@ export const CategoryList = (props : FaqCategoryPropType) => {
 
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
+    const [activeCategoryName, setActiveCategoryName] = React.useState(null);
+
+
     const onClick: MenuProps['onClick'] = e => {
         updateActiveCategory(e.key.toString());
     };
@@ -24,6 +27,10 @@ export const CategoryList = (props : FaqCategoryPropType) => {
         setCategoryList(data);
     }
 
+    const handleMenuItemChange = (category:String) => {
+        setActiveCategoryName(category);
+    }
+
     const getCategoryList = () => {
 
         const url = "/microsite/faq"
@@ -31,6 +38,7 @@ export const CategoryList = (props : FaqCategoryPropType) => {
             .then(response => {
                 setCategoryList(response.data.data)
                 updateActiveCategory(response.data.data[0].id.toString());
+                handleMenuItemChange(response.data.data[0].category)
             })
             .catch((error) => {
                 console.log(error);
@@ -42,13 +50,13 @@ export const CategoryList = (props : FaqCategoryPropType) => {
     }, [])
 
     React.useEffect(() => {
-        props.onActiveCategoryUpdate(currentActiveCategory);
-    }, [currentActiveCategory])
+        props.onActiveCategoryUpdate(currentActiveCategory, activeCategoryName);
+    }, [currentActiveCategory, activeCategoryName])
 
     return (<>
         <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} mode="horizontal">
             {categoryList.map((categoryList) => (
-                <MenuItem key={categoryList.id} > 
+                <MenuItem key={categoryList.id} onClick={() => handleMenuItemChange(categoryList.category)}  > 
                     {categoryList.category}
                 </MenuItem>
             ))}

@@ -24,5 +24,7 @@ export class FaqCategoryType  {
 export type CornerIconsProps = {
     showEditModal?: any
     qnaId?: string;
+    qnaDetails?: QnaType;
     onQnaUpdate : any;
+    onEditQna:any;
 }

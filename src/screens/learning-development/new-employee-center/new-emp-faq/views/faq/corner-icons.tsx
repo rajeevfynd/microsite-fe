@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Row, Col, Popconfirm, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined, FileAddOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import httpInstance from '../../../../../../utility/http-client';
-import { CornerIconsProps } from '../../../../../../models/faq-qna-details';
+import { CornerIconsProps, QnaType } from '../../../../../../models/faq-qna-details';
 
 
 
@@ -41,16 +41,14 @@ export const CornerIcons = (props: CornerIconsProps) => {
             });
     }
 
-    const handleEdit = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    const handleEdit = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, qnaDetails:QnaType) => {
         event.stopPropagation();
         props.showEditModal(props);
+        props.onEditQna(qnaDetails);
+        console.log(qnaDetails)
     }
 
-    const handleAddAttachment = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        event.stopPropagation();
-    }
-
-    const handleDelete = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    const handleDelete = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, qnaId:Number) => {
         event.stopPropagation();
         showDeleteConfirm(event.currentTarget.id);
     }
@@ -60,17 +58,12 @@ export const CornerIcons = (props: CornerIconsProps) => {
             <Row style={{ gap: 20 }}>
                 <Col>
                     <EditOutlined
-                        onClick={event => handleEdit(event)}
-                    />
-                </Col>
-                <Col>
-                    <FileAddOutlined
-                        onClick={event => handleAddAttachment(event)}
+                        onClick={event => handleEdit(event, props.qnaDetails)}
                     />
                 </Col>
                 <Col>
                         <DeleteOutlined id={props.qnaId}
-                            onClick={event => handleDelete(event)}
+                            onClick={event => handleDelete(event, props.qnaDetails.id)}
                         />
                 </Col>
             </Row>

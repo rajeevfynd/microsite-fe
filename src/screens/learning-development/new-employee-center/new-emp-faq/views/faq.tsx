@@ -10,8 +10,11 @@ export const FAQ = () => {
 
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
-    const onActiveCategoryUpdate = (activeCategory:string) => {
+    const [activeCategoryName, setActiveCategoryName] = React.useState(null);
+
+    const onActiveCategoryUpdate = (activeCategory:string, categoryName:string) => {
         setcurrentActiveCategory(activeCategory);
+        setActiveCategoryName(categoryName);
     }
 
     return (
@@ -29,7 +32,7 @@ export const FAQ = () => {
                     </div>
                 </Row>
             <p></p>
-            <FaqList activeId={currentActiveCategory}/>
+            <FaqList activeId={currentActiveCategory} activeCategoryName={activeCategoryName}/>
         </div>
     )
 }

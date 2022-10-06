@@ -4,6 +4,7 @@ import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
 import httpInstance from '../../../../../../utility/http-client';
+import { QnaType } from '../../../../../../models/faq-qna-details';
 
 
 const { Panel } = Collapse;
@@ -13,8 +14,8 @@ export const FaqList = (props : any) => {
 
     const [qnaList, setQnaList] = React.useState([]);
     const [activeKey, setActiveKey] = React.useState([]);
-    const [defaultActiveKey, setDefaultActiveKey] = React.useState([]);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [editQnaDetails, setEditQnaDetails] = React.useState(null);
     
 
 
@@ -40,6 +41,12 @@ export const FaqList = (props : any) => {
         getQnaList()
     }
 
+    const handleEditQna = (qnaDetails:QnaType) => {
+        console.log(qnaDetails)
+        setEditQnaDetails(qnaDetails)
+        console.log(editQnaDetails)
+    }
+
 
     const getQnaList = () => {
 
@@ -60,10 +67,16 @@ export const FaqList = (props : any) => {
 
     return (
         <>
-            <Collapse defaultActiveKey={[1, 2, 3]} activeKey={activeKey} onChange={handlePanelChange}>
+            <Collapse activeKey={activeKey} onChange={handlePanelChange}>
                 {qnaList.map((qnaList) => (
                     <Panel header={qnaList.faq.question} key={qnaList.faq.id} 
-                        extra={<CornerIcons showEditModal={showEditModal} qnaId={qnaList.faq.id} onQnaUpdate={handleQnaUpdate}/>}>
+                        extra={<CornerIcons 
+                                showEditModal={showEditModal} 
+                                qnaId={qnaList.faq.id}
+                                qnaDetails={qnaList.faq}
+                                onQnaUpdate={handleQnaUpdate}
+                                onEditQna={handleEditQna}
+                                />}>
                         <div>
                             <Row>
                                 {qnaList.faq.answer}
@@ -78,7 +91,7 @@ export const FaqList = (props : any) => {
                 ))}
             </Collapse>
 
-            <QnaPopup isModalOpen={isModalOpen} handleCancel={handleCancel} />
+            <QnaPopup isModalOpen={isModalOpen} handleCancel={handleCancel} editQnaDetails={editQnaDetails} activeCategoryName={props.activeCategoryName}/>
         </>
 
     )

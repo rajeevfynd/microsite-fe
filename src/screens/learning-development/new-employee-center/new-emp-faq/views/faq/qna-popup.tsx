@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Modal } from 'antd';
 import { QnaForm } from './qna-form';
+import { QnaType } from '../../../../../../models/faq-qna-details';
 
 
 
-export const QnaPopup = (props: { isModalOpen: boolean; handleCancel: any; }) => {
+export const QnaPopup = (props: { isModalOpen: boolean; handleCancel: any; editQnaDetails:QnaType, activeCategoryName:string}) => {
     const { isModalOpen, handleCancel } = props;
 
 
@@ -17,7 +18,7 @@ export const QnaPopup = (props: { isModalOpen: boolean; handleCancel: any; }) =>
             onCancel={handleCancel}
         >
 
-            <QnaForm />
+            <QnaForm editQnaDetails={props.editQnaDetails} activeCategoryName={props.activeCategoryName}/>
 
         </Modal>
 
