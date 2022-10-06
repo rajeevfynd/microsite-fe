@@ -1,6 +1,6 @@
 import * as React from 'react'
 import "./../index.css"
-import { Collapse, Typography } from 'antd';
+import { Collapse, Result, Typography } from 'antd';
 import { CompleteStatus } from '../../../../../models/enums/complete-status';
 import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
 import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
@@ -91,7 +91,10 @@ export const Welcome = () => {
         <CollapsePanel key={'2'} header={<h5>Induction Journey</h5>}>
           {!welcomeMessageDetails.isCompleted &&
             <p>
-              <Text type='secondary'> please complete welcome message to proceed with induction journey </Text>
+              <Result
+                status="warning"
+                title={<Text type='secondary'>Please complete the welcome message before starting Induction Journey.</Text>}
+              />
             </p>}
           {welcomeMessageDetails.isCompleted &&
             <div>

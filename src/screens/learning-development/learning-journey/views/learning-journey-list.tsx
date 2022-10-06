@@ -1,4 +1,4 @@
-import { Avatar, Card, Divider, Input, List, Skeleton } from 'antd';
+import { Avatar, Card, Divider, Input, List, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
@@ -8,7 +8,7 @@ import { JourneyDetailType } from '../../../../models/journey-details';
 import httpInstance from '../../../../utility/http-client';
 import './../index.css'
 
-
+const { Text } = Typography;
 interface JourneyPage {
   content ?: Array<JourneyDetailType>,
   empty ?: boolean,
@@ -97,6 +97,7 @@ const debounce = (callback:any, time:any) => {
         border: '1px solid rgba(140, 140, 140, 0.35)',
       }}
     >
+      { journeys.length != 0 &&
       <InfiniteScroll
         dataLength={journeys.length}
         next={loadMoreData}
@@ -127,6 +128,14 @@ const debounce = (callback:any, time:any) => {
           )}
         />
       </InfiniteScroll>
+      }
+      {
+        journeys.length == 0 &&
+        <Result
+          status="404"
+          title={<Text type='secondary'>No Journey Found</Text>}
+        />
+      }
     </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { Result, Typography } from 'antd';
 import Button from 'antd/lib/button';
 import * as React from 'react'
 import { ArrowLeft } from 'react-bootstrap-icons';
@@ -8,16 +9,19 @@ import { ProgressStatus } from '../../../../models/enums/progress-status';
 import { JourneyDetailType, ProgramType } from '../../../../models/journey-details';
 import httpInstance from '../../../../utility/http-client';
 
+const { Text } = Typography;
 export const JourneyDetailView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [ data, setData ] = React.useState({})
+    const [ isExists, setIsExists ] = React.useState(false)
 
     const processData = (data: JourneyDetailType | any) => {
         const processedData = processPrograms(data.programs, data.flow)
         data.programs = processedData.programs;
         data.progress = processedData.progress;
         setData(data)
+        setIsExists(true);
       }
     
       const processPrograms = (programs: ProgramType[], flow: string) => {
@@ -50,7 +54,16 @@ export const JourneyDetailView = () => {
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
-        <JourneyDetail details={data}></JourneyDetail>
+        {isExists &&
+          <JourneyDetail details={data}></JourneyDetail>
+        }
+        {
+          !isExists &&
+          <Result
+            status="404"
+            title={<Text type='secondary'>No Details Found</Text>}
+          />
+        }
     </>
   )
 }
