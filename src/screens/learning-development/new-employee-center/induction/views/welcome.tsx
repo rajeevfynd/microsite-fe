@@ -1,16 +1,17 @@
 import * as React from 'react'
 import "./../index.css"
 import { Collapse, Typography } from 'antd';
-import { CompleteStatus } from '../../../../../models/complete-status';
+import { CompleteStatus } from '../../../../../models/enums/complete-status';
 import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
 import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
-import { ProgressStatus } from '../../../../../models/progress-status';
-import { Flow } from '../../../../../models/flow';
+import { ProgressStatus } from '../../../../../models/enums/progress-status';
+import { Flow } from '../../../../../models/enums/flow';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import httpInstance from '../../../../../utility/http-client';
 import { WelcomeMessage } from './welcome-message';
 
 const { Text } = Typography;
+
 export const Welcome = () => {
 
   const [inductionJourney, setInductionJourney] = React.useState({})
@@ -65,20 +66,11 @@ export const Welcome = () => {
   }
 
   const handleFileUrlUpdate = (fileUrl: string) => {
-    setWelcomeMessageDetails(
-      {
-        fileUrl: fileUrl,
-        isCompleted: welcomeMessageDetails.isCompleted
-      }
-    )
+    getWelcomeMsgUrl()
   }
 
   const handleOnComplete = (isCompleted: boolean) => {
     getWelcomeMsgUrl()
-    /*setWelcomeMessageDetails({
-      fileUrl: welcomeMessageDetails.fileUrl,
-      isCompleted: isCompleted
-    })*/
   }
 
   React.useEffect(() => {

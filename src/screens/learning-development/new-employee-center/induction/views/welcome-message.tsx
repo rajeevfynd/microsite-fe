@@ -3,7 +3,7 @@ import { EditOutlined } from '@ant-design/icons';
 import * as React from 'react'
 import ReactPlayer from 'react-player'
 import { WelcomeMessageDetailsType } from '../../../../../models/welcome-message';
-import { CompleteStatus } from '../../../../../models/complete-status';
+import { CompleteStatus } from '../../../../../models/enums/complete-status';
 import httpInstance from '../../../../../utility/http-client';
 
 export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {

@@ -1,4 +1,5 @@
-import { Image, Row, Col, Progress, List } from 'antd'
+import { Image, Row, Col, Progress, List, Timeline } from 'antd'
+import TimelineItem from 'antd/lib/timeline/TimelineItem'
 import * as React from 'react'
 import { PatchCheckFill, Clock } from 'react-bootstrap-icons'
 import { JourneyDetailPropsType } from '../../models/journey-details'
@@ -26,10 +27,12 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
               </Row>
         </div>
         <div>
+            <Timeline>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.programs}
                 renderItem={item => (
+                    
                     <List.Item
                         extra={
                             <img
@@ -38,6 +41,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                                 src={item.program.thumbnailLink}
                             />}
                     >
+                        
                         <List.Item.Meta
                             title= {
                                 <div>
@@ -66,6 +70,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                     </List.Item>
                 )}
             />
+            </Timeline>
         </div>
     </>
   )
