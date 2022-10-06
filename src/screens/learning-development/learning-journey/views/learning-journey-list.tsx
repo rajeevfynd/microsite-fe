@@ -1,7 +1,7 @@
 import { Avatar, Card, Divider, Input, List, Skeleton } from 'antd';
 import Meta from 'antd/lib/card/Meta';
+import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
-import { Search } from 'react-bootstrap-icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../../models/journey-details'; 
@@ -86,7 +86,7 @@ const debounce = (callback:any, time:any) => {
     <>
     <h3>Learning Journey</h3>
     <div className='search-container'>
-      <Input size='large' className='search-box' suffix={<Search/>} onChange={(e) => {searchKey(e.target.value);} } />
+      <Input size='large' className='search-box' suffix={<SearchOutlined/>} onChange={(e) => {searchKey(e.target.value);} } />
     </div>
     <div
       id="scrollableDiv"
