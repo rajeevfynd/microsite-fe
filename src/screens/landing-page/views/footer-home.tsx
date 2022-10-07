@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useNavigate } from 'react-router-dom'
 import { getSiteFooter } from '../../../service/landing-page-service'
 import "./../index.css"
 

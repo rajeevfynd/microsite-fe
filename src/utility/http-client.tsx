@@ -24,10 +24,14 @@ class HttpClient {
         this.instance = axios.create({
             handlerEnabled: true
         });
+        this.instance.interceptors.response.use(
+            this._handleResponse,
+            this._handleError,
+        );
     }
 
     protected _handleResponse = ({ data }: AxiosResponse) => data;
-
+    
     protected _handleError = (error: AxiosError) => {
         if (error.response.status === 401) {
             window.location.href = AUTHORISATION_PATH;

@@ -4,4 +4,6 @@ export type MenuRoute = {
     isExternalLink: boolean,
     navigateTo: string,
     accessList: Array<'PUBLIC'|'ADMIN-GLOBAL'|'ADMIN-LND'|'ADMIN-EMPLOYEE-ENGAGEMENT'|'LEADER'>
+    parents?: Array<string>
+    children?: Array<string>
 }
