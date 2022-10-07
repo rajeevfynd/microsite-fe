@@ -38,11 +38,13 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "antd": "^4.22.8",
-    "bootstrap": "^5.2.0",
+    "bootstrap": "^5.2.1",
     "dotenv": "^16.0.3",
     "react": "^18.2.0",
+    "react-bootstrap-icons": "^1.8.4",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-jwt": "^1.1.7",
     "react-player": "^2.10.1"
   }

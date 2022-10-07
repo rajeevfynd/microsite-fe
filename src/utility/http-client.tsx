@@ -24,10 +24,14 @@ class HttpClient {
         this.instance = axios.create({
             handlerEnabled: true
         });
+        this.instance.interceptors.response.use(
+            this._handleResponse,
+            this._handleError,
+        );
     }
 
     protected _handleResponse = ({ data }: AxiosResponse) => data;
-
+    
     protected _handleError = (error: AxiosError) => {
         if (error.response.status === 401) {
             window.location.href = AUTHORISATION_PATH;
@@ -36,34 +40,18 @@ class HttpClient {
     }
 
     public get = (url: string) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.get(url);
     }
 
     public post = (url: string, body: any) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.post(url, body);
     }
 
     public put = (url: string, body: any) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.put(url, body);
     }
 
     public delete = (url: string) => {
-        this.instance.interceptors.response.use(
-            this._handleResponse,
-            this._handleError,
-        );
         return this.instance.delete(url);
     }
 }
