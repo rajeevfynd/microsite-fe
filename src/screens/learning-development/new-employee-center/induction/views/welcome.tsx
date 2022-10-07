@@ -1,44 +1,84 @@
 import * as React from 'react'
-import { EditOutlined } from '@ant-design/icons';
-import ReactPlayer from 'react-player'
-import { getWelcomeFileUrl, setWelcomeFileUrl } from '../../../../../service/induction-service'
 import "./../index.css"
-import { Button, Col, Input, Row } from 'antd';
-import { isUserAuthorized } from '../../../../../service/user-service';
+import { Collapse, Result, Typography } from 'antd';
+import { CompleteStatus } from '../../../../../models/enums/complete-status';
+import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
+import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
+import { WelcomeMessage } from './welcome-message';
+import { getActiveInductionJourney, getWelcomeMessageDetails } from '../../../../../service/induction-service';
+import { processPrograms } from '../../../../../service/journey-service';
+
+const { Text } = Typography;
 
 export const Welcome = () => {
-  function updateUrl(e: React.ChangeEvent<HTMLInputElement>){
-    setUrl(e.target.value)
+
+  const [inductionJourney, setInductionJourney] = React.useState({})
+  const [activeCollapseKey, setActiveCollapseKey] = React.useState('');
+  const [welcomeMessageDetails, setWelcomeMessageDetails] = React.useState({ isCompleted: false, fileUrl: '' })
+
+  const getWelcomeMsgUrl = () => {
+    getWelcomeMessageDetails().then(res => {
+      let enumKey = res.data.completeStatus as keyof typeof CompleteStatus;
+      setWelcomeMessageDetails({
+        fileUrl: res.data.fileUrl,
+        isCompleted: CompleteStatus[enumKey] != CompleteStatus.INCOMPLETE
+      })
+      setActiveCollapseKey(() => { return (CompleteStatus[enumKey] == CompleteStatus.COMPLETE) ? '2' : '1' })
+    })
   }
-  const [open, setOpen] = React.useState(false);
-  const [url, setUrl] = React.useState(getWelcomeFileUrl())
+
+  const processData = (data: JourneyDetailType | any) => {
+    const processedData = processPrograms(data.programs, data.flow)
+    data.programs = processedData.programs;
+    data.progress = processedData.progress;
+    setInductionJourney(data)
+  }
+
+  const getInductionJourneyDetails = () => {
+    getActiveInductionJourney().then(res => {
+      processData(res.data);
+    }
+    )
+  }
+
+  const handleFileUrlUpdate = (fileUrl: string) => {
+    getWelcomeMsgUrl()
+  }
+
+  const handleOnComplete = (isCompleted: boolean) => {
+    getWelcomeMsgUrl()
+  }
+
+  React.useEffect(() => {
+    getWelcomeMsgUrl();
+    getInductionJourneyDetails();
+  }, [])
+
   return (
     <>
-        <h1>Welcome to Jio</h1>
-        <div className='video-player'>
-            <ReactPlayer controls url={getWelcomeFileUrl()}></ReactPlayer>
-        </div>
-        { isUserAuthorized (['ADMIN-LND','ADMIN-GLOBAL']) && <>
-        <div className='update-welcome'>
-          <a onClick={()=>{setOpen(!open)}}>Update Welcome File <EditOutlined /></a>
-        {
-          open && 
-          <div>
-            <Input.Group size='large'>
-            <Row>
-              <Col span='12'>
-                <Input defaultValue={url} onChange={(e) => updateUrl(e)}></Input>
-              </Col>
-              <Col>
-                <Button type='primary' size='large' onClick={() => setWelcomeFileUrl(url)}>Update</Button>
-              </Col>
-            </Row>
-            </Input.Group>
-          </div>
-        }
-        </div>
-        </>
-      }
+      <Collapse onChange={(e: string) => { setActiveCollapseKey(e) }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
+        <CollapsePanel key={'1'} header={<h5>Welcome to Jio</h5>} >
+          <WelcomeMessage
+            onFileUrlUpdate={(fileUrl: string) => { handleFileUrlUpdate(fileUrl) }}
+            onComplete={(isCompleted: boolean) => { handleOnComplete(isCompleted) }}
+            details={welcomeMessageDetails} />
+        </CollapsePanel>
+
+        <CollapsePanel key={'2'} header={<h5>Induction Journey</h5>}>
+          {!welcomeMessageDetails.isCompleted &&
+            <p>
+              <Result
+                status="warning"
+                title={<Text type='secondary'>Please complete the welcome message before starting Induction Journey.</Text>}
+              />
+            </p>}
+          {welcomeMessageDetails.isCompleted &&
+            <div>
+              <JourneyDetail details={inductionJourney}></JourneyDetail>
+            </div>}
+        </CollapsePanel>
+      </Collapse>
     </>
   )
 }
