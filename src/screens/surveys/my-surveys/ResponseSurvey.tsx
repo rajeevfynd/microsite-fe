@@ -52,8 +52,8 @@ const ResponseSurvey = () => {
     return (
       <>
         <div className="form-check">
-          <div>
-            {survey.questions[i].choice.map((op: { choiceText: string }) => (
+          {survey.questions[i].choice.map((op: { choiceText: string }) => (
+            <div>
               <ResRadioUi
                 key={i}
                 i={i}
@@ -61,8 +61,8 @@ const ResponseSurvey = () => {
                 qId={survey.questions[i].id}
                 radioAnswer={answer[0] == op.choiceText ? true : false}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </>
     );
