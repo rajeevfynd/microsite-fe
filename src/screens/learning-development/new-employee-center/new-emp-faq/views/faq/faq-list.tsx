@@ -1,23 +1,22 @@
 import * as React from 'react'
-import { Row, Collapse } from 'antd';
+import { Row, Collapse , } from 'antd';
 import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
 import httpInstance from '../../../../../../utility/http-client';
-import { QnaType } from '../../../../../../models/faq-qna-details';
+import { FaqListPropsType, QnaModalPropsType, QnaType } from '../../../../../../models/faq-qna-details';
 
 
 const { Panel } = Collapse;
 
-
-export const FaqList = (props : any) => {
+export const FaqList = (props : {faqProps : FaqListPropsType}) => {
+    const {faqProps} = props;
 
     const [qnaList, setQnaList] = React.useState([]);
     const [activeKey, setActiveKey] = React.useState([]);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [editQnaDetails, setEditQnaDetails] = React.useState(null);
-    
-
+    const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
     const handlePanelChange = (key: any) => {
         setActiveKey(key);
@@ -37,20 +36,25 @@ export const FaqList = (props : any) => {
     };
 
     const handleQnaUpdate = () => {
-        console.log("handleQnaUpdate " + props.activeId)
         getQnaList()
     }
 
     const handleEditQna = (qnaDetails:QnaType) => {
-        console.log(qnaDetails)
         setEditQnaDetails(qnaDetails)
-        console.log(editQnaDetails)
     }
+
+    const qnaProps: QnaModalPropsType = {
+        isModalOpen: isModalOpen,
+        handleCancel:handleCancel,
+        editQnaDetails:editQnaDetails,
+        categoryList:faqProps.faqCategoryList,
+        currentActiveCategory: currentActiveCategory,
+    };
 
 
     const getQnaList = () => {
 
-        const url = "/microsite/faq/category/" + props.activeId;
+        const url = "/microsite/faq/category/" + faqProps.activeCategory;
         httpInstance.get(url)
             .then(response => {
                 setQnaList(response.data.data)
@@ -62,7 +66,11 @@ export const FaqList = (props : any) => {
 
     React.useEffect(() => {
         getQnaList();
-    }, [props.activeId])
+    }, [faqProps.activeCategory])
+
+    React.useEffect(() => {
+        setcurrentActiveCategory(faqProps.activeCategory)
+    }, [faqProps.activeCategory])
 
 
     return (
@@ -85,13 +93,17 @@ export const FaqList = (props : any) => {
                             <Row justify="end">
                                 <div>Updated {moment(qnaList.faq.updated_at).fromNow()}</div>
                             </Row>
+                            <Row>
+
+                                {qnaList.faq.updated_at}
+                            </Row>
                         </div>
                     </Panel>
 
                 ))}
             </Collapse>
 
-            <QnaPopup isModalOpen={isModalOpen} handleCancel={handleCancel} editQnaDetails={editQnaDetails} activeCategoryName={props.activeCategoryName}/>
+            <QnaPopup qnaProps={qnaProps}/>
         </>
 
     )

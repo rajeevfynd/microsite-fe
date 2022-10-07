@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Row, PaginationProps, Menu, MenuProps } from 'antd';
+import { Row, PaginationProps } from 'antd';
 import AddQNAButton from './add-qna-modal';
 import { FaqList } from './faq/faq-list';
 import { CategoryList } from './faq/category-list';
+import { FaqCategoryPropType, FaqCategoryType, FaqListPropsType } from '../../../../../models/faq-qna-details';
 
 
 export const FAQ = () => {
@@ -10,13 +11,26 @@ export const FAQ = () => {
 
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
-    const [activeCategoryName, setActiveCategoryName] = React.useState(null);
+    const [categoryList, setCategoryList] = React.useState(null);
 
-    const onActiveCategoryUpdate = (activeCategory:string, categoryName:string) => {
+    const onActiveCategoryUpdate = (activeCategory:string) => {
         setcurrentActiveCategory(activeCategory);
-        setActiveCategoryName(categoryName);
     }
 
+    const handleCategoryList = (category : FaqCategoryType) => {
+        setCategoryList(category)
+    }
+
+    const categoryProps : FaqCategoryPropType = {
+        onActiveCategoryUpdate : onActiveCategoryUpdate,
+        onCategoryListUpdate : handleCategoryList
+    }
+
+    const faqProps : FaqListPropsType = {
+        activeCategory:currentActiveCategory,
+        faqCategoryList:categoryList
+    }
+    
     return (
         <div>
 
@@ -28,11 +42,11 @@ export const FAQ = () => {
                 </Row>
                 <Row>
                     <div>
-                        <CategoryList onActiveCategoryUpdate = {onActiveCategoryUpdate}/>
+                        <CategoryList categoryProps={categoryProps}/>
                     </div>
                 </Row>
             <p></p>
-            <FaqList activeId={currentActiveCategory} activeCategoryName={activeCategoryName}/>
+            <FaqList faqProps={faqProps}/>
         </div>
     )
 }

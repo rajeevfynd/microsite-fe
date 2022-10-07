@@ -6,13 +6,11 @@ import httpInstance from '../../../../../../utility/http-client';
 import { FaqCategoryPropType } from '../../../../../../models/faq-qna-details';
 
 
-export const CategoryList = (props : FaqCategoryPropType) => {
-
+export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
+    const {categoryProps} = props
     const [categoryList, setCategoryList] = React.useState([]);
 
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
-
-    const [activeCategoryName, setActiveCategoryName] = React.useState(null);
 
 
     const onClick: MenuProps['onClick'] = e => {
@@ -23,14 +21,6 @@ export const CategoryList = (props : FaqCategoryPropType) => {
         setcurrentActiveCategory(key);
     }
 
-    const updateCategoryList = (data : any) => {
-        setCategoryList(data);
-    }
-
-    const handleMenuItemChange = (category:String) => {
-        setActiveCategoryName(category);
-    }
-
     const getCategoryList = () => {
 
         const url = "/microsite/faq"
@@ -38,7 +28,6 @@ export const CategoryList = (props : FaqCategoryPropType) => {
             .then(response => {
                 setCategoryList(response.data.data)
                 updateActiveCategory(response.data.data[0].id.toString());
-                handleMenuItemChange(response.data.data[0].category)
             })
             .catch((error) => {
                 console.log(error);
@@ -50,13 +39,18 @@ export const CategoryList = (props : FaqCategoryPropType) => {
     }, [])
 
     React.useEffect(() => {
-        props.onActiveCategoryUpdate(currentActiveCategory, activeCategoryName);
-    }, [currentActiveCategory, activeCategoryName])
+        categoryProps.onActiveCategoryUpdate(currentActiveCategory);
+    }, [currentActiveCategory])
+
+    React.useEffect(() => {
+        categoryProps.onCategoryListUpdate(categoryList);
+    }, [categoryList])
+
 
     return (<>
         <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} mode="horizontal">
             {categoryList.map((categoryList) => (
-                <MenuItem key={categoryList.id} onClick={() => handleMenuItemChange(categoryList.category)}  > 
+                <MenuItem key={categoryList.id} > 
                     {categoryList.category}
                 </MenuItem>
             ))}

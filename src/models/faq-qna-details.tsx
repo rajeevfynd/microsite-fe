@@ -13,6 +13,7 @@ export type QnaType = {
 
 export type FaqCategoryPropType = {
     onActiveCategoryUpdate : any;
+    onCategoryListUpdate : any;
 }
 
 export class FaqCategoryType  {
@@ -27,4 +28,23 @@ export type CornerIconsProps = {
     qnaDetails?: QnaType;
     onQnaUpdate : any;
     onEditQna:any;
+}
+
+export type FaqListPropsType = {
+    activeCategory?: string;
+    faqCategoryList?:FaqCategoryType[];
+}
+
+export type QnaModalPropsType = {
+    isModalOpen?: boolean;
+    handleCancel:any;
+    editQnaDetails?:QnaType;
+    categoryList?:FaqCategoryType[];
+    currentActiveCategory?: string;
+}
+
+export type QnaFormPropsType = {
+    editQnaDetails?:QnaType;
+    categoryList?:FaqCategoryType[];
+    currentActiveCategory?: string;
 }

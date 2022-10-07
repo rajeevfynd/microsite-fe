@@ -1,24 +1,35 @@
 import * as React from 'react'
 import { Modal } from 'antd';
 import { QnaForm } from './qna-form';
-import { QnaType } from '../../../../../../models/faq-qna-details';
+import { QnaFormPropsType, QnaModalPropsType } from '../../../../../../models/faq-qna-details';
 
 
 
-export const QnaPopup = (props: { isModalOpen: boolean; handleCancel: any; editQnaDetails:QnaType, activeCategoryName:string}) => {
-    const { isModalOpen, handleCancel } = props;
+    export const QnaPopup = (props:{qnaProps: QnaModalPropsType}) => {
+    const { qnaProps} = props;
+    const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
+
+    React.useEffect(() => {
+        setcurrentActiveCategory(qnaProps.currentActiveCategory)
+    }, [qnaProps.currentActiveCategory])
+
+    const qnaFormProps : QnaFormPropsType = {
+        editQnaDetails:qnaProps.editQnaDetails,
+        categoryList:qnaProps.categoryList,
+        currentActiveCategory: currentActiveCategory
+    }
 
     return (
         <Modal
             destroyOnClose={true}
-            visible={isModalOpen}
+            visible={qnaProps.isModalOpen}
             title="Edit the question or answer"
             footer={null}
-            onCancel={handleCancel}
+            onCancel={qnaProps.handleCancel}
         >
 
-            <QnaForm editQnaDetails={props.editQnaDetails} activeCategoryName={props.activeCategoryName}/>
+            <QnaForm qnaFormProps={qnaFormProps}/>
 
         </Modal>
 
