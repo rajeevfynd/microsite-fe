@@ -4,7 +4,7 @@ import * as React from 'react'
 import ReactPlayer from 'react-player'
 import { WelcomeMessageDetailsType } from '../../../../../models/welcome-message';
 import { CompleteStatus } from '../../../../../models/enums/complete-status';
-import httpInstance from '../../../../../utility/http-client';
+import { setWelcomeMessageFileUrl, setWelcomeMessageStatus } from '../../../../../service/induction-service';
 
 export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
 
@@ -13,24 +13,18 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
     const [play, setPlay] = React.useState(false)
     const [fileUrl, setFileUrl] = React.useState('')
 
-    const isAdmin = () =>{
-        return true;
-    }
-
     const setWelcomeFileUrl = (newUrl: string) => {
-      const url = "/microsite/lnd/user-welcome-message/file-url"
-      httpInstance.post(url, { fileUrl : newUrl})
+      setWelcomeMessageFileUrl({ fileUrl : newUrl})
         .then(res => {
             setFileUrl(newUrl)
           }) 
           props.onFileUrlUpdate(newUrl)
           setIsEditModalOpen(false)
-        }
+    }
 
     const setIsCompleted = (newStatus: CompleteStatus) => {
-        const url = "/microsite/lnd/user-welcome-message/status"
         if(!props.details.isCompleted){
-            httpInstance.post(url, { status : CompleteStatus[newStatus] })
+          setWelcomeMessageStatus( {status : CompleteStatus[newStatus] })
             .then(res => {
                 props.onComplete(true)
             })
@@ -56,7 +50,7 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
       </div>
         
       { 
-        isAdmin() && 
+        true &&
         <>
           <div className='update-welcome'>
             <Button onClick={()=>{setIsEditModalOpen(!isEditModalOpen)}}>Update File <EditOutlined/></Button>

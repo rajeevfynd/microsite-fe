@@ -4,10 +4,8 @@ import * as React from 'react'
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom'
 import { JourneyDetail } from '../../../../components/journey-detail/journey-detail';
-import { Flow } from '../../../../models/enums/flow';
-import { ProgressStatus } from '../../../../models/enums/progress-status';
-import { JourneyDetailType, ProgramType } from '../../../../models/journey-details';
-import httpInstance from '../../../../utility/http-client';
+import { JourneyDetailType } from '../../../../models/journey-details';
+import { getJourneyDetails, processPrograms } from '../../../../service/journey-service';
 
 const { Text } = Typography;
 export const JourneyDetailView = () => {
@@ -22,35 +20,15 @@ export const JourneyDetailView = () => {
         data.progress = processedData.progress;
         setData(data)
         setIsExists(true);
-      }
-    
-      const processPrograms = (programs: ProgramType[], flow: string) => {
-        if (programs && programs.length > 0) {
-          const progress = Math.round(programs.filter(program => program.status == 'COMPLETED').length * 100 / programs.length);
-          let flowKey = flow as keyof typeof Flow;
-          if (Flow[flowKey] == Flow.SEQUENCE)
-            programs.every(program => {
-              program.isActive = true;
-              let enumKey = program.status as keyof typeof ProgressStatus;
-              if (ProgressStatus[enumKey] != ProgressStatus.COMPLETED) {
-                return false;
-              }
-              return true;
-            })
-          return {
-            programs: programs,
-            progress: progress
-          };
-        }
-      }
+    }
 
     React.useEffect( ()=>
     {   
-        httpInstance.get('/microsite/lnd/journeys/details/'+id).then( res => {
-            console.log(res.data);
+        getJourneyDetails(id).then( res => {
             processData(res.data);
         })
     }, [])
+    
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>

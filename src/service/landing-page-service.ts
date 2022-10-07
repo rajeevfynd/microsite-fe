@@ -1,4 +1,3 @@
-import * as React from "react";
 import { menuItems, menuRoutes } from "../constants/landing-page-menu-items";
 import { SITE_TITLE, SITE_FOOTER, DEFAUL_PRO_PIC_URL } from "../constants/string-constants";
 import { MenuRoute } from "../models/menu-route";

@@ -4,11 +4,10 @@ import { Collapse, Result, Typography } from 'antd';
 import { CompleteStatus } from '../../../../../models/enums/complete-status';
 import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
 import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
-import { ProgressStatus } from '../../../../../models/enums/progress-status';
-import { Flow } from '../../../../../models/enums/flow';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
-import httpInstance from '../../../../../utility/http-client';
 import { WelcomeMessage } from './welcome-message';
+import { getActiveInductionJourney, getWelcomeMessageDetails } from '../../../../../service/induction-service';
+import { processPrograms } from '../../../../../service/journey-service';
 
 const { Text } = Typography;
 
@@ -19,8 +18,7 @@ export const Welcome = () => {
   const [welcomeMessageDetails, setWelcomeMessageDetails] = React.useState({ isCompleted: false, fileUrl: '' })
 
   const getWelcomeMsgUrl = () => {
-    const url = "/microsite/lnd/user-welcome-message/active"
-    httpInstance.get(url).then(res => {
+    getWelcomeMessageDetails().then(res => {
       let enumKey = res.data.completeStatus as keyof typeof CompleteStatus;
       setWelcomeMessageDetails({
         fileUrl: res.data.fileUrl,
@@ -37,29 +35,8 @@ export const Welcome = () => {
     setInductionJourney(data)
   }
 
-  const processPrograms = (programs: ProgramType[], flow: string) => {
-    if (programs && programs.length > 0) {
-      const progress = Math.round(programs.filter(program => program.status == 'COMPLETED').length * 100 / programs.length);
-      let flowKey = flow as keyof typeof Flow;
-      if (Flow[flowKey] == Flow.SEQUENCE)
-        programs.every(program => {
-          program.isActive = true;
-          let enumKey = program.status as keyof typeof ProgressStatus;
-          if (ProgressStatus[enumKey] != ProgressStatus.COMPLETED) {
-            return false;
-          }
-          return true;
-        })
-      return {
-        programs: programs,
-        progress: progress
-      };
-    }
-  }
-
   const getInductionJourneyDetails = () => {
-    const inductionUrl = "/microsite/lnd/journeys/induction"
-    httpInstance.get(inductionUrl).then(res => {
+    getActiveInductionJourney().then(res => {
       processData(res.data);
     }
     )
