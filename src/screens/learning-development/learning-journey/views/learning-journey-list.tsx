@@ -1,12 +1,13 @@
-import { Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../../models/journey-details'; 
 import './../index.css'
 import { debounce, filterJourneys, getMoreJourneys } from '../../../../service/journey-service';
+import { PlusLg } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
 export  const LearningJourneyList = () => {
@@ -62,6 +63,9 @@ export  const LearningJourneyList = () => {
         suffix={<SearchOutlined/>} 
         onChange={(e) => {searchKey(e.target.value);} } 
       />
+    </div>
+    <div className='add-btn-container'>
+      <Button onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
     </div>
     <div
       id="scrollableDiv"

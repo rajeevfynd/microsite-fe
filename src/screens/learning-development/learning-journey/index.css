@@ -4,6 +4,10 @@
 .search-container{
     margin: 10px 0;
 }
+.add-btn-container{
+
+    text-align: right;
+}
 
 #scrollableDiv{
     height: 60vh;
