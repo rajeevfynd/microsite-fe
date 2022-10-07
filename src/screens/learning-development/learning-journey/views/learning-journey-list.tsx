@@ -16,12 +16,13 @@ export  const LearningJourneyList = () => {
   const[ journeys, setJourneys] = React.useState<JourneyDetailType[]>([])
   const [hasMore, setHasMore ] = React.useState(false)
   const [page,setPage ] = React.useState(1)
+  const [keyState, setKeyState] = React.useState('')
   let key = ''
 
   const loadMoreData = () => {
     if (load) { return; }
     setLoad(false);
-    getMoreJourneys(key,page.toString()).then(
+    getMoreJourneys(keyState,page.toString()).then(
       resp => {
         setJourneys([...journeys, ...resp.data.content])
         setHasMore(!resp.data.last)
@@ -32,6 +33,7 @@ export  const LearningJourneyList = () => {
   };
 
   const searchJourneys = () => {
+    setKeyState(key)
     if(load) { return ;}
     setLoad(false);
     filterJourneys(key,page.toString()).then(
