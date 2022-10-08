@@ -25,6 +25,7 @@ function Scrollable_courses(props: any) {
   if(props.props =="completed"){
     url = COMPLETED_COURSES_URL
   }
+    const [d,setd] = React.useState(false)
     const [Courses,setCourses] = React.useState({data:[{
       description: "",
       title: "",
@@ -42,6 +43,7 @@ function Scrollable_courses(props: any) {
         const reqs = new httpClient(url,config)
         let response = await reqs.get("");
         const Course:GetCourseResponse = {data: response.data.data}
+        setd(Course.data.length != 0)
         setCourses(Course)
     },[])
 
@@ -52,9 +54,11 @@ function Scrollable_courses(props: any) {
   
     return (
       <>
-      <div className="scroll">
+      <div className="scroll" >{
+      d && 
         <Row>
             <Col >
+            <div className="arrow">
             <ScrollMenu
             LeftArrow={LeftArrow}
             RightArrow={RightArrow}
@@ -74,8 +78,16 @@ function Scrollable_courses(props: any) {
                     thumbnailLink}}/>))}
 
             </ScrollMenu>
+            </div>
             </Col>
           </Row>
+          }
+          {
+            !d &&
+            <Row><Col>
+            <p> No Courses to display </p>
+            </Col></Row>
+          }
           </div>
       </>
     );

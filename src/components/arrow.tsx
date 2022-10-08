@@ -1,5 +1,6 @@
 import * as React from "react";
-
+import {LeftOutlined,RightOutlined} from '@ant-design/icons';
+import './arrow-styles.css'
 import { VisibilityContext } from "react-horizontal-scrolling-menu";
 
 function Arrow({
@@ -13,7 +14,7 @@ function Arrow({
 }) {
   return (
     <button
-      className="arrow-button"
+      className="arrow_button"
       disabled={disabled}
       onClick={onClick}
       style={{
@@ -43,8 +44,8 @@ export function LeftArrow() {
   }, [isFirstItemVisible, visibleItemsWithoutSeparators]);
 
   return (
-    <Arrow disabled={disabled} onClick={() => scrollPrev()}>
-      Left
+    <Arrow  disabled={disabled} onClick={() => scrollPrev()}>
+      <LeftOutlined /> 
     </Arrow>
   );
 }
@@ -67,7 +68,7 @@ export function RightArrow() {
 
   return (
     <Arrow disabled={disabled} onClick={() => scrollNext()}>
-      Right
+      <RightOutlined /> 
     </Arrow>
   );
 }
