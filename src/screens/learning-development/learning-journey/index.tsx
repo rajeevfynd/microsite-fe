@@ -1,7 +1,8 @@
 import * as React from 'react'
+import { LearningJourneyRouter } from './learning-journey-router'
 
 export const LearningJourney = () => {
   return (
-    <h2>Learning Journey</h2>
+    <LearningJourneyRouter /> 
   )
 }

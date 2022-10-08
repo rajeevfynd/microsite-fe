@@ -40,8 +40,9 @@ function Scrollable_courses(props: any) {
           headerAuthorization: "",
           contentType: ""
         }
-        const reqs = new httpClient(url,config)
-        let response = await reqs.get("");
+        //const reqs = new httpClient(url,config)
+        let response = await httpClient.get(url);
+        console.log(response);
         const Course:GetCourseResponse = {data: response.data.data}
         setd(Course.data.length != 0)
         setCourses(Course)
