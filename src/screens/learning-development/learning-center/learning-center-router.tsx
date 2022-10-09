@@ -13,7 +13,7 @@ export const LearningCenterRouter = () => {
             <Route path='/skill-courses/*' element={<SkillCourses></SkillCourses>}></Route>
             <Route path='/role-courses/*' element={<RoleCourses></RoleCourses>}></Route>
             <Route path='/academy/*' element={<h1>Skill</h1>}></Route>
-            <Route path='*' element={<Navigate replace to="/lnd/lerning-center/lnd-hero"/>} ></Route>
+            <Route path='*' element={<Navigate replace to="/lnd/learning-center/lnd-hero"/>} ></Route>
         </Routes>
     </>
   )
