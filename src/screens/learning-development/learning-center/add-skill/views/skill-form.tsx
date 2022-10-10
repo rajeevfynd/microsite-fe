@@ -2,6 +2,7 @@ import * as React from 'react';
 import Axios from 'axios';
 import { Button, Form, Input } from 'antd';
 import { TagStatus, Tagtype } from '../../../../../constants/tag';
+import httpInstance from '../../../../../utility/http-client';
 
 export const SkillForm = (props: any) => {
     const { handleModal, handleLoading } = props;
@@ -57,36 +58,20 @@ export const SkillForm = (props: any) => {
         (() => {
             handleLoading(true);
 
-            const source = Axios.CancelToken.source();
-            Axios.post(`http://localhost:8082/microsite/tag/`, skill, {
-                cancelToken: source.token,
-                headers: {},
-                handlerEnabled: false,
-            })
+            httpInstance.post(`/microsite/tag/`, skill)
                 .then((response) => {
 
-                    if (!!Object.keys(response.data.data).length && response.status === 200) {
+                    if (!!Object.keys(response.data).length) {
                         handleLoading(false);
                         setSkill({});
                     }
                     handleLoading(false);
                 })
                 .catch((error) => {
-                    if (Axios.isCancel(error)) {
-                    } else if (error.response) {
-                        console.log(error.response.data.error);
-                        window.alert(`${error.response.data.error.message}`);
-                    } else {
-                        console.log(error.message);
-                        window.alert(`${error.message}`);
-                    }
+                    console.log(error.message);
+                    window.alert(`${error.message}`);
                 });
-
-            return () => {
-                source.cancel("Cancelling in cleanup");
-            };
         })();
-
     }, [skill])
 
 

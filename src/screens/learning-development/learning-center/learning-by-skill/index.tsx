@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Axios from 'axios';
+import httpInstance from '../../../../utility/http-client';
 import { Layout, Button } from 'antd';
 
 const { Content, Sider } = Layout;
@@ -34,36 +34,23 @@ export function LearningBySkill() {
 
 
   React.useEffect(() => {
-    (() => {
-      const source = Axios.CancelToken.source();
-      Axios.get(`http://localhost:8082/microsite/tag/?tagType=${Tagtype.skill}`, {
-        cancelToken: source.token,
-        headers: {},
-        handlerEnabled: false
-      })
-        .then((response) => {
+    //Api -> getAllActiveSkillTags
 
-          if (!!response.data.data.length && response.status === 200) {
-            if (!!getFormattedDataForMenuItems(response.data.data).length) {
-              setSkillList(getFormattedDataForMenuItems(response.data.data));
+    (() => {
+      setIsLoading(true);
+      httpInstance.get(`/microsite/tag/?tagType=${Tagtype.skill}`)
+        .then((response) => {
+          if (!!response.data.length) {
+            if (!!getFormattedDataForMenuItems(response.data).length) {
+              setSkillList(getFormattedDataForMenuItems(response.data));
             }
             setIsLoading(false);
           }
         })
         .catch((error) => {
-          if (Axios.isCancel(error)) {
-          } else if (error.response) {
-            console.log(error.response.data.error);
-            window.alert(`${error.response.data.error.message}`);
-          } else {
-            console.log(error.message);
-            window.alert(`${error.message}`);
-          }
+          console.log(error.message);
+          window.alert(`${error.message}`);
         });
-
-      return () => {
-        source.cancel("Cancelling in cleanup");
-      };
     })();
 
   }, [])

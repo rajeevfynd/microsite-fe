@@ -12,7 +12,7 @@ export const LNDCenterRouter = () => {
                 <Route path='/addSkill' element={<AddSkill></AddSkill>}></Route>
                 <Route path='/addCourse' element={<AddCourse></AddCourse>}></Route>
 
-                <Route path='*' element={<Navigate replace to="/lnd/learning-center/lnd-hero" />} ></Route>
+                {/* <Route path='*' element={<Navigate replace to="/lnd/learning-center/lnd-hero" />} ></Route> */}
             </Routes>
         </>
     )

@@ -5,6 +5,7 @@ import { Col, Row, Card, List, Divider, Button, Modal, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
 import { CourseList } from './course-list';
+import httpInstance from '../../../../../utility/http-client';
 const { confirm } = Modal;
 
 
@@ -35,33 +36,17 @@ export const SkillList = (props: any) => {
         //Api -> getAllActiveSkillTags
         (() => {
             setIsLoading(true);
-            const source = Axios.CancelToken.source();
-            Axios.get(`http://localhost:8082/microsite/tag/?tagType=${Tagtype.skill}`, {
-                cancelToken: source.token,
-                headers: {},
-                handlerEnabled: false
-            })
+            httpInstance.get(`/microsite/tag/?tagType=${Tagtype.skill}`)
                 .then((response) => {
-
-                    if (!!response.data.data.length && response.status === 200) {
-                        setSkillList(response.data.data);
+                    if (!!response.data.length) {
+                        setSkillList(response.data);
                     }
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    if (Axios.isCancel(error)) {
-                    } else if (error.response) {
-                        console.log(error.response.data.error);
-                        window.alert(`${error.response.data.error.message}`);
-                    } else {
-                        console.log(error.message);
-                        window.alert(`${error.message}`);
-                    }
+                    console.log(error.message);
+                    window.alert(`${error.message}`);
                 });
-
-            return () => {
-                source.cancel("Cancelling in cleanup");
-            };
         })();
 
     }, [skillId])
@@ -75,32 +60,17 @@ export const SkillList = (props: any) => {
         (() => {
             setIsLoading(true);
 
-            const source = Axios.CancelToken.source();
-            Axios.delete(`http://localhost:8082/microsite/tag/?tagId=${skillId}`, {
-                cancelToken: source.token,
-                headers: {},
-                handlerEnabled: false,
-            })
+            httpInstance.delete(`/microsite/tag/?tagId=${skillId}`)
                 .then((response) => {
-                    if (!!Object.keys(response.data.data).length && response.status === 200) {
+                    if (!!Object.keys(response.data).length) {
                         setSkillId(null);
                     }
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    if (Axios.isCancel(error)) {
-                    } else if (error.response) {
-                        console.log(error.response.data.error);
-                        window.alert(`${error.response.data.error.message}`);
-                    } else {
-                        console.log(error.message);
-                        window.alert(`${error.message}`);
-                    }
+                    console.log(error.message);
+                    window.alert(`${error.message}`);
                 });
-
-            return () => {
-                source.cancel("Cancelling in cleanup");
-            };
         })();
 
     }, [skillId])

@@ -62,6 +62,14 @@ export default function MenuHome() {
                                     key='skill'
                                     onClick={()=>navigateTo('/lnd/learning-center/skill')}>
                                         Skill</Menu.Item>
+                                        <Menu.Item
+                                    key='addSkill'
+                                    onClick={()=>navigateTo('/lnd/learning-center/addSkill')}>
+                                        Add Skill</Menu.Item>
+                                        <Menu.Item
+                                    key='addCourse'
+                                    onClick={()=>navigateTo('/lnd/learning-center/addCourse')}>
+                                      Add Course</Menu.Item>
                                 <Menu.Item
                                     key='role'
                                     onClick={()=>navigateTo('/lnd/learning-center/role')}>
