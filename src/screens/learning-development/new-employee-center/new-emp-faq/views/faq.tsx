@@ -3,7 +3,7 @@ import { Row, PaginationProps } from 'antd';
 import AddQNAButton from './add-qna-modal';
 import { FaqList } from './faq/faq-list';
 import { CategoryList } from './faq/category-list';
-import { FaqCategoryPropType, FaqCategoryType, FaqListPropsType } from '../../../../../models/faq-qna-details';
+import { AddQnaPropsType, FaqCategoryPropType, FaqCategoryType, FaqListPropsType } from '../../../../../models/faq-qna-details';
 
 
 export const FAQ = () => {
@@ -30,6 +30,10 @@ export const FAQ = () => {
         activeCategory:currentActiveCategory,
         faqCategoryList:categoryList
     }
+
+    const addQnaProps : AddQnaPropsType = {
+        faqCategoryList:categoryList
+    }
     
     return (
         <div>
@@ -37,7 +41,7 @@ export const FAQ = () => {
             <h1>FAQ</h1>
                 <Row justify="end">
                     <div>
-                        <AddQNAButton />
+                        <AddQNAButton/>
                     </div>
                 </Row>
                 <Row>

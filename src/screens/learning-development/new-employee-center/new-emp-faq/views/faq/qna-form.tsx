@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Button, Form, Input, Select} from 'antd';
 import { QnaFormPropsType } from '../../../../../../models/faq-qna-details';
+import httpInstance from '../../../../../../utility/http-client';
 
 
 const { Option } = Select;
@@ -14,9 +15,11 @@ const handleChange = (value: Array<string>) => {
     const {qnaFormProps} = props;
     const [form] = Form.useForm();
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
+    const [editQnaId, setEditQnaId] = React.useState(null);
 
     const onFinish = (values: any) => {
         console.log(values);
+        updateQna(values);
     };
 
     const onReset = () => {
@@ -27,8 +30,33 @@ const handleChange = (value: Array<string>) => {
         console.log(`selected ${value}`);
     };
 
+    const updateQna = (values : any) => {
+        console.log(values.category)
+        const url = "/microsite/faq/edit-qna/" + editQnaId
+        httpInstance.put(url, {
+            "faqCategory" : {
+                "prevCategoryId" : currentActiveCategory,
+                "updatedCategoryList" : values.category
+            },
+            "qnaDetails" : {
+                "id" : editQnaId,
+                "question" : values.question,
+                "answer" : values.answer,
+                "files" : [],
+            }
+        })
+            .then(response => {
+                console.log("editt called")
+                qnaFormProps.onQnaEditOk();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     React.useEffect(() => {
         setcurrentActiveCategory(qnaFormProps.currentActiveCategory)
+        setEditQnaId(qnaFormProps.editQnaDetails.id)
     }, [qnaFormProps.currentActiveCategory])
 
     return (
@@ -80,14 +108,14 @@ const handleChange = (value: Array<string>) => {
                     label="Question"
                     rules={[{ required: true, message: 'Please input the Question!' }]}
                 >
-                    <Input type="textarea"/>
+                    <Input.TextArea/>
                 </Form.Item>
                 <Form.Item
                     name="answer"
                     label="Answer"
                     rules={[{ required: true, message: 'Please input the Answer!' }]}
                 >
-                    <Input type="textarea"/>
+                    <Input.TextArea/>
                 </Form.Item>
 
                 <Form.Item >
@@ -102,3 +130,7 @@ const handleChange = (value: Array<string>) => {
         </>
     )
 }
+function then(arg0: (response: any) => void) {
+    throw new Error('Function not implemented.');
+}
+

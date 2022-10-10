@@ -1,109 +1,53 @@
 import { Dropdown, Form, Input, Menu, Modal, Space } from 'antd';
 import * as React from 'react'
 import { useState } from 'react';
+import { AddQnaFormPropsType } from '../../../../../models/faq-qna-details';
+import { AddQnaForm } from './add-qna-form';
 import UploadQNA from './upload-qna-modal';
 
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
 
-interface CollectionCreateFormProps {
-  open: boolean;
-  onCreate: (values: Values) => void;
-  onCancel: () => void;
-}
+const AddQNAButton = () => {
+  const [isAddQnaModalOpen, setQnaModalOpen] = React.useState(false);
+  
+  const handleCancel = () => {
+    setQnaModalOpen(false);
+  }
 
-const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
-  open,
-  onCreate,
-  onCancel,
-}) => {
-  const [form] = Form.useForm();
-  return (
-    <Modal
-      destroyOnClose = {true}
-      visible= {open}
-      title="Add new Q&A"
-      okText="Submit"
-      cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            onCreate(values);
-          })
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
-    >
-
-
-    <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-        initialValues={{ modifier: 'public' }}
-      >
-        <Form.Item
-          name="question"
-          label="Question"
-          rules={[{ required: true, message: 'Please input the Question!' }]}
-        >
-          <Input type="textarea" />
-        </Form.Item>
-        <Form.Item 
-            name="answer" 
-            label="Answer"
-            rules={[{ required: true, message: 'Please input the Answer!' }]}
-        >
-          <Input type="textarea" />
-        </Form.Item>
-      </Form>
-
-    </Modal>
-  );
-};
-
-const AddQNAButton : React.FC = () => {
-  const [open, setOpen] = useState(false);
-
-  const onCreate = (values: any) => {
+  const handleCreate = (values: any) => {
     console.log('Received values of form: ', values);
-    setOpen(false);
+    setQnaModalOpen(false);
   };
 
-  const menu = (
-    <Menu
-      items={[
-        {
-          label: 'Upload Q&A via Excel',
-          key: '1',
-        }
-      ]}
-    />
-  );
+  const handleAddQnaButtonClick = () => {
+    setQnaModalOpen(true);
+  }
+
+  // const menu = (
+  //   <Menu
+  //     items={[
+  //       {
+  //         label: 'Upload Q&A via Excel',
+  //         key: '1',
+  //       }
+  //     ]}
+  //   />
+  // );
+
+  const addQnaFormProps : AddQnaFormPropsType =  {
+      isAddQnaModalOpen : isAddQnaModalOpen,
+      onCreate:{handleCreate},
+      onCancel:{handleCancel}
+  }
+
 
   return (
     <div>
         <Space wrap>
-            <Dropdown.Button overlay={<UploadQNA></UploadQNA>} onClick={() => {
-                    setOpen(true);
-                }}>
+            <Dropdown.Button overlay={<UploadQNA></UploadQNA>} onClick={handleAddQnaButtonClick}>
             Add Q&A
             </Dropdown.Button>
         </Space>
-      <CollectionCreateForm
-        open={open}
-        onCreate={onCreate}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
+      <AddQnaForm addQnaFormProps={addQnaFormProps}/>
     </div>
   );
 };

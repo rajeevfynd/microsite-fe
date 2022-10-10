@@ -34,7 +34,7 @@ export const CornerIcons = (props: CornerIconsProps) => {
         const url = "/microsite/faq/delete-qna/"+ qnaId;
         httpInstance.delete(url)
             .then(response => {
-                props.onQnaUpdate();
+                props.onQnaDelete();
             })
             .catch((error) => {
                 console.log(error);

@@ -9,6 +9,10 @@ import { QnaFormPropsType, QnaModalPropsType } from '../../../../../../models/fa
     const { qnaProps} = props;
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
+    
+    const handleQnaEditOk = () => {
+        qnaProps.onQnaEditOk()
+    } 
 
     React.useEffect(() => {
         setcurrentActiveCategory(qnaProps.currentActiveCategory)
@@ -17,7 +21,8 @@ import { QnaFormPropsType, QnaModalPropsType } from '../../../../../../models/fa
     const qnaFormProps : QnaFormPropsType = {
         editQnaDetails:qnaProps.editQnaDetails,
         categoryList:qnaProps.categoryList,
-        currentActiveCategory: currentActiveCategory
+        currentActiveCategory: currentActiveCategory,
+        onQnaEditOk : handleQnaEditOk,
     }
 
     return (

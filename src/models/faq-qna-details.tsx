@@ -26,7 +26,7 @@ export type CornerIconsProps = {
     showEditModal?: any
     qnaId?: string;
     qnaDetails?: QnaType;
-    onQnaUpdate : any;
+    onQnaDelete : any;
     onEditQna:any;
 }
 
@@ -41,10 +41,22 @@ export type QnaModalPropsType = {
     editQnaDetails?:QnaType;
     categoryList?:FaqCategoryType[];
     currentActiveCategory?: string;
+    onQnaEditOk:any;
 }
 
 export type QnaFormPropsType = {
     editQnaDetails?:QnaType;
     categoryList?:FaqCategoryType[];
     currentActiveCategory?: string;
+    onQnaEditOk : any,
+}
+
+export type AddQnaPropsType = {
+    faqCategoryList?:FaqCategoryType[];
+}
+
+export type AddQnaFormPropsType = {
+    isAddQnaModalOpen: boolean;
+    onCreate : any;
+    onCancel : any;
 }

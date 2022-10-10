@@ -22,20 +22,21 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         setActiveKey(key);
     };
 
-
     const showEditModal = () => {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
+    const handleQnaEditOk = () => {
         setIsModalOpen(false);
+        getQnaList()
+        console.log('handleQnaEditOk')
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
 
-    const handleQnaUpdate = () => {
+    const handleQnaDelete = () => {
         getQnaList()
     }
 
@@ -49,6 +50,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         editQnaDetails:editQnaDetails,
         categoryList:faqProps.faqCategoryList,
         currentActiveCategory: currentActiveCategory,
+        onQnaEditOk : handleQnaEditOk,
     };
 
 
@@ -57,7 +59,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         const url = "/microsite/faq/category/" + faqProps.activeCategory;
         httpInstance.get(url)
             .then(response => {
-                setQnaList(response.data.data)
+                setQnaList(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -82,7 +84,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                                 showEditModal={showEditModal} 
                                 qnaId={qnaList.faq.id}
                                 qnaDetails={qnaList.faq}
-                                onQnaUpdate={handleQnaUpdate}
+                                onQnaDelete={handleQnaDelete}
                                 onEditQna={handleEditQna}
                                 />}>
                         <div>
@@ -91,11 +93,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             </Row>
                             <p></p>
                             <Row justify="end">
-                                <div>Updated {moment(qnaList.faq.updated_at).fromNow()}</div>
-                            </Row>
-                            <Row>
-
-                                {qnaList.faq.updated_at}
+                                <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updated_at).fromNow()}</i></small></div>
                             </Row>
                         </div>
                     </Panel>

@@ -26,8 +26,8 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
         const url = "/microsite/faq"
         httpInstance.get(url)
             .then(response => {
-                setCategoryList(response.data.data)
-                updateActiveCategory(response.data.data[0].id.toString());
+                setCategoryList(response.data)
+                updateActiveCategory(response.data[0].id.toString());
             })
             .catch((error) => {
                 console.log(error);
