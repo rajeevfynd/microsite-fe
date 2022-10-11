@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { NewJourney } from './new-journey'
+import { NewJourney } from './views/new-journey'
 import { JourneyDetailView } from './views/journey-detail-view'
 import { LearningJourneyList } from './views/learning-journey-list'
 

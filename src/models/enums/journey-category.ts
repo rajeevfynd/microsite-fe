@@ -1,4 +1,4 @@
 export enum JourneyCategory {
-    INDUCTION,
-    GENERAL
+    INDUCTION='INDUCTION',
+    GENERAL='GENERAL'
 }

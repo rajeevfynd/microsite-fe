@@ -1,4 +1,4 @@
 export enum Flow {
-    SEQUENCE,
-    NON_SEQUENCE
+    SEQUENCE='SEQUENCE',
+    NON_SEQUENCE='NON_SEQUENCE'
 }

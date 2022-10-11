@@ -1,6 +1,8 @@
+import { arrayMove } from "react-sortable-hoc";
 import { Flow } from "../models/enums/flow";
 import { ProgressStatus } from "../models/enums/progress-status";
 import { ProgramType } from "../models/journey-details";
+import { ProgramMapType } from "../models/program-map-type";
 import httpInstance from "../utility/http-client";
 
 let debounceTimer:any;
@@ -39,4 +41,48 @@ export const processPrograms = (programs: ProgramType[], flow: string) => {
         progress: progress
       };
     }
+}
+
+export const setJourney = (body: any) =>{
+  const url = "/microsite/lnd/journeys/new"
+  return httpInstance.post(url, body)
+}
+
+export const sortEndHandler = (index: {oldIndex:any, newIndex:any} ,programs: ProgramMapType[]) =>{
+  let arr = arrayMove(programs, index.oldIndex, index.newIndex)
+    for (let i=0; i< arr.length; i++){
+      arr[i].index = i
+    }
+    return [...arr];
+}
+export const removeProgramHadler = (index: number, programs: ProgramMapType[]) =>{
+  let updatedPrograms = [...programs]
+    updatedPrograms.splice(index,1)
+    updatedPrograms.forEach((program,index) => {
+      program.index = index
+    })
+    return [...updatedPrograms]
+}
+
+export const onSelectHandler = (index: number, e:any, programs: ProgramMapType[]) =>{
+  let updatedPrograms = programs;
+    let updatedProgram = programs[index];
+    updatedProgram.rruProgramID = e;
+    updatedPrograms.splice(index,1,updatedProgram)
+    return [...updatedPrograms]
+}
+
+export const handleFormSubmit = (values:any, programs: ProgramMapType[]) => {
+  let journey = values.journey
+    let mappedPrograms:any[] = programs.filter(p => p.rruProgramID != undefined)
+    mappedPrograms.forEach( (program,index) => program.position = index+1)
+    return setJourney({
+      thumbnailLink: journey.thumbnailLink,
+      id: undefined,
+      title: journey.title,
+      description: journey.description,
+      category: journey.category,
+      flow: journey.sequencial ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      programs: [...mappedPrograms]
+    })
 }

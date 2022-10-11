@@ -71,6 +71,7 @@ export  const LearningJourneyList = () => {
     </div>
     <div
       id="scrollableDiv"
+      className='scroll-container'
     >
       { journeys.length != 0 &&
       <InfiniteScroll

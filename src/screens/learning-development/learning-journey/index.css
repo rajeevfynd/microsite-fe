@@ -5,12 +5,22 @@
     margin: 10px 0;
 }
 .add-btn-container{
-
     text-align: right;
 }
-#scrollableDiv{
+.scroll-container{
     height: 60vh;
     overflow: auto;
-    padding: 0 16px;
+    padding: 16px;
     border: 1px solid rgba(140, 140, 140, 0.35);
+}
+.remove-btn{
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+}
+li, li.collapsed, li.expanded {
+    list-style-image: none;
+    list-style: none;
+    list-style-type: none;
   }
