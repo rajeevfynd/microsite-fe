@@ -2,8 +2,8 @@ import * as React from 'react'
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
-import httpInstance from '../../../../../../utility/http-client';
-import { FaqCategoryPropType } from '../../../../../../models/faq-qna-details';
+import httpInstance from '../../../../../utility/http-client';
+import { FaqCategoryPropType } from '../../../../../models/faq-qna-details';
 
 
 export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {

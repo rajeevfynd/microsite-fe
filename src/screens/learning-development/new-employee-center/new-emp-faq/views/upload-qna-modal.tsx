@@ -74,16 +74,16 @@ const UploadQNA : React.FC = () => {
   return (
     <div>
         <Menu
-      onClick={() => {
-        setOpen(true);
-      }}
-      items={[
-        { 
-          label: 'Upload Q&A via Excel',
-          key: '1',
-        }
-      ]}
-    />
+          onClick={() => {
+            setOpen(true);
+          }}
+          items={[
+            { 
+              label: 'Upload Q&A via Excel',
+              key: '1',
+            }
+          ]}
+        />
     <CollectionCreateForm
         open={open}
         onCreate={onCreate}

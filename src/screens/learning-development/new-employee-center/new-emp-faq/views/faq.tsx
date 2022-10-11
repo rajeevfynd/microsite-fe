@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Row, PaginationProps } from 'antd';
-import AddQNAButton from './add-qna-modal';
-import { FaqList } from './faq/faq-list';
-import { CategoryList } from './faq/category-list';
+import { FaqList } from './faq-list';
+import { CategoryList } from './category-list';
 import { AddQnaPropsType, FaqCategoryPropType, FaqCategoryType, FaqListPropsType } from '../../../../../models/faq-qna-details';
+import { AddQNAButton } from './add-qna';
 
 
 export const FAQ = () => {
@@ -41,7 +41,7 @@ export const FAQ = () => {
             <h1>FAQ</h1>
                 <Row justify="end">
                     <div>
-                        <AddQNAButton/>
+                        <AddQNAButton addQnaProps = {addQnaProps}/>
                     </div>
                 </Row>
                 <Row>

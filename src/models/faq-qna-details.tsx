@@ -55,8 +55,19 @@ export type AddQnaPropsType = {
     faqCategoryList?:FaqCategoryType[];
 }
 
+export type AddQnaPopupPropsType = {
+    isModalOpen?: boolean;
+    faqCategoryList?:FaqCategoryType[];
+    onAddQnaSubmit:any;
+    onAddQnaCancel:any;
+}
+
 export type AddQnaFormPropsType = {
-    isAddQnaModalOpen: boolean;
-    onCreate : any;
-    onCancel : any;
+    faqCategoryList?:FaqCategoryType[];
+}
+
+export type UploadQnaFormProps = {
+    isModalOpen?: boolean;
+    onUploadQnaSubmit:any;
+    onUploadQnaCancel:any;
 }

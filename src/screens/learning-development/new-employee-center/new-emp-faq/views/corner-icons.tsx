@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Row, Col, Popconfirm, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined, FileAddOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import httpInstance from '../../../../../../utility/http-client';
-import { CornerIconsProps, QnaType } from '../../../../../../models/faq-qna-details';
+import httpInstance from '../../../../../utility/http-client';
+import { CornerIconsProps, QnaType } from '../../../../../models/faq-qna-details';
 
 
 

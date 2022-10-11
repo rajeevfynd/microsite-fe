@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Button, Form, Input, Select} from 'antd';
-import { QnaFormPropsType } from '../../../../../../models/faq-qna-details';
-import httpInstance from '../../../../../../utility/http-client';
+import { QnaFormPropsType } from '../../../../../models/faq-qna-details';
+import httpInstance from '../../../../../utility/http-client';
 
 
 const { Option } = Select;
@@ -130,7 +130,3 @@ const handleChange = (value: Array<string>) => {
         </>
     )
 }
-function then(arg0: (response: any) => void) {
-    throw new Error('Function not implemented.');
-}
-

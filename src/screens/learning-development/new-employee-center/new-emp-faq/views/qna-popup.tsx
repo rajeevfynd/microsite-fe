@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Modal } from 'antd';
 import { QnaForm } from './qna-form';
-import { QnaFormPropsType, QnaModalPropsType } from '../../../../../../models/faq-qna-details';
+import { QnaFormPropsType, QnaModalPropsType } from '../../../../../models/faq-qna-details';
 
 
 

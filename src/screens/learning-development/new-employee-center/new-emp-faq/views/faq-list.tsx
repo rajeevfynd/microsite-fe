@@ -3,8 +3,8 @@ import { Row, Collapse , } from 'antd';
 import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
-import httpInstance from '../../../../../../utility/http-client';
-import { FaqListPropsType, QnaModalPropsType, QnaType } from '../../../../../../models/faq-qna-details';
+import httpInstance from '../../../../../utility/http-client';
+import { FaqListPropsType, QnaModalPropsType, QnaType } from '../../../../../models/faq-qna-details';
 
 
 const { Panel } = Collapse;
@@ -93,7 +93,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             </Row>
                             <p></p>
                             <Row justify="end">
-                                <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updated_at).fromNow()}</i></small></div>
+                                <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updatedAt).fromNow()}</i></small></div>
                             </Row>
                         </div>
                     </Panel>
