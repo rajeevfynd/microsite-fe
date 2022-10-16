@@ -5,10 +5,10 @@ import { Card } from 'antd';
 
 const { Meta } = Card;
 
-import { Courses } from '../../../../../models/course-type'
+import { Program } from '../../../../../models/course-type'
 import { ALT_THUMBNAIL } from '../../../../../constants/string-constants';
 
-function Courses (props: Courses){
+function Programs (props: Program){
     return(
   <Card
     hoverable
@@ -23,4 +23,4 @@ function Courses (props: Courses){
   </Card>)
 };
 
-export default Courses;
+export default Programs;

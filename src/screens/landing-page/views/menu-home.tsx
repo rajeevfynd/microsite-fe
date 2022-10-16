@@ -4,7 +4,7 @@ import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns } from "react-bootstrap-icons";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, TeamOutlined } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
 
@@ -60,11 +60,11 @@ export default function MenuHome() {
                                 title='Learning Center'>
                                 <Menu.Item
                                     key='skill'
-                                    onClick={()=>navigateTo('/lnd/learning-center/skill')}>
+                                    onClick={()=>navigateTo('/lnd/learning-center/skill-courses')}>
                                         Skill</Menu.Item>
                                 <Menu.Item
                                     key='role'
-                                    onClick={()=>navigateTo('/lnd/learning-center/role')}>
+                                    onClick={()=>navigateTo('/lnd/learning-center/role-courses')}>
                                         Role</Menu.Item>
                                 <Menu.Item
                                     key='academy'
@@ -87,6 +87,9 @@ export default function MenuHome() {
                         <Menu.Item icon={<People/>}>Employee Engagement Center</Menu.Item>
                         <Menu.Item icon={<Download/>}>Download Center</Menu.Item>
                         <Menu.Item icon={<InfoCircle/>}>Information Center</Menu.Item>
+                        <Menu.SubMenu key='admin-section' title='Admin Section' icon={<TeamOutlined />}>
+                            <Menu.Item onClick={()=>navigateTo('/admin/edit-carousel')}>Edit Carousel</Menu.Item>
+                        </Menu.SubMenu>
                     </Menu>
                 </Sider>
             </div>

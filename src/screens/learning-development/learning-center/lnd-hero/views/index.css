@@ -10,3 +10,8 @@
     line-height: '160px';
     text-align: 'center';
 }
+.carousel-button{
+    text-align: right;
+    margin: 0%;
+    padding: 0px;
+}

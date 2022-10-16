@@ -1,8 +1,6 @@
-export type Courses = {
+export type Program = {
     description: string;
     title: string;
     duration: number;
-    rruDeeplink: string;
-    rruProgramID: string;
     thumbnailLink: string;
 };
