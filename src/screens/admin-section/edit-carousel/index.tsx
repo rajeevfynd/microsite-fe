@@ -74,7 +74,7 @@ const EditCarousal = () => {
         console.log(body)
         const res = await editCarouselSlide(body);
         console.log(res)
-        setupdate("is_updated")
+        setupdate("is_updated "+Number(active) + 1)
         //setRdeucer
     }
 

@@ -29,14 +29,13 @@ function HeroCarousel( props: any) {
     }
   },[])
 
-  if(props.props == "is_updated"){
-    console.log("**************    inside update ***********")
+  if(props.props){
     fetchCarousel
   }
 
   React.useEffect(()=>{
       fetchCarousel()
-    },[fetchCarousel]);
+    },[props.props, fetchCarousel]);
 
   //const [updatedcarouselList,refetchCarousel] = React.useCallback(fetchCarousel, carouselList)
 
