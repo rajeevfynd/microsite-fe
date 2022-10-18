@@ -1,17 +1,19 @@
 import * as React from 'react'
 import { Modal } from 'antd';
 import { QnaForm } from './qna-form';
-import { QnaFormPropsType, QnaModalPropsType } from '../../../../../models/faq-qna-details';
+import { QnaFormPropsType, QnaPopupPropsType, DeleteFormPropsType } from '../../../../../models/faq-qna-details';
+import { EditQnaOption } from '../../../../../models/enums/qna-edit-options';
+import { DeleteQnaForm } from './delete-qna-form';
 
 
 
-    export const QnaPopup = (props:{qnaProps: QnaModalPropsType}) => {
+    export const QnaPopup = (props:{qnaProps: QnaPopupPropsType}) => {
     const { qnaProps} = props;
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 
     
-    const handleQnaEditOk = () => {
-        qnaProps.onQnaEditOk()
+    const handleQnaEditDeleteOk = () => {
+        qnaProps.onQnaEditDeleteOk()
     } 
 
     React.useEffect(() => {
@@ -22,19 +24,26 @@ import { QnaFormPropsType, QnaModalPropsType } from '../../../../../models/faq-q
         editQnaDetails:qnaProps.editQnaDetails,
         categoryList:qnaProps.categoryList,
         currentActiveCategory: currentActiveCategory,
-        onQnaEditOk : handleQnaEditOk,
+        onQnaEditOk : handleQnaEditDeleteOk,
     }
+
+    const deleteFormProps : DeleteFormPropsType = {
+        editQnaDetails:qnaProps.editQnaDetails,
+        onQnaDeleteOk : handleQnaEditDeleteOk
+    }
+
 
     return (
         <Modal
             destroyOnClose={true}
-            visible={qnaProps.isEditModalOpen}
-            title="Edit the question or answer"
+            visible={qnaProps.isModalOpen}
+            title={qnaProps.modalTitle}
             footer={null}
             onCancel={qnaProps.handleCancel}
         >
-
-            <QnaForm qnaFormProps={qnaFormProps}/>
+            {qnaProps.editQnaOption == EditQnaOption.EDIT? <QnaForm qnaFormProps={qnaFormProps}/> : 
+                <DeleteQnaForm deleteQnaFormProps={deleteFormProps}/>
+            }
 
         </Modal>
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Form, Input, Select} from 'antd';
+import { Button, Col, Form, Input, Row, Select, Space} from 'antd';
 import { AddQnaFormPropsType } from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -20,10 +20,6 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
         form.resetFields();
     };
 
-    const handleChange = (value: Array<string>) => {
-        console.log(`selected ${value}`);
-    };
-
     const children: React.ReactNode[] = [];
         addQnaFormProps.faqCategoryList.map((categoryOptions) => (
             children.push(<Option key={categoryOptions.id}>{categoryOptions.category}</Option>)
@@ -31,7 +27,6 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
 
 
         const addQna = (values : any) => {
-            console.log(values.category)
             const url = "/microsite/faq/add-qna/"
             httpInstance.post(url, 
                 {
@@ -40,7 +35,6 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                     answer : values.answer
             })
                 .then(response => {
-                    console.log("addQna called")
                     addQnaFormProps.onAddQnaSubmit();
                 })
                 .catch((error) => {
@@ -66,7 +60,6 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                         mode="tags" 
                         style={{ width: '100%' }}
                         placeholder="Select the Category"
-                        onChange={handleChange} 
                         tokenSeparators={[',']}
                         >
                         {children}
@@ -89,12 +82,18 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                 </Form.Item>
 
                 <Form.Item >
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                        <Button htmlType="button" onClick={onReset}>
-                            Reset
-                        </Button>
+                    <Row>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Button type="primary" htmlType="submit">
+                                    Submit
+                                </Button>
+                                <Button htmlType="button" onClick={onReset}>
+                                    Reset
+                                </Button>
+                            </Space>
+                        </Col>
+                    </Row>
                 </Form.Item>
             </Form>
         </>

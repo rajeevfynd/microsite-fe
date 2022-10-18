@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Row, PaginationProps } from 'antd';
+import { Row, PaginationProps, Pagination, Col } from 'antd';
 import { FaqList } from './faq-list';
 import { CategoryList } from './category-list';
 import { AddQnaPropsType, FaqCategoryPropType, FaqCategoryType, FaqListPropsType } from '../../../../../models/faq-qna-details';
@@ -48,17 +48,22 @@ export const FAQ = () => {
 
             <h1>FAQ</h1>
                 <Row justify="end">
-                    <div>
-                        <AddQNAButton addQnaProps = {addQnaProps}/>
-                    </div>
+                        <div>
+                            <AddQNAButton addQnaProps = {addQnaProps}/>
+                        </div>
                 </Row>
                 <Row>
-                    <div>
-                        <CategoryList categoryProps={categoryProps}/>
-                    </div>
+                    <Col span={24}>
+                        <div>
+                            <CategoryList categoryProps={categoryProps}/>
+                        </div>
+                    </Col>
                 </Row>
-            <p></p>
-            <FaqList faqProps={faqProps}/>
+                <Row>
+                    <Col span={24}>
+                        <FaqList faqProps={faqProps}/>
+                    </Col>
+                </Row>
         </div>
     )
 }

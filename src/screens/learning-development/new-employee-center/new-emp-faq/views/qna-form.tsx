@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Form, Input, Select} from 'antd';
+import { Button, Col, Form, Input, Row, Select, Space} from 'antd';
 import { QnaFormPropsType } from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -44,7 +44,6 @@ const { Option } = Select;
             }
         })
             .then(response => {
-                console.log("editt called")
                 qnaFormProps.onQnaEditOk();
             })
             .catch((error) => {
@@ -53,6 +52,7 @@ const { Option } = Select;
     }
 
     React.useEffect(() => {
+        console.log(qnaFormProps.editQnaDetails)
         handleActiveCategoryList()
         setEditQnaId(qnaFormProps.editQnaDetails.id)
         console.log(qnaFormProps.editQnaDetails)
@@ -115,12 +115,18 @@ const { Option } = Select;
                 </Form.Item>
 
                 <Form.Item >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                    <Button htmlType="button" onClick={onReset}>
-                        Reset
-                    </Button>
+                    <Row>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Button type="primary" htmlType="submit">
+                                    Submit
+                                </Button>
+                                <Button htmlType="button" onClick={onReset}>
+                                    Reset
+                                </Button>
+                            </Space>
+                        </Col>
+                    </Row>
                 </Form.Item>
             </Form>
         </>

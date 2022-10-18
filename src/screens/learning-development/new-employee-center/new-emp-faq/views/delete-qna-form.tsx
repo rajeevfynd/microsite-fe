@@ -1,43 +1,7 @@
 import * as React from 'react'
-import { Button, Checkbox, Col, Divider, Form, Input, Modal, Row, Select } from 'antd';
-import { QnaForm } from './qna-form';
-import { DeleteFormPropsType, DeleteQnaModalPropsType, QnaFormPropsType, QnaModalPropsType } from '../../../../../models/faq-qna-details';
+import { Button, Checkbox, Col, Form, Row, Space } from 'antd';
+import { DeleteFormPropsType} from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-
-
-
-export const DeletePopup = (props:{deleteProps: DeleteQnaModalPropsType}) => {
-    const { deleteProps} = props;
-
-
-    const handleQnaDelete = () => {
-        deleteProps.onQnaDeleteOk()
-    } 
-
-    const deleteFormProps : DeleteFormPropsType = {
-        editQnaDetails:deleteProps.editQnaDetails,
-        onQnaDeleteOk : handleQnaDelete
-    }
-
-    return (
-        <Modal
-            destroyOnClose={true}
-            visible={deleteProps.isDeleteModalOpen}
-            title="Are you sure you want to delete this question?"
-            footer={null}
-            onCancel={deleteProps.handleCancel}
-        >
-
-            <DeleteQnaForm deleteQnaFormProps={deleteFormProps}/>
-
-        </Modal>
-
-    )
-}
-
-
 
 
 export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) => {
@@ -45,19 +9,12 @@ export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) 
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-        // console.log(values);
         deleteQna(values);
-        console.log(values.category)
         deleteQnaFormProps.onQnaDeleteOk();
-
     };
 
     const onReset = () => {
         form.resetFields();
-    };
-
-    const onChange = (list: CheckboxValueType[]) => {
-        console.log(list)
     };
 
 
@@ -91,10 +48,10 @@ export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) 
             >   
                 <Form.Item
                     name="category"
-                    label="Choose the categories from which question needs to be deleted"
+                    label="Choose the categories"
                     rules={[{ required: true, message: 'Please select the Category!' }]}
                 >
-                    <Checkbox.Group  onChange={onChange}>
+                    <Checkbox.Group>
                     <Row>
 
                         {deleteQnaFormProps.editQnaDetails.categoryList.map((categoryList) => (
@@ -107,12 +64,18 @@ export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) 
                 </Form.Item>
 
                 <Form.Item >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                    <Button htmlType="button" onClick={onReset}>
-                        Reset
-                    </Button>
+                    <Row>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Button danger htmlType="submit">
+                                    Delete
+                                </Button>
+                                <Button htmlType="button" onClick={onReset}>
+                                    Reset
+                                </Button>
+                            </Space>
+                        </Col>
+                    </Row>
                 </Form.Item>
             </Form>
         </>

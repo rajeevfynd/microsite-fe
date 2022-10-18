@@ -1,44 +1,57 @@
-import { Dropdown, Modal, Space } from 'antd';
+import { Dropdown, Menu, Modal, Space } from 'antd';
 import * as React from 'react'
-import { AddQnaFormPropsType, AddQnaPopupPropsType, AddQnaPropsType } from '../../../../../models/faq-qna-details';
+import { AddQnaOption } from '../../../../../models/enums/faq-add-options';
+import { AddQnaFormPropsType, AddQnaPopupPropsType, AddQnaPropsType, UploadQnaFormProps } from '../../../../../models/faq-qna-details';
 import { AddQnaForm } from './add-qna-form';
-import { UploadQNA } from './upload-qna';
+import { UploadQnaForm } from './upload-qna';
 
-const AddQnaPopup = (props:{addQnaPopupProps : AddQnaPopupPropsType}) => {
-    const { addQnaPopupProps} = props;
+
+
+
+export const AddQnaPopup = (props:{addQnaProps : AddQnaPopupPropsType}) => {
+    const { addQnaProps} = props;
 
     const handleAddQnaSubmit = () => {
-        addQnaPopupProps.onAddQnaSubmit();
+        addQnaProps.onAddQnaSubmit();
     }
 
     const addQnaFormProps : AddQnaFormPropsType = {
-        faqCategoryList : addQnaPopupProps.faqCategoryList,
+        faqCategoryList : addQnaProps.faqCategoryList,
         onAddQnaSubmit : handleAddQnaSubmit,
+    }
+
+    const uploadQnaFormProps : UploadQnaFormProps = {
+        onUploadQnaSubmit : handleAddQnaSubmit,
     }
 
     return (
         <Modal
             destroyOnClose={true}
-            visible={addQnaPopupProps.isModalOpen}
-            title="Add Q&A"
+            visible={addQnaProps.isModalOpen}
+            title={addQnaProps.modalTitle}
             footer={null}
-            onCancel={addQnaPopupProps.onAddQnaCancel}
+            onCancel={addQnaProps.onAddQnaCancel}
         >
-
-            <AddQnaForm addQnaFormProps={addQnaFormProps}/>
+             {addQnaProps.addQnaOption == AddQnaOption.SINGLE_UPLOAD? <AddQnaForm addQnaFormProps={addQnaFormProps}/> : 
+                <UploadQnaForm uploadQnaFormProps={uploadQnaFormProps}/>
+            }
 
         </Modal>
-
     )
 }
+
 
 export const AddQNAButton = (props : {addQnaProps : AddQnaPropsType}) => {
     const {addQnaProps} = props;
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [addQnaOption, setAddQnaOption] = React.useState(null);
+    const [modalTitle, setModalTitle] = React.useState(null);
+
+    const addQnaTitle = "Add Q&A"
+    const uploadQnaTitle = "Upload Q&A list via excel file"
 
     const handleQnaEditOk = () => {
         setIsModalOpen(false);
-        console.log('handleQnaEditOk')
         addQnaProps.onNewQnaAdd()
     };
 
@@ -46,22 +59,50 @@ export const AddQNAButton = (props : {addQnaProps : AddQnaPropsType}) => {
         setIsModalOpen(false);
     };
 
+    const handleUploadQnaSubmit = () => {
+        setIsModalOpen(false);
+    };
+
     const addQnaPopupProps : AddQnaPopupPropsType = {
         isModalOpen: isModalOpen,
         faqCategoryList : addQnaProps.faqCategoryList,
         onAddQnaSubmit:handleQnaEditOk,
-        onAddQnaCancel:handleCancel
+        onUploadQnaSubmit:handleUploadQnaSubmit,
+        onAddQnaCancel:handleCancel,
+        modalTitle:modalTitle,
+        addQnaOption:addQnaOption
+    }
+
+    const handleAddQnaClick = () => {
+        setIsModalOpen(true);
+        setAddQnaOption(AddQnaOption.SINGLE_UPLOAD)
+        setModalTitle(addQnaTitle)
+    }
+
+    const handleUploadQnaClick = () => {
+        setIsModalOpen(true);
+        setAddQnaOption(AddQnaOption.BULK_UPLOAD)
+        setModalTitle(uploadQnaTitle)
     }
   
     return (
       <div>
           <Space wrap>
-              <Dropdown.Button overlay={<UploadQNA></UploadQNA>}
-              onClick={() => setIsModalOpen(true)}>
-              Add Q&A
-              </Dropdown.Button>
+                <Dropdown.Button  
+                    onClick={() => handleAddQnaClick()}  
+                    overlay= {<Menu onClick={() => { handleUploadQnaClick();}}
+                        items={[
+                        { 
+                            label: 'Upload Q&A via Excel',
+                            key: '1',
+                        }
+                        ]}
+                    />}>
+
+                    Add Q&A
+                </Dropdown.Button>
           </Space>
-        <AddQnaPopup addQnaPopupProps={addQnaPopupProps}/>
+        <AddQnaPopup addQnaProps={addQnaPopupProps}/>
       </div>
     );
   };

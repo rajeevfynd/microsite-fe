@@ -1,3 +1,6 @@
+import { AddQnaOption } from "./enums/faq-add-options";
+import { EditQnaOption } from "./enums/qna-edit-options";
+
 export type QnaListType = {
     id?: number;
     faq?: QnaType[];
@@ -37,7 +40,7 @@ export type FaqListPropsType = {
     newQnaAdded?:boolean;
 }
 
-export type QnaModalPropsType = {
+export type EditQnaPropsType = {
     isEditModalOpen?: boolean;
     handleCancel:any;
     editQnaDetails?:QnaType;
@@ -63,6 +66,9 @@ export type AddQnaPopupPropsType = {
     faqCategoryList?:FaqCategoryType[];
     onAddQnaSubmit:any;
     onAddQnaCancel:any;
+    onUploadQnaSubmit:any;
+    modalTitle?:String;
+    addQnaOption?:AddQnaOption
 }
 
 export type AddQnaFormPropsType = {
@@ -71,12 +77,10 @@ export type AddQnaFormPropsType = {
 }
 
 export type UploadQnaFormProps = {
-    isModalOpen?: boolean;
     onUploadQnaSubmit:any;
-    onUploadQnaCancel:any;
 }
 
-export type DeleteQnaModalPropsType = {
+export type DeleteQnaPropsType = {
     isDeleteModalOpen?: boolean;
     handleCancel:any;
     editQnaDetails?:QnaType;
@@ -86,4 +90,15 @@ export type DeleteQnaModalPropsType = {
 export type DeleteFormPropsType = {
     editQnaDetails?:QnaType,
     onQnaDeleteOk : any
+}
+
+export type QnaPopupPropsType = {
+    isModalOpen?: boolean;
+    handleCancel:any;
+    editQnaDetails?:QnaType;
+    onQnaEditDeleteOk:any;
+    categoryList?:FaqCategoryType[];
+    currentActiveCategory?: string;
+    modalTitle?: string,
+    editQnaOption?: EditQnaOption
 }
