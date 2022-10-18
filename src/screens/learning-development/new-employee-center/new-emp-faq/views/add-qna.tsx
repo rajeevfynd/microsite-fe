@@ -2,14 +2,18 @@ import { Dropdown, Modal, Space } from 'antd';
 import * as React from 'react'
 import { AddQnaFormPropsType, AddQnaPopupPropsType, AddQnaPropsType } from '../../../../../models/faq-qna-details';
 import { AddQnaForm } from './add-qna-form';
-import UploadQNA from './upload-qna-modal';
-
+import { UploadQNA } from './upload-qna';
 
 const AddQnaPopup = (props:{addQnaPopupProps : AddQnaPopupPropsType}) => {
     const { addQnaPopupProps} = props;
 
+    const handleAddQnaSubmit = () => {
+        addQnaPopupProps.onAddQnaSubmit();
+    }
+
     const addQnaFormProps : AddQnaFormPropsType = {
         faqCategoryList : addQnaPopupProps.faqCategoryList,
+        onAddQnaSubmit : handleAddQnaSubmit,
     }
 
     return (
@@ -35,6 +39,7 @@ export const AddQNAButton = (props : {addQnaProps : AddQnaPropsType}) => {
     const handleQnaEditOk = () => {
         setIsModalOpen(false);
         console.log('handleQnaEditOk')
+        addQnaProps.onNewQnaAdd()
     };
 
     const handleCancel = () => {

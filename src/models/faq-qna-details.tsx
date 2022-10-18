@@ -9,6 +9,7 @@ export type QnaType = {
     answer?: string;
     isActive?:boolean;
     updated_at?: any;
+    categoryList?: FaqCategoryType[];
 }
 
 export type FaqCategoryPropType = {
@@ -33,10 +34,11 @@ export type CornerIconsProps = {
 export type FaqListPropsType = {
     activeCategory?: string;
     faqCategoryList?:FaqCategoryType[];
+    newQnaAdded?:boolean;
 }
 
 export type QnaModalPropsType = {
-    isModalOpen?: boolean;
+    isEditModalOpen?: boolean;
     handleCancel:any;
     editQnaDetails?:QnaType;
     categoryList?:FaqCategoryType[];
@@ -53,6 +55,7 @@ export type QnaFormPropsType = {
 
 export type AddQnaPropsType = {
     faqCategoryList?:FaqCategoryType[];
+    onNewQnaAdd:any
 }
 
 export type AddQnaPopupPropsType = {
@@ -64,10 +67,23 @@ export type AddQnaPopupPropsType = {
 
 export type AddQnaFormPropsType = {
     faqCategoryList?:FaqCategoryType[];
+    onAddQnaSubmit : any;
 }
 
 export type UploadQnaFormProps = {
     isModalOpen?: boolean;
     onUploadQnaSubmit:any;
     onUploadQnaCancel:any;
+}
+
+export type DeleteQnaModalPropsType = {
+    isDeleteModalOpen?: boolean;
+    handleCancel:any;
+    editQnaDetails?:QnaType;
+    onQnaDeleteOk:any;
+}
+
+export type DeleteFormPropsType = {
+    editQnaDetails?:QnaType,
+    onQnaDeleteOk : any
 }

@@ -4,7 +4,8 @@ import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
 import httpInstance from '../../../../../utility/http-client';
-import { FaqListPropsType, QnaModalPropsType, QnaType } from '../../../../../models/faq-qna-details';
+import { DeleteQnaModalPropsType, FaqListPropsType, QnaModalPropsType, QnaType } from '../../../../../models/faq-qna-details';
+import { DeletePopup } from './delete-qna-form';
 
 
 const { Panel } = Collapse;
@@ -14,44 +15,67 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
 
     const [qnaList, setQnaList] = React.useState([]);
     const [activeKey, setActiveKey] = React.useState([]);
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
     const [editQnaDetails, setEditQnaDetails] = React.useState(null);
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
+    const [modalTitle, setModalTitle] = React.useState("")
+
+    const editTitle = "Edit the question or answer"
+    const deleteTitle = "Are you sure you want to delete this question?"
 
     const handlePanelChange = (key: any) => {
         setActiveKey(key);
     };
 
     const showEditModal = () => {
-        setIsModalOpen(true);
+        setIsEditModalOpen(true);
     };
 
     const handleQnaEditOk = () => {
-        setIsModalOpen(false);
+        setIsEditModalOpen(false);
         getQnaList()
         console.log('handleQnaEditOk')
     };
 
     const handleCancel = () => {
-        setIsModalOpen(false);
+        setIsEditModalOpen(false);
+        setIsDeleteModalOpen(false)
     };
 
-    const handleQnaDelete = () => {
-        getQnaList()
+    const handleQnaDelete = (qnaDetails:QnaType) => {
+        console.log("delete clicked")
+        setEditQnaDetails(qnaDetails)
+        setIsDeleteModalOpen(true)
+        setModalTitle(deleteTitle)
     }
 
     const handleEditQna = (qnaDetails:QnaType) => {
         setEditQnaDetails(qnaDetails)
+        setModalTitle(editTitle)
+    }
+
+    const handleQnaDeleteOk = (qnaDetails:QnaType) => {
+        setIsDeleteModalOpen(false)
+        getQnaList()
+        console.log('handleQnaDeleteOk')
     }
 
     const qnaProps: QnaModalPropsType = {
-        isModalOpen: isModalOpen,
+        isEditModalOpen: isEditModalOpen,
         handleCancel:handleCancel,
         editQnaDetails:editQnaDetails,
         categoryList:faqProps.faqCategoryList,
         currentActiveCategory: currentActiveCategory,
         onQnaEditOk : handleQnaEditOk,
     };
+
+    const deleteProps: DeleteQnaModalPropsType = {
+        isDeleteModalOpen: isDeleteModalOpen,
+        handleCancel:handleCancel,
+        editQnaDetails:editQnaDetails,
+        onQnaDeleteOk : handleQnaDeleteOk,
+    }
 
 
     const getQnaList = () => {
@@ -60,6 +84,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         httpInstance.get(url)
             .then(response => {
                 setQnaList(response.data)
+                 console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -74,6 +99,9 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         setcurrentActiveCategory(faqProps.activeCategory)
     }, [faqProps.activeCategory])
 
+    React.useEffect(() => {
+        getQnaList();
+    }, [faqProps.newQnaAdded])
 
     return (
         <>
@@ -102,6 +130,8 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
             </Collapse>
 
             <QnaPopup qnaProps={qnaProps}/>
+
+            <DeletePopup deleteProps={deleteProps} />
         </>
 
     )

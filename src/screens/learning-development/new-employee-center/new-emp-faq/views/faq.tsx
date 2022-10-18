@@ -13,12 +13,18 @@ export const FAQ = () => {
 
     const [categoryList, setCategoryList] = React.useState(null);
 
+    const [newQnaAdded, setNewQnaAdded] = React.useState(false);
+
     const onActiveCategoryUpdate = (activeCategory:string) => {
         setcurrentActiveCategory(activeCategory);
     }
 
     const handleCategoryList = (category : FaqCategoryType) => {
         setCategoryList(category)
+    }
+
+    const handleNewQnaAdd = () => {
+        setNewQnaAdded(!newQnaAdded)
     }
 
     const categoryProps : FaqCategoryPropType = {
@@ -28,11 +34,13 @@ export const FAQ = () => {
 
     const faqProps : FaqListPropsType = {
         activeCategory:currentActiveCategory,
-        faqCategoryList:categoryList
+        faqCategoryList:categoryList,
+        newQnaAdded:newQnaAdded,
     }
 
     const addQnaProps : AddQnaPropsType = {
-        faqCategoryList:categoryList
+        faqCategoryList:categoryList,
+        onNewQnaAdd:handleNewQnaAdd,
     }
     
     return (

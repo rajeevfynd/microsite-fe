@@ -28,7 +28,7 @@ import { QnaFormPropsType, QnaModalPropsType } from '../../../../../models/faq-q
     return (
         <Modal
             destroyOnClose={true}
-            visible={qnaProps.isModalOpen}
+            visible={qnaProps.isEditModalOpen}
             title="Edit the question or answer"
             footer={null}
             onCancel={qnaProps.handleCancel}

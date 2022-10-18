@@ -13,6 +13,7 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
 
     const onFinish = (values: any) => {
         console.log(values);
+        addQna(values);
     };
 
     const onReset = () => {
@@ -22,6 +23,30 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
     const handleChange = (value: Array<string>) => {
         console.log(`selected ${value}`);
     };
+
+    const children: React.ReactNode[] = [];
+        addQnaFormProps.faqCategoryList.map((categoryOptions) => (
+            children.push(<Option key={categoryOptions.id}>{categoryOptions.category}</Option>)
+        ))
+
+
+        const addQna = (values : any) => {
+            console.log(values.category)
+            const url = "/microsite/faq/add-qna/"
+            httpInstance.post(url, 
+                {
+                    categoryList : values.category,
+                    question : values.question,
+                    answer : values.answer
+            })
+                .then(response => {
+                    console.log("addQna called")
+                    addQnaFormProps.onAddQnaSubmit();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
     return (
         <>
@@ -36,17 +61,15 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                     name="category"
                     label="Category"
                     rules={[{ required: true, message: 'Please select the Category!' }]}
-                >
-                    <Select
-                        mode="multiple"
+                >   
+                    <Select 
+                        mode="tags" 
                         style={{ width: '100%' }}
-                        placeholder="Please select the Category"
-                        onChange={handleChange}
+                        placeholder="Select the Category"
+                        onChange={handleChange} 
+                        tokenSeparators={[',']}
                         >
-
-                        {addQnaFormProps.faqCategoryList.map((categoryOptions) => (
-                            <Option key={categoryOptions.id}>{categoryOptions.category}</Option>
-                        ))}
+                        {children}
                     </Select>
                 </Form.Item>
 

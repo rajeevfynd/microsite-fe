@@ -6,10 +6,6 @@ import httpInstance from '../../../../../utility/http-client';
 
 const { Option } = Select;
 
-const handleChange = (value: Array<string>) => {
-    console.log(`selected ${value}`);
-};
-
 
     export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
     const {qnaFormProps} = props;
@@ -30,14 +26,16 @@ const handleChange = (value: Array<string>) => {
         console.log(`selected ${value}`);
     };
 
+    const handleActiveCategoryList = () => {
+        let result = qnaFormProps.editQnaDetails.categoryList.map(a => a.id.toString());
+        setcurrentActiveCategory(result)
+    }
+
     const updateQna = (values : any) => {
-        console.log(values.category)
+        console.log(currentActiveCategory)
         const url = "/microsite/faq/edit-qna/" + editQnaId
         httpInstance.put(url, {
-            "faqCategory" : {
-                "prevCategoryId" : currentActiveCategory,
-                "updatedCategoryList" : values.category
-            },
+            "updatedCategoryList" : values.category,
             "qnaDetails" : {
                 "id" : editQnaId,
                 "question" : values.question,
@@ -55,8 +53,9 @@ const handleChange = (value: Array<string>) => {
     }
 
     React.useEffect(() => {
-        setcurrentActiveCategory(qnaFormProps.currentActiveCategory)
+        handleActiveCategoryList()
         setEditQnaId(qnaFormProps.editQnaDetails.id)
+        console.log(qnaFormProps.editQnaDetails)
     }, [qnaFormProps.currentActiveCategory])
 
     return (
@@ -69,9 +68,6 @@ const handleChange = (value: Array<string>) => {
                 onFinish={onFinish}
                 fields={[
                     {
-                        name: ['category'],
-                    },
-                    {
                         name: ['question'],
                         value: qnaFormProps.editQnaDetails.question,
                     },
@@ -81,7 +77,7 @@ const handleChange = (value: Array<string>) => {
                     },
                     {
                         name: ['category'],
-                        value: [currentActiveCategory]
+                        value: currentActiveCategory
                     }
                 ]}
             >   
