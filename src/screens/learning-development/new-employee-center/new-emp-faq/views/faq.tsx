@@ -7,7 +7,6 @@ import { AddQNAButton } from './add-qna';
 
 
 export const FAQ = () => {
-    const showTotal: PaginationProps['showTotal'] = total => `Total ${total} items`;
 
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);
 

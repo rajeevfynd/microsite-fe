@@ -7,7 +7,7 @@ import httpInstance from '../../../../../utility/http-client';
 const { Option } = Select;
 
 
-    export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
+export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
     const {qnaFormProps} = props;
     const [form] = Form.useForm();
     const [currentActiveCategory, setcurrentActiveCategory] = React.useState(null);

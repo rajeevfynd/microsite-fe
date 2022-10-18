@@ -1,11 +1,6 @@
 import { AddQnaOption } from "./enums/faq-add-options";
 import { EditQnaOption } from "./enums/qna-edit-options";
 
-export type QnaListType = {
-    id?: number;
-    faq?: QnaType[];
-}
-
 export type QnaType = {
     id?: number;
     question?: string;
@@ -40,15 +35,6 @@ export type FaqListPropsType = {
     newQnaAdded?:boolean;
 }
 
-export type EditQnaPropsType = {
-    isEditModalOpen?: boolean;
-    handleCancel:any;
-    editQnaDetails?:QnaType;
-    categoryList?:FaqCategoryType[];
-    currentActiveCategory?: string;
-    onQnaEditOk:any;
-}
-
 export type QnaFormPropsType = {
     editQnaDetails?:QnaType;
     categoryList?:FaqCategoryType[];
@@ -78,13 +64,6 @@ export type AddQnaFormPropsType = {
 
 export type UploadQnaFormProps = {
     onUploadQnaSubmit:any;
-}
-
-export type DeleteQnaPropsType = {
-    isDeleteModalOpen?: boolean;
-    handleCancel:any;
-    editQnaDetails?:QnaType;
-    onQnaDeleteOk:any;
 }
 
 export type DeleteFormPropsType = {
