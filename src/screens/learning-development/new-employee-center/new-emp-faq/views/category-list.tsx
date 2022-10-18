@@ -36,7 +36,7 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
 
     React.useEffect(() => {
         getCategoryList();
-    }, [])
+    }, [categoryProps.newQnaAdded])
 
     React.useEffect(() => {
         categoryProps.onActiveCategoryUpdate(currentActiveCategory);

@@ -13,6 +13,7 @@ export type QnaType = {
 export type FaqCategoryPropType = {
     onActiveCategoryUpdate : any;
     onCategoryListUpdate : any;
+    newQnaAdded?:boolean
 }
 
 export class FaqCategoryType  {

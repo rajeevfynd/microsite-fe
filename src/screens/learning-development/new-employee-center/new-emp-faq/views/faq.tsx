@@ -28,7 +28,8 @@ export const FAQ = () => {
 
     const categoryProps : FaqCategoryPropType = {
         onActiveCategoryUpdate : onActiveCategoryUpdate,
-        onCategoryListUpdate : handleCategoryList
+        onCategoryListUpdate : handleCategoryList,
+        newQnaAdded:newQnaAdded,
     }
 
     const faqProps : FaqListPropsType = {
