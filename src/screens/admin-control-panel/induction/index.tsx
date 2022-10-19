@@ -46,13 +46,13 @@ export const AdminInduction = () => {
   return (
     <>
       <Collapse onChange={(e: string) => { setActiveCollapseKey(e) }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
-        <CollapsePanel key={'1'} header='Welcome to Jio' >
+        <CollapsePanel key={'1'} header='Edit Welcome Message' >
           <AdminWelcomeMessage
             onFileUrlUpdate={() => { getWelcomeMsgUrl() }} 
             details={welcomeMessageDetails} />
         </CollapsePanel>
 
-        <CollapsePanel key={'2'} header='Induction Journey' disabled = {!welcomeMessageDetails.isCompleted}>
+        <CollapsePanel key={'2'} header='Edit Induction Journey' disabled = {!welcomeMessageDetails.isCompleted}>
           {welcomeMessageDetails.isCompleted &&
             <div>
               <JourneyDetail details={inductionJourney}></JourneyDetail>
