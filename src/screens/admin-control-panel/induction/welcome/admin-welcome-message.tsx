@@ -1,6 +1,5 @@
 import { Input, Button } from 'antd'
 import * as React from 'react'
-import { Eye } from 'react-bootstrap-icons'
 import ReactPlayer from 'react-player'
 import { AdminWelcomeMessageDetailsType } from '../../../../models/welcome-message'
 import { setWelcomeMessageFileUrl } from '../../../../service/induction-service'
