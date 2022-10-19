@@ -10,7 +10,6 @@ import { UPLOAD_IMG } from '../../../constants/urls';
 const { Panel } = Collapse;
 
 interface carouselFormtype {
-    //position: number
     fileId?: number
     value?: string
 }
@@ -24,13 +23,10 @@ const EditCarousal = () => {
             authorization: 'authorization-text',
         },
         onChange(info) {
-            console.log(info.file.response)
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
-                console.log(active)
                 let updatedForm: carouselFormtype = {
                     fileId: info.file.response.data.id,
                     value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -38,7 +34,6 @@ const EditCarousal = () => {
                 let updatedFormList = form
                 updatedFormList.splice(Number(active), 1, updatedForm)
                 setFormFile(updatedFormList);
-                console.log(form)
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
             }
@@ -51,10 +46,7 @@ const EditCarousal = () => {
 
     const [update , setupdate ]= React.useState("")
 
-    //const [reducerVal,setRdeucer] = React.useReducer(x => x+1, 0)
-
     const onSearch = (val: any) => {
-        console.log(val)
         let updatedForm: carouselFormtype = {
             fileId: form[Number(active)].fileId ? form[Number(active)].fileId : 0,
             value: val
@@ -71,11 +63,8 @@ const EditCarousal = () => {
             "courseHyperlink": form[Number(active)].value,
             "imageDocumentId": form[Number(active)].fileId
         }
-        console.log(body)
         const res = await editCarouselSlide(body);
-        console.log(res)
         setupdate("is_updated "+Number(active) + 1)
-        //setRdeucer
     }
 
     return (

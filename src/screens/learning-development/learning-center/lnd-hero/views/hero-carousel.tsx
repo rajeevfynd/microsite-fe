@@ -18,7 +18,6 @@ function HeroCarousel( props: any) {
   const fetchCarousel = React.useCallback(async () =>{
     let resp =await getCarouselData();
     const carouselData: carouselFormtype [] = resp.data
-    console.log(carouselData)
     for(var d of carouselData){
       let img_res = await httpInstance.get("/microsite/document/download/"+d.imageDocumentId);
       d.imageDocumentId = img_res.data.url
