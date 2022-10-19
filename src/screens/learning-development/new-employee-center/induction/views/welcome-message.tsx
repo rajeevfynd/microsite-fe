@@ -26,7 +26,6 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
     <>
         <div className='video-player'>
         <ReactPlayer 
-          controls
           url={props.details.fileUrl}
           playing={play}
           onEnded={()=> setIsCompleted(CompleteStatus.COMPLETE)}

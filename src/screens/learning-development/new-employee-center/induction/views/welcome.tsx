@@ -62,7 +62,7 @@ export const Welcome = () => {
             details={welcomeMessageDetails} />
         </CollapsePanel>
 
-        <CollapsePanel key={'2'} header='Induction Journey' disabled={!welcomeMessageDetails.isCompleted}>
+        <CollapsePanel key={'2'} header='Induction Journey' collapsible={!welcomeMessageDetails.isCompleted ? 'disabled' : 'header'}>
           {welcomeMessageDetails.isCompleted &&
             <div>
               <JourneyDetail details={inductionJourney}></JourneyDetail>
