@@ -14,7 +14,7 @@ export  const LearningJourneyList = () => {
   const [load, setLoad] = React.useState(false)
   const[ journeys, setJourneys] = React.useState<JourneyDetailType[]>([])
   const [hasMore, setHasMore ] = React.useState(false)
-  const [page,setPage ] = React.useState(1)
+  const [page,setPage ] = React.useState(0)
   const [keyState, setKeyState] = React.useState('')
   let key = ''
 
@@ -78,6 +78,7 @@ export  const LearningJourneyList = () => {
       >
         <List
           grid={{gutter: 16, column: 4}}
+          style={{padding : "1%"}}
           dataSource={journeys}
           renderItem={item => (
             <List.Item onClick={()=>{navigate(item.id.toString())}} key={item.title}>
@@ -91,7 +92,7 @@ export  const LearningJourneyList = () => {
               >
                 <Meta
                   title={item.title}
-                  description={item.description}
+                  description={<p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{item.description}</p>}
                 />
               </Card>
             </List.Item>
