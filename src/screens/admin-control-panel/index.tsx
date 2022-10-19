@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { AdminRouter } from './admin-section-router'
+import { AdminRouter } from './admin-router'
 
-export const Admin = () => {
+export const AdminControlPanel = () => {
   return (
     <>
         <AdminRouter></AdminRouter>

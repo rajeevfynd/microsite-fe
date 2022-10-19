@@ -11,7 +11,7 @@ const { Panel } = Collapse;
 
 interface carouselFormtype {
     //position: number
-    fileName?: string
+    fileId?: number
     value?: string
 }
 
@@ -32,7 +32,7 @@ const EditCarousal = () => {
                 message.success(`${info.file.name} file uploaded successfully`);
                 console.log(active)
                 let updatedForm: carouselFormtype = {
-                    fileName: info.file.response.name,
+                    fileId: info.file.response.data.id,
                     value: form[Number(active)].value ? form[Number(active)].value : ""
                 }
                 let updatedFormList = form
@@ -40,7 +40,7 @@ const EditCarousal = () => {
                 setFormFile(updatedFormList);
                 console.log(form)
             } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
             }
         },
     };
@@ -56,7 +56,7 @@ const EditCarousal = () => {
     const onSearch = (val: any) => {
         console.log(val)
         let updatedForm: carouselFormtype = {
-            fileName: form[Number(active)].fileName ? form[Number(active)].fileName : "",
+            fileId: form[Number(active)].fileId ? form[Number(active)].fileId : 0,
             value: val
         }
 
@@ -69,7 +69,7 @@ const EditCarousal = () => {
         const body = {
             "positionValue": Number(active) + 1,
             "courseHyperlink": form[Number(active)].value,
-            "imageSourceDocument": form[Number(active)].fileName
+            "imageDocumentId": form[Number(active)].fileId
         }
         console.log(body)
         const res = await editCarouselSlide(body);
@@ -82,7 +82,7 @@ const EditCarousal = () => {
         <>
         <h2>Edit Carousel</h2>
         <br></br>
-            <Collapse accordion onChange={(e) => setActive(e.toString())}>
+            <Collapse accordion onChange={(e) => {if(e!=undefined){setActive(e.toString())}}}>
                 <Panel header="Slide 1" key={0}>
                     <Form.Provider
                         onFormChange={name => {

@@ -1,4 +1,4 @@
-import { EDIT_CAROUSEL, UPLOAD_IMG } from "../constants/urls"
+import { EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
 import httpInstance from "../utility/http-client"
 
 export const getPrograms = (url: string) => {
@@ -16,4 +16,8 @@ export const getPrograms = (url: string) => {
 
 export const editCarouselSlide = (body: any) => {
     return httpInstance.post(EDIT_CAROUSEL, body)
+}
+
+export const getCarouselData = () => {
+    return httpInstance.get(GET_CAROUSEL)
 }
