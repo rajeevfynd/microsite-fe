@@ -1,4 +1,4 @@
 export enum CompleteStatus {
-    COMPLETE,
-    INCOMPLETE
+    COMPLETE = 'COMPLETE',
+    INCOMPLETE = 'INCOMPLETE'
 }
