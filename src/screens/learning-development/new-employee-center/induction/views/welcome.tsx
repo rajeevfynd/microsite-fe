@@ -9,8 +9,6 @@ import { WelcomeMessage } from './welcome-message';
 import { getActiveInductionJourney, getWelcomeMessageDetails } from '../../../../../service/induction-service';
 import { processPrograms } from '../../../../../service/journey-service';
 
-const { Text } = Typography;
-
 export const Welcome = () => {
 
   const [inductionJourney, setInductionJourney] = React.useState({})
@@ -19,12 +17,12 @@ export const Welcome = () => {
 
   const getWelcomeMsgUrl = () => {
     getWelcomeMessageDetails().then(res => {
-      let enumKey = res.data.completeStatus as keyof typeof CompleteStatus;
       setWelcomeMessageDetails({
         fileUrl: res.data.fileUrl,
-        isCompleted: CompleteStatus[enumKey] != CompleteStatus.INCOMPLETE
+        isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE
       })
-      setActiveCollapseKey(() => { return (CompleteStatus[enumKey] == CompleteStatus.COMPLETE) ? '2' : '1' })
+      setActiveCollapseKey(() => { return (res.data.completeStatus == CompleteStatus.COMPLETE) ? '2' : '1' })
+      console.log(res.data.completeStatus == CompleteStatus.COMPLETE)
     })
   }
 
@@ -52,27 +50,19 @@ export const Welcome = () => {
 
   React.useEffect(() => {
     getWelcomeMsgUrl();
-    getInductionJourneyDetails();
+    //getInductionJourneyDetails();
   }, [])
 
   return (
     <>
       <Collapse onChange={(e: string) => { setActiveCollapseKey(e) }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
-        <CollapsePanel key={'1'} header={<h5>Welcome to Jio</h5>} >
+        <CollapsePanel key={'1'} header='Welcome to Jio' >
           <WelcomeMessage
-            onFileUrlUpdate={(fileUrl: string) => { handleFileUrlUpdate(fileUrl) }}
             onComplete={(isCompleted: boolean) => { handleOnComplete(isCompleted) }}
             details={welcomeMessageDetails} />
         </CollapsePanel>
 
-        <CollapsePanel key={'2'} header={<h5>Induction Journey</h5>}>
-          {!welcomeMessageDetails.isCompleted &&
-            <p>
-              <Result
-                status="warning"
-                title={<Text type='secondary'>Please complete the welcome message before starting Induction Journey.</Text>}
-              />
-            </p>}
+        <CollapsePanel key={'2'} header='Induction Journey' disabled={!welcomeMessageDetails.isCompleted}>
           {welcomeMessageDetails.isCompleted &&
             <div>
               <JourneyDetail details={inductionJourney}></JourneyDetail>
