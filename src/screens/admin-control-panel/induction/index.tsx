@@ -1,18 +1,17 @@
 import * as React from 'react'
-import "./../index.css"
 import { Collapse, Result, Typography } from 'antd';
-import { CompleteStatus } from '../../../../../models/enums/complete-status';
-import { JourneyDetailType, ProgramType } from '../../../../../models/journey-details';
-import { JourneyDetail } from '../../../../../components/journey-detail/journey-detail';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
-import { WelcomeMessage } from './welcome-message';
-import { getActiveInductionJourney, getWelcomeMessageDetails } from '../../../../../service/induction-service';
-import { processPrograms } from '../../../../../service/journey-service';
+import { JourneyDetail } from '../../../components/journey-detail/journey-detail';
+import { CompleteStatus } from '../../../models/enums/complete-status';
+import { JourneyDetailType } from '../../../models/journey-details';
+import { getWelcomeMessageDetails, getActiveInductionJourney } from '../../../service/induction-service';
+import { processPrograms } from '../../../service/journey-service';
+import { AdminWelcomeMessage } from './welcome/admin-welcome-message';
 
-export const Welcome = () => {
+export const AdminInduction = () => {
 
   const [inductionJourney, setInductionJourney] = React.useState({})
-  const [activeCollapseKey, setActiveCollapseKey] = React.useState('');
+  const [activeCollapseKey, setActiveCollapseKey] = React.useState('1');
   const [welcomeMessageDetails, setWelcomeMessageDetails] = React.useState({ isCompleted: false, fileUrl: '' })
 
   const getWelcomeMsgUrl = () => {
@@ -21,7 +20,6 @@ export const Welcome = () => {
         fileUrl: res.data.fileUrl,
         isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE
       })
-      setActiveCollapseKey(() => { return (res.data.completeStatus == CompleteStatus.COMPLETE) ? '2' : '1' })
       console.log(res.data.completeStatus == CompleteStatus.COMPLETE)
     })
   }
@@ -49,8 +47,8 @@ export const Welcome = () => {
     <>
       <Collapse onChange={(e: string) => { setActiveCollapseKey(e) }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
         <CollapsePanel key={'1'} header='Welcome to Jio' >
-          <WelcomeMessage
-            onComplete={() => { getWelcomeMsgUrl()}}
+          <AdminWelcomeMessage
+            onFileUrlUpdate={() => { getWelcomeMsgUrl() }} 
             details={welcomeMessageDetails} />
         </CollapsePanel>
 
