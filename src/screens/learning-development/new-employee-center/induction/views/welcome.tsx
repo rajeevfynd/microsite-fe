@@ -50,7 +50,7 @@ export const Welcome = () => {
 
   React.useEffect(() => {
     getWelcomeMsgUrl();
-    //getInductionJourneyDetails();
+    getInductionJourneyDetails();
   }, [])
 
   return (
