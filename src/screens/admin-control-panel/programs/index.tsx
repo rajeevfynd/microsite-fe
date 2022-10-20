@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ProgramDetailType } from '../../../models/journey-details';
 import { debounce } from '../../../service/journey-service';
-import { PlusLg } from 'react-bootstrap-icons';
+import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
 const { Text } = Typography;
 
@@ -85,7 +85,7 @@ export  const AdminProgramList = () => {
           style={{padding : "1%"}}
           dataSource={programs}
           renderItem={item => (
-            <List.Item onClick={()=>{navigate(item.id.toString())}} key={item.title}>
+            <List.Item key={item.title}>
               <Card 
                 hoverable
                 cover={
@@ -93,6 +93,10 @@ export  const AdminProgramList = () => {
                     src={item.thumbnailLink}
                   />
                 }
+                actions={[
+                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
+                    <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
+                ]}
               >
                 <Meta
                   title={item.title}

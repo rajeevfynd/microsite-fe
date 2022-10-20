@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
 import { getJourneys, debounce } from '../../../service/journey-service';
-import { PlusLg } from 'react-bootstrap-icons';
+import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
 export  const AdminJourneyList = () => {
@@ -84,7 +84,7 @@ export  const AdminJourneyList = () => {
           style={{padding : "1%"}}
           dataSource={journeys}
           renderItem={item => (
-            <List.Item onClick={()=>{navigate(item.id.toString())}} key={item.title}>
+            <List.Item key={item.title}>
               <Card 
                 hoverable
                 cover={
@@ -92,6 +92,10 @@ export  const AdminJourneyList = () => {
                     src={item.thumbnailLink}
                   />
                 }
+                actions={[
+                  <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
+                  <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+              ]}
               >
                 <Meta
                   title={item.title}
