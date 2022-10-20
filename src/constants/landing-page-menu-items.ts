@@ -35,14 +35,14 @@ export const menuRoutes: MenuRoute[] = [
     {
         key:'skill',
         isExternalLink: false,
-        navigateTo: '/lnd/learning-center/skill',
+        navigateTo: '/lnd/learning-center/skill-courses',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development','learning-center'],
     },
     {
         key:'role',
         isExternalLink: false,
-        navigateTo: '/lnd/learning-center/role',
+        navigateTo: '/lnd/learning-center/role-courses',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['learning-and-development','learning-center'],
     },

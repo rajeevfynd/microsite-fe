@@ -61,11 +61,11 @@ export default function MenuHome() {
                                 title='Learning Center'>
                                 <Menu.Item
                                     key='skill'
-                                    onClick={()=>navigateTo('/lnd/learning-center/skill')}>
+                                    onClick={()=>navigateTo('/lnd/learning-center/skill-courses')}>
                                         Skill</Menu.Item>
                                 <Menu.Item
                                     key='role'
-                                    onClick={()=>navigateTo('/lnd/learning-center/role')}>
+                                    onClick={()=>navigateTo('/lnd/learning-center/role-courses')}>
                                         Role</Menu.Item>
                                 <Menu.Item
                                     key='academy'
@@ -92,6 +92,7 @@ export default function MenuHome() {
                             <Menu.Item key='admin-induction' onClick={()=>navigateTo('/admin/induction')}>Induction</Menu.Item>
                             <Menu.Item key='admin-programs' onClick={()=>navigateTo('/admin/programs')}>Programs</Menu.Item>
                             <Menu.Item key='admin-journeys' onClick={()=>navigateTo('/admin/journeys')}>Journeys</Menu.Item>
+                            <Menu.Item onClick={()=>navigateTo('/admin/edit-carousel')}>Edit Carousel</Menu.Item>
                         </Menu.SubMenu>
                     </Menu>
                 </Sider>
