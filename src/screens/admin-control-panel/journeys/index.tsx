@@ -3,14 +3,13 @@ import Meta from 'antd/lib/card/Meta';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Link, useNavigate } from 'react-router-dom';
-import { JourneyDetailType } from '../../../../models/journey-details'; 
-import './../index.css'
-import { debounce, getJourneys } from '../../../../service/journey-service';
-import { ArrowRight } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
+import { JourneyDetailType } from '../../../models/journey-details';
+import { getJourneys, debounce } from '../../../service/journey-service';
+import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
-export  const LearningJourneyList = () => {
+export  const AdminJourneyList = () => {
   const navigate = useNavigate();
   const [load, setLoad] = React.useState(false)
   const[ journeys, setJourneys] = React.useState<JourneyDetailType[]>([])
@@ -57,14 +56,17 @@ export  const LearningJourneyList = () => {
  
   return (
     <>
-    <h3>Learning Journey</h3>
+    <h3>Journeys</h3>
     <div className='search-container'>
       <Input 
         size='large' 
         className='search-box' 
         suffix={<SearchOutlined/>} 
         onChange={(e) => {searchKey(e.target.value);} } 
-      />
+    />
+    <div style={{textAlign : 'right'}}>
+        <Button onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
+    </div>
     </div>
     <div
       id="scrollableDiv"
@@ -91,8 +93,9 @@ export  const LearningJourneyList = () => {
                   />
                 }
                 actions={[
-                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to journey <ArrowRight /> </Button>
-                ]}
+                  <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
+                  <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+              ]}
               >
                 <Meta
                   title={item.title}
