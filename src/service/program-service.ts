@@ -1,4 +1,5 @@
-import { EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
+import { DOWNLOAD_URL, EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
+import { carouselFormtype } from "../models/carousel-form-type"
 import httpInstance from "../utility/http-client"
 
 export const getPrograms = (url: string) => {
@@ -20,4 +21,8 @@ export const editCarouselSlide = (body: any) => {
 
 export const getCarouselData = () => {
     return httpInstance.get(GET_CAROUSEL)
+}
+
+export const getCarouselImageData = (d: carouselFormtype) =>{
+    return httpInstance.get(DOWNLOAD_URL+d.imageDocumentId)
 }

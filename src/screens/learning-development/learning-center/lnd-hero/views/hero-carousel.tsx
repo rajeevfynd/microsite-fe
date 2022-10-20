@@ -2,14 +2,9 @@ import { Carousel } from 'antd';
 import * as React from 'react';
 import './index.css'
 import 'antd/dist/antd.css';
-import { getCarouselData } from '../../../../../service/program-service';
-import httpInstance from '../../../../../utility/http-client';
+import { getCarouselData, getCarouselImageData } from '../../../../../service/program-service';
+import { carouselFormtype } from '../../../../../models/carousel-form-type';
 
-type carouselFormtype = {
-  positionValue?: number
-  imageDocumentId?: string
-  courseHyperlink?: string
-}
 
 function HeroCarousel( props: any) {
 
@@ -19,7 +14,7 @@ function HeroCarousel( props: any) {
     let resp =await getCarouselData();
     const carouselData: carouselFormtype [] = resp.data
     for(var d of carouselData){
-      let img_res = await httpInstance.get("/microsite/document/download/"+d.imageDocumentId);
+      let img_res = await getCarouselImageData(d);//httpInstance.get("/microsite/document/download/"+d.imageDocumentId);
       d.imageDocumentId = img_res.data.url
     }
     if(carouselData.length == 3){
