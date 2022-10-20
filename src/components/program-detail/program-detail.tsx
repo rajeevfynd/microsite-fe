@@ -1,10 +1,10 @@
 import { Image, Row, Col, Progress, List } from 'antd'
 import * as React from 'react'
-import { PatchCheckFill,  Clock, ArrowRight } from 'react-bootstrap-icons'
+import { ArrowRight, Clock, PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
-import { JourneyDetailPropsType } from '../../models/journey-details'
+import { ProgramDetailPropsType } from '../../models/journey-details'
 
-export const JourneyDetail = (props: JourneyDetailPropsType) => {
+export const ProgramDetail = (props: ProgramDetailPropsType) => {
 
   return (
     <>
@@ -29,7 +29,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
         <div className='programs-list'>
             <List
                 itemLayout="horizontal"
-                dataSource={props.details.programs}
+                dataSource={props.details.courses}
                 renderItem={item => (
                     
                     <List.Item
@@ -37,27 +37,28 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                             <img
                                 width={136}
                                 alt="logo"
-                                src={item.program.thumbnailLink}
+                                src={item.course.thumbnailLink}
                             />}
                     >
                         <List.Item.Meta
                             title= {
                                 <div>
-                                    {item.program.title}
+                                    {item.course.title}
                                     <span className='certified'>{item.status == 'COMPLETED' && <PatchCheckFill color='green'/> }</span>
                                 </div>
                             }
                             description={
                                 <>
                                     <p style={{width : "90%"}}>
-                                        {item.program.description}
-                                    </p>  
+                                        {item.course.description}
+                                    </p>
+                                    <p><Clock /> {item.course.duration} mins</p>
                                     <p>
                                         {props.details.flow == 'NON_SEQUENCE' && <>
-                                            <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>
+                                            <Link className='link' to={'/lnd/courses/'+item.course.id}><ArrowRight/> Go to course </Link>
                                         </>}
                                         {props.details.flow == 'SEQUENCE' && <>
-                                            {item.isActive && <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>}
+                                            {item.isActive && <Link className='link' to={'/lnd/courses/'+item.course.id}><ArrowRight/> Go to course </Link>}
                                         </>}
                                         
                                     </p>
