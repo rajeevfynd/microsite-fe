@@ -9,7 +9,7 @@ import { Program } from '../../../../../models/course-type'
 import httpInstance from "../../../../../utility/http-client";
 import {COMPLETED_PROGRAMS_URL, CURRENT_PROGRAMS_URL} from "../../../../../constants/urls";
 import { configType } from "../../../../../models/config-type";
-import { getPrograms } from "../../../../../service/program-service"
+import { getUserPrograms } from "../../../../../service/program-service"
 
 
 type GetProgramResponse = {
@@ -35,7 +35,7 @@ function Scrollable_programs(props: any) {
       }]});
 
     const fetchPrograms = React.useCallback(async()=>{
-        let response = await getPrograms(url);
+        let response = await getUserPrograms(url);
         const Program:GetProgramResponse = {data: response.data}
         setd(Program.data.length != 0)
         setProgram(Program)

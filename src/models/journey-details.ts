@@ -1,6 +1,10 @@
 export type JourneyDetailPropsType = {
     details?: JourneyDetailType
 }
+
+export type ProgramDetailPropsType = {
+    details?: ProgramDetailType
+}
 export type JourneyDetailType = {
     title?: string;
     id?: number;
@@ -9,6 +13,7 @@ export type JourneyDetailType = {
     flow?:string;
     programs?: ProgramType[];
     progress?: number;
+    duration?: number;
 }
 export type ProgramType = {
     program: ProgramDetailType;
@@ -23,4 +28,7 @@ export type ProgramDetailType = {
     duration?: number;
     rruDeeplink?: string;
     rruProgramID?: string;
+    progress?: number
+    courses?: any[]
+    flow?: string
 }

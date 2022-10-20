@@ -2,7 +2,7 @@ import { DOWNLOAD_URL, EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
 import { carouselFormtype } from "../models/carousel-form-type"
 import httpInstance from "../utility/http-client"
 
-export const getPrograms = (url: string) => {
+export const getUserPrograms = (url: string) => {
     return httpInstance.get(url)
 }
 
@@ -25,4 +25,9 @@ export const getCarouselData = () => {
 
 export const getCarouselImageData = (d: carouselFormtype) =>{
     return httpInstance.get(DOWNLOAD_URL+d.imageDocumentId)
+}
+
+
+export function getPrograms(key:string = '', page:string = '0', size:string = '8'){
+    return httpInstance.get('/microsite/lnd/journeys/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
