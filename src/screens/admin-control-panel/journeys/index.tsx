@@ -5,7 +5,7 @@ import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
-import { getMoreJourneys, filterJourneys, debounce } from '../../../service/journey-service';
+import { getJourneys, debounce } from '../../../service/journey-service';
 import { PlusLg } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
@@ -21,7 +21,7 @@ export  const AdminJourneyList = () => {
   const loadMoreData = () => {
     if (load) { return; }
     setLoad(false);
-    getMoreJourneys(keyState,page.toString()).then(
+    getJourneys(keyState,page.toString()).then(
       resp => {
         setJourneys([...journeys, ...resp.data.content])
         setHasMore(!resp.data.last)
@@ -35,11 +35,11 @@ export  const AdminJourneyList = () => {
     setKeyState(key)
     if(load) { return ;}
     setLoad(false);
-    filterJourneys(key,page.toString()).then(
+    getJourneys(key).then(
       resp => {
         setJourneys([...resp.data.content])
         setHasMore(!resp.data.last)
-        setPage(2)
+        setPage(1)
         setLoad(false)
       }
     )
