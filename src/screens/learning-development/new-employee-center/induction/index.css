@@ -1,6 +1,3 @@
-.update-welcome{
-    margin: 1% 0;
-}
 .li-incomplete{
     color: gray
 }
@@ -10,11 +7,7 @@
 .certified{
     margin-left: 5px;
 }
-.details{
-    padding: 0 2%;
-}
 .drop-down-btn{
-    font-size: x-large;
     height: fit-content;
     text-align: left;
     width: 100%;

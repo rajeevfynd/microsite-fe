@@ -5,8 +5,6 @@ import { CompleteStatus } from '../../../../../models/enums/complete-status';
 import { setWelcomeMessageStatus } from '../../../../../service/induction-service';
 
 export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
-  
-  const [ play, setPlay ] = React.useState(false)
 
   const setIsCompleted = (newStatus: CompleteStatus) => {
       if(!props.details.isCompleted){
@@ -17,17 +15,12 @@ export const WelcomeMessage = (props: WelcomeMessageDetailsType) => {
       }
   }
 
-  React.useEffect( ()=>{
-    console.log(props.details.isCompleted)
-    setPlay(props.details.isCompleted)
-  }, [])
-
   return (  
     <>
         <div className='video-player'>
         <ReactPlayer 
           url={props.details.fileUrl}
-          playing={play}
+          light={props.details.isCompleted}
           onEnded={()=> setIsCompleted(CompleteStatus.COMPLETE)}
         />
       </div>
