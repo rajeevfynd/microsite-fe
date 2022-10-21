@@ -1,11 +1,10 @@
-"strict"
 import * as React from 'react';
-import Axios from 'axios';
-import { Col, Row, Card, List, Divider, Button, Modal, } from 'antd';
+import { Col, Row, Card, List, Divider, Button, Modal, Tag, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
 import { CourseList } from './course-list';
 import httpInstance from '../../../../../utility/http-client';
+import { CourseSearch } from './course-search';
 const { confirm } = Modal;
 
 
@@ -14,7 +13,25 @@ export const SkillList = (props: any) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [skillList, setSkillList] = React.useState([]);
     const [skillId, setSkillId] = React.useState(null);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [courseTagMapping, setCourseTagMapping] = React.useState({
+        courseIds: [],
+        tagIds: [],
+        tagType: Tagtype.skill,
+        isActive: true
+    });
+    const [mappingStatus, setMappingStatus] = React.useState(false);
 
+
+
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModel = () => {
+        setIsModalOpen(false);
+    };
 
 
 
@@ -22,7 +39,6 @@ export const SkillList = (props: any) => {
         confirm({
             title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Course"}? `,
             icon: <ExclamationCircleOutlined />,
-            // content: <p>{name}</p>,
             onOk() {
                 setSkillId(skillId);
             },
@@ -32,14 +48,22 @@ export const SkillList = (props: any) => {
         });
     };
 
+    const handleAddCourseModel = (tagId: number, tagType: string) => {
+
+        setCourseTagMapping({ ...courseTagMapping, tagIds: [tagId], tagType: tagType });
+        showModal()
+
+    };
+
     React.useEffect(() => {
-        //Api -> getAllActiveSkillTags
+        //Api -> get tags and courses
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/?tagType=${Tagtype.skill}`)
+            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.skill}`)
                 .then((response) => {
                     if (!!response.data.length) {
                         setSkillList(response.data);
+                        setMappingStatus(false);
                     }
                     setIsLoading(false);
                 })
@@ -49,7 +73,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [skillId])
+    }, [skillId, mappingStatus])
 
 
     React.useEffect(() => {
@@ -77,6 +101,34 @@ export const SkillList = (props: any) => {
 
 
 
+    React.useEffect(() => {
+        // Api-> create course tag mapping
+
+        if (!mappingStatus) return;
+        if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
+
+        (() => {
+            setIsLoading(true);
+
+            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+                .then((response) => {
+
+                    if (response.data) {
+                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
+                        setIsModalOpen(false);
+                        setMappingStatus(false);
+                    }
+
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    window.alert(`${error.message}`);
+                });
+        })();
+
+    }, [mappingStatus])
+
 
     return (
 
@@ -103,11 +155,11 @@ export const SkillList = (props: any) => {
                                     </div>
                                     <Divider />
 
-                                    <CourseList courseList={skillList} />
+                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} />
 
                                     <Divider />
                                     <Button block>
-                                        <Row justify="center" style={{ columnGap: 10 }}>
+                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.skill)}>
                                             <Col>
                                                 <p>{"Add Course"}</p>
                                             </Col>
@@ -116,13 +168,19 @@ export const SkillList = (props: any) => {
                                             </Col>
                                         </Row>
                                     </Button>
+
                                 </Card>
                             </List.Item>
                         )
                         }
                     />
+
                     : null
                 }
+                    <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
+                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} handleMappingStatus={setMappingStatus} />
+                        <Divider />
+                    </Modal>
                 </>
             }
         </>

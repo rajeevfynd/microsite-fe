@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Axios from 'axios';
 import { Button, Form, Input } from 'antd';
-import { TagStatus, Tagtype } from '../../../../../constants/tag';
+import { Tagtype } from '../../../../../constants/tag';
 import httpInstance from '../../../../../utility/http-client';
 
 export const SkillForm = (props: any) => {
@@ -37,7 +36,7 @@ export const SkillForm = (props: any) => {
             setSkill({
                 name: skillName,
                 type: Tagtype.skill,
-                status: TagStatus.active,
+                isActive: true,
                 addedBy: 1111
             });
             setButtonStatus(true);
@@ -64,6 +63,7 @@ export const SkillForm = (props: any) => {
                     if (!!Object.keys(response.data).length) {
                         handleLoading(false);
                         setSkill({});
+                        console.log(response.data)
                     }
                     handleLoading(false);
                 })

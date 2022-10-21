@@ -38,7 +38,7 @@ export const AddSkill = () => {
                         <SkillForm handleModal={setIsModalOpen} handleLoading={setIsLoading} />
                         <Divider />
                     </Modal>
-                </ div >
+                </div>
             }
         </>
     )
