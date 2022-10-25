@@ -10,42 +10,33 @@ const validateStatus = {
 }
 
 export default function CourseForm() {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [course, setCourse] = React.useState({
         title: null,
         description: null,
+        programIds: [],
         skills: [],
+        skillIds: [],
         roles: [],
+        roleIds: [],
         programs: [],
         rruDeepLink: null,
-        programId: null,
         thumbnail: null,
         minCourseCoin: null,
         courseCoin: null,
         careerCoin: null,
         createdBy: null,
         updatedBy: null,
-        status: true
+        isActive: true
     });
     const [buttonStatus, setButtonStatus] = React.useState(true);
     const [search, setSearch] = React.useState({
         text: "",
         type: "",
-    });
-    const [roleSearch, setRoleSearch] = React.useState({
-        text: "",
-        type: "",
         hasFeedback: false,
-        validateStatus: validateStatus.validating,
+        validateStatus: "",
         options: []
     });
-    const [skillSearch, setSkillSearch] = React.useState({
-        text: "",
-        type: "",
-        hasFeedback: false,
-        validateStatus: validateStatus.validating,
-        options: []
-    });
-    const [isLoading, setIsLoading] = React.useState(false);
 
 
 
@@ -53,7 +44,6 @@ export default function CourseForm() {
 
 
     const onValuesChange = (changedValues: any, allValues: any) => {
-        console.log(changedValues);
         const stringReg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
         const integerReg = new RegExp("(?<!-)(?<!\d)[1-9][0-9]*");
         const urlReg = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
@@ -82,29 +72,25 @@ export default function CourseForm() {
                 }
                 break;
             case 'skills':
-                const skills = changedValues[key];
+                const skill = changedValues[key];
 
-                if (!skills) {
-                    setSearch({ ...search, text: "", type: "" });
-                    setSkillSearch({ ...skillSearch, options: [] });
+                if (!skill) {
+                    setSearch({ ...search, text: "", type: "", hasFeedback: false, options: [] });
                 }
 
-                if (stringReg.test(skills)) {
-                    setSearch({ ...search, text: skills, type: Tagtype.skill });
-                    setSkillSearch({ ...skillSearch, hasFeedback: true, validateStatus: validateStatus.validating });
+                if (stringReg.test(skill)) {
+                    setSearch({ ...search, text: skill, type: Tagtype.skill, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
                 }
                 break;
             case 'roles':
-                const roles = changedValues[key];
+                const role = changedValues[key];
 
-                if (!roles) {
-                    setSearch({ ...search, text: "", type: "" });
-                    setRoleSearch({ ...roleSearch, options: [] });
+                if (!role) {
+                    setSearch({ ...search, text: "", type: "", hasFeedback: false, options: [] });
                 }
 
-                if (stringReg.test(roles)) {
-                    setSearch({ ...search, text: roles, type: Tagtype.role });
-                    setRoleSearch({ ...roleSearch, hasFeedback: true, validateStatus: validateStatus.validating });
+                if (stringReg.test(role)) {
+                    setSearch({ ...search, text: role, type: Tagtype.role, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
                 }
                 break;
 
@@ -176,8 +162,40 @@ export default function CourseForm() {
     };
 
     const onFinish = (values: any) => {
-        console.log('Success:', values);
-        console.log("courseState ->  ", course)
+
+        (() => {
+            setIsLoading(true);
+            httpInstance.post(`/microsite/course/`, course)
+                .then((response) => {
+
+
+                    if (!response.data.error) {
+                        setCourse({
+                            title: null,
+                            description: null,
+                            skills: [],
+                            skillIds: [],
+                            roles: [],
+                            roleIds: [],
+                            programs: [],
+                            rruDeepLink: null,
+                            thumbnail: null,
+                            minCourseCoin: null,
+                            courseCoin: null,
+                            careerCoin: null,
+                            createdBy: null,
+                            updatedBy: null,
+                            isActive: true
+                        });
+                    }
+
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    window.alert(`${error.message}`);
+                });
+        })();
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -193,30 +211,57 @@ export default function CourseForm() {
     }
 
     const handlePlusIconClick = (tag: { id: number; name: string; type: string }) => {
-        if (Tagtype.skill === tag.type) {
-            const newSkill = course.skills.concat(tag);
-            setCourse({ ...course, skills: newSkill });
-            setSkillSearch({ ...skillSearch, options: newSkill });
-        };
 
-        if (Tagtype.role === tag.type) {
-            const newRoles = course.roles.concat(tag);
-            setCourse({ ...course, roles: newRoles });
-            setRoleSearch({ ...roleSearch, options: newRoles });
-        };
+
+        if (tag.type === Tagtype.skill) {
+            if (course.skills.length) {
+                const alreadyExists = course.skills.find(selectedSkill => selectedSkill.id === tag.id);
+
+                if (alreadyExists) return;
+            }
+
+            setCourse({
+                ...course,
+                skills: [...course.skills, { id: tag.id, name: tag.name }],
+                skillIds: [...course.skillIds, tag.id]
+            });
+        }
+
+        if (tag.type === Tagtype.role) {
+            if (course.roles.length) {
+                const alreadyExists = course.roles.find(selectedRole => selectedRole.id === tag.id);
+
+                if (alreadyExists) return;
+            }
+
+            setCourse({
+                ...course,
+                roles: [...course.roles, { id: tag.id, name: tag.name }],
+                roleIds: [...course.roleIds, tag.id]
+
+            });
+
+        }
     }
 
     const handleMinusIconClick = (tag: { id: number; name: string; type: string }) => {
         if (Tagtype.skill === tag.type) {
-            const newSkill = course.skills.filter((data) => data.id !== tag.id);
-            setCourse({ ...course, skills: newSkill });
-            setSkillSearch({ ...skillSearch, options: [] });
+            const remainingSkills = course.skills.filter((selectedSkill) => selectedSkill.id !== tag.id);
+
+            setCourse({
+                ...course,
+                skills: remainingSkills,
+                skillIds: remainingSkills.length ? remainingSkills.map((skill: { id: number; }) => skill.id) : []
+            });
         };
 
         if (Tagtype.role === tag.type) {
-            const newRole = course.roles.filter((data) => data.id !== tag.id);
-            setCourse({ ...course, roles: newRole });
-            setRoleSearch({ ...roleSearch, options: [] });
+            const remainingRoles = course.roles.filter((selectedRole) => selectedRole.id !== tag.id);
+            setCourse({
+                ...course,
+                roles: remainingRoles,
+                skillIds: remainingRoles.length ? remainingRoles.map((role: { id: number; }) => role.id) : []
+            });
         }
     }
 
@@ -239,23 +284,20 @@ export default function CourseForm() {
         if (!search.text && !search.type) return;
 
         (() => {
-            setIsLoading(true);
-            httpInstance.get(`/microsite/tag/getTagsByName/?type=${search.type}&name=${search.text}`)
+            httpInstance.get(`/microsite/tag/tags-by-name/?tagType=${search.type}&name=${search.text}`)
                 .then((response) => {
 
                     const result = response.data || [];
 
                     if (!result.length) return;
 
-                    if (Tagtype.role === search.type) {
-                        setRoleSearch({ ...roleSearch, options: response.data.length ? searchResult(result) : [] });
-                    }
+                    setSearch({
+                        ...search,
+                        hasFeedback: true,
+                        validateStatus: validateStatus.success,
+                        options: response.data.length ? searchResult(result) : []
+                    });
 
-                    if (Tagtype.skill === search.type) {
-                        setSkillSearch({ ...skillSearch, options: response.data.length ? searchResult(result) : [] });
-                    }
-
-                    setIsLoading(false);
                 })
                 .catch((error) => {
                     console.log(error.message);
@@ -263,21 +305,29 @@ export default function CourseForm() {
                 });
         })();
 
-    }, [search])
+    }, [search.text, search.type])
+
+
+    const handleValidationStatus = () => {
+        return search.options.length ? "success" : "validating";
+    }
 
     return (
-        <Row style={{ justifyContent: "center" }}>
+        <>{isLoading ? "Loading..." : <Row style={{ justifyContent: "center" }}>
             <Card title="Create Course" bordered={true} style={{ width: 500, textAlign: "center" }}>
                 <Form
                     layout="vertical"
                     name="courseForm"
                     initialValues={{
                         title: course.title,
+                        description: course.description,
                         rruDeepLink: course.rruDeepLink,
                         thumbnail: course.thumbnail,
                         minCourseCoin: course.minCourseCoin,
                         courseCoin: course.careerCoin,
-                        careerCoin: course.careerCoin
+                        careerCoin: course.careerCoin,
+                        skills: search.type === Tagtype.skill ? search.text : "",
+                        roles: search.type === Tagtype.role ? search.text : ""
                     }}
                     onValuesChange={onValuesChange}
                     onFinish={onFinish}
@@ -300,22 +350,19 @@ export default function CourseForm() {
                         <Input.TextArea placeholder="Description" showCount maxLength={200} />
                     </Form.Item>
 
-
-
-
-
-
                     <Form.Item
                         name="skills"
                         label="Skills"
-                        validateStatus="validating"
-                        hasFeedback={skillSearch.hasFeedback}
+                        validateStatus={search.type === Tagtype.skill ? handleValidationStatus() : ""}
+                        hasFeedback={search.hasFeedback}
+                        rules={course.skills.length || course.roles.length ? [{ required: false }] : [{ required: true, message: 'Please select at least one skill or role!' }]}
                     >
                         <AutoComplete
                             style={{ textAlign: "start" }}
                             placeholder='Start Typing Skill Name or Keyword...'
                             allowClear
-                            options={skillSearch.options}
+                            options={search.type === Tagtype.skill ? search.options : []}
+                            value={search.type === Tagtype.skill ? search.text : ""}
                         />
                     </Form.Item>
 
@@ -332,14 +379,16 @@ export default function CourseForm() {
                     <Form.Item
                         name="roles"
                         label="Roles"
-                        validateStatus="validating"
-                        hasFeedback={roleSearch.hasFeedback}
+                        validateStatus={search.type === Tagtype.role ? handleValidationStatus() : ""}
+                        hasFeedback={search.hasFeedback}
+                        rules={course.skills.length || course.roles.length ? [{ required: false }] : [{ required: true, message: 'Please select at least one role or skill!' }]}
                     >
                         <AutoComplete
                             style={{ textAlign: "start" }}
                             placeholder='Start Typing Role Name or Keyword...'
                             allowClear
-                            options={roleSearch.options}
+                            options={search.type === Tagtype.role ? search.options : []}
+                            value={search.type === Tagtype.role ? search.text : ""}
                         />
                     </Form.Item>
 
@@ -402,7 +451,7 @@ export default function CourseForm() {
                     </Form.Item>
                 </Form>
             </Card>
-        </Row >
+        </Row>}</>
     )
 }
 

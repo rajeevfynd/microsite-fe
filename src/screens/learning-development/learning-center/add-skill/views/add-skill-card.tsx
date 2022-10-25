@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Col, Row, Card, List } from 'antd';
 import { PlusCircleOutlined, } from '@ant-design/icons';
+import { Tagtype } from '../../../../../constants/tag';
 
 
 
@@ -10,8 +11,8 @@ export const AddSkillCard = (props: any) => {
     const [helperData, setHelperData] = React.useState([{
         id: 0,
         name: "Add Skill",
-        status: "ACTIVE",
-        type: "SKILL",
+        isActive: true,
+        type: Tagtype.skill,
     }])
 
 

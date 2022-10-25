@@ -78,7 +78,6 @@ export const CourseSearch = (props: any) => {
 
         if (selectedCourses.length) {
             const alreadyExists = selectedCourses.find(selectedCourse => selectedCourse.id === newCourse.id);
-            console.log("exists ", alreadyExists);
 
             if (alreadyExists) return;
         }
@@ -113,12 +112,10 @@ export const CourseSearch = (props: any) => {
 
         setButtonStatus(false);
 
-        console.log("clean clean")
     }, [selectedCourses])
 
 
     const onFinish = (values: any) => {
-        console.log('Success:', selectedCourses);
         handleCourseTagMapping({
             ...courseTagMapping,
             courseIds: selectedCourses.map(selectedCourse => selectedCourse.id),
