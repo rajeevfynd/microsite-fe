@@ -173,6 +173,7 @@ export default function CourseForm() {
                         setCourse({
                             title: null,
                             description: null,
+                            programIds: [],
                             skills: [],
                             skillIds: [],
                             roles: [],
