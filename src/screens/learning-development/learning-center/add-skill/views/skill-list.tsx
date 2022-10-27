@@ -63,7 +63,6 @@ export const SkillList = (props: any) => {
                 .then((response) => {
                     if (!!response.data.length) {
                         setSkillList(response.data);
-                        setMappingStatus(false);
                     }
                     setIsLoading(false);
                 })
@@ -104,7 +103,6 @@ export const SkillList = (props: any) => {
     React.useEffect(() => {
         // Api-> create course tag mapping
 
-        if (!mappingStatus) return;
         if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
 
         (() => {
@@ -116,7 +114,7 @@ export const SkillList = (props: any) => {
                     if (response.data) {
                         setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
                         setIsModalOpen(false);
-                        setMappingStatus(false);
+                        setMappingStatus(!mappingStatus);
                     }
 
                     setIsLoading(false);
@@ -178,7 +176,7 @@ export const SkillList = (props: any) => {
                     : null
                 }
                     <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} handleMappingStatus={setMappingStatus} />
+                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
                         <Divider />
                     </Modal>
                 </>
