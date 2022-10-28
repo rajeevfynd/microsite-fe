@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { MenuProps } from 'antd';
+import { Divider, MenuProps } from 'antd';
 import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import httpInstance from '../../../../../utility/http-client';
@@ -46,16 +46,41 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
         categoryProps.onCategoryListUpdate(categoryList);
     }, [categoryList])
 
+    const css = `
+    #wrapper{overflow:hidden;height:48px;}
+
+    #scrollmenu {
+        overflow: auto;
+        white-space: nowrap;
+    }
+    
+    .menu-item {
+        display: inline-block;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+    }
+    
+    div.scrollmenu a:hover {
+        background-color: #777;
+    }
+        `
 
     return (<>
-        <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} mode="horizontal">
-            {categoryList.map((categoryList) => (
-                <MenuItem key={categoryList.id} > 
-                    {categoryList.category}
-                </MenuItem>
-            ))}
-        </Menu>
-
+        <style>
+            {css}
+        </style>
+    
+        
+        <div id="wrapper">
+            <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} id="scrollmenu"> 
+                {categoryList.map((categoryList) => (
+                    <MenuItem key={categoryList.id} className="menu-item"> 
+                        {categoryList.category}
+                    </MenuItem>
+                ))}
+            </Menu>
+        </div>
     </>);
 };
 

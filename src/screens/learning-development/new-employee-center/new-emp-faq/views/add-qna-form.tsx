@@ -1,18 +1,23 @@
 import * as React from 'react'
-import { Button, Col, Form, Input, Row, Select, Space} from 'antd';
+import { Button, Col, Form, Input, message, Row, Select, Space, Upload, UploadProps} from 'antd';
+import { PlusOutlined} from '@ant-design/icons';
 import { AddQnaFormPropsType } from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
 
 
 const { Option } = Select;
 
+interface uploadAttachmentType  {
+    uid : string,
+    documentId : number
+}
 
 export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
     const {addQnaFormProps} = props;
     const [form] = Form.useForm();
+    const [fileList, setFileList] = React.useState<uploadAttachmentType[]>([])
 
     const onFinish = (values: any) => {
-        console.log(values);
         addQna(values);
     };
 
@@ -23,8 +28,27 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
     const children: React.ReactNode[] = [];
         addQnaFormProps.faqCategoryList.map((categoryOptions) => (
             children.push(<Option key={categoryOptions.id}>{categoryOptions.category}</Option>)
-        ))
+    ))
 
+    const getDocumentIdList = () => {
+        let idList: number[] = []
+        fileList.map((file) => {
+            idList.push(file.documentId)
+        })
+        return idList
+    }
+
+    const handleRemove = (file: any) => {
+        let removeindex = -1;
+
+        for (let i = 0; i < fileList.length; i++) {
+            if(fileList[i].uid == file.uid)
+                removeindex = i;
+        }
+
+        if (removeindex > -1)
+            fileList.splice(removeindex)
+    }
 
         const addQna = (values : any) => {
             const url = "/microsite/faq/add-qna/"
@@ -32,7 +56,8 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                 {
                     categoryList : values.category,
                     question : values.question,
-                    answer : values.answer
+                    answer : values.answer,
+                    attachments : getDocumentIdList()
             })
                 .then(response => {
                     addQnaFormProps.onAddQnaSubmit();
@@ -41,6 +66,27 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                     console.log(error);
                 });
         }
+
+
+        const prop: UploadProps = {
+            name: 'file',
+            action: "/microsite/document/upload",
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                }
+                if (info.file.status === 'done') {
+                    message.success(`${info.file.name} file uploaded successfully`);
+                    let attachment: uploadAttachmentType = {
+                        uid : info.file.uid,
+                        documentId : info.file.response.data.id
+                    }
+                    fileList.push(attachment)
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
+                }
+            },
+        };
+
 
     return (
         <>
@@ -81,6 +127,19 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                     <Input.TextArea/>
                 </Form.Item>
 
+                <Form.Item 
+                    name="attachments"
+                    label="Upload Attachments"
+                >
+                    <Upload  listType="picture-card" {...prop}
+                    onRemove={handleRemove}
+                    >
+                        <div>
+                            <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Upload</div>
+                        </div>
+                    </Upload>
+                    </Form.Item>
                 <Form.Item >
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>

@@ -58,6 +58,21 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         setCurrentPage(page);
         setCurrentOffset(page - 1);
     };
+    
+
+    const getDocument = async (documentId : number)  => {
+        let url : string = ""
+        let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
+        // .then(response => {
+        //     console.log("doc url", response.data.url)
+        //     return response.data.url
+        // })
+        // .catch((error) => {
+        //     console.log(error);
+        // });
+        console.log(docUrl.data.url)
+        return docUrl.data.url
+    }
 
     const qnaProps : QnaPopupPropsType = {
         isModalOpen: isModalOpen,
@@ -69,13 +84,16 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         editQnaOption : editQnaOption
     }
 
+    
+
 
     const getQnaList = () => {
-
+        // console.log("getQnaList called")
         const url = "/microsite/faq/category/" + faqProps.activeCategory + "?offset=" + currentOffset + "&pageSize=10";
         httpInstance.get(url)
             .then(response => {
                 setQnaList(response.data.content)
+                console.log(response.data.content)
                 setTotalElements(response.data.totalElements)
             })
             .catch((error) => {
@@ -106,7 +124,15 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             <Row>
                                 {qnaList.faq.answer}
                             </Row>
-                            <p></p>
+                            {qnaList.faq.attachmentDetails.map((attachment : any) => (
+                                <>
+                                    <a href={getDocument(attachment.documentId)}>
+                                    {getDocument(attachment.documentId)}
+                                        <img width='300' height='300' src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
+                                    </a>
+                                </>
+                            ))}
+                            
                             <Row justify="end">
                                 <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updatedAt).fromNow()}</i></small></div>
                             </Row>

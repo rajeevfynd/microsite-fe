@@ -2,6 +2,7 @@ import { AddQnaOption } from "./enums/faq-add-options";
 import { EditQnaOption } from "./enums/qna-edit-options";
 
 export type QnaType = {
+    attachmentDetails: any;
     id?: number;
     question?: string;
     answer?: string;
