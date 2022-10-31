@@ -6,7 +6,7 @@ import httpInstance from '../../../../../utility/http-client';
 
 
 export const CourseList = (props: any) => {
-    const { handleMappingStatus } = props;
+    const { handleMappingStatus, mappingStatus } = props;
 
     const [courseList, setCourseList] = React.useState([]);
 
@@ -22,7 +22,6 @@ export const CourseList = (props: any) => {
 
         const { tagId, courseId } = data;
 
-        console.log(tagId, courseId);
 
         if (!tagId || !courseId) return;
 
@@ -30,10 +29,8 @@ export const CourseList = (props: any) => {
             httpInstance.delete(`/microsite/course-tag/course-tag-by-course-id-and-tag-id?courseId=${courseId}&tagId=${tagId}`)
                 .then((response) => {
 
-                    console.log(response);
-                    handleMappingStatus(true);
-
-
+                    handleMappingStatus(!mappingStatus);
+                    
                 })
                 .catch((error) => {
                     console.log(error.message);

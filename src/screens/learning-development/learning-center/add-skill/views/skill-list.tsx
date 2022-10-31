@@ -115,9 +115,8 @@ export const SkillList = (props: any) => {
                         setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
-                    }
 
-                    setIsLoading(false);
+                    }
                 })
                 .catch((error) => {
                     console.log(error.message);
@@ -125,7 +124,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [mappingStatus])
+    }, [courseTagMapping])
 
 
     return (
@@ -153,7 +152,7 @@ export const SkillList = (props: any) => {
                                     </div>
                                     <Divider />
 
-                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} />
+                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
 
                                     <Divider />
                                     <Button block>
@@ -176,7 +175,7 @@ export const SkillList = (props: any) => {
                     : null
                 }
                     <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
+                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
                         <Divider />
                     </Modal>
                 </>

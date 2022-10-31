@@ -9,7 +9,7 @@ const validateStatus = {
 }
 
 export const CourseSearch = (props: any) => {
-    const { handleCourseTagMapping, courseTagMapping, handleMappingStatus, mappingStatus } = props;
+    const { handleCourseTagMapping, courseTagMapping } = props;
 
 
     const [buttonStatus, setButtonStatus] = React.useState(true);
@@ -120,7 +120,6 @@ export const CourseSearch = (props: any) => {
             ...courseTagMapping,
             courseIds: selectedCourses.map(selectedCourse => selectedCourse.id),
         });
-        handleMappingStatus(!mappingStatus);
     };
 
     const onFinishFailed = (errorInfo: any) => {
