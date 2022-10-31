@@ -59,10 +59,6 @@ export default function MenuHome() {
                                 onTitleClick={()=>navigateTo('/lnd/learning-center/lnd-hero',false)}
                                 title='Learning Center'>
                                 <Menu.Item
-                                    key='skill'
-                                    onClick={()=>navigateTo('/lnd/learning-center/skill')}>
-                                        Skill</Menu.Item>
-                                        <Menu.Item
                                     key='addSkill'
                                     onClick={()=>navigateTo('/lnd/learning-center/addSkill')}>
                                         Add Skill</Menu.Item>
@@ -74,6 +70,13 @@ export default function MenuHome() {
                                     key='addCourse'
                                     onClick={()=>navigateTo('/lnd/learning-center/addCourse')}>
                                       Add Course</Menu.Item>
+                                      
+
+                                      <Menu.Item key='skill'
+                                    onClick={()=>navigateTo('/lnd/learning-center/skill')}>
+                                        Skill</Menu.Item>
+                                       
+
                                 <Menu.Item
                                     key='role'
                                     onClick={()=>navigateTo('/lnd/learning-center/role')}>

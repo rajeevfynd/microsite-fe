@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AddCourse } from './add-course';
 import { AddRole } from './add-role';
 import { AddSkill } from './add-skill';
+import { LearningByRole } from './learning-by-role';
 import { LearningBySkill } from './learning-by-skill';
 
 export const LNDCenterRouter = () => {
@@ -10,6 +11,7 @@ export const LNDCenterRouter = () => {
         <>
             <Routes>
                 <Route path='/skill' element={<LearningBySkill></LearningBySkill>}></Route>
+                <Route path='/role' element={<LearningByRole></LearningByRole>}></Route>
                 <Route path='/addSkill' element={<AddSkill></AddSkill>}></Route>
                 <Route path='/addRole' element={<AddRole></AddRole>}></Route>
                 <Route path='/addCourse' element={<AddCourse></AddCourse>}></Route>
