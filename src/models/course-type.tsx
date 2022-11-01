@@ -4,3 +4,12 @@ export type Program = {
     duration: number;
     thumbnailLink: string;
 };
+
+export type CourseListType = {
+    id?: number;
+    title?: string;
+    description?: string;
+    thumbnailLink?: string;
+    minCourseCoin?: number;
+    rruDeeplink?: string;
+}
