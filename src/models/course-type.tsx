@@ -9,7 +9,7 @@ export type CourseListType = {
     id?: number;
     title?: string;
     description?: string;
-    thumbnailLink?: string;
+    thumbnail?: string;
     minCourseCoin?: number;
     rruDeeplink?: string;
 }

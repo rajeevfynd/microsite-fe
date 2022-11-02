@@ -70,21 +70,24 @@ const SearchProgram = () => {
                     dataSource={courses}
                     renderItem={item => (
                         <List.Item key={item.title}>
+                            {console.log(item)}
                             <Card
                                 hoverable
+                                style={{
+                                    width: 340,
+                                    height: 300
+                                  }}
                                 cover={
                                     <img
-                                        src={item.thumbnailLink}
+                                        src={item.thumbnail}
                                     />
                                 }
-                                actions={[
-                                    <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(item.id.toString()) }}> Go to Course <ArrowRight /> </Button>
-                                ]}
                             >
                                 <Meta
                                     title={item.title}
-                                    description={<p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.description}</p>}
+                                    description={item.description}
                                 />
+                                <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(item.id.toString()) }}> Go to Course <ArrowRight /> </Button>
                             </Card>
                         </List.Item>
                     )}
