@@ -2,6 +2,8 @@ import { DOWNLOAD_URL, EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
 import { carouselFormtype } from "../models/carousel-form-type"
 import httpInstance from "../utility/http-client"
 
+let debounceTimer:any;
+
 export const getUserPrograms = (url: string) => {
     return httpInstance.get(url)
 }
@@ -31,3 +33,12 @@ export const getCarouselImageData = (d: carouselFormtype) =>{
 export function getPrograms(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/lnd/journeys/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
+
+export function getCourses(key:string = '', page:string = '0', size:string = '8'){
+    return httpInstance.get('/microsite/course/search/?key='+key.toString()+'&page='+page.toString()+'&size='+size)
+}
+
+export const debounce = (callback:any, time:any) => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(callback, time);
+};
