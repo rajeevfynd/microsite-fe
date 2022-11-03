@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import httpInstance from '../../../../../utility/http-client';
 import { FaqCategoryPropType } from '../../../../../models/faq-qna-details';
+import { FAQ_CATEGORY_URL } from '../../../../../constants/urls';
 
 
 export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
@@ -23,7 +24,7 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
 
     const getCategoryList = () => {
 
-        const url = "/microsite/faq"
+        const url = FAQ_CATEGORY_URL
         httpInstance.get(url)
             .then(response => {
                 setCategoryList(response.data)
