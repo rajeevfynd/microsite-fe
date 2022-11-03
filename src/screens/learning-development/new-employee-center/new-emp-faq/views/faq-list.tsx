@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import httpInstance from '../../../../../utility/http-client';
 import { FaqListPropsType, QnaPopupPropsType, QnaType } from '../../../../../models/faq-qna-details';
 import { EditQnaOption } from '../../../../../models/enums/qna-edit-options';
+import { FAQ_LIST_OFFSET, FAQ_LIST_PAGESIZE } from '../../../../../constants/string-constants';
+import { FAQ_LIST_URL } from '../../../../../constants/urls';
 
 
 const { Panel } = Collapse;
@@ -81,7 +83,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
 
     const getQnaList = () => {
         if(faqProps.activeCategory != null){
-        const url = "/microsite/faq/category/" + faqProps.activeCategory + "?offset=" + currentOffset + "&pageSize=10";
+        const url = FAQ_LIST_URL + faqProps.activeCategory + FAQ_LIST_OFFSET + currentOffset + FAQ_LIST_PAGESIZE;
         httpInstance.get(url)
             .then(response => {
                 setQnaList(response.data.content)

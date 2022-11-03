@@ -3,6 +3,7 @@ import { Button, Col, Form, message, Row, Space, Upload,} from 'antd';
 import { UploadOutlined} from '@ant-design/icons';
 import { UploadQnaFormProps } from '../../../../../models/faq-qna-details';
 import axios from 'axios';
+import { FAQ_BULK_UPLOAD_URL } from '../../../../../constants/urls';
 
 
 export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps}) => {
@@ -22,7 +23,7 @@ export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps})
     const handleUpload = async () => {
         const formData = new FormData()
         formData.append('file', file);
-        const url = "/microsite/faq/upload-qna/"
+        const url = FAQ_BULK_UPLOAD_URL
         await axios.post(url, formData)
           .then((response) => {
             uploadQnaFormProps.onUploadQnaSubmit()

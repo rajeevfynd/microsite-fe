@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Button, Checkbox, Col, Form, message, Row, Space } from 'antd';
 import { DeleteFormPropsType} from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
+import { FAQ_DELETE_URL } from '../../../../../constants/urls';
 
 
 export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) => {
@@ -19,7 +20,7 @@ export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) 
 
 
     const deleteQna = (values : any) => {
-        const url = "/microsite/faq/delete-qna/" + deleteQnaFormProps.editQnaDetails.id
+        const url = FAQ_DELETE_URL + deleteQnaFormProps.editQnaDetails.id
         httpInstance.put(url, {
             "categoryList" : values.category
         })

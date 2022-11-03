@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, message, Row, Select, Space, Upload, UploadPr
 import { PlusOutlined} from '@ant-design/icons';
 import { AddQnaFormPropsType } from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
+import { FAQ_ADD_QNA_URL, UPLOAD_IMG } from '../../../../../constants/urls';
 
 
 const { Option } = Select;
@@ -51,7 +52,7 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
     }
 
         const addQna = (values : any) => {
-            const url = "/microsite/faq/add-qna/"
+            const url = FAQ_ADD_QNA_URL
             httpInstance.post(url, 
                 {
                     categoryList : values.category,
@@ -70,7 +71,7 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
 
         const prop: UploadProps = {
             name: 'file',
-            action: "/microsite/document/upload",
+            action: UPLOAD_IMG,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
                 }
