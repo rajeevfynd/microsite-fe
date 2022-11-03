@@ -4,6 +4,7 @@ import { UploadOutlined} from '@ant-design/icons';
 import { UploadQnaFormProps } from '../../../../../models/faq-qna-details';
 import axios from 'axios';
 import { FAQ_BULK_UPLOAD_URL } from '../../../../../constants/urls';
+import { SAMPLE_FAQ_UPLOAD_URL } from '../../../../../constants/string-constants';
 
 
 export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps}) => {
@@ -52,6 +53,9 @@ export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps})
                         <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                 </Form.Item>
+                <p>
+                    <a href={SAMPLE_FAQ_UPLOAD_URL}>Sample Upload File</a>
+                </p>
                 <Form.Item >
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>
