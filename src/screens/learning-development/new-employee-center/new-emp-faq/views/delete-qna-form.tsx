@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Checkbox, Col, Form, Row, Space } from 'antd';
+import { Button, Checkbox, Col, Form, message, Row, Space } from 'antd';
 import { DeleteFormPropsType} from '../../../../../models/faq-qna-details';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -24,11 +24,10 @@ export const DeleteQnaForm = (props: {deleteQnaFormProps :DeleteFormPropsType}) 
             "categoryList" : values.category
         })
             .then(response => {
-                console.log("editt called")
                 deleteQnaFormProps.onQnaDeleteOk();
             })
             .catch((error) => {
-                console.log(error);
+                message.error(error);
             });
     }
 

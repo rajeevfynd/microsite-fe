@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Button, Col, Form, Input, message, Row, Select, Space, Upload, UploadProps} from 'antd';
+import { Button, Col, Form, Input, message, Row, Select, Space, Upload, UploadFile, UploadProps} from 'antd';
 import { QnaFormPropsType } from '../../../../../models/faq-qna-details';
-import { PlusOutlined, MinusOutlined} from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EyeOutlined} from '@ant-design/icons';
 import httpInstance from '../../../../../utility/http-client';
 
 
@@ -20,16 +20,11 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
     const [fileList, setFileList] = React.useState<uploadAttachmentType[]>([])
 
     const onFinish = (values: any) => {
-        console.log(values);
         updateQna(values);
     };
 
     const onReset = () => {
         form.resetFields();
-    };
-
-    const handleChange = (value: Array<string>) => {
-        console.log(`selected ${value}`);
     };
 
     const handleActiveCategoryList = () => {
@@ -46,26 +41,48 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
         }
 
         if (removeindex > -1)
-            fileList.splice(removeindex)
+            fileList.splice(removeindex, 1)
+    }
+
+    const getDocumentIdList = () => {
+        let idList: number[] = []
+        fileList.map((file) => {
+            idList.push(file.documentId)
+        })
+        return idList
+    }
+
+    const getDefaultFileList = () : UploadFile[]=> {
+        let defaultFileList : UploadFile[] = [];
+        let qnaDetails = qnaFormProps.editQnaDetails
+        qnaDetails.attachmentDetails.forEach((element: any) => {
+            defaultFileList.push({
+                "uid" : element.documentId ,
+                "name" : "xyz.png",
+                "status" : 'done',
+                "thumbUrl" : `data:image/png;base64,${element.thumbnailUrl}`,
+                "url" : ""
+                })
+        });
+        return defaultFileList
     }
 
     const updateQna = (values : any) => {
-        console.log(currentActiveCategory)
         const url = "/microsite/faq/edit-qna/" + editQnaId
         httpInstance.put(url, {
             "updatedCategoryList" : values.category,
             "qnaDetails" : {
-                "id" : editQnaId,
-                "question" : values.question,
-                "answer" : values.answer,
-                "files" : [],
+                id : editQnaId,
+                question : values.question,
+                answer : values.answer,
+                attachments : getDocumentIdList(),
             }
         })
             .then(response => {
                 qnaFormProps.onQnaEditOk();
             })
             .catch((error) => {
-                console.log(error);
+                message.error(error);
             });
     }
 
@@ -87,45 +104,29 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
                 message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
             }
         },
-        defaultFileList: [
-            {
-              uid: '1',
-              name: 'xxx.png',
-              status: 'done',
-              response: 'Server Error 500', // custom error message to show
-              thumbUrl : 'data:image/png;base64,${qnaFormProps.editQnaDetails.attachmentDetails[0].thumbnailUrl}',
-              url: 'http://www.google.com/',
-            },
-            {
-              uid: '2',
-              name: 'yyy.png',
-              status: 'done',
-              thumbUrl: "",
-              url: 'http://www.google.com/',
-            },
-            {
-              uid: '3',
-              name: 'zzz.png',
-              status: 'error',
-              response: 'Server Error 500', // custom error message to show
-              thumbUrl: "",
-              url: 'http://www.google.com/',
-            },
-          ],
-          showUploadList: {
+        defaultFileList: getDefaultFileList(),
+        showUploadList: {
             showDownloadIcon: false,
-            // downloadIcon: 'Download',
             showRemoveIcon: true,
-            removeIcon: <MinusOutlined onClick={e => console.log(e, 'custom removeIcon event')} />,
-          },
+            removeIcon: <DeleteOutlined onClick={e => console.log(e)} />,
+            previewIcon: <EyeOutlined  onClick={e => console.log(e, 'custom previewIcon event')} />
+        },
     };
 
 
+    const setInitialFileList = () => {
+        qnaFormProps.editQnaDetails.attachmentDetails.forEach((file: any) => {
+            fileList.push({
+                uid : file.documentId,
+                documentId : file.documentId
+            })
+        });
+    }
+
     React.useEffect(() => {
-        console.log(qnaFormProps.editQnaDetails)
         handleActiveCategoryList()
         setEditQnaId(qnaFormProps.editQnaDetails.id)
-        console.log(qnaFormProps.editQnaDetails)
+        setInitialFileList()
     }, [qnaFormProps.currentActiveCategory])
 
     return (
@@ -160,7 +161,6 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Please select the Category"
-                        onChange={handleChange}
                         >
 
                         {qnaFormProps.categoryList.map((categoryOptions) => (

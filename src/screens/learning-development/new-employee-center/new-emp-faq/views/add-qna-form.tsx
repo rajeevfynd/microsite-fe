@@ -47,7 +47,7 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
         }
 
         if (removeindex > -1)
-            fileList.splice(removeindex)
+            fileList.splice(removeindex, 1)
     }
 
         const addQna = (values : any) => {
@@ -63,7 +63,7 @@ export const AddQnaForm = (props: {addQnaFormProps : AddQnaFormPropsType}) => {
                     addQnaFormProps.onAddQnaSubmit();
                 })
                 .catch((error) => {
-                    console.log(error);
+                    message.error(error);
                 });
         }
 

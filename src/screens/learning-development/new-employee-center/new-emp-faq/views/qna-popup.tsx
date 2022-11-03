@@ -36,7 +36,7 @@ import { DeleteQnaForm } from './delete-qna-form';
     return (
         <Modal
             destroyOnClose={true}
-            visible={qnaProps.isModalOpen}
+            open={qnaProps.isModalOpen}
             title={qnaProps.modalTitle}
             footer={null}
             onCancel={qnaProps.handleCancel}

@@ -27,7 +27,7 @@ export const AddQnaPopup = (props:{addQnaProps : AddQnaPopupPropsType}) => {
     return (
         <Modal
             destroyOnClose={true}
-            visible={addQnaProps.isModalOpen}
+            open={addQnaProps.isModalOpen}
             title={addQnaProps.modalTitle}
             footer={null}
             onCancel={addQnaProps.onAddQnaCancel}

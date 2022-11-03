@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Row, Collapse, Pagination, PaginationProps , } from 'antd';
+import { Row, Collapse, Pagination, PaginationProps, message , } from 'antd';
 import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
@@ -60,18 +60,10 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
     };
     
 
-    const getDocument = async (documentId : number)  => {
+    const handleImgClick = async (documentId : number)  => {
         let url : string = ""
         let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
-        // .then(response => {
-        //     console.log("doc url", response.data.url)
-        //     return response.data.url
-        // })
-        // .catch((error) => {
-        //     console.log(error);
-        // });
-        console.log(docUrl.data.url)
-        return docUrl.data.url
+        window.open(docUrl.data.url, '_blank').focus();
     }
 
     const qnaProps : QnaPopupPropsType = {
@@ -88,17 +80,17 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
 
 
     const getQnaList = () => {
-        // console.log("getQnaList called")
+        if(faqProps.activeCategory != null){
         const url = "/microsite/faq/category/" + faqProps.activeCategory + "?offset=" + currentOffset + "&pageSize=10";
         httpInstance.get(url)
             .then(response => {
                 setQnaList(response.data.content)
-                console.log(response.data.content)
                 setTotalElements(response.data.totalElements)
             })
             .catch((error) => {
-                console.log(error);
+                message.error(error);
             });
+        } 
     }
 
     React.useEffect(() => {
@@ -113,6 +105,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
             </Row>
             <Collapse activeKey={activeKey} onChange={handlePanelChange}>
                 {qnaList.map((qnaList) => (
+                    
                     <Panel header={qnaList.faq.question} key={qnaList.faq.id} 
                         extra={<CornerIcons
                                 qnaId={qnaList.faq.id}
@@ -125,12 +118,9 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                                 {qnaList.faq.answer}
                             </Row>
                             {qnaList.faq.attachmentDetails.map((attachment : any) => (
-                                <>
-                                    <a href={getDocument(attachment.documentId)}>
-                                    {getDocument(attachment.documentId)}
-                                        <img width='300' height='300' src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
-                                    </a>
-                                </>
+                                <Row>
+                                    <img width='150' height='150' onClick={() => handleImgClick(attachment.documentId)} src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>   
+                                </Row>
                             ))}
                             
                             <Row justify="end">

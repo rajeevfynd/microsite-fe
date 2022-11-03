@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Divider, MenuProps } from 'antd';
+import { Divider, MenuProps, message } from 'antd';
 import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import httpInstance from '../../../../../utility/http-client';
@@ -30,7 +30,7 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
                 updateActiveCategory(response.data[0].id.toString());
             })
             .catch((error) => {
-                console.log(error);
+                message.error(error);
             });
     }
 

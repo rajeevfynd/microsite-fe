@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Button, Col, Form, Row, Space, Upload,} from 'antd';
+import { Button, Col, Form, message, Row, Space, Upload,} from 'antd';
 import { UploadOutlined} from '@ant-design/icons';
 import { UploadQnaFormProps } from '../../../../../models/faq-qna-details';
+import axios from 'axios';
 
 
 export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps}) => {
@@ -10,28 +11,25 @@ export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps})
     const [file, setFile] = React.useState();
 
     const onFinish = (fileList: any) => {
-        uploadQnaFormProps.onUploadQnaSubmit()
         handleUpload()
     };
 
     const handleBeforeUpload = (file: any, fileList: any) => {
         setFile(file)
+        return false
     }
 
-
-    const handleUpload = () => {
+    const handleUpload = async () => {
         const formData = new FormData()
         formData.append('file', file);
         const url = "/microsite/faq/upload-qna/"
-        fetch(url, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            authorization: 'authorization-text',
-        },
-        })
-          .then(res => res.json())
-      };
+        await axios.post(url, formData)
+          .then((response) => {
+            uploadQnaFormProps.onUploadQnaSubmit()
+            message.info("File Uploaded Successfully")
+            })
+          .catch((e) => (message.info(e)))
+    };
       
 
     
