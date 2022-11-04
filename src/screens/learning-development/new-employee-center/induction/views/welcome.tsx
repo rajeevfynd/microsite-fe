@@ -22,7 +22,6 @@ export const Welcome = () => {
         isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE
       })
       setActiveCollapseKey(() => { return (res.data.completeStatus == CompleteStatus.COMPLETE) ? '2' : '1' })
-      console.log(res.data.completeStatus == CompleteStatus.COMPLETE)
     })
   }
 
@@ -35,6 +34,7 @@ export const Welcome = () => {
 
   const getInductionJourneyDetails = () => {
     getActiveInductionJourney().then(res => {
+
       processData(res.data);
     }
     )

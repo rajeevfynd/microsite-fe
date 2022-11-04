@@ -19,7 +19,6 @@ export const AdminInduction = () => {
         fileUrl: res.data.fileUrl,
         isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE
       })
-      console.log(res.data.completeStatus == CompleteStatus.COMPLETE)
     })
   }
 
