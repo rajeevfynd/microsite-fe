@@ -23,8 +23,7 @@ const RadioUi = (props: radioProps) => {
               id={props.qId}
               className="form-check-input"
               type="radio"
-              name={props.optionText}
-              // checked={value}
+              name={props.qId}
               onChange={handleChange}
             />
             <label className="form-check-label" htmlFor={props.optionText}>

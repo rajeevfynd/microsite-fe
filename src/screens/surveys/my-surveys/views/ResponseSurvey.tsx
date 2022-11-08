@@ -6,6 +6,10 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ResCheckBoxUi from "./options/ResCheckBoxUi";
 import ResRadioUi from "./options/ResRadioUi";
+import {
+  getSurveyById,
+  getSurveyResponseById,
+} from "../../../../service/survey-service";
 const ResponseSurvey = () => {
   /// two params surveyId and AssigneeID
   const params = useParams();
@@ -21,7 +25,7 @@ const ResponseSurvey = () => {
         id: "",
         questionText: "",
         questionType: "",
-        choice: [{ choiceText: "" }],
+        choices: [{ choiceText: "" }],
       },
     ],
   });
@@ -52,7 +56,7 @@ const ResponseSurvey = () => {
     return (
       <>
         <div className="form-check">
-          {survey.questions[i].choice.map((op: { choiceText: string }) => (
+          {survey.questions[i].choices.map((op: { choiceText: string }) => (
             <div>
               <ResRadioUi
                 key={i}
@@ -75,7 +79,7 @@ const ResponseSurvey = () => {
         {
           <ResCheckBoxUi
             key={i.toString()}
-            choice={survey.questions[i].choice}
+            choice={survey.questions[i].choices}
             qId={questionID}
             checkAnswer={response[questionID]}
           />
@@ -91,31 +95,22 @@ const ResponseSurvey = () => {
         return checkBoxUI(i);
       default:
         let questionID = survey.questions[i].id;
-        // resBody.responses.map((r, j) => {
-        //   if (r.questionId === survey.questions[i].id) {
-        //     console.log("Answer", r.answer);
-        //     correct = r.answer;
-        //   }
-        // });
         return <TextArea value={...response[questionID]} disabled></TextArea>;
     }
   };
   const getSurveyResponse = async () => {
-    const res = await axios.get(
-      `http://localhost:8082/microsite/assignee/response/${params.assigneeId}`
-    );
-    console.log("Assignee res", res.data.data);
-    setResponse(res.data.data);
+    const res = await getSurveyResponseById(params.assigneeId);
+    console.log("Assignee res", res.data);
+    setResponse(res.data);
   };
-
   React.useEffect(() => {
     setIsLoading(true);
-    getSurveyResponse().then((re) => {
-      axios
-        .get(`http://localhost:8082/microsite/survey/survey/${params.id}`)
+
+    getSurveyResponse().then((res) => {
+      getSurveyById(params.surveyId)
         .then((res) => {
-          //console.log("This is res.data ", res.data.data);
-          setSurvey(res.data.data);
+          console.log("Response", res.data);
+          setSurvey(res.data);
         })
         .catch((err) => console.log(err.message));
     });

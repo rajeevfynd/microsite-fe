@@ -1,11 +1,14 @@
 .question_form {
   background-color: #f4f4f9;
+  min-height: 70vh;
   height: 100%;
+  width: 100%;
+  bottom: 0px;
 }
 
 .section {
   margin: auto;
-  width: 80%;
+  width: 60%;
 }
 
 .question_form_top {
@@ -42,53 +45,4 @@
   border-bottom: 1px solid #f4f4f9;
   color: black;
   height: 20px;
-}
-
-.name-div {
-  width: 100%;
-  border-left: 4px solid rgb(58, 58, 183);
-  background-color: rgb(243, 241, 241);
-  border-radius: 8px;
-  /* padding: 25px; */
-  font-family: Roboto, Sans-serif;
-}
-
-.name {
-  padding-top: 20px;
-  padding-left: 25px;
-  padding-bottom: 10px;
-  font-size: 12pt;
-}
-
-.required {
-  font-size: 13px;
-  color: red;
-}
-
-.options {
-  padding-left: 25px;
-  padding-bottom: 25px;
-  font-size: 15px;
-}
-
-.input-div input {
-  width: 300px;
-  border: 0;
-  outline: 0;
-  border-bottom: 1.5px solid #dcd7d7;
-  font-size: 15px;
-}
-
-[data-theme="compact"]
-  .site-collapse-custom-collapse
-  .site-collapse-custom-panel,
-.site-collapse-custom-collapse .site-collapse-custom-panel {
-  overflow: hidden;
-  background: #f2f1f7;
-  border: 0px;
-  border-radius: 2px;
-}
-
-.btn {
-  background-color: rgb(58, 58, 183);
 }

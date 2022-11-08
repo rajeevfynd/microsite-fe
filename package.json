@@ -40,6 +40,7 @@
     "antd": "^4.22.8",
     "bootstrap": "^5.2.1",
     "dotenv": "^16.0.3",
+    "html2canvas": "^1.4.1",
     "react": "^18.2.0",
     "react-bootstrap-icons": "^1.8.4",
     "react-cookie": "^4.1.1",

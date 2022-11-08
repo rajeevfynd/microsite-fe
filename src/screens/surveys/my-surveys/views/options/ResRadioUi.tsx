@@ -21,7 +21,7 @@ const ResRadioUi = (props: radioProps) => {
               key={props.i}
               className="form-check-input"
               type="radio"
-              name="flexRadioDefault"
+              name={props.qId}
               onChange={handleChange}
               checked={props.radioAnswer}
               disabled

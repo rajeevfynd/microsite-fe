@@ -17,7 +17,6 @@ const tabListNoTitle = [
 ];
 
 const contentListNoTitle: Record<string, React.ReactNode> = {
-  //   survyes: <Survey />,
   survyes: <SurveyList />,
   app: <CompletedSurveyList />,
 };

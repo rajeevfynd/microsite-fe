@@ -1,7 +1,7 @@
 import * as React from "react";
-import Survey from "./Survey";
-import Tab from "./Tabs";
-import "../created-surveys/questionForm.css";
+import Survey from "./views/Survey";
+import Tab from "./views/Tabs";
+import "../created-surveys/views/questionForm.css";
 
 function MySurveys() {
   return (

@@ -1,6 +1,6 @@
 import * as React from "react";
-import "./questionForm.css";
-import SurveyList from "./SurveyList";
+import "../new-survey/views/questionForm.css";
+import SurveyList from "./views/SurveyList";
 
 function CreatedSurvey() {
   return (

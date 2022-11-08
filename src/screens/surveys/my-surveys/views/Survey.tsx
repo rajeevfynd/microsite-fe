@@ -4,10 +4,13 @@ import * as React from "react";
 import TextArea from "antd/lib/input/TextArea";
 import RadioUi from "./options/RadioUI";
 import CheckBoxUi from "./options/CheckBoxUi";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import {
+  getSurveyById,
+  submitSurvey,
+} from "../../../../service/survey-service";
+import "../../new-survey/views/questionForm.css";
 const Survey = () => {
-  /// two params surveyId and AssigneeID
   const params = useParams();
   let navigate = useNavigate();
   const [survey, setSurvey] = React.useState({
@@ -19,7 +22,7 @@ const Survey = () => {
         id: "",
         questionText: "",
         questionType: "",
-        choice: [{ choiceText: "" }],
+        choices: [{ choiceText: "" }],
       },
     ],
   });
@@ -54,17 +57,18 @@ const Survey = () => {
   const radioUI = (i: number) => {
     return (
       <>
-        {/* className="form-check" */}
         <div className="form-check">
           <div>
-            {survey.questions[i].choice.map((op: { choiceText: string }, j) => (
-              <RadioUi
-                key={j}
-                optionText={op.choiceText}
-                handleRadioResponse={handleRadioResponse}
-                qId={survey.questions[i].id}
-              />
-            ))}
+            {survey.questions[i].choices.map(
+              (op: { choiceText: string }, j) => (
+                <RadioUi
+                  key={j}
+                  optionText={op.choiceText}
+                  handleRadioResponse={handleRadioResponse}
+                  qId={survey.questions[i].id}
+                />
+              )
+            )}
           </div>
         </div>
       </>
@@ -88,7 +92,7 @@ const Survey = () => {
       <>
         {
           <CheckBoxUi
-            choice={survey.questions[i].choice}
+            choice={survey.questions[i].choices}
             qId={survey.questions[i].id}
             handleCheckBoxResponse={handleCheckBoxResponse}
           />
@@ -136,29 +140,24 @@ const Survey = () => {
   };
 
   React.useEffect(() => {
-    axios
-      .get(`http://localhost:8082/microsite/survey/survey/${params.id}`)
+    console.log("Inside UseEffect");
+    console.log(params.surveyId);
+    getSurveyById(params.surveyId)
       .then((res) => {
-        console.log("This is res.data ", res.data);
-        setSurvey(res.data.data);
+        console.log("Get survey By id", res.data);
+        setSurvey(res.data);
       })
       .catch((err) => console.log(err.message));
   }, []);
-
   const handleSubmit = () => {
     let resBody = {
-      id: params.assigneeId,
       surveyId: survey.id,
-      userId: 11,
       completed: true,
       responses: response,
     };
     console.log(resBody);
-    axios
-      .post("http://localhost:8082/microsite/assignee/submit/survey/", resBody)
-      .then((res) => {
-        navigate("/survey/my-surveys");
-      })
+    submitSurvey(resBody)
+      .then((res) => navigate("/survey/my-surveys"))
       .catch((err) => console.log(err.message));
   };
 
@@ -177,17 +176,18 @@ const Survey = () => {
                 </div>
               </div>
               <div className="container" style={{ paddingTop: "10px" }}>
-                {survey.questions.map((q, i) => (
+                {survey.questions.map((question, index) => (
                   <>
                     <div
+                      key={question.id}
                       className="card"
                       style={{
                         borderLeft: "4px solid rgb(66, 90, 245)",
                       }}
                     >
-                      <div className="card-header">{q.questionText}</div>
+                      <div className="card-header">{question.questionText}</div>
                       <div className="card-body">
-                        {handleSwitch(q.questionType, i)}
+                        {handleSwitch(question.questionType, index)}
                       </div>
                     </div>
                     <br></br>
