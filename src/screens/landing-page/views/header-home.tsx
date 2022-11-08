@@ -1,12 +1,21 @@
 import { Col, Row } from 'antd'
-import Layout from 'antd/lib/layout/layout'
 import * as React from 'react'
 import { getDefaulProPicUrl, getSiteTitle } from '../../../service/landing-page-service'
-import { getBasicUserDetails } from '../../../service/user-service'
 import './../index.css'
 import { Image } from 'antd';
+import { getUser } from '../../../utility/user-utils';
 
 const HeaderHome = () => {
+  
+  const user:any = getUser()
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('')
+  React.useEffect( ()=> {
+    if(user){
+      setFirstName(user.firstName)
+      setLastName(user.lastName)
+    }
+  })
   
   return (
       <>
@@ -16,16 +25,14 @@ const HeaderHome = () => {
           </Col>
           <Col span={3} offset={16}>
             <div className='username-container'>
-              <h6 className='header-text username'>{getBasicUserDetails().firstName}</h6>
-              <h6 className='header-text username'>{getBasicUserDetails().lastName}</h6>
+              <h6 className='header-text username'>{firstName}</h6>
+              <h6 className='header-text username'>{lastName}</h6>
             </div>
           </Col>
           <Col>
           <Image
               className='pro-pic'
-              width={60}
-              height={60}
-              src={getBasicUserDetails().proPicUrl}
+              src=''
               fallback={getDefaulProPicUrl()}
             />
           </Col>

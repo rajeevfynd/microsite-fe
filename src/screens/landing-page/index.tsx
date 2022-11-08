@@ -1,6 +1,5 @@
 import { Layout } from 'antd/lib'
 import { Content, Footer, Header } from 'antd/lib/layout/layout'
-import Sider from 'antd/lib/layout/Sider'
 import * as React from 'react'
 import { MenuRouter } from './menu-router'
 import FooterHome from './views/footer-home'
@@ -15,12 +14,10 @@ const LandingPage = () => {
                 <HeaderHome></HeaderHome>
             </Header>
         </Layout>
+        <div className='menu'>
+            <MenuHome></MenuHome>
+        </div>
         <Layout className='body'>
-            <div>
-            <Sider width={400}>
-                <MenuHome></MenuHome>
-            </Sider>
-            </div>
             <div className='content'>
             <Content>
                 <MenuRouter></MenuRouter>
