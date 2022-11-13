@@ -30,11 +30,12 @@ const RadioUi = (props: radioProps) => {
               <Input
                 placeholder="Enter option"
                 value={props.optionText}
+                required
                 onChange={(e) => props.handleOPtionIn(e, props.i, props.j)}
               />
             </>
           </div>
-          <div className="col-6">
+          <div className="col-6" data-html2canvas-ignore="true">
             <PlusCircleTwoTone
               onClick={(e) => props.handleAddOption(props.i, props.j)}
             />

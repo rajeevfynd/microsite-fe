@@ -142,38 +142,6 @@ function SurveyList() {
                     >
                       <Meta title={s.surveyTitle} />
                     </Card>
-                    {/* <div className="card">
-                      <div className="card-header">
-                        <div className="row">
-                          <div className="col-8">{s.surveyTitle}</div>
-                          <div className="col-4">
-                            <div
-                              style={{ position: "relative", float: "right" }}
-                            >
-                              <EditTwoTone
-                                onClick={(e) =>
-                                  navigate(
-                                    `/survey/created-surveys/edit/${s.id}`
-                                  )
-                                }
-                              />{" "}
-                              <DeleteOutlined
-                                style={{ color: "red" }}
-                                onClick={(e) => deleteSurvey(s.id)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="card-body">
-                        <p>{s.description} </p>
-                        <div style={{ position: "relative", float: "right" }}>
-                          <InfoCircleFilled
-                            onClick={(e) => assigneeSurvey(s.id)}
-                          />
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 ))}
           </div>

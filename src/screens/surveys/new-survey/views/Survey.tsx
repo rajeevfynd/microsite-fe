@@ -58,6 +58,8 @@ const Survey = () => {
   const [edit, setEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [imgId, setImgId] = React.useState("");
+  const [imgString, setImgString] = React.useState("");
+  const [visible, setVisible] = React.useState(false);
   const newQuestion = {
     id: "",
     questionText: "",
@@ -123,7 +125,7 @@ const Survey = () => {
   const radioUI = (i: number) => {
     return (
       <>
-        <div className="form-check">
+        <div className="form-check ">
           {Survey.questions[i].choices.map((op, j) => (
             <RadioUi
               i={i}
@@ -222,17 +224,19 @@ const Survey = () => {
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isLt2M) {
       message.error("Image must smaller than 2MB!");
     }
     return isJpgOrPng && isLt2M;
   };
   const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
+    <>
+      <div>
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>
+    </>
   );
   const showPopconfirm = () => {
     setOpen(true);
@@ -261,6 +265,7 @@ const Survey = () => {
   };
 
   const uploadImage = () => {
+    //handleSubmit(); //// needs to change
     return (
       <>
         <Upload {...prop}>
@@ -280,11 +285,64 @@ const Survey = () => {
     console.log("Clicked cancel button");
     setOpen(false);
   };
+
   const formData = new FormData();
   const takeScreenShot = async () => {
-    let canvas = await html2canvas(document.getElementById("TakeScreenShot"));
-    const baseImg = canvas.toDataURL();
-    return baseImg;
+    var formatOutput = "image/png";
+    html2canvas(document.getElementById("TakeScreenShot")).then((canvas) => {
+      //canvas.delete
+      var context = canvas.getContext("2d"); //context from originalCanvas
+      var tmpCanvas = document.createElement("canvas");
+      tmpCanvas.width = canvas.width;
+      console.log("Width :", canvas.width);
+      tmpCanvas.height = canvas.height;
+      console.log("Hiegth :", canvas.height);
+      var context2 = canvas.getContext("2d"); //context from tmpCanvas
+      var imageObj = new Image();
+      imageObj.onload = function () {
+        //setup: draw cropped image
+        var sourceX = 0;
+        var sourceY = 0;
+        var sourceWidth = 1560;
+        var sourceHeight = 1200;
+        var destWidth = sourceWidth;
+        var destHeight = sourceHeight;
+        var destX = canvas.width / 2 - destWidth / 2;
+        var destY = canvas.height / 2 - destHeight / 2;
+        context2.drawImage(
+          imageObj,
+          sourceX,
+          sourceY,
+          sourceWidth,
+          sourceHeight,
+          destX,
+          destY,
+          destWidth,
+          destHeight
+        );
+        var data = context2.getImageData(
+          sourceX,
+          sourceY,
+          sourceWidth,
+          sourceHeight
+        );
+        context.clearRect(0, 0, canvas.width, canvas.height); //clear originalCanvas
+        canvas.width = sourceWidth;
+        canvas.height = sourceHeight;
+        context2.putImageData(data, 0, 0);
+        // callBackFuntion(canvas.toDataURL(formatOutput));
+        setImgString(canvas.toDataURL(formatOutput));
+        // console.log("TakeScreenShot ", canvas.toDataURL(formatOutput));
+        //memory!!!
+        context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
+        context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
+        data = null;
+        tmpCanvas = null;
+        canvas = null;
+        imageObj = null;
+      };
+      imageObj.src = tmpCanvas.toDataURL("image/png");
+    });
   };
 
   function DataURIToBlob(dataURI: string) {
@@ -305,16 +363,7 @@ const Survey = () => {
   async function handleSubmit() {
     console.log("Image lemgth =", imgId.length);
     if (imgId.length == 0) {
-      console.log("Inside take screenshot");
-      const baseImg = await takeScreenShot();
-      const file = DataURIToBlob(baseImg);
-      formData.append("file", file, "image.png");
-      console.log("Submit ", formData);
-      const res = await uploadImageToserver(formData);
-      console.log("Screnshot id", res.data.id);
-      setImgId(res.data.id);
-      console.log("Image id", imgId.length);
-      submitForm(res.data.id);
+      takeScreenShot();
     } else {
       submitForm(imgId);
     }
@@ -391,6 +440,26 @@ const Survey = () => {
     }
   }, [params.id]);
 
+  React.useEffect(() => {
+    if (imgString) {
+      console.log("ScreenShot Image", imgString); //   console.log("Inside take screenshot");
+      const file = DataURIToBlob(imgString);
+      formData.append("file", file, "image.png");
+      console.log("Submit ", formData);
+      uploadImageToserver(formData)
+        .then((res) => {
+          setImgId(res.data.id);
+          submitForm(res.data.id);
+        })
+        .catch((err) => openNotificationWithIcon("error", err.message));
+
+      console.log("Submit Screnhot form");
+    } else {
+      console.log("Image is undefiend");
+      console.log("No submit the screenshot");
+    }
+  }, [imgString]);
+
   return (
     <>
       {isLoading ? (
@@ -410,10 +479,12 @@ const Survey = () => {
                     placeholder="Survey Title"
                     value={surveyTitle}
                     onChange={(e) => setSurveyTitle(e.target.value)}
+                    required
                   ></input>
+
                   <input
                     type="text"
-                    className="question_form_top_desc"
+                    className="question_form_top_desc "
                     style={{ color: "black" }}
                     placeholder="Survey description"
                     name="description"
@@ -421,85 +492,92 @@ const Survey = () => {
                     required
                     onChange={(e) => setDescription(e.target.value)}
                   ></input>
+                  <div className="valid-feedback">Looks good!</div>
                 </div>
               </div>
+
               <div className="container" style={{ paddingTop: "10px" }}>
-                {Survey.questions.map((_q, _i) => (
-                  <>
-                    <form key={_q.id}>
-                      <div
-                        className="card"
-                        style={{
-                          borderLeft: "4px solid rgb(66, 90, 245)",
-                        }}
-                      >
-                        <div className="card-header">
-                          <div className="row">
-                            <div className="col-6">
-                              <div className="input-group ">
-                                <input
-                                  key={_i}
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Question"
-                                  aria-label="questionText"
-                                  name="questionText"
-                                  aria-describedby="basic-addon1"
-                                  value={_q.questionText}
-                                  onChange={(e) => handleQuestionText(e, _i)}
-                                  required
-                                />
-                              </div>
+                {Survey.questions.map((question, index) => (
+                  <div key={question.id}>
+                    <div
+                      className="card"
+                      style={{
+                        borderLeft: "4px solid rgb(66, 90, 245)",
+                      }}
+                    >
+                      <div className="card-header">
+                        <div className="row">
+                          <div className="col-6">
+                            <div className="input-group ">
+                              <input
+                                key={index}
+                                id="validationCustom01"
+                                type="text"
+                                className="form-control"
+                                placeholder="Question"
+                                aria-label="questionText"
+                                name="questionText"
+                                aria-describedby="basic-addon1"
+                                value={question.questionText}
+                                onChange={(e) => handleQuestionText(e, index)}
+                                required
+                              />
                             </div>
+                          </div>
 
-                            <div className="col-4">
-                              <Select
-                                defaultValue={
-                                  _q.questionType.length < 1
-                                    ? "TextArea"
-                                    : _q.questionType
-                                }
-                                onChange={(e) => handleSelect(e, _i)}
-                              >
-                                <Option value="SINGLE_CHOICE">
-                                  <Radio />
-                                  SINGLE CHOICE
-                                </Option>
+                          <div className="col-4" data-html2canvas-ignore="true">
+                            <Select
+                              defaultValue={
+                                question.questionType.length < 1
+                                  ? "TextArea"
+                                  : question.questionType
+                              }
+                              onChange={(e) => handleSelect(e, index)}
+                            >
+                              <Option value="SINGLE_CHOICE">
+                                <Radio />
+                                SINGLE CHOICE
+                              </Option>
 
-                                <Option value="MULTIPLE_CHOICE">
-                                  <CheckSquareTwoTone /> MULTIPLE CHOICE
-                                </Option>
+                              <Option value="MULTIPLE_CHOICE">
+                                <CheckSquareTwoTone /> MULTIPLE CHOICE
+                              </Option>
 
-                                <Option value="SMALL_TEXT">
-                                  <AlignLeftOutlined /> Paragraph
-                                </Option>
-                              </Select>
-                            </div>
+                              <Option value="SMALL_TEXT">
+                                <AlignLeftOutlined /> Paragraph
+                              </Option>
+                            </Select>
+                          </div>
 
-                            <div className="col-2">
-                              <div
-                                style={{ position: "absolute", float: "right" }}
-                              >
-                                <DeleteOutlined
-                                  style={{ color: "red" }}
-                                  onClick={(e) => DeleteQuestion(e, _i)}
-                                />
-                              </div>
+                          <div className="col-2">
+                            <div
+                              style={{ position: "absolute", float: "right" }}
+                            >
+                              <DeleteOutlined
+                                data-html2canvas-ignore="true"
+                                style={{ color: "red" }}
+                                onClick={(e) => DeleteQuestion(e, index)}
+                              />
                             </div>
                           </div>
                         </div>
-
-                        <div className="card-body">
-                          <div>{handleSwitch(_q.questionType, _i)}</div>
-                        </div>
                       </div>
-                      <br />
-                    </form>
-                  </>
+
+                      <div className="card-body">
+                        <div>{handleSwitch(question.questionType, index)}</div>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
                 ))}
-                <Button type="primary" onClick={(e) => addQuestion(e)}>
+                <Button
+                  type="primary"
+                  onClick={(e) => addQuestion(e)}
+                  data-html2canvas-ignore="true"
+                >
                   Add Question
                 </Button>
+
                 <div className="row" style={{ float: "right" }}>
                   {/* <button type="submit" className="btn btn-primary">
                     {params.id ? "Save the Changes" : "Submit"}
@@ -511,9 +589,14 @@ const Survey = () => {
                     okButtonProps={{ loading: confirmLoading }}
                     onCancel={handleCancel}
                   >
-                    <Button type="primary" onClick={showPopconfirm}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      data-html2canvas-ignore="true"
+                      onClick={showPopconfirm}
+                    >
                       {params.id ? "Save the Changes" : "Submit"}
-                    </Button>
+                    </button>
                   </Popconfirm>
                 </div>
               </div>

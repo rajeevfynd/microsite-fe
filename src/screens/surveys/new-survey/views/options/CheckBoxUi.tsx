@@ -25,11 +25,12 @@ const CheckBoxUi = (props: propsType) => {
             <Input
               value={props.optionText}
               placeholder="Enter option"
+              required
               onChange={(e) => props.handleOPtionIn(e, props.i, props.j)}
             />{" "}
           </Checkbox>
         </div>
-        <div className="col-6">
+        <div className="col-6" data-html2canvas-ignore="true">
           <span onClick={(_e) => console.log("hi")}>
             <PlusCircleTwoTone
               onClick={(e) => props.handleAddOption(props.i, props.j)}
