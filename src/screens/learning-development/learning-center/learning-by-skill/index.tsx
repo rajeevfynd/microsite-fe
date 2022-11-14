@@ -18,7 +18,7 @@ export function LearningBySkill() {
   const [selectedMenuItem, setSelectedMenuItem] = React.useState([]);
   const [pagination, setPagination] = React.useState({
     offset: 0,
-    pageSize: 1
+    pageSize: 10
   });
 
 
