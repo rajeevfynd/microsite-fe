@@ -40,19 +40,7 @@ export const menuRoutes: MenuRoute[] = [
         parents: ['learning-and-development', 'learning-center'],
     },
     {
-        key: 'addSkill',
-        isExternalLink: false,
-        navigateTo: '/lnd/learning-center/addSkill',
-        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER']
-    },
-    {
-        key: 'addCourse',
-        isExternalLink: false,
-        navigateTo: '/lnd/learning-center/addCourse',
-        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER']
-    },
-    {
-        key: 'role',
+        key:'role',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/role',
         accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER'],

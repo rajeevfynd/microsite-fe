@@ -5,12 +5,8 @@ import httpInstance from "../utility/http-client";
 
 let debounceTimer:any;
 
-export function getMoreJourneys(key:string = '', page:string = '1', size:string = '8'){
+export function getJourneys(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/lnd/journeys/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
-}
-
-export function filterJourneys(key:string = '', page:string='1', size:string = '8'){
-    return httpInstance.get('/microsite/lnd/journeys/search?key='+key.toString()+'&page='+'&size=8')
 }
 
 export const getJourneyDetails = (id:string) => {
