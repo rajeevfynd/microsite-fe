@@ -35,6 +35,7 @@ const EditCarousal = () => {
                 updatedFormList.splice(Number(active), 1, updatedForm)
                 setFormFile(updatedFormList);
             } else if (info.file.status === 'error') {
+                console.log(info.file.response.data.message)
                 message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
             }
         },
@@ -57,13 +58,34 @@ const EditCarousal = () => {
         setFormFile(updatedFormList);
     }
 
+    const handleRemove = ()=> {
+        console.log("inside remove")
+        let updatedForm: carouselFormtype = {
+            fileId: null,
+            value: form[Number(active)].value ? form[Number(active)].value : ""
+        }
+        let updatedFormList = form
+        updatedFormList.splice(Number(active), 1, updatedForm)
+        setFormFile(updatedFormList);
+        setupdate("is modified")
+    }
+
     const handleSubmit = async (e: any) => {
+        console.log("inside submit")
+        console.log(form[Number(active)].fileId)
+        if(form[Number(active)].fileId == null ){
+            message.error("please upload an image to carousel form");
+            return
+        }
         const body = {
             "positionValue": Number(active) + 1,
             "courseHyperlink": form[Number(active)].value,
             "imageDocumentId": form[Number(active)].fileId
         }
         const res = await editCarouselSlide(body);
+        if(res.data == true){
+            message.success("Updated Successfully")
+        }
         setupdate("is_updated "+Number(active) + 1)
     }
 
@@ -79,7 +101,7 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 1' onFinish={handleSubmit} >
                             <Form.Item label="Upload" valuePropName="fileList">
-                                <Upload {...prop} listType="picture-card" maxCount={1} >
+                                <Upload {...prop} listType="picture-card" maxCount={1} onRemove = {handleRemove}>
                                     <div>
                                         <PlusOutlined />
                                         <div style={{ marginTop: 8 }}>Upload</div>
@@ -104,7 +126,7 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 2' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                                <Upload {...prop} listType="picture-card" maxCount={1} >
+                                <Upload {...prop} listType="picture-card" maxCount={1} onRemove = {handleRemove}>
                                     <div>
                                         <PlusOutlined />
                                         <div style={{ marginTop: 8 }}>Upload</div>
@@ -129,7 +151,7 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 3' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                                <Upload {...prop} listType="picture-card" maxCount={1} >
+                                <Upload {...prop} listType="picture-card" maxCount={1} onRemove = {handleRemove}>
                                     <div>
                                         <PlusOutlined />
                                         <div style={{ marginTop: 8 }}>Upload</div>
