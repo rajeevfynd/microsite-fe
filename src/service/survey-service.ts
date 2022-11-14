@@ -33,6 +33,7 @@ export function updateSurvey(
     id: string;
     surveyTitle: string;
     description: string;
+    documentId: string;
     questions: {
       id: string;
       questionText: string;
@@ -48,6 +49,7 @@ export function creatSurvey(survey: {
   id: string;
   surveyTitle: string;
   description: string;
+  documentId: string;
   questions: {
     id: string;
     questionText: string;

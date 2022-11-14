@@ -9,6 +9,7 @@ import {
   Form,
   Menu,
   Radio,
+  Checkbox,
 } from "antd";
 import html2canvas from "html2canvas";
 
@@ -33,6 +34,7 @@ import {
   getSurveyById,
   updateSurvey,
   uploadImageToserver,
+  getImage,
 } from "../../../../service/survey-service";
 import {
   RcFile,
@@ -40,14 +42,11 @@ import {
   UploadFile,
   UploadProps,
 } from "antd/lib/upload";
-import axios from "axios";
-import { CircleFill } from "react-bootstrap-icons";
 
 const UplodUrl = "/microsite/document/upload";
 
 const Survey = () => {
   const [loading, setLoading] = React.useState(false);
-  const [imageUrl, setImageUrl] = React.useState<string>();
   const [open, setOpen] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -59,7 +58,8 @@ const Survey = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [imgId, setImgId] = React.useState("");
   const [imgString, setImgString] = React.useState("");
-  const [visible, setVisible] = React.useState(false);
+  const [currentImage, setCurrentImage] = React.useState("");
+  const [newScreenShot, setNewScreenShot] = React.useState(false);
   const newQuestion = {
     id: "",
     questionText: "",
@@ -266,12 +266,27 @@ const Survey = () => {
 
   const uploadImage = () => {
     //handleSubmit(); //// needs to change
+
     return (
       <>
-        <Upload {...prop}>
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
-        <p>you can always skip this</p>
+        <div>
+          <Upload {...prop}>
+            <Button icon={<UploadOutlined />}>Upload</Button>
+          </Upload>
+
+          {edit ? (
+            <>
+              <p style={{ color: "red" }}>Upload Image to replace</p>
+              <Checkbox onChange={(e) => setNewScreenShot(e.target.checked)}>
+                Use New Screen shot
+              </Checkbox>
+              <br />
+              <p style={{ color: "red" }}> click ok to Skip</p>
+            </>
+          ) : (
+            <p>you can always skip this</p>
+          )}
+        </div>
       </>
     );
   };
@@ -287,7 +302,8 @@ const Survey = () => {
   };
 
   const formData = new FormData();
-  const takeScreenShot = async () => {
+
+  const takeScreenShot = () => {
     var formatOutput = "image/png";
     html2canvas(document.getElementById("TakeScreenShot")).then((canvas) => {
       //canvas.delete
@@ -299,48 +315,53 @@ const Survey = () => {
       console.log("Hiegth :", canvas.height);
       var context2 = canvas.getContext("2d"); //context from tmpCanvas
       var imageObj = new Image();
-      imageObj.onload = function () {
-        //setup: draw cropped image
-        var sourceX = 0;
-        var sourceY = 0;
-        var sourceWidth = 1560;
-        var sourceHeight = 1200;
-        var destWidth = sourceWidth;
-        var destHeight = sourceHeight;
-        var destX = canvas.width / 2 - destWidth / 2;
-        var destY = canvas.height / 2 - destHeight / 2;
-        context2.drawImage(
-          imageObj,
-          sourceX,
-          sourceY,
-          sourceWidth,
-          sourceHeight,
-          destX,
-          destY,
-          destWidth,
-          destHeight
-        );
-        var data = context2.getImageData(
-          sourceX,
-          sourceY,
-          sourceWidth,
-          sourceHeight
-        );
-        context.clearRect(0, 0, canvas.width, canvas.height); //clear originalCanvas
-        canvas.width = sourceWidth;
-        canvas.height = sourceHeight;
-        context2.putImageData(data, 0, 0);
-        // callBackFuntion(canvas.toDataURL(formatOutput));
+      if (canvas.height > 1200) {
+        imageObj.onload = function () {
+          //setup: draw cropped image
+          var sourceX = 0;
+          var sourceY = 0;
+          var sourceWidth = 1560;
+          var sourceHeight = 1200;
+          var destWidth = sourceWidth;
+          var destHeight = sourceHeight;
+          var destX = canvas.width / 2 - destWidth / 2;
+          var destY = canvas.height / 2 - destHeight / 2;
+          context2.drawImage(
+            imageObj,
+            sourceX,
+            sourceY,
+            sourceWidth,
+            sourceHeight,
+            destX,
+            destY,
+            destWidth,
+            destHeight
+          );
+          var data = context2.getImageData(
+            sourceX,
+            sourceY,
+            sourceWidth,
+            sourceHeight
+          );
+          context.clearRect(0, 0, canvas.width, canvas.height); //clear originalCanvas
+          canvas.width = sourceWidth;
+          canvas.height = sourceHeight;
+          context2.putImageData(data, 0, 0);
+          // callBackFuntion(canvas.toDataURL(formatOutput));
+          setImgString(canvas.toDataURL(formatOutput));
+          // console.log("TakeScreenShot ", canvas.toDataURL(formatOutput));
+          //memory!!!
+          context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
+          context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
+          data = null;
+          tmpCanvas = null;
+          canvas = null;
+          imageObj = null;
+        };
+      } else {
         setImgString(canvas.toDataURL(formatOutput));
-        // console.log("TakeScreenShot ", canvas.toDataURL(formatOutput));
-        //memory!!!
-        context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
-        context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
-        data = null;
-        tmpCanvas = null;
-        canvas = null;
-        imageObj = null;
-      };
+      }
+
       imageObj.src = tmpCanvas.toDataURL("image/png");
     });
   };
@@ -361,23 +382,27 @@ const Survey = () => {
   }
 
   async function handleSubmit() {
-    console.log("Image lemgth =", imgId.length);
-    if (imgId.length == 0) {
+    // console.log("Image lemgth =", imgId.length);
+    // console.log(newScreenShot);
+    if (imgId.length == 0 || newScreenShot) {
+      /// length is zero if the image is not uploaded by user, so take ScreenShot
+      console.log("Take Screen Shot");
       takeScreenShot();
     } else {
       submitForm(imgId);
     }
   }
-  const submitForm = (localImage: string) => {
-    //console.log("submit form", imgId.length);
+  const submitForm = (newImgId: string) => {
+    console.log("Img Id before submit", newImgId);
     const body = {
       id: "",
       surveyTitle,
       description,
-      documentId: localImage,
+      documentId: newImgId,
       questions: Survey.questions,
     };
     console.log(body);
+    //// if Edit survey is true it will update the survey
     if (edit) {
       const reqBody = { ...body, id: params.id };
       console.log(reqBody);
@@ -389,10 +414,15 @@ const Survey = () => {
       updateSurvey(params.id, reqBody)
         .then((res) => {
           openNotificationWithIcon("success", "Changes saved");
+          setConfirmLoading(false);
         })
         .catch((err) => {
           console.log(err.data);
-          openNotificationWithIcon("error", "Changes are not saved");
+          openNotificationWithIcon(
+            "error",
+            "Changes are not saved" + err.message
+          );
+          setConfirmLoading(false);
         });
     } else {
       console.log("Body", body);
@@ -422,14 +452,19 @@ const Survey = () => {
     console.log("Inside useEffect");
     if (params.id) {
       setIsLoading(true);
-      getSurveyById(params.id).then((res) => {
+      getSurveyById(params.id).then(async (res) => {
         setSurveyTitle(res.data.surveyTitle);
         setDescription(res.data.description);
+        setImgId(res.data.documentId);
         setSurvey({ questions: res.data.questions });
         setSurvey({ questions: res.data.questions });
         console.log("Inside get");
+        console.log(res.data);
         console.log(Survey);
         setIsLoading(false);
+        let screenshot = await getImage(res.data.documentId);
+        setCurrentImage(screenshot.data);
+        console.log("Inside useffect ");
       });
       setEdit(true);
     } else {
@@ -440,20 +475,27 @@ const Survey = () => {
     }
   }, [params.id]);
 
+  const uploadScreenShot = async () => {
+    try {
+      let res = await uploadImageToserver(formData);
+      setImgId(res.data.id);
+      //submitForm();
+      console.log("ScrenShot id", imgId);
+      console.log(res.data.id);
+      console.log("Submit form");
+      submitForm(res.data.id);
+    } catch (error) {
+      openNotificationWithIcon("error", error.message);
+    }
+  };
+
   React.useEffect(() => {
     if (imgString) {
       console.log("ScreenShot Image", imgString); //   console.log("Inside take screenshot");
       const file = DataURIToBlob(imgString);
       formData.append("file", file, "image.png");
       console.log("Submit ", formData);
-      uploadImageToserver(formData)
-        .then((res) => {
-          setImgId(res.data.id);
-          submitForm(res.data.id);
-        })
-        .catch((err) => openNotificationWithIcon("error", err.message));
-
-      console.log("Submit Screnhot form");
+      uploadScreenShot();
     } else {
       console.log("Image is undefiend");
       console.log("No submit the screenshot");
