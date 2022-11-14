@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Row, Collapse, Pagination, PaginationProps, message , } from 'antd';
+import { Row, Collapse, Pagination, PaginationProps, message, Col , } from 'antd';
 import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
@@ -119,11 +119,15 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             <Row>
                                 {qnaList.faq.answer}
                             </Row>
-                            {qnaList.faq.attachmentDetails.map((attachment : any) => (
-                                <Row>
-                                    <img width='150' height='150' onClick={() => handleImgClick(attachment.documentId)} src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>   
-                                </Row>
-                            ))}
+                            <Row>
+                                {qnaList.faq.attachmentDetails.map((attachment : any) => (
+                                    <Col span={8} style={{padding : 20}}>
+                                        <img width='150' height='150' 
+                                        onClick={() => handleImgClick(attachment.documentId)} 
+                                        src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
+                                    </Col>   
+                                ))}
+                            </Row>
                             
                             <Row justify="end">
                                 <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updatedAt).fromNow()}</i></small></div>
