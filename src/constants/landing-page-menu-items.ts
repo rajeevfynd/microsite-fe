@@ -4,6 +4,13 @@ import { MenuRoute } from "../models/menu-route";
 // menu item and its route link will be specified in this constant 
 export const menuRoutes: MenuRoute[] = [
     {
+        key:'home',
+        isExternalLink: false,
+        navigateTo: '/home',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: []
+    },
+    {
         key: 'induction',
         isExternalLink: false,
         navigateTo: '/lnd/new-emp-center/induction/welcome',

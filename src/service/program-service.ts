@@ -1,5 +1,8 @@
 import { DOWNLOAD_URL, EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
 import { carouselFormtype } from "../models/carousel-form-type"
+import { Flow } from "../models/enums/flow"
+import { ProgressStatus } from "../models/enums/progress-status"
+import { ProgramType } from "../models/journey-details"
 import httpInstance from "../utility/http-client"
 
 let debounceTimer:any;
@@ -29,13 +32,36 @@ export const getCarouselImageData = (d: carouselFormtype) =>{
     return httpInstance.get(DOWNLOAD_URL+d.imageDocumentId)
 }
 
-
 export function getPrograms(key:string = '', page:string = '0', size:string = '8'){
-    return httpInstance.get('/microsite/lnd/journeys/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
+    return httpInstance.get('/microsite/lnd/programs/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
 
 export function getCourses(key:string = '', page:string = '0', size:string = '8'){
-    return httpInstance.get('/microsite/course/search/?key='+key.toString()+'&page='+page.toString()+'&size='+size)
+    return httpInstance.get('/microsite/lnd/programs/course-search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
+}
+
+export const getProgramDetails = (id:string) => {
+    return httpInstance.get('/microsite/lnd/programs/details/'+id)
+}
+
+export const processCourses = (courses: ProgramType[], flow: string) => {
+    if (courses && courses.length > 0) {
+      const progress = Math.round(courses.filter(course => course.status == 'COMPLETED').length * 100 / courses.length);
+      if (flow == Flow.SEQUENCE)
+        courses.every(course => {
+          course.isActive = true;
+          let enumKey = course.status as keyof typeof ProgressStatus;
+          if (ProgressStatus[enumKey] != ProgressStatus.COMPLETED) {
+            return false;
+          }
+          return true;
+        })
+        
+      return {
+        courses: courses,
+        progress: progress
+      };
+    }
 }
 
 export const debounce = (callback:any, time:any) => {
