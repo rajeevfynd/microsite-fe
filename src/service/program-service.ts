@@ -5,6 +5,8 @@ import { ProgressStatus } from "../models/enums/progress-status"
 import { ProgramType } from "../models/journey-details"
 import httpInstance from "../utility/http-client"
 
+let debounceTimer:any;
+
 export const getUserPrograms = (url: string) => {
     return httpInstance.get(url)
 }
@@ -61,3 +63,12 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
       };
     }
 }
+
+export function getCourses(key:string = '', page:string = '0', size:string = '8'){
+    return httpInstance.get('/microsite/course/search/?key='+key.toString()+'&page='+page.toString()+'&size='+size)
+}
+
+export const debounce = (callback:any, time:any) => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(callback, time);
+};
