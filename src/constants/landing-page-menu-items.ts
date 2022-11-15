@@ -80,6 +80,41 @@ export const menuRoutes: MenuRoute[] = [
         navigateTo: '/rnr/placeholder',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['rnr-section']
+    },
+    {
+        key: 'new-employee-downloads',
+        isExternalLink: false,
+        navigateTo: '/download-center/new-employees/',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['download-center'],
+    },
+    {
+        key: 'templates',
+        isExternalLink: false,
+        navigateTo: '/download-center/templates/',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['download-center'],
+    },
+    {
+        key: 'leaders-gallery',
+        isExternalLink: false,
+        navigateTo: '/download-center/leaders-gallery/',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['download-center'],
+    },
+    {
+        key: 'logo',
+        isExternalLink: false,
+        navigateTo: '/download-center/logo/',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['download-center'],
+    },
+    {
+        key: 'policies',
+        isExternalLink: false,
+        navigateTo: '/download-center/frequently-used-policies/',
+        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        parents: ['download-center'],
     }
 ]
 
@@ -165,7 +200,29 @@ export const menuItems:MenuProps['items'] = [
     },
     {
         key: 'download-center',
-        label: 'Download Center'
+        label: 'Download Center',
+        children: [
+            {
+                key:'new-employee-downloads',
+                label:'New Employee Downloads'
+            },
+            {
+                key:'templates',
+                label:'Templates'
+            },
+            {
+                key:'leaders-gallery',
+                label:'Leaders Gallery'
+            },
+            {
+                key:'logo',
+                label:'Logo'
+            },
+            {
+                key:'policies',
+                label:'Frequently Used Policies'
+            }
+        ]
     },
     {
         key: 'information-center',

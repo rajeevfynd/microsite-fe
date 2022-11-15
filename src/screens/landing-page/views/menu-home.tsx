@@ -86,7 +86,35 @@ export default function MenuHome() {
                             <Menu.Item>R&R placeholder</Menu.Item>
                         </Menu.SubMenu>
                         <Menu.Item icon={<People/>}>Employee Engagement Center</Menu.Item>
-                        <Menu.Item icon={<Download/>}>Download Center</Menu.Item>
+
+                        <Menu.SubMenu icon={<Download/>} title = 'Download Center'>
+                            <Menu.Item
+                                key='new-employee-downloads'
+                                onClick={()=>navigateTo('')}>
+                                New Employee Downloads
+                            </Menu.Item>
+                            <Menu.Item
+                                key='templates'
+                                onClick={()=>navigateTo('')}>
+                                Templates
+                            </Menu.Item>
+                            <Menu.Item
+                                key='leaders-gallery'
+                                onClick={()=>navigateTo('/download-center/leaders-gallery/')}>
+                                Leaders' Gallery
+                            </Menu.Item>
+                            <Menu.Item
+                                key='logo'
+                                onClick={()=>navigateTo('')}>
+                                Logo
+                            </Menu.Item>
+                            <Menu.Item
+                                key='policies'
+                                onClick={()=>navigateTo('')}>
+                                Frequently Used Policies
+                            </Menu.Item>
+                        </Menu.SubMenu>
+
                         <Menu.Item icon={<InfoCircle/>}>Information Center</Menu.Item>
                         <Menu.SubMenu title='Admin Control Panel' icon={<Gear/>}>
                             <Menu.Item key='admin-induction' onClick={()=>navigateTo('/admin/induction')}>Induction</Menu.Item>
