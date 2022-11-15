@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 function formatEnvironmentEntries(env) {
