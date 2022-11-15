@@ -132,8 +132,8 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             </Row>
                             <Row>
                                 {qnaList.faq.attachmentDetails.map((attachment : any) => (
-                                    <Col span={8} style={{padding : 20}}>
-                                        <img width='150' height='150' 
+                                    <Col xs={24} xl={6} style={{padding : 20}}>
+                                        <img width='200' height='200' 
                                         onClick={() => handleImgClick(attachment.documentId)} 
                                         src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
                                     </Col>   
