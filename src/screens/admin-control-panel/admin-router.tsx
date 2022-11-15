@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminInduction } from './induction'
 import { AdminJourneyList } from './journeys'
 import { AdminProgramList } from './programs'
+import { AddAnnouncement } from './manage-announcements'
 import { NewProgram } from './programs/views/new-program'
 import { NewJourney } from './journeys/views/new-jounrey'
 import { EditJourney } from './journeys/views/edit-journey'
@@ -13,6 +14,7 @@ export const AdminRouter = () => {
   return (
     <>
         <Routes>
+            <Route path='/manage-announcement/*' element={<AddAnnouncement></AddAnnouncement>}></Route>
             <Route path='/edit-carousel/*' element={<EditCarousal></EditCarousal>}></Route> 
             <Route path='/induction/*' element={<AdminInduction />}></Route>
             <Route path='/journeys/*' element={<AdminJourneyList />}></Route>
