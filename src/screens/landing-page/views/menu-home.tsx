@@ -90,7 +90,7 @@ export default function MenuHome() {
                         <Menu.SubMenu icon={<Download/>} title = 'Download Center'>
                             <Menu.Item
                                 key='new-employee-downloads'
-                                onClick={()=>navigateTo('')}>
+                                onClick={()=>navigateTo('/download-center/new-employees/')}>
                                 New Employee Downloads
                             </Menu.Item>
                             <Menu.Item
