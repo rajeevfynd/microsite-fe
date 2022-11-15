@@ -108,17 +108,27 @@ export function LearningByRole() {
           }}
         >
           {addRole()}
-          <RoleList items={roleList} selectedMenuItem={selectedMenuItem} handleSelectedMenuItem={setSelectedMenuItem}></RoleList>
+
+          <RoleList
+            items={roleList}
+            selectedMenuItem={selectedMenuItem}
+            handleSelectedMenuItem={setSelectedMenuItem}
+          />
         </Sider>
+
         <Layout
           style={{
             background: '#fff',
             height: '80vh',
-            overflow: 'auto',
           }}
-
         >
-          <Content style={{ margin: '2px 16px 0', height: '80vh', textAlign: 'center', background: '#fff' }}>
+          <Content style={{
+            overflow: 'auto',
+            margin: '2px 16px 0',
+            height: '80vh',
+            textAlign: 'center',
+            background: '#fff'
+          }}>
 
             {courseList.length ? <CourseList courseList={courseList} /> : null}
 
