@@ -51,8 +51,6 @@ export const Upload = (props: UploadProps) => {
                         <div>Uploadasdf</div>
                     </div>)
             }
-
-
         </ AntUpload>
     )
 }
