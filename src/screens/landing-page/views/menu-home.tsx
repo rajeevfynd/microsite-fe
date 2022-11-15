@@ -4,7 +4,7 @@ import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns, Gear } from "react-bootstrap-icons";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
@@ -40,6 +40,7 @@ export default function MenuHome() {
                         mode="inline" 
                         selectedKeys={getMenuRouteKeyByPath(location.pathname)} 
                         >
+                        <Menu.Item onClick={()=>navigateTo('/home',false)} icon={<HomeOutlined/>}>Home</Menu.Item>
                         <Menu.SubMenu key='learning-and-development' title='Learning and Development' icon={<BookHalf/>}>
                             <Menu.SubMenu title='New Employee Center'>
                                 <Menu.Item 
@@ -93,6 +94,7 @@ export default function MenuHome() {
                             <Menu.Item key='admin-programs' onClick={()=>navigateTo('/admin/programs')}>Programs</Menu.Item>
                             <Menu.Item key='admin-journeys' onClick={()=>navigateTo('/admin/journeys')}>Journeys</Menu.Item>
                             <Menu.Item onClick={()=>navigateTo('/admin/edit-carousel')}>Edit Carousel</Menu.Item>
+                            <Menu.Item onClick={()=>navigateTo('/admin/manage-announcement')}>Manage Announcements</Menu.Item>
                         </Menu.SubMenu>
                     </Menu>
                 </Sider>
