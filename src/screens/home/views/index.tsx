@@ -1,7 +1,7 @@
 import { Button, Card, Col, Divider, Row } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import * as React from 'react'
-import './index.css'
+import './index.css';
 import { ALT_THUMBNAIL } from '../../../constants/string-constants'
 import { Announcement } from './announcement'
 import { BirthDays } from './birthdays'
@@ -23,8 +23,8 @@ export const HomePage = () => {
                             </Col>
                         </Row>
                         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                            <Col className="gutter-row">
-                                <Card style={{ width: '100%' }}>
+                            <Col className="gutter-row" style={{ marginTop: '10px' }}>
+                                <Card className='home-card' >
                                     <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Idea Corner</h4></div>} />
                                     <Button type='primary' className='idea'> Submit Your Idea</Button>
                                     <br />
