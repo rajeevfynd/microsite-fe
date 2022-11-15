@@ -14,12 +14,11 @@ import { formatBase64 } from '../../../../utility/image-utils';
 import { UploadProps } from '../../../../models/upload-props';
 import { Upload } from '../../../../components/upload.component';
 
-type EditProgramDetails = {
+type editProgramDetails = {
   title?: string,
   description?: string,
   sequence?: boolean,
-  issueCertificate?: boolean,
-  thumbnailUrl?: string
+  issueCertificate?: boolean
 }
 
 export const EditProgram = () => {
@@ -27,7 +26,8 @@ export const EditProgram = () => {
   const navigate = useNavigate()
   const [courses, setCourses] = React.useState<CourseMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
-  const [program, setProgram] = React.useState<EditProgramDetails>({})
+  const [thumbnailUrl, setThumbnailUrl] = React.useState('');
+  const [program, setProgram] = React.useState<editProgramDetails>({})
   const { Option } = Select;
 
   React.useEffect(() => {
@@ -42,9 +42,9 @@ export const EditProgram = () => {
       title: data.title,
       description: data.description,
       sequence: data.flow == Flow.SEQUENCE,
-      issueCertificate: data.issueCertificate,
-      thumbnailUrl: data.thumbnailLink
+      issueCertificate: data.issueCertificate
     })
+    setThumbnailUrl(data.thumbnailLink);
   }
 
   const processCourses = (courses: any[]) => {
@@ -129,7 +129,7 @@ export const EditProgram = () => {
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
-              file={program.thumbnailUrl} />
+              file={thumbnailUrl} />
 
           </Form.Item>
 
