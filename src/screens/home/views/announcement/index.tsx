@@ -20,7 +20,7 @@ export const Announcement = () => {
     }, [fetchAnncouncement])
 
     return (<>
-        <Card className='announcement'>
+        <Card style={{ width: '100%' }}>
             <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Announcements & News</h4></div>} />
             <div className="microsoft container">
                 <body className="marquee">
