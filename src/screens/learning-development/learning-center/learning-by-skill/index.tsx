@@ -8,6 +8,7 @@ import { SkillList } from './views/skill-list';
 import { CourseList } from './views/skill-courses';
 import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
+import { Footer } from 'antd/lib/layout/layout';
 
 export function LearningBySkill() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -121,10 +122,11 @@ export function LearningBySkill() {
 
             {courseList.length ? <CourseList courseList={courseList} /> : null}
 
-            <div style={{ textAlign: 'center' }}  >
-              <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
-            </div>
           </Content>
+          
+          <Footer style={{ backgroundColor: "white" }}>
+            <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
+          </Footer>
         </Layout>
       </Layout >}
     </>

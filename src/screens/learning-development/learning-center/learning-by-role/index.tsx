@@ -8,6 +8,7 @@ import { RoleList } from './views/role-list';
 import { CourseList } from './views/role-courses';
 import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
+import { Footer } from 'antd/lib/layout/layout';
 
 export function LearningByRole() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -121,10 +122,11 @@ export function LearningByRole() {
 
             {courseList.length ? <CourseList courseList={courseList} /> : null}
 
-            <div style={{ textAlign: 'center' }}  >
-              <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
-            </div>
           </Content>
+
+          <Footer style={{ backgroundColor: "white" }}>
+            <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
+          </Footer>
         </Layout>
       </Layout >}
     </>
