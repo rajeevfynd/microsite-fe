@@ -12,6 +12,7 @@ const validateStatus = {
 export default function CourseForm() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [course, setCourse] = React.useState({
+        rruCourseId: null,
         title: null,
         description: null,
         programs: [],
@@ -22,6 +23,7 @@ export default function CourseForm() {
         roleIds: [],
         rruDeepLink: null,
         thumbnail: null,
+        duration: null,
         minCourseCoin: null,
         courseCoin: null,
         careerCoin: null,
@@ -44,12 +46,23 @@ export default function CourseForm() {
 
 
     const onValuesChange = (changedValues: any, allValues: any) => {
-        const stringReg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
+        const stringReg = new RegExp("[a-zA-Z0-9]*");
         const integerReg = new RegExp("(?<!-)(?<!\d)[1-9][0-9]*");
         const urlReg = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
 
         const key = Object.keys(changedValues)[0];
         switch (key) {
+            case 'rruCourseId':
+                const rruCourseId = changedValues[key];
+
+                if (stringReg.test(rruCourseId)) {
+                    setCourse({ ...course, rruCourseId: rruCourseId });
+                    setButtonStatus(false);
+                } else {
+                    setButtonStatus(true);
+                }
+                break;
+
             case 'title':
                 const title = changedValues[key];
 
@@ -130,6 +143,17 @@ export default function CourseForm() {
                 }
                 break;
 
+            case 'duration':
+                const duration = changedValues[key];
+
+                if (integerReg.test(duration)) {
+                    setCourse({ ...course, duration: Number(duration) });
+                    setButtonStatus(false);
+                } else {
+                    setButtonStatus(true);
+                }
+                break;
+
             case 'minCourseCoin':
                 const minCourseCoin = changedValues[key];
 
@@ -185,6 +209,7 @@ export default function CourseForm() {
 
                     if (!response.data.error) {
                         setCourse({
+                            rruCourseId: null,
                             title: null,
                             description: null,
                             programIds: [],
@@ -195,6 +220,7 @@ export default function CourseForm() {
                             programs: [],
                             rruDeepLink: null,
                             thumbnail: null,
+                            duration: null,
                             minCourseCoin: null,
                             courseCoin: null,
                             careerCoin: null,
@@ -400,10 +426,12 @@ export default function CourseForm() {
                     layout="vertical"
                     name="courseForm"
                     initialValues={{
+                        rruCourseId: course.rruCourseId,
                         title: course.title,
                         description: course.description,
                         rruDeepLink: course.rruDeepLink,
                         thumbnail: course.thumbnail,
+                        duration: course.duration,
                         minCourseCoin: course.minCourseCoin,
                         courseCoin: course.careerCoin,
                         careerCoin: course.careerCoin,
@@ -416,9 +444,17 @@ export default function CourseForm() {
                     autoComplete="off"
                 >
                     <Form.Item
+                        name="rruCourseId"
+                        label="RRU Course Id"
+                        rules={[{ required: true, message: 'Please enter RRU-Course-Id!' }, { type: "string", message: "Please enter valid RRU-Course-Id" }]}
+                    >
+                        <Input placeholder="RRU-course-Id" />
+                    </Form.Item>
+
+                    <Form.Item
                         name="title"
                         label="Title"
-                        rules={[{ required: true, message: 'Please input Title!' }, { type: "string", message: "Please input valid Title" }]}
+                        rules={[{ required: true, message: 'Please enter Title!' }, { type: "string", message: "Please enter valid Title" }]}
                     >
                         <Input placeholder="Title" />
                     </Form.Item>
@@ -426,7 +462,7 @@ export default function CourseForm() {
                     <Form.Item
                         name="description"
                         label="Description"
-                        rules={[{ required: true, message: 'Please input description!' }, { type: "string", message: "Please input valid Description" }]}
+                        rules={[{ required: true, message: 'Please enter description!' }, { type: "string", message: "Please enter valid Description" }]}
                     >
                         <Input.TextArea placeholder="Description" showCount maxLength={200} />
                     </Form.Item>
@@ -510,7 +546,7 @@ export default function CourseForm() {
                     <Form.Item
                         name="rruDeepLink"
                         label="RRU Deep Link"
-                        rules={[{ required: true, message: 'Please input RRU Deep Link!' }, { type: "url", message: 'Please input valid RRU Deep Link!' }]}
+                        rules={[{ required: true, message: 'Please enter RRU Deep Link!' }, { type: "url", message: 'Please enter valid RRU Deep Link!' }]}
                     >
                         <Input placeholder="https://rruDeepLink/" />
                     </Form.Item>
@@ -518,7 +554,7 @@ export default function CourseForm() {
                     <Form.Item
                         name="thumbnail"
                         label="Thumbnail"
-                        rules={[{ required: true, message: 'Please input Thumbnail!' }, { type: "url", message: 'Please input valid Thumbnail!' }]}
+                        rules={[{ required: true, message: 'Please enter Thumbnail URL!' }, { type: "url", message: 'Please enter valid Thumbnail URL!' }]}
                     >
                         <Input placeholder="https://thumbnail/" />
                     </Form.Item>
@@ -526,27 +562,35 @@ export default function CourseForm() {
                     {renderImage(course.thumbnail)}
 
                     <Form.Item
+                        name="duration"
+                        label="Duration"
+                        rules={[{ required: true, message: 'Please enter Duration!', }]}
+                    >
+                        <Input type="number" placeholder="10" />
+                    </Form.Item>
+
+                    <Form.Item
                         name="minCourseCoin"
                         label="Minimum Course Coin"
-                        rules={[{ required: true, message: 'Please input Minimum Course Coin!', },]}
+                        rules={[{ required: true, message: 'Please enter Minimum Course Coin!', },]}
                     >
-                        <Input type="number" placeholder="0" />
+                        <Input type="number" placeholder="100" />
                     </Form.Item>
 
                     <Form.Item
                         name="courseCoin"
                         label="Course Coin"
-                        rules={[{ required: true, message: 'Please input course Coin!' }]}
+                        rules={[{ required: true, message: 'Please enter course Coin!' }]}
                     >
-                        <Input placeholder="0" />
+                        <Input placeholder="200" />
                     </Form.Item>
 
                     <Form.Item
                         name="careerCoin"
                         label="Career Coin"
-                        rules={[{ required: true, message: 'Please input career Coin!' }]}
+                        rules={[{ required: true, message: 'Please enter career Coin!' }]}
                     >
-                        <Input type="number" placeholder="0" />
+                        <Input type="number" placeholder="300" />
                     </Form.Item>
 
 
