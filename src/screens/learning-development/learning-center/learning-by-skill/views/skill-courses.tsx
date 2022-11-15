@@ -31,7 +31,7 @@ export function CourseList(props: { courseList: any }) {
 
     return (
         <List
-            grid={{ gutter: 32 }}
+            grid={{ gutter: 16 }}
             dataSource={courseList}
             renderItem={({ course }) => (<List.Item key={course.id}>
 
