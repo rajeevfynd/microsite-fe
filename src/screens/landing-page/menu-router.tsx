@@ -13,7 +13,7 @@ export const MenuRouter = () => {
             <Route path='/lnd/*' element={<LND></LND>}></Route>
             <Route path='/rnr/*' element={<RNR></RNR>}></Route>
             <Route path='/admin/*' element={<AdminControlPanel></AdminControlPanel>}></Route>
-            <Route path='*' element={<Navigate replace to="/lnd/*"/>} ></Route>
+            <Route path='*' element={<Navigate replace to="/home"/>} ></Route>
         </Routes>
     </>
   )

@@ -4,50 +4,37 @@ import * as React from 'react'
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom'
 import { ProgramDetail } from '../../../components/program-detail/program-detail';
+import { ProgramDetailType } from '../../../models/journey-details';
+import { getProgramDetails, processCourses } from '../../../service/program-service';
 
 const { Text } = Typography;
 export const ProgramDetailsView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [ isExists, setIsExists ] = React.useState(true)
+    const [ data, setData ] = React.useState({})
+
+    const processData = (data: ProgramDetailType | any) => {
+        const processedData = processCourses(data.courses, data.flow)
+        data.programs = processedData.courses;
+        data.progress = processedData.progress;
+        setData(data)
+        setIsExists(true);
+    }
+
+    React.useEffect( ()=>
+    {   
+        getProgramDetails(id).then( res => {
+            processData(res.data);
+        })
+    }, [])
     
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
         {isExists &&
         <>
-            <ProgramDetail 
-                details= { {
-                    id: 1,
-                    title : 'Program title',
-                    description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra ligula at consectetur convallis. Morbi efficitur ac velit nec venenatis. Curabitur volutpat porttitor quam, ut dapibus lorem finibus eu. Phasellus non urna diam. Aliquam semper velit at purus aliquam, ut porttitor eros volutpat.',
-                    thumbnailLink : 'https://picsum.photos/300/200',
-                    flow : 'SEQUENCE',
-                    courses : [
-                        {
-                            course : {
-                                title : 'Course 1',
-                                description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra ligula at consectetur convallis. Morbi efficitur ac velit nec venenatis. Curabitur volutpat porttitor quam, ut dapibus lorem finibus eu. Phasellus non urna diam. Aliquam semper velit at purus aliquam, ut porttitor eros volutpat.',
-                                thumbnailLink : 'https://picsum.photos/300/200',
-                                duration : '180'
-                            },
-                            isActive : true,
-                            status : 'INCOMPLETE'
-                        },
-                        {
-                            course : {
-                                title : 'Course 2',
-                                description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra ligula at consectetur convallis. Morbi efficitur ac velit nec venenatis. Curabitur volutpat porttitor quam, ut dapibus lorem finibus eu. Phasellus non urna diam. Aliquam semper velit at purus aliquam, ut porttitor eros volutpat.',
-                                thumbnailLink : 'https://picsum.photos/300/200',
-                                duration : '120'
-                            },
-                            isActive : false,
-                            status : 'INCOMPLETE'
-                        }
-                    ]
-                }
-            }
-            />
+        <ProgramDetail details={data} />
         </>
           
         }

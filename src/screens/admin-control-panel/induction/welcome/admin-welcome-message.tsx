@@ -18,7 +18,6 @@ export const AdminWelcomeMessage = (props: AdminWelcomeMessageDetailsType) => {
   }
 
   React.useEffect( ()=>{
-    console.log('hi',props.details)
     setFileUrl(props.details.fileUrl)
     setTextBoxInput(props.details.fileUrl)
   }, [props.details])
