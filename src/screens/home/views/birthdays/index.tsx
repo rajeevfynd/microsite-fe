@@ -47,9 +47,8 @@ export const BirthDays = () => {
 
     return (
         <>
-            <Card style={{ width: '100%' }}>
+            <Card className="home-card">
                 <Meta title={<div><h4>Today's Birthday</h4></div>} />
-
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Typography.Text disabled style={{ fontSize: "12px", width: '35%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >
