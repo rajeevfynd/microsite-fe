@@ -9,6 +9,7 @@ reqs.get().then( res=>console.log(res));
 
 import { message } from 'antd';
 import axios, { AxiosResponse, AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
+import { ids } from 'webpack';
 import { AUTHORISATION_PATH } from '../constants/urls';
 import { configType } from '../models/config-type'
 
@@ -54,7 +55,6 @@ class HttpClient {
         if (error.response.status === 401) {
             window.location.href = AUTHORISATION_PATH;
         }
-        return Promise.reject(error.response);
     }
 
     public get = (url: string) => {

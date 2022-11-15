@@ -90,7 +90,8 @@ export  const AdminProgramList = () => {
                 hoverable
                 cover={
                   <img
-                    src={item.thumbnailLink}
+                    width='150' height='250'
+                    src={`data:image/png;base64,${item.thumbnailLink}`}
                   />
                 }
                 actions={[
