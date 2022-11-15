@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Select, Switch, Upload, UploadProps } from 'antd';
+import { Button, Form, Input, message, Select, Switch} from 'antd';
 import {  PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
@@ -9,6 +9,7 @@ import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
 import { getActiveInductionJourney } from '../../../../service/induction-service';
+import { Upload } from '../../../../components/upload.component';
 
 type editInductionJourneyDetails = {
     title ?: string,
@@ -20,6 +21,7 @@ type editInductionJourneyDetails = {
 export const EditInduction = () => {
     const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
     const [thumbnail, setThumbnail] = React.useState('')
+    const [thumbnailUrl, setThumbnailUrl] = React.useState('')
     const [journey, setJourney] = React.useState<editInductionJourneyDetails>({sequence:true})
     const { Option } = Select;
 
@@ -38,6 +40,7 @@ export const EditInduction = () => {
       sequence: data.flow == Flow.SEQUENCE,
       id : data.id
     })
+    setThumbnailUrl(data.thumbnailLink);
   }
 
   const processPrograms = (programs: any[]) =>{
@@ -83,20 +86,6 @@ export const EditInduction = () => {
   const handleOnSelect = (e:any,index:number) =>{
     setPrograms(onSelectHandler(index,e,programs))
   }
-  const prop: UploadProps = {
-    name: 'file',
-    action: "/microsite/document/upload",
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-            setThumbnail(info.file.response.data.id)
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
-        }
-    },
-};
 
   const SortableItem : any = SortableElement( (data: { item: ProgramMapType}) => {return (
   <li key={data.item.index}>
@@ -126,13 +115,10 @@ export const EditInduction = () => {
         <Form onFinish={onFinish} validateMessages={validateMessages}>
             
           <Form.Item>
-            Thumbnail
-            <Upload  listType="picture-card" {...prop} maxCount = {1} onRemove={()=>setThumbnail('')}>
-                <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
-                </div>
-            </Upload>
+            <Upload
+                onDone={(info) => setThumbnail(info.documentId)}
+                onRemove={() => setThumbnail('')}
+                file={thumbnailUrl} />
 
           </Form.Item>
 

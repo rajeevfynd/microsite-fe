@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Select, Switch, Upload, UploadProps } from 'antd';
+import { Button, Form, Input, message, Select, Switch} from 'antd';
 import {  PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
@@ -8,6 +8,7 @@ import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadl
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
+import { Upload } from '../../../../components/upload.component';
 
 type editJourneyDetails = {
     title ?: string,
@@ -20,6 +21,7 @@ export const EditJourney = () => {
     const navigate = useNavigate()
     const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
     const [thumbnail, setThumbnail] = React.useState('')
+    const [thumbnailUrl, setThumbnailUrl] = React.useState('')
     const [journey, setJourney] = React.useState<editJourneyDetails>({})
     const [category, setCategory] = React.useState('');
     const { Option } = Select;
@@ -38,7 +40,8 @@ export const EditJourney = () => {
       description: data.description,
       sequence: data.flow == Flow.SEQUENCE
     })
-    setCategory(data.category)
+    setCategory(data.category);
+    setThumbnailUrl(data.thumbnailLink);
   }
 
   const processPrograms = (programs: any[]) =>{
@@ -65,6 +68,7 @@ export const EditJourney = () => {
     handleFormSubmit(journey, programs,thumbnail, category, id).then(resp => {
       if(resp.data){
         message.success('Journey updated successfully');
+        navigate("/admin/journeys");
       }
     })
   };
@@ -84,20 +88,6 @@ export const EditJourney = () => {
   const handleOnSelect = (e:any,index:number) =>{
     setPrograms(onSelectHandler(index,e,programs))
   }
-  const prop: UploadProps = {
-    name: 'file',
-    action: "/microsite/document/upload",
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-            setThumbnail(info.file.response.data.id)
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
-        }
-    },
-};
 
   const SortableItem : any = SortableElement( (data: { item: ProgramMapType}) => {return (
   <li key={data.item.index}>
@@ -131,12 +121,10 @@ export const EditJourney = () => {
             
           <Form.Item>
             Thumbnail
-            <Upload  listType="picture-card" {...prop} maxCount = {1} onRemove={()=>setThumbnail('')}>
-                <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
-                </div>
-            </Upload>
+            <Upload
+                onDone={(info) => setThumbnail(info.documentId)}
+                onRemove={() => setThumbnail('')}
+                file={thumbnailUrl} />
 
           </Form.Item>
 
@@ -188,7 +176,7 @@ export const EditJourney = () => {
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol}}>
             <Button type="primary" htmlType="submit">
-              Edit Journey
+              Save
             </Button>
           </Form.Item>
 

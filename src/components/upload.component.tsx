@@ -47,7 +47,7 @@ export const Upload = (props: UploadProps) => {
                     ? null
                     : (<div>
                         <PlusOutlined />
-                        <div>Uploadasdf</div>
+                        <div>Upload</div>
                     </div>)
             }
         </ AntUpload>

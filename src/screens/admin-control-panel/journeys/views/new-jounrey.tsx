@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Select, Switch, Upload, UploadProps } from 'antd';
+import { Button, Form, Input, message, Select, Switch } from 'antd';
 import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
@@ -7,6 +7,7 @@ import { SortableElement, SortableContainer, SortableContainerProps, SortableEle
 import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, sortEndHandler } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
+import { Upload } from '../../../../components/upload.component';
 
 type editJourneyDetails = {
   id?: string,
@@ -37,6 +38,7 @@ export const NewJourney: React.FC = () => {
     handleFormSubmit(journey, programs, thumbnail, 'GENERAL').then(resp => {
       if (resp.data) {
         message.success('Journey added successfully');
+        navigate("/admin/journeys");
       }
     })
   };
@@ -56,20 +58,6 @@ export const NewJourney: React.FC = () => {
   const handleOnSelect = (e: any, index: number) => {
     setPrograms(onSelectHandler(index, e, programs))
   }
-  const prop: UploadProps = {
-    name: 'file',
-    action: "/microsite/document/upload",
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-        setThumbnail(info.file.response.data.id)
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
-      }
-    },
-  };
 
   const SortableItem: any = SortableElement((data: { item: ProgramMapType }) => {
     return (
@@ -104,13 +92,9 @@ export const NewJourney: React.FC = () => {
         <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
 
           <Form.Item>
-            <Upload listType="picture-card" {...prop} maxCount={1} onRemove={() => setThumbnail('')} showUploadList={false}>
-              <div>
-                <PlusOutlined />
-                <div>Upload</div>
-              </div>
-
-            </Upload>
+            <Upload
+              onDone={(info) => setThumbnail(info.documentId)}
+              onRemove={() => setThumbnail('')} />
 
           </Form.Item>
 
@@ -165,7 +149,7 @@ export const NewJourney: React.FC = () => {
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
             <Button type="primary" htmlType="submit">
-              Create Journey
+              Save
             </Button>
           </Form.Item>
 
