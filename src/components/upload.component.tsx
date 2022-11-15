@@ -17,7 +17,6 @@ export const Upload = (props: UploadProps) => {
                 url: formatBase64(props.file),
             }])
         }
-        console.log(fileList)
     }, [props.file]);
 
     const prop: AntUploadProps = {
