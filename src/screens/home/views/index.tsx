@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row } from 'antd'
+import { Button, Card, Col, Divider, Row } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import * as React from 'react'
 import './index.css'
@@ -9,9 +9,19 @@ export const HomePage = () => {
     return (
         <>
             <div>
-                <Row>
-                    <Col flex={6}><div className="announcements"><Announcement /></div> </Col>
-                    <Col flex={3}>
+                <Col span={16}>
+                    <Row>
+                        <Announcement />
+                    </Row>
+                    <Divider orientation="left">Horizontal</Divider>
+                </Col>
+
+            </div>
+        </>)
+}
+
+/**
+ * <Col flex={8}>
                         <div className="announcements">
                             <Card className="announcements" >
                                 <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Birthday Section</h4></div>} />
@@ -46,7 +56,4 @@ export const HomePage = () => {
                             </Col>
                         </Row>
                     </Col>
-                </Row>
-            </div>
-        </>)
-}
+ */
