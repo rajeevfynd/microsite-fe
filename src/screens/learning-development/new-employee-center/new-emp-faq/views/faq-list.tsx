@@ -8,12 +8,16 @@ import { FaqListPropsType, QnaPopupPropsType, QnaType } from '../../../../../mod
 import { EditQnaOption } from '../../../../../models/enums/qna-edit-options';
 import { FAQ_LIST_OFFSET, FAQ_LIST_PAGESIZE } from '../../../../../constants/string-constants';
 import { FAQ_LIST_URL } from '../../../../../constants/urls';
+import { getUser } from '../../../../../utility/user-utils';
 
 
 const { Panel } = Collapse;
 
 export const FaqList = (props : {faqProps : FaqListPropsType}) => {
     const {faqProps} = props;
+
+    const user:any = getUser()
+    const [userRole, setUserRole] = React.useState('');
 
     const [currentPage, setCurrentPage] = React.useState(1);
     const [totalElements, setTotalElements] = React.useState();
@@ -99,6 +103,12 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
         getQnaList();
     }, [faqProps.activeCategory, faqProps.newQnaAdded, currentOffset])
 
+    React.useEffect( ()=> {
+        if(user){
+            setUserRole(user.role)
+        }
+    })
+
     return (
         <>  
 
@@ -109,20 +119,21 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                 {qnaList.map((qnaList) => (
                     
                     <Panel header={qnaList.faq.question} key={qnaList.faq.id} 
-                        extra={<CornerIcons
-                                qnaId={qnaList.faq.id}
-                                qnaDetails={qnaList.faq}
-                                onQnaDelete={handleQnaDelete}
-                                onEditQna={handleEditQna}
-                                />}>
+                    extra={userRole == "ADMIN" && <CornerIcons
+                        qnaId={qnaList.faq.id}
+                        qnaDetails={qnaList.faq}
+                        onQnaDelete={handleQnaDelete}
+                        onEditQna={handleEditQna}
+                        />}
+                        >
                         <div>
                             <Row>
                                 {qnaList.faq.answer}
                             </Row>
                             <Row>
                                 {qnaList.faq.attachmentDetails.map((attachment : any) => (
-                                    <Col span={8} style={{padding : 20}}>
-                                        <img width='150' height='150' 
+                                    <Col xs={24} xl={6} style={{padding : 20}}>
+                                        <img width='200' height='200' 
                                         onClick={() => handleImgClick(attachment.documentId)} 
                                         src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
                                     </Col>   
