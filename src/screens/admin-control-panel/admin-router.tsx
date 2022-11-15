@@ -7,6 +7,7 @@ import { AdminProgramList } from './programs'
 import { NewProgram } from './programs/views/new-program'
 import { NewJourney } from './journeys/views/new-jounrey'
 import { EditJourney } from './journeys/views/edit-journey'
+import { EditProgram } from './programs/views/edit-program'
 
 export const AdminRouter = () => {
   return (
@@ -19,7 +20,7 @@ export const AdminRouter = () => {
             <Route path='/journeys/:id' element={<EditJourney />} />
             <Route path='/programs/*' element={<AdminProgramList />}></Route>
             <Route path='/programs/new' element={<NewProgram />}></Route>
-            <Route path='/programs/:id' element={<>program edit</>}></Route>
+            <Route path='/programs/:id' element={<EditProgram />}></Route>
             <Route path='*' element={<Navigate replace to="/induction/*"/>} ></Route>
         </Routes>
     </>

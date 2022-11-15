@@ -39,6 +39,6 @@ export type ProgramMapType = {
 }
 export type CourseMapType = {
     index: number,
-    courseId: string;
+    course: string;
     courseName: string;
 }

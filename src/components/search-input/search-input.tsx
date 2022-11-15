@@ -37,7 +37,6 @@ const { Option } = Select;
     };
   
     const handleSelect = (e: any) =>{
-      console.log(data);
       props.onSelect(data.find( d => d.text == e));
     }
   

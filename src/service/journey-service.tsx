@@ -13,6 +13,7 @@ export function getJourneys(key:string = '', page:string = '0', size:string = '8
 export const getJourneyDetails = (id:string) => {
     return httpInstance.get('/microsite/lnd/journeys/details/'+id)
 }
+
 export const debounce = (callback:any, time:any) => {
     window.clearTimeout(debounceTimer);
     debounceTimer = window.setTimeout(callback, time);
@@ -83,14 +84,16 @@ export const onSelectHandler = (index: number, e:any, programs: ProgramMapType[]
 }
 
 export const onCourseSelectHandler = (index: number, e:any, courses: CourseMapType[]) =>{
+  console.log(e)
   let updatedCourses = courses;
     let updatedCourse = courses[index];
-    updatedCourse.courseId = e;
+    updatedCourse.course = e.key;
+    updatedCourse.courseName = e.text;
     updatedCourses.splice(index,1,updatedCourse)
     return [...updatedCourses]
 }
 
-export const handleFormSubmit = (journey:any, programs: ProgramMapType[], thumbnail: string, id:string= null) => {
+export const handleFormSubmit = (journey:any, programs: ProgramMapType[], thumbnail: string, category: string, id:string= null) => {
     let mappedPrograms:any[] = programs.filter(p => p.programName != undefined)
     mappedPrograms.forEach( (program,index) => {
       program.programPosition = index+1
@@ -99,44 +102,64 @@ export const handleFormSubmit = (journey:any, programs: ProgramMapType[], thumbn
       thumbnailId: thumbnail,
       title: journey.title.trim(),
       description: journey.description ? journey.description.trim() : journey.description,
-      flow: journey.sequencial ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      flow: journey.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      category: category,
       programs: [...mappedPrograms]
     }) :
     updateJourney({
       thumbnailId: thumbnail,
       title: journey.title.trim(),
       description: journey.description ? journey.description.trim() : journey.description,
-      flow: journey.sequencial ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      flow: journey.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      category: category,
       programs: [...mappedPrograms]
     },id)
 }
 
-export const handleProgramFormSubmit = (values:any, courses: CourseMapType[], thumbnail: string) => {
-  let program = values.program
-  let mappedCourses:any[] = courses.filter(p => p.courseId != undefined)
-  mappedCourses.forEach( (course,index) => course.position = index+1)
-  return setProgram({
-    thumbnailId: thumbnail,
-    title: program.title.trim(),
-    description: program.description ? program.description.trim() : program.description,
-    flow: program.sequencial ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
-    issueCertificate: program.issueCertificate,
-    courses: [...mappedCourses]
-  })
+export const handleProgramFormSubmit = (program:any, courses: CourseMapType[], thumbnail: string, id:string= null) => {
+    console.log(program)
+    let mappedCourses:any[] = courses.filter(p => p.courseName != undefined)
+    mappedCourses.forEach( (course,index) => {
+      course.coursePosition = index+1
+    })
+    return id==null ? setProgram({
+      thumbnailId: thumbnail,
+      title: program.title.trim(),
+      description: program.description ? program.description.trim() : program.description,
+      flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      issueCertificate: program.issueCertificate,
+      courses: [...mappedCourses]
+    }) :
+    updateProgram({
+      thumbnailId: thumbnail,
+      title: program.title.trim(),
+      description: program.description ? program.description.trim() : program.description,
+      flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      issueCertificate: program.issueCertificate,
+      courses: [...mappedCourses]
+    },id)
 }
 
 export const setJourney = (body: any) =>{
-  console.log(body)
+  console.log('set',body)
   const url = "/microsite/lnd/journeys/new"
   return httpInstance.post(url, body)
 }
 
 export const setProgram = (body: any) =>{
+  console.log(body)
   const url = "/microsite/lnd/programs/new"
   return httpInstance.post(url, body)
 }
 
 export const updateJourney = (body:any, id:string) =>{
+  console.log('update',body)
   const url = "/microsite/lnd/journeys/edit/"+id
+  return httpInstance.post(url, body)
+}
+
+export const updateProgram = (body:any, id:string) =>{
+  console.log('update',body)
+  const url = "/microsite/lnd/programs/edit/"+id
   return httpInstance.post(url, body)
 }

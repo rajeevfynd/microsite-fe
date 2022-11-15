@@ -20,7 +20,7 @@ export const NewJourney: React.FC = () => {
   const navigate = useNavigate()
   const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
-  const [journey, setJourney] = React.useState<editJourneyDetails>({})
+  const [journey, setJourney] = React.useState<editJourneyDetails>({sequence:true})
 
   const { Option } = Select;
 
@@ -34,9 +34,7 @@ export const NewJourney: React.FC = () => {
   };
 
   const onFinish = () => {
-    console.log(thumbnail)
-    handleFormSubmit(journey,programs,thumbnail).then(resp => {
-      console.log('resp');
+    handleFormSubmit(journey,programs,thumbnail,'GENERAL').then(resp => {
       if(resp.data){
         message.success('Journey added successfully');
       }
@@ -116,16 +114,34 @@ export const NewJourney: React.FC = () => {
 
           <Form.Item rules={[{ required: true }]}>
             Title
-            <Input value={journey.title}/>
+            <Input value={journey.title} onChange={ (e)=>{
+                setJourney({
+                    id : journey.id,
+                    title: e.target.value,
+                    description: journey.description,
+                    sequence: journey.sequence
+                }) }} />
           </Form.Item>
 
           <Form.Item >
             Description
-            <Input.TextArea value={journey.description}/>
+            <Input.TextArea value={journey.description} onChange={ (e)=>{
+                setJourney({
+                    id : journey.id,
+                    title: journey.title,
+                    description: e.target.value,
+                    sequence: journey.sequence
+                }) }}/>
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={journey.sequence} defaultChecked/>
+            Sequencial <Switch checked={journey.sequence} defaultChecked onChange={ (e)=>{
+                setJourney({
+                    id : journey.id,
+                    title: journey.title,
+                    description: journey.description,
+                    sequence: !journey.sequence
+                }) }}/>
           </Form.Item>
 
           <Form.Item >

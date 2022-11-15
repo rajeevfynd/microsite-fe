@@ -2,28 +2,57 @@ import { Button, Form, Input, message, Select, Switch, Upload, UploadProps } fro
 import {  PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SortableElement,SortableContainer, SortableContainerProps, SortableElementProps } from 'react-sortable-hoc'
-import { courseSortEndHandler, removeCourseHandler, handleProgramFormSubmit, onSelectHandler, removeProgramHadler, setJourney, sortEndHandler, onCourseSelectHandler } from '../../../../service/journey-service';
+import { courseSortEndHandler, getJourneyDetails, handleFormSubmit, handleProgramFormSubmit, onCourseSelectHandler, onSelectHandler, removeCourseHandler, removeProgramHadler, sortEndHandler } from '../../../../service/journey-service';
 import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
+import { SearchInput } from '../../../../components/search-input/search-input';
+import { Flow } from '../../../../models/enums/flow';
+import { getProgramDetails } from '../../../../service/program-service';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
 
 type editProgramDetails = {
-  id?: string,
-  title ?: string,
-  description ?: string,
-  sequence?: boolean,
-  issueCertificate?: boolean
+    title ?: string,
+    description ?: string,
+    sequence?: boolean,
+    issueCertificate ?: boolean
 }
 
-export const NewProgram: React.FC = () => {
+export const EditProgram = () => {
+    const { id } = useParams();
+    const navigate = useNavigate()
+    const [courses, setCourses] = React.useState<CourseMapType[]>([])
+    const [thumbnail, setThumbnail] = React.useState('')
+    const [program, setProgram] = React.useState<editProgramDetails>({})
+    const { Option } = Select;
 
-  const navigate = useNavigate()
-  const [courses, setCourses] = React.useState<CourseMapType[]>([])
-  const [thumbnail, setThumbnail] = React.useState('')
-  const [program, setProgram] = React.useState<editProgramDetails>({sequence:true, issueCertificate:false})
+  React.useEffect( ()=>
+  {   
+      getProgramDetails(id).then( res => {
+          processCourses(res.data.courses);
+          processProgram(res.data);
+      })
+  },[])
 
-  const { Option } = Select;
+  const processProgram = (data: any) => {
+    setProgram({
+      title: data.title,
+      description: data.description,
+      sequence: data.flow == Flow.SEQUENCE,
+      issueCertificate : data.issueCertificate
+    })
+  }
+
+  const processCourses = (courses: any[]) =>{
+    let processedCourses : CourseMapType[] = []
+    courses.forEach( (c: any,index:number) => {
+      processedCourses = [ ...processedCourses, {
+        course : c.course.id.toString(),
+        courseName : c.course.title,
+        index: index
+      }]
+    })
+    setCourses(processedCourses) }
 
   const layout = {
     labelCol: { span: 3 },
@@ -35,9 +64,9 @@ export const NewProgram: React.FC = () => {
   };
 
   const onFinish = () => {
-    handleProgramFormSubmit(program,courses,thumbnail).then(resp => {
+    handleProgramFormSubmit(program, courses,thumbnail, id).then(resp => {
       if(resp.data){
-        message.success('Program added successfully');
+        message.success('Program updated successfully');
       }
     })
   };
@@ -97,10 +126,10 @@ export const NewProgram: React.FC = () => {
     <React.Fragment>
       <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
 
-      <h4>Create New Program</h4>
+      <h4>Edit Program</h4>
 
       <div className='scroll-container'>
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form onFinish={onFinish} validateMessages={validateMessages}>
             
           <Form.Item>
             Thumbnail
@@ -117,46 +146,46 @@ export const NewProgram: React.FC = () => {
             Title
             <Input value={program.title} onChange={ (e)=>{
                 setProgram({
-                    id : program.id,
                     title: e.target.value,
                     description: program.description,
                     sequence: program.sequence,
                     issueCertificate: program.issueCertificate
-                }) }} />
+                })
+            } }/>
           </Form.Item>
 
-          <Form.Item >
+          <Form.Item>
             Description
             <Input.TextArea value={program.description} onChange={ (e)=>{
                 setProgram({
-                    id : program.id,
                     title: program.title,
                     description: e.target.value,
                     sequence: program.sequence,
                     issueCertificate: program.issueCertificate
-                }) }}/>
+                })
+            } }/>
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={program.sequence} defaultChecked onChange={ (e)=>{
+            Sequencial <Switch checked={program.sequence} onClick={ ()=>{
                 setProgram({
-                    id : program.id,
                     title: program.title,
                     description: program.description,
                     sequence: !program.sequence,
-                    issueCertificate : program.issueCertificate
-                }) }}/>
+                    issueCertificate: program.issueCertificate
+                })
+            } }/>
           </Form.Item>
 
           <Form.Item>
-            Issue Certificate <Switch checked={program.issueCertificate} onChange={ (e)=>{
+            Issue Certificate <Switch checked={program.issueCertificate} onClick={ ()=>{
                 setProgram({
-                    id : program.id,
                     title: program.title,
                     description: program.description,
                     sequence: program.sequence,
-                    issueCertificate : !program.issueCertificate
-                }) }}/>
+                    issueCertificate: !program.issueCertificate
+                })
+            } }/>
           </Form.Item>
 
           <Form.Item >
@@ -175,7 +204,7 @@ export const NewProgram: React.FC = () => {
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol}}>
             <Button type="primary" htmlType="submit">
-              Create Program
+              Edit Program
             </Button>
           </Form.Item>
 

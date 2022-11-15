@@ -34,7 +34,6 @@ export const Welcome = () => {
 
   const getInductionJourneyDetails = () => {
     getActiveInductionJourney().then(res => {
-
       processData(res.data);
     }
     )

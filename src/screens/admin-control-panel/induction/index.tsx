@@ -7,6 +7,7 @@ import { JourneyDetailType } from '../../../models/journey-details';
 import { getWelcomeMessageDetails, getActiveInductionJourney } from '../../../service/induction-service';
 import { processPrograms } from '../../../service/journey-service';
 import { AdminWelcomeMessage } from './welcome/admin-welcome-message';
+import { EditInduction } from './welcome/edit-induction';
 
 export const AdminInduction = () => {
 
@@ -52,7 +53,7 @@ export const AdminInduction = () => {
 
         <CollapsePanel key={'2'} header='Edit Induction Journey'>
             <div>
-              Edit Induction Journey
+              <EditInduction />
             </div>
         </CollapsePanel>
       </Collapse>

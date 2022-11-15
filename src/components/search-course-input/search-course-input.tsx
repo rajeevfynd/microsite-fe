@@ -1,6 +1,7 @@
 import { Select } from "antd";
 import * as React from "react";
 import { debounce, getJourneys } from "../../service/journey-service";
+import { getCourses, getPrograms } from "../../service/program-service";
 
 const { Option } = Select;
   
@@ -18,10 +19,10 @@ const { Option } = Select;
       let newValue = key
       if (newValue) {
         if(load) { return ;}
-        getJourneys(newValue).then(
+        getCourses(newValue).then(
           resp => {
             let respData: any[] = []
-            resp.data.content.forEach( (d:any) => respData.push({key:d.courseId, text: d.courseId}) )
+            resp.data.content.forEach( (d:any) => respData.push({key:d.id, text: d.title}) )
             setData(respData)
             setLoad(false)
           }
@@ -36,11 +37,10 @@ const { Option } = Select;
     };
   
     const handleSelect = (e: any) =>{
-      props.onSelect(e);
-  
+      props.onSelect(data.find( d => d.text == e));
     }
   
-    const options = data.map( d => { return (<Option key={d.key}>{d.text}</Option>)});
+    const options = data.map( d => { return (<Option key={d.text}>{d.text}</Option>)});
   
     return (
       <>

@@ -8,25 +8,24 @@ import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadl
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
+import { getActiveInductionJourney } from '../../../../service/induction-service';
 
-type editJourneyDetails = {
+type editInductionJourneyDetails = {
     title ?: string,
     description ?: string,
     sequence?: boolean,
+    id?: string
 }
 
-export const EditJourney = () => {
-    const { id } = useParams();
-    const navigate = useNavigate()
+export const EditInduction = () => {
     const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
     const [thumbnail, setThumbnail] = React.useState('')
-    const [journey, setJourney] = React.useState<editJourneyDetails>({})
-    const [category, setCategory] = React.useState('');
+    const [journey, setJourney] = React.useState<editInductionJourneyDetails>({sequence:true})
     const { Option } = Select;
 
   React.useEffect( ()=>
   {   
-      getJourneyDetails(id).then( res => {
+      getActiveInductionJourney().then( res => {
           processPrograms(res.data.programs);
           processJourneys(res.data);
       })
@@ -36,9 +35,9 @@ export const EditJourney = () => {
     setJourney({
       title: data.title,
       description: data.description,
-      sequence: data.flow == Flow.SEQUENCE
+      sequence: data.flow == Flow.SEQUENCE,
+      id : data.id
     })
-    setCategory(data.category)
   }
 
   const processPrograms = (programs: any[]) =>{
@@ -62,7 +61,7 @@ export const EditJourney = () => {
   };
 
   const onFinish = () => {
-    handleFormSubmit(journey, programs,thumbnail, category, id).then(resp => {
+    handleFormSubmit(journey, programs,thumbnail, 'INDUCTION', journey.id).then(resp => {
       if(resp.data){
         message.success('Journey updated successfully');
       }
@@ -122,9 +121,6 @@ export const EditJourney = () => {
 
   return (    <>
     <React.Fragment>
-      <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
-
-      <h4>Edit Journey</h4>
 
       <div className='scroll-container'>
         <Form onFinish={onFinish} validateMessages={validateMessages}>
@@ -144,6 +140,7 @@ export const EditJourney = () => {
             Title
             <Input value={journey.title} onChange={ (e)=>{
                 setJourney({
+                    id : journey.id,
                     title: e.target.value,
                     description: journey.description,
                     sequence: journey.sequence
@@ -155,6 +152,7 @@ export const EditJourney = () => {
             Description
             <Input.TextArea value={journey.description} onChange={ (e)=>{
                 setJourney({
+                    id : journey.id,
                     title: journey.title,
                     description: e.target.value,
                     sequence: journey.sequence
@@ -165,6 +163,7 @@ export const EditJourney = () => {
           <Form.Item>
             Sequencial <Switch checked={journey.sequence} onClick={ ()=>{
                 setJourney({
+                    id: journey.id,
                     title: journey.title,
                     description: journey.description,
                     sequence: !journey.sequence
@@ -188,7 +187,7 @@ export const EditJourney = () => {
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol}}>
             <Button type="primary" htmlType="submit">
-              Edit Journey
+              Edit Induction
             </Button>
           </Form.Item>
 
