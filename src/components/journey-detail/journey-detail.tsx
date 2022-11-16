@@ -1,7 +1,7 @@
-import { Image, Row, Col, Progress, List, Timeline } from 'antd'
-import TimelineItem from 'antd/lib/timeline/TimelineItem'
+import { Image, Row, Col, Progress, List } from 'antd'
 import * as React from 'react'
-import { PatchCheckFill, Clock } from 'react-bootstrap-icons'
+import { PatchCheckFill,  Clock, ArrowRight } from 'react-bootstrap-icons'
+import { Link } from 'react-router-dom'
 import { JourneyDetailPropsType } from '../../models/journey-details'
 
 export const JourneyDetail = (props: JourneyDetailPropsType) => {
@@ -10,14 +10,15 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
     <>
         <div className='details'>
             <Row>
-                <Col span={8}>
+                <Col span={7}>
                     <Image
-                        src={props.details.thumbnailLink}
-                        width={400}
+                        src={`data:image/png;base64,${props.details.thumbnailLink}`}
+                        height={240}
+                        width={360}
                         preview={false}
                     />
                 </Col>
-                <Col span={14}>
+                <Col span={15}>
                     <div>
                     <h5>{props.details.title}</h5>
                     <p>{props.details.description}</p>
@@ -26,8 +27,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div>
-            <Timeline>
+        <div className='programs-list'>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.programs}
@@ -36,33 +36,33 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                     <List.Item
                         extra={
                             <img
-                                width={136}
+                                width={150}
+                                height={100}
                                 alt="logo"
-                                src={item.program.thumbnailLink}
+                                src={`data:image/png;base64,${item.program.thumbnailLink}`}
                             />}
                     >
-                        
                         <List.Item.Meta
                             title= {
                                 <div>
-                                    {props.details.flow == 'NON_SEQUENCE' && <>
-                                        <a className="link" href={item.program.rruDeeplink} target="_blank">{item.program.title}</a>
-                                    </>}
-                                    {props.details.flow == 'SEQUENCE' && <>
-                                        {item.isActive && <a className="link" href={item.program.rruDeeplink} target="_blank">{item.program.title}</a>}
-                                        {!item.isActive && <span className='li-incomplete'>{item.program.title}</span>}
-                                    </>}
+                                    {item.program.title}
                                     <span className='certified'>{item.status == 'COMPLETED' && <PatchCheckFill color='green'/> }</span>
                                 </div>
                             }
                             description={
                                 <>
-                                    <div>
+                                    <p style={{width : "90%"}}>
                                         {item.program.description}
-                                    </div>  
-                                    <div>
-                                        <Clock/> {item.program.duration} hrs
-                                    </div>
+                                    </p>  
+                                    <p>
+                                        {props.details.flow == 'NON_SEQUENCE' && <>
+                                            <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>
+                                        </>}
+                                        {props.details.flow == 'SEQUENCE' && <>
+                                            {item.isActive && <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>}
+                                        </>}
+                                        
+                                    </p>
                                 </>
                                 
                             }
@@ -70,7 +70,6 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                     </List.Item>
                 )}
             />
-            </Timeline>
         </div>
     </>
   )

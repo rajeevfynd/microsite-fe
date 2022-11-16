@@ -7,19 +7,29 @@ const reqs = new req(baseurl,config)
 reqs.get().then( res=>console.log(res));
 */
 
-import axios, {
-  AxiosResponse,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosError,
-} from "axios";
-import { AUTHORISATION_PATH } from "../constants/urls";
-import { configType } from "../models/config-type";
+import { message } from 'antd';
+import axios, { AxiosResponse, AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
+import { ids } from 'webpack';
+import { AUTHORISATION_PATH } from '../constants/urls';
+import { configType } from '../models/config-type'
 
-declare module "axios" {
+const CLIENT_ERROR_CODES = [400, 403, 404]
+
+declare module 'axios' {
   export interface AxiosRequestConfig {
     handlerEnabled: boolean;
   }
+}
+
+type errormetadata = {
+  data?: {
+    code?: string,
+    message?: string
+  }
+}
+
+type errordata = {
+  data?: errormetadata
 }
 
 class HttpClient {
@@ -34,15 +44,18 @@ class HttpClient {
       this._handleError
     );
   }
-
   protected _handleResponse = ({ data }: AxiosResponse) => data;
 
   protected _handleError = (error: AxiosError) => {
+    if (CLIENT_ERROR_CODES.includes(error.response.status)) {
+      let err: errordata = { data: error.response.data }
+      message.error(`Error ${err.data.data.code} due to ${err.data.data.message}`)
+    }
     if (error.response.status === 401) {
       window.location.href = AUTHORISATION_PATH;
     }
     return Promise.reject(error.response);
-  };
+  }
 
   public get = (url: string) => {
     return this.instance.get(url);
