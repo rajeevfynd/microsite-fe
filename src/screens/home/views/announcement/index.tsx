@@ -7,24 +7,24 @@ import AnnouncementModal from './announcement-modal';
 import './index.css'
 
 
-export const Announcement = () =>{
-    const [announcements,setAnnouncements] = React.useState<announcementType []>([])
+export const Announcement = () => {
+    const [announcements, setAnnouncements] = React.useState<announcementType[]>([])
 
-    const fetchAnncouncement = React.useCallback( async()=>{
+    const fetchAnncouncement = React.useCallback(async () => {
         let response = await getAnnouncement();
-        const announcement_list: announcementType [] = response.data
+        const announcement_list: announcementType[] = response.data
         setAnnouncements(announcement_list)
-    },[])
-    React.useEffect(() =>{
+    }, [])
+    React.useEffect(() => {
         fetchAnncouncement()
-    },[fetchAnncouncement])
+    }, [fetchAnncouncement])
 
     return (<>
-        <Card className='announcement'>
-            <Meta title = {<div style={{paddingBottom:'10px'}}><h4>Announcements & News</h4></div>}/>
+        <Card className="home-card">
+            <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Announcements & News</h4></div>} />
             <div className="microsoft container">
                 <body className="marquee">
-                    {announcements.map(({title,description,documentId,createdAt}) =>(<AnnouncementModal{...{title,description,documentId,createdAt}}></AnnouncementModal>))}
+                    {announcements.map(({ title, description, documentId, createdAt }) => (<AnnouncementModal{...{ title, description, documentId, createdAt }}></AnnouncementModal>))}
                 </body>
             </div>
         </Card>

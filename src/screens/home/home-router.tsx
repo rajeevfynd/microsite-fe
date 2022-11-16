@@ -9,7 +9,6 @@ export const HomeRouter = () => {
     <>
         <Routes>
             <Route path='/*' element={<HomePage></HomePage>}></Route>
-            <Route path='*' element={<Navigate replace to="/home"/>} ></Route>
         </Routes>
     </>
   )
