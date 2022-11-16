@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import { Button, Menu } from "antd/lib";
 import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,8 +16,8 @@ function OutsideClick(ref: any) {
 }
 
 export default function MenuHome() {
-    const navigate = useNavigate()
-    const location = useLocation()
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [collapsed, setCollapsed] = React.useState(false);
     const boxRef = React.useRef(null);
@@ -104,8 +104,25 @@ export default function MenuHome() {
                                 <Menu.Item onClick={() => navigateTo('/lnd/learning-journey')}>Learning Journey</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item icon={<PersonWorkspace />}>Manager Section</Menu.Item>
-                            <Menu.SubMenu icon={<ListColumns />} title='Survey'>
-                                <Menu.Item>Create New Survey</Menu.Item>
+                            <Menu.SubMenu icon={<ListColumns />} title="Survey">
+                                <Menu.Item
+                                    key="new-survey"
+                                    onClick={() => navigateTo("/survey/new-survey")}
+                                >
+                                    Create New Survey
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="created-surveys"
+                                    onClick={() => navigateTo("/survey/created-surveys")}
+                                >
+                                    Created Surveys
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="my-surveys"
+                                    onClick={() => navigateTo("/survey/my-surveys")}
+                                >
+                                    My Surveys
+                                </Menu.Item>
                             </Menu.SubMenu>
                             <Menu.SubMenu title='R&R Section' icon={<Award />}>
                                 <Menu.Item

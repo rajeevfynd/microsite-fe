@@ -1,13 +1,13 @@
 import { MenuProps } from "antd";
 import { MenuRoute } from "../models/menu-route";
 
-// menu item and its route link will be specified in this constant 
+// menu item and its route link will be specified in this constant
 export const menuRoutes: MenuRoute[] = [
     {
-        key:'home',
+        key: 'home',
         isExternalLink: false,
         navigateTo: '/home',
-        accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
+        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER'],
         parents: []
     },
     {
@@ -47,7 +47,7 @@ export const menuRoutes: MenuRoute[] = [
         parents: ['learning-and-development', 'learning-center'],
     },
     {
-        key:'role',
+        key: 'role',
         isExternalLink: false,
         navigateTo: '/lnd/learning-center/role',
         accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER'],
@@ -87,6 +87,42 @@ export const menuRoutes: MenuRoute[] = [
         navigateTo: '/rnr/placeholder',
         accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER'],
         parents: ['rnr-section']
+    },
+    {
+        key: "my-surveys",
+        isExternalLink: false,
+        navigateTo: "/survey/my-surveys",
+        accessList: [
+            "PUBLIC",
+            "ADMIN-LND",
+            "ADMIN-EMPLOYEE-ENGAGEMENT",
+            "ADMIN-GLOBAL",
+            "LEADER",
+        ],
+    },
+    {
+        key: "created-surveys",
+        isExternalLink: false,
+        navigateTo: "/survey/created-surveys",
+        accessList: [
+            "ADMIN-LND",
+            "ADMIN-EMPLOYEE-ENGAGEMENT",
+            "ADMIN-GLOBAL",
+            "LEADER",
+        ],
+    },
+    {
+        key: "new-survey",
+        isExternalLink: false,
+        navigateTo: "/survey/new-survey",
+        accessList: [
+            "PUBLIC",
+            "ADMIN-LND",
+            "ADMIN-EMPLOYEE-ENGAGEMENT",
+            "ADMIN-GLOBAL",
+            "LEADER",
+        ],
+        parents: ["rnr-section"],
     }
 ]
 
@@ -162,6 +198,24 @@ export const menuItems: MenuProps['items'] = [
     {
         key: 'manager-section',
         label: "Manage Section"
+    },
+    {
+        key: "surveys",
+        label: "Surveys",
+        children: [
+            {
+                key: "my-surveys",
+                label: "My Surveys",
+            },
+            {
+                key: "new-survey",
+                label: "New Survey",
+            },
+            {
+                key: "created-surveys",
+                label: "Created Surveys",
+            },
+        ],
     },
     {
         key: 'rnr-section',
