@@ -36,6 +36,7 @@
     "webpack-dev-server": "^4.10.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "antd": "^4.22.8",
