@@ -2,33 +2,29 @@ import {
   Select,
   Button,
   notification,
-  Space,
-  Popconfirm,
   Upload,
   message,
-  Form,
-  Menu,
   Radio,
   Checkbox,
+  Typography,
 } from "antd";
 import html2canvas from "html2canvas";
 
 import * as React from "react";
 
+const { Text, Link } = Typography;
 import {
   DeleteOutlined,
-  CopyFilled,
   PlusOutlined,
   LoadingOutlined,
   UploadOutlined,
-  MailOutlined,
   AlignLeftOutlined,
   CheckSquareTwoTone,
 } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import RadioUi from "./options/RadioUI";
 import CheckBoxUi from "./options/CheckBoxUi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   creatSurvey,
   getSurveyById,
@@ -36,18 +32,13 @@ import {
   uploadImageToserver,
   getImage,
 } from "../../../../service/survey-service";
-import {
-  RcFile,
-  UploadChangeParam,
-  UploadFile,
-  UploadProps,
-} from "antd/lib/upload";
+import { RcFile, UploadProps } from "antd/lib/upload";
 
 const UplodUrl = "/microsite/document/upload";
 
 const Survey = () => {
   const [loading, setLoading] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   type NotificationType = "success" | "info" | "warning" | "error";
   const { Option } = Select;
@@ -58,7 +49,6 @@ const Survey = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [imgId, setImgId] = React.useState("");
   const [imgString, setImgString] = React.useState("");
-  const [currentImage, setCurrentImage] = React.useState("");
   const [newScreenShot, setNewScreenShot] = React.useState(false);
   const newQuestion = {
     id: "",
@@ -91,10 +81,10 @@ const Survey = () => {
 
   const handleAddOption = (i: number, j: number) => {
     console.log("Inside add option ", i + " " + j);
-    let t = Survey;
-    t.questions[i].choices.splice(j + 1, 0, { id: "", choiceText: "" });
-    console.log(t);
-    setSurvey({ ...t });
+    let temp = Survey;
+    temp.questions[i].choices.splice(j + 1, 0, { id: "", choiceText: "" });
+    console.log(temp);
+    setSurvey({ ...temp });
   };
 
   const handleChoiceText = (
@@ -103,11 +93,14 @@ const Survey = () => {
     j: number
   ) => {
     console.log("Inside choice text ", i + " " + j);
-    let t = Survey;
-    t.questions[i].choices.splice(j, 0, { id: "", choiceText: e.target.value });
-    t.questions[i].choices.splice(j + 1, 1);
-    console.log(t);
-    setSurvey({ ...t });
+    let temp = Survey;
+    temp.questions[i].choices.splice(j, 0, {
+      id: "",
+      choiceText: e.target.value,
+    });
+    temp.questions[i].choices.splice(j + 1, 1);
+    console.log(temp);
+    setSurvey({ ...temp });
   };
 
   const handleDeleteOption = (i: number, j: number) => {
@@ -115,10 +108,10 @@ const Survey = () => {
     if (Survey.questions[i].choices.length == 2) {
       openNotificationWithIcon("error", "chocies cannot be less than 2");
     } else {
-      let t = Survey;
-      t.questions[i].choices.splice(j, 1);
-      console.log(t);
-      setSurvey({ ...t });
+      let temp = Survey;
+      temp.questions[i].choices.splice(j, 1);
+      console.log(temp);
+      setSurvey({ ...temp });
     }
   };
 
@@ -141,14 +134,14 @@ const Survey = () => {
     );
   };
   const handleSelect = (value: string, i: number) => {
-    let a = Survey.questions[i];
-    a = { ...a, questionType: value };
-    const l = [
+    let tempQuestion = Survey.questions[i];
+    tempQuestion = { ...tempQuestion, questionType: value };
+    let tempSurveys = [
       ...Survey.questions.slice(0, i),
-      a,
+      tempQuestion,
       ...Survey.questions.slice(i + 1, Survey.questions.length),
     ];
-    setSurvey({ ...Survey, questions: l });
+    setSurvey({ ...Survey, questions: tempSurveys });
   };
   const checkBoxUI = (i: number) => {
     return (
@@ -178,9 +171,9 @@ const Survey = () => {
   };
   const addQuestion = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
-    const l = [...Survey.questions];
-    l.push(newQuestion);
-    setSurvey({ ...Survey, questions: l });
+    const tempQuestions = [...Survey.questions];
+    tempQuestions.push(newQuestion);
+    setSurvey({ ...Survey, questions: tempQuestions });
   };
 
   const handleQuestionText = (
@@ -189,13 +182,12 @@ const Survey = () => {
   ) => {
     let arr = Survey.questions[i];
     arr = { ...arr, questionText: e.target.value };
-    const l = [
+    let tempQuestions = [
       ...Survey.questions.slice(0, i),
       arr,
       ...Survey.questions.slice(i + 1, Survey.questions.length),
     ];
-    setSurvey({ ...Survey, questions: l });
-    console.log(arr.questionText);
+    setSurvey({ ...Survey, questions: tempQuestions });
   };
   const DeleteQuestion = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -238,9 +230,6 @@ const Survey = () => {
       </div>
     </>
   );
-  const showPopconfirm = () => {
-    setOpen(true);
-  };
 
   const prop: UploadProps = {
     name: "file",
@@ -269,8 +258,8 @@ const Survey = () => {
 
     return (
       <>
-        <div>
-          <Upload {...prop}>
+        <div data-html2canvas-ignore="true">
+          <Upload {...prop} beforeUpload={beforeUpload}>
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
 
@@ -284,21 +273,11 @@ const Survey = () => {
               <p style={{ color: "red" }}> click ok to Skip</p>
             </>
           ) : (
-            <p>you can always skip this</p>
+            <Text type="danger">This can be skiped</Text>
           )}
         </div>
       </>
     );
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    handleSubmit();
-  };
-
-  const handleCancel = () => {
-    console.log("Clicked cancel button");
-    setOpen(false);
   };
 
   const formData = new FormData();
@@ -315,6 +294,7 @@ const Survey = () => {
       console.log("Hiegth :", canvas.height);
       var context2 = canvas.getContext("2d"); //context from tmpCanvas
       var imageObj = new Image();
+      // ScreenShot will be croped if the hieght is more than 1200
       if (canvas.height > 1200) {
         imageObj.onload = function () {
           //setup: draw cropped image
@@ -347,9 +327,9 @@ const Survey = () => {
           canvas.width = sourceWidth;
           canvas.height = sourceHeight;
           context2.putImageData(data, 0, 0);
-          // callBackFuntion(canvas.toDataURL(formatOutput));
+
           setImgString(canvas.toDataURL(formatOutput));
-          // console.log("TakeScreenShot ", canvas.toDataURL(formatOutput));
+
           //memory!!!
           context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
           context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
@@ -366,6 +346,7 @@ const Survey = () => {
     });
   };
 
+  /// converts the base64 to Blob
   function DataURIToBlob(dataURI: string) {
     const splitDataURI = dataURI.split(",");
     const byteString =
@@ -381,9 +362,8 @@ const Survey = () => {
     return new Blob([ia], { type: mimeString });
   }
 
-  async function handleSubmit() {
-    // console.log("Image lemgth =", imgId.length);
-    // console.log(newScreenShot);
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (imgId.length == 0 || newScreenShot) {
       /// length is zero if the image is not uploaded by user, so take ScreenShot
       console.log("Take Screen Shot");
@@ -414,7 +394,6 @@ const Survey = () => {
       updateSurvey(params.id, reqBody)
         .then((res) => {
           openNotificationWithIcon("success", "Changes saved");
-          setConfirmLoading(false);
         })
         .catch((err) => {
           console.log(err.data);
@@ -434,12 +413,7 @@ const Survey = () => {
       creatSurvey(body)
         .then((res) => {
           openNotificationWithIcon("success", surveyTitle + " created");
-          setDescription("");
-          setSurveyTitle("");
-          setSurvey({ questions: [newQuestion] });
-          setImgId("");
-          setOpen(false);
-          setConfirmLoading(false);
+          navigate(`/survey/created-surveys`);
         })
         .catch((err) => {
           openNotificationWithIcon("error", err.message);
@@ -462,8 +436,6 @@ const Survey = () => {
         console.log(res.data);
         console.log(Survey);
         setIsLoading(false);
-        let screenshot = await getImage(res.data.documentId);
-        setCurrentImage(screenshot.data);
         console.log("Inside useffect ");
       });
       setEdit(true);
@@ -507,144 +479,142 @@ const Survey = () => {
       {isLoading ? (
         "Loading"
       ) : (
-        <form onSubmit={(e) => handleSubmit()}>
-          <div className="question_form" id="TakeScreenShot">
-            <br></br>
-            <div className="section">
-              <div className="question_title_section">
-                <div className="question_form_top">
-                  <input
-                    type="text"
-                    name="surveyTitle"
-                    className="question_form_top_name"
-                    style={{ color: "black" }}
-                    placeholder="Survey Title"
-                    value={surveyTitle}
-                    onChange={(e) => setSurveyTitle(e.target.value)}
-                    required
-                  ></input>
+        <>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <div className="question_form" id="TakeScreenShot">
+              <br></br>
 
-                  <input
-                    type="text"
-                    className="question_form_top_desc "
-                    style={{ color: "black" }}
-                    placeholder="Survey description"
-                    name="description"
-                    value={description}
-                    required
-                    onChange={(e) => setDescription(e.target.value)}
-                  ></input>
-                  <div className="valid-feedback">Looks good!</div>
+              <div className="section">
+                <div className="question_title_section">
+                  <div className="question_form_top">
+                    <input
+                      type="text"
+                      name="surveyTitle"
+                      className="question_form_top_name"
+                      style={{ color: "black" }}
+                      placeholder="Survey Title"
+                      value={surveyTitle}
+                      onChange={(e) => setSurveyTitle(e.target.value)}
+                      required
+                    ></input>
+
+                    <input
+                      type="text"
+                      className="question_form_top_desc "
+                      style={{ color: "black" }}
+                      placeholder="Survey description"
+                      name="description"
+                      value={description}
+                      required
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></input>
+                    <div className="valid-feedback">Looks good!</div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="container" style={{ paddingTop: "10px" }}>
-                {Survey.questions.map((question, index) => (
-                  <div key={question.id}>
-                    <div
-                      className="card"
-                      style={{
-                        borderLeft: "4px solid rgb(66, 90, 245)",
-                      }}
-                    >
-                      <div className="card-header">
-                        <div className="row">
-                          <div className="col-6">
-                            <div className="input-group ">
-                              <input
-                                key={index}
-                                id="validationCustom01"
-                                type="text"
-                                className="form-control"
-                                placeholder="Question"
-                                aria-label="questionText"
-                                name="questionText"
-                                aria-describedby="basic-addon1"
-                                value={question.questionText}
-                                onChange={(e) => handleQuestionText(e, index)}
-                                required
-                              />
+                <div className="container" style={{ paddingTop: "10px" }}>
+                  {Survey.questions.map((question, index) => (
+                    <div key={question.id}>
+                      <div
+                        className="card"
+                        style={{
+                          borderLeft: "4px solid rgb(66, 90, 245)",
+                        }}
+                      >
+                        <div className="card-header">
+                          <div className="row">
+                            <div className="col-6">
+                              <div className="input-group ">
+                                <input
+                                  key={index}
+                                  id="validationCustom01"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Question"
+                                  aria-label="questionText"
+                                  name="questionText"
+                                  aria-describedby="basic-addon1"
+                                  value={question.questionText}
+                                  onChange={(e) => handleQuestionText(e, index)}
+                                  required
+                                />
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="col-4" data-html2canvas-ignore="true">
-                            <Select
-                              defaultValue={
-                                question.questionType.length < 1
-                                  ? "TextArea"
-                                  : question.questionType
-                              }
-                              onChange={(e) => handleSelect(e, index)}
-                            >
-                              <Option value="SINGLE_CHOICE">
-                                <Radio />
-                                SINGLE CHOICE
-                              </Option>
-
-                              <Option value="MULTIPLE_CHOICE">
-                                <CheckSquareTwoTone /> MULTIPLE CHOICE
-                              </Option>
-
-                              <Option value="SMALL_TEXT">
-                                <AlignLeftOutlined /> Paragraph
-                              </Option>
-                            </Select>
-                          </div>
-
-                          <div className="col-2">
                             <div
-                              style={{ position: "absolute", float: "right" }}
+                              className="col-4"
+                              data-html2canvas-ignore="true"
                             >
-                              <DeleteOutlined
-                                data-html2canvas-ignore="true"
-                                style={{ color: "red" }}
-                                onClick={(e) => DeleteQuestion(e, index)}
-                              />
+                              <Select
+                                defaultValue={
+                                  question.questionType.length < 1
+                                    ? "TextArea"
+                                    : question.questionType
+                                }
+                                onChange={(e) => handleSelect(e, index)}
+                              >
+                                <Option value="SINGLE_CHOICE">
+                                  <Radio />
+                                  SINGLE CHOICE
+                                </Option>
+
+                                <Option value="MULTIPLE_CHOICE">
+                                  <CheckSquareTwoTone /> MULTIPLE CHOICE
+                                </Option>
+
+                                <Option value="SMALL_TEXT">
+                                  <AlignLeftOutlined /> Paragraph
+                                </Option>
+                              </Select>
+                            </div>
+
+                            <div className="col-2">
+                              <div
+                                style={{ position: "absolute", float: "right" }}
+                              >
+                                <DeleteOutlined
+                                  data-html2canvas-ignore="true"
+                                  style={{ color: "red" }}
+                                  onClick={(e) => DeleteQuestion(e, index)}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="card-body">
-                        <div>{handleSwitch(question.questionType, index)}</div>
+                        <div className="card-body">
+                          <div>
+                            {handleSwitch(question.questionType, index)}
+                          </div>
+                        </div>
                       </div>
+                      <br />
                     </div>
-                    <br />
-                  </div>
-                ))}
-                <Button
-                  type="primary"
-                  onClick={(e) => addQuestion(e)}
-                  data-html2canvas-ignore="true"
-                >
-                  Add Question
-                </Button>
-
-                <div className="row" style={{ float: "right" }}>
-                  {/* <button type="submit" className="btn btn-primary">
-                    {params.id ? "Save the Changes" : "Submit"}
-                  </button> */}
-                  <Popconfirm
-                    title={uploadImage}
-                    open={open}
-                    onConfirm={handleOk}
-                    okButtonProps={{ loading: confirmLoading }}
-                    onCancel={handleCancel}
+                  ))}
+                  <Button
+                    type="primary"
+                    onClick={(e) => addQuestion(e)}
+                    data-html2canvas-ignore="true"
                   >
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      data-html2canvas-ignore="true"
-                      onClick={showPopconfirm}
-                    >
+                    Add Question
+                  </Button>
+                  <br></br>
+                  {uploadImage()}
+
+                  <div
+                    className="row"
+                    style={{ float: "right" }}
+                    data-html2canvas-ignore="true"
+                  >
+                    <button type="submit" className="btn btn-primary">
                       {params.id ? "Save the Changes" : "Submit"}
                     </button>
-                  </Popconfirm>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </>
       )}
     </>
   );

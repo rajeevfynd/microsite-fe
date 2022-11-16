@@ -1,8 +1,5 @@
-import { Select } from "antd";
-import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextArea from "antd/lib/input/TextArea";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import ResCheckBoxUi from "./options/ResCheckBoxUi";
 import ResRadioUi from "./options/ResRadioUi";
@@ -11,10 +8,8 @@ import {
   getSurveyResponseById,
 } from "../../../../service/survey-service";
 const ResponseSurvey = () => {
-  /// two params surveyId and AssigneeID
   const params = useParams();
-  const { Option } = Select;
-  let navigate = useNavigate();
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [survey, setSurvey] = React.useState({
     id: "",

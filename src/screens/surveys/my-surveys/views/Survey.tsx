@@ -1,4 +1,3 @@
-import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import TextArea from "antd/lib/input/TextArea";
@@ -12,7 +11,7 @@ import {
 import "../../new-survey/views/questionForm.css";
 const Survey = () => {
   const params = useParams();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [survey, setSurvey] = React.useState({
     id: "",
     surveyTitle: "",

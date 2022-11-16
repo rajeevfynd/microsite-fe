@@ -11,7 +11,6 @@ import {
   assignSurveyToUserId,
   deleteSurveyById,
   getAllSurveys,
-  getImage,
 } from "../../../../service/survey-service";
 import type { PaginationProps } from "antd";
 import Meta from "antd/lib/card/Meta";
@@ -36,7 +35,7 @@ function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
   let navigate = useNavigate();
   const [pageNumber, setPageNumber] = React.useState(0);
-
+  const [isLoading, setIsLoading] = React.useState(true);
   const [Surveys, setSurvey] = React.useState<surveyType[]>([
     {
       id: "",
@@ -76,11 +75,16 @@ function SurveyList() {
   };
 
   const getSurveys = (pageNumber: number) => {
+    setIsLoading(true);
     getAllSurveys(pageNumber)
       .then((res) => {
         setSurvey(res.data);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        setIsLoading(false);
+      });
   };
 
   const assigneeSurvey = (id: string) => {
@@ -110,40 +114,44 @@ function SurveyList() {
       <div className="question_form">
         <div className="container">
           <div className="row">
-            {Surveys.length === 0
-              ? "No Surveys created"
-              : Surveys.map((s) => (
-                  <div className="col-lg-3" key={s.id}>
-                    <Card
-                      hoverable
-                      style={{ width: 200, margin: "1em" }}
-                      cover={
-                        <img
-                          alt="example"
-                          src={"data:image/png;base64," + s.imgUrl}
-                        />
-                      }
-                      actions={[
-                        <DeleteOutlined
-                          style={{ color: "red" }}
-                          onClick={(e) => deleteSurvey(s.id)}
-                        />,
-                        <EditOutlined
-                          key="edit"
-                          onClick={(e) =>
-                            navigate(`/survey/created-surveys/edit/${s.id}`)
-                          }
-                        />,
-                        <EllipsisOutlined
-                          key="ellipsis"
-                          onClick={(e) => assigneeSurvey(s.id)}
-                        />,
-                      ]}
-                    >
-                      <Meta title={s.surveyTitle} />
-                    </Card>
-                  </div>
-                ))}
+            {isLoading ? (
+              <h3>Loading...</h3>
+            ) : Surveys.length === 0 ? (
+              "No Surveys created"
+            ) : (
+              Surveys.map((s) => (
+                <div className="col-lg-3" key={s.id}>
+                  <Card
+                    hoverable
+                    style={{ width: 200, margin: "1em" }}
+                    cover={
+                      <img
+                        alt="example"
+                        src={"data:image/png;base64," + s.imgUrl}
+                      />
+                    }
+                    actions={[
+                      <DeleteOutlined
+                        style={{ color: "red" }}
+                        onClick={(e) => deleteSurvey(s.id)}
+                      />,
+                      <EditOutlined
+                        key="edit"
+                        onClick={(e) =>
+                          navigate(`/survey/created-surveys/edit/${s.id}`)
+                        }
+                      />,
+                      <EllipsisOutlined
+                        key="ellipsis"
+                        onClick={(e) => assigneeSurvey(s.id)}
+                      />,
+                    ]}
+                  >
+                    <Meta title={s.surveyTitle} />
+                  </Card>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

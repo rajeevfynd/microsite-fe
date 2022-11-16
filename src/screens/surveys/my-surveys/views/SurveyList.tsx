@@ -8,7 +8,6 @@ import {
   getImage,
 } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
-import Survey from "./Survey";
 
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -46,15 +45,16 @@ function SurveyList() {
     });
   };
 
-  const getSurveys = () => {
-    console.log("Inside get surveys");
+  const getSurveys = async () => {
     setIsLoading(true);
-    getSurvyesByStatus(false)
-      .then((res) => {
-        console.log(res);
-        setSurvey(res.data);
-      })
-      .catch((err) => openNotificationWithIcon("error", err.data.message));
+    try {
+      let res = await getSurvyesByStatus(false);
+      setSurvey(res.data);
+    } catch (error) {
+      openNotificationWithIcon("error", error.message);
+      setIsLoading(false);
+    }
+
     setIsLoading(false);
   };
 
@@ -66,32 +66,36 @@ function SurveyList() {
       <div className="question_form">
         <div className="container">
           <div className="row">
-            {isLoading
-              ? "Loading"
-              : Surveys.map((i) => (
-                  <div className="col-lg-3">
-                    <Card
-                      hoverable
-                      style={{ width: 200, margin: "1em" }}
-                      cover={
-                        <img
-                          alt="example"
-                          src={"data:image/png;base64," + i.imgUrl}
-                        />
-                      }
-                      actions={[
-                        <EditOutlined
-                          key="edit"
-                          onClick={(e) =>
-                            navigate(`/survey/submit/survey/${i.id}/${8}`)
-                          }
-                        />,
-                      ]}
-                    >
-                      <Meta title={i.surveyTitle} />
-                    </Card>
-                  </div>
-                ))}
+            {isLoading ? (
+              "Loading"
+            ) : Surveys.length === 0 ? (
+              <h3>No surveys</h3>
+            ) : (
+              Surveys.map((i) => (
+                <div className="col-lg-3">
+                  <Card
+                    hoverable
+                    style={{ width: 200, margin: "1em" }}
+                    cover={
+                      <img
+                        alt="example"
+                        src={"data:image/png;base64," + i.imgUrl}
+                      />
+                    }
+                    actions={[
+                      <EditOutlined
+                        key="edit"
+                        onClick={(e) =>
+                          navigate(`/survey/submit/survey/${i.id}/${8}`)
+                        }
+                      />,
+                    ]}
+                  >
+                    <Meta title={i.surveyTitle} />
+                  </Card>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

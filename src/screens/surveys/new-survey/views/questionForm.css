@@ -1,6 +1,6 @@
 .question_form {
   background-color: #f4f4f9;
-  min-height: 70vh;
+  min-height: 80vh;
   height: 100%;
   width: 100%;
   bottom: 0px;
@@ -96,8 +96,8 @@
   background-color: rgb(58, 58, 183);
 }
 
-.title {
+/* .title {
   color: #1a1a1a;
   text-align: center;
   margin-bottom: 10px;
-}
+} */

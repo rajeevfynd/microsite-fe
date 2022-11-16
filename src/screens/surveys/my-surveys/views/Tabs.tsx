@@ -1,8 +1,6 @@
 import { Card } from "antd";
-import axios from "axios";
 import * as React from "react";
 import CompletedSurveyList from "./CompletedSurveyList";
-// import Survey from "./Survey";
 import SurveyList from "./SurveyList";
 
 const tabListNoTitle = [
