@@ -1,11 +1,38 @@
-import { Avatar, Card, Col, Row } from 'antd'
+import { Avatar, Card, Col, message, Row } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
+import { DownloadDocumentType } from '../../../models/download-center-type';
+import { GET_LEADERS_GALLERY_URL } from '../../../constants/urls';
+import httpInstance from '../../../utility/http-client';
 
 export const LeadersGallery = () => {
     
     const { Meta } = Card;
+
+    const [leadersList, setLeadersList] = React.useState<DownloadDocumentType[]>()
+
+    const handleImgClick = async (documentId : number) => {
+        let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
+        window.open(docUrl.data.url, '_blank').focus();
+    }
+
+    const getLeadersList = () => {
+        const url = GET_LEADERS_GALLERY_URL
+        httpInstance.get(url)
+            .then(response => {
+                setLeadersList(response.data)
+                console.log(response.data)
+            })
+            .catch((error) => {
+                message.error(error);
+            });
+        }
+
+    React.useEffect(() => {
+        getLeadersList();
+    }, [])
+
 
     return (
         <>
@@ -15,63 +42,27 @@ export const LeadersGallery = () => {
         <Row>
             <Content>
                 <Row>
-                    <Col xs={24} xl={8}>
+                    
+                    {leadersList != undefined && leadersList.map((leader) => (
+                        <Col xs={24} xl={8}>
                         <Card
                             style={{ width: 300 }}
                             cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                            />
+                                <img width='200' height='200' 
+                                onClick={() => handleImgClick(leader.documentId)} 
+                                src={`data:image/png;base64,${leader.docThumbnail}`}/>
                             }
                             actions={[
                                 <DownloadOutlined></DownloadOutlined>
                             ]}
                             >
                             <Meta
-                                title="Card title"
-                                description="This is the description"
+                                title= {leader.name}
+                                description={leader.description}
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} xl={8}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                            />
-                            }
-                            actions={[
-                                <DownloadOutlined></DownloadOutlined>
-                            ]}
-                            >
-                            <Meta
-                                title="Card title"
-                                description="This is the description"
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} xl={8}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                            <img
-                                alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                            />
-                            }
-                            actions={[
-                                <DownloadOutlined></DownloadOutlined>
-                            ]}
-                            >
-                            <Meta
-                                title="Card title"
-                                description="This is the description"
-                            />
-                        </Card>
-                    </Col>
+                    ))}
                 </Row>
             </Content>
         </Row>
