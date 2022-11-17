@@ -20,9 +20,9 @@ export const Announcement = () => {
     }, [fetchAnncouncement])
 
     return (<>
-        <Card className="home-card">
+        <Card className="home-card" >
             <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Announcements & News</h4></div>} />
-            <div className="microsoft container">
+            <div className="microsoft announcement-container">
                 <body className="marquee">
                     {announcements.map(({ title, description, documentId, createdAt }) => (<AnnouncementModal{...{ title, description, documentId, createdAt }}></AnnouncementModal>))}
                 </body>
