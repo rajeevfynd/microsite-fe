@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import { Button, Menu } from "antd/lib";
 import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,13 +10,13 @@ import Sider from 'antd/lib/layout/Sider';
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
-    
+
     return isClicked;
 }
 
 export default function MenuHome() {
-    const navigate = useNavigate()
-    const location = useLocation()
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [collapsed, setCollapsed] = React.useState(false);
     const boxRef = React.useRef(null);
@@ -83,14 +83,17 @@ export default function MenuHome() {
                                     key='learning-center'
                                     onTitleClick={() => navigateTo('/lnd/learning-center/lnd-hero', false)}
                                     title='Learning Center'>
-                                    <Menu.Item
-                                        key='skill'
-                                        onClick={() => navigateTo('/lnd/learning-center/skill-courses')}>
-                                        Skill</Menu.Item>
+                                    <Menu.Item key='skill'
+                                        onClick={() => navigateTo('/lnd/learning-center/skill')}>
+                                        Skill
+                                    </Menu.Item>
+
+
                                     <Menu.Item
                                         key='role'
-                                        onClick={() => navigateTo('/lnd/learning-center/role-courses')}>
-                                        Role</Menu.Item>
+                                        onClick={() => navigateTo('/lnd/learning-center/role')}>
+                                        Role
+                                    </Menu.Item>
                                     <Menu.Item
                                         key='academy'
                                         onClick={() => navigateTo('/lnd/learning-center/academy')}>
@@ -100,8 +103,25 @@ export default function MenuHome() {
                                 <Menu.Item onClick={() => navigateTo('/lnd/learning-journey')}>Learning Journey</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item icon={<PersonWorkspace />}>Manager Section</Menu.Item>
-                            <Menu.SubMenu icon={<ListColumns />} title='Survey'>
-                                <Menu.Item>Create New Survey</Menu.Item>
+                            <Menu.SubMenu icon={<ListColumns />} title="Survey">
+                                <Menu.Item
+                                    key="new-survey"
+                                    onClick={() => navigateTo("/survey/new-survey")}
+                                >
+                                    Create New Survey
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="created-surveys"
+                                    onClick={() => navigateTo("/survey/created-surveys")}
+                                >
+                                    Created Surveys
+                                </Menu.Item>
+                                <Menu.Item
+                                    key="my-surveys"
+                                    onClick={() => navigateTo("/survey/my-surveys")}
+                                >
+                                    My Surveys
+                                </Menu.Item>
                             </Menu.SubMenu>
                             <Menu.SubMenu title='R&R Section' icon={<Award />}>
                                 <Menu.Item
@@ -145,6 +165,18 @@ export default function MenuHome() {
                                 <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
                                 <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Edit Carousel</Menu.Item>
                                 <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Manage Announcements</Menu.Item>
+                                <Menu.Item
+                                    key='addSkill'
+                                    onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
+                                    Skill</Menu.Item>
+                                <Menu.Item
+                                    key='addRole'
+                                    onClick={() => navigateTo('/lnd/learning-center/addRole')}>
+                                    Role</Menu.Item>
+                                <Menu.Item
+                                    key='addCourse'
+                                    onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
+                                    Course</Menu.Item>
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>
