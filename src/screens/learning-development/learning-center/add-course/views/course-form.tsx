@@ -391,7 +391,7 @@ export default function CourseForm() {
         if (search.type !== "PROGRAM") return;
 
         (() => {
-            httpInstance.get(`/microsite/program/programs-by-title/?title=${search.text}`)
+            httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${search.text}`)
                 .then((response) => {
 
                     const result = response.data || [];
