@@ -12,7 +12,7 @@ export const getUserPrograms = (url: string) => {
 }
 
 // export const addPrograms = (body: any) => {
-//     const url = "/microsite/program/add-program"
+//     const url = "/microsite/lnd/programs/add-program"
 //     return httpInstance.post(url,body);
 // }
 
