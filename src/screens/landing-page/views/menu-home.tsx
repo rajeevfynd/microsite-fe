@@ -134,11 +134,16 @@ export default function MenuHome() {
                             <Menu.Item icon={<Download />}>Download Center</Menu.Item>
                             <Menu.Item icon={<InfoCircle />}>Information Center</Menu.Item>
                             <Menu.SubMenu title='Admin Control Panel' icon={<Gear />}>
+                                <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
+                                <Menu.SubMenu key='admin-lnd' title='Learning and Development'>
+                                <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
                                 <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
                                 <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
                                 <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
-                                <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Edit Carousel</Menu.Item>
-                                <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Manage Announcements</Menu.Item>
+                                <Menu.Item
+                                    key='addCourse'
+                                    onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
+                                    Course</Menu.Item>
                                 <Menu.Item
                                     key='addSkill'
                                     onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
@@ -147,10 +152,7 @@ export default function MenuHome() {
                                     key='addRole'
                                     onClick={() => navigateTo('/lnd/learning-center/addRole')}>
                                     Role</Menu.Item>
-                                <Menu.Item
-                                    key='addCourse'
-                                    onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
-                                    Course</Menu.Item>
+                                </Menu.SubMenu>
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>

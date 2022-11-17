@@ -23,8 +23,8 @@ export const HomePage = () => {
                             </Col>
                         </Row>
                         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                            <Col className="gutter-row" style={{ marginTop: '10px' }}>
-                                <Card className='home-card' >
+                            <Col className="gutter-row" style={{ marginTop: '10px', width: "100%" }}>
+                                <Card className='home-card'>
                                     <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Idea Corner</h4></div>} />
                                     <Button type='primary' className='idea'> Submit Your Idea</Button>
                                     <br />
