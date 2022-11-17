@@ -134,6 +134,7 @@ export default function MenuHome() {
                             <Menu.Item icon={<Download />}>Download Center</Menu.Item>
                             <Menu.Item icon={<InfoCircle />}>Information Center</Menu.Item>
                             <Menu.SubMenu title='Admin Control Panel' icon={<Gear />}>
+<<<<<<< Updated upstream
                                 <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
                                 <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
                                 <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
@@ -151,6 +152,28 @@ export default function MenuHome() {
                                     key='addCourse'
                                     onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
                                     Course</Menu.Item>
+=======
+                                <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
+                                <Menu.SubMenu key='admin-lnd' title='Learning and Development'>
+                                    <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
+                                    <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
+                                    <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
+                                    <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
+                                    <Menu.Item key='admin-courses' onClick={() => navigateTo('/admin/courses')}>Courses</Menu.Item>
+                                    <Menu.Item
+                                        key='addCourse'
+                                        onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
+                                        Course</Menu.Item>
+                                    <Menu.Item
+                                        key='addSkill'
+                                        onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
+                                        Skill</Menu.Item>
+                                    <Menu.Item
+                                        key='addRole'
+                                        onClick={() => navigateTo('/lnd/learning-center/addRole')}>
+                                        Role</Menu.Item>
+                                </Menu.SubMenu>
+>>>>>>> Stashed changes
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>
