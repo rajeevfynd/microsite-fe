@@ -17,12 +17,17 @@ export const LeadersGallery = () => {
         window.open(docUrl.data.url, '_blank').focus();
     }
 
+    const css = `
+    .leaders-gallery {
+        margin-top : 50px
+    }
+        `
+
     const getLeadersList = () => {
         const url = GET_LEADERS_GALLERY_URL
         httpInstance.get(url)
             .then(response => {
                 setLeadersList(response.data)
-                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);
@@ -36,11 +41,14 @@ export const LeadersGallery = () => {
 
     return (
         <>
+        <style>
+            {css}
+        </style>
         <Row>
-            <h1>Leaders' Gallery</h1>
+            <h3>Leaders' Gallery</h3>
         </Row>
         <Row>
-            <Content>
+            <Content className='leaders-gallery'>
                 <Row>
                     
                     {leadersList != undefined && leadersList.map((leader) => (
@@ -48,7 +56,7 @@ export const LeadersGallery = () => {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <img width='200' height='200' 
+                                <img 
                                 onClick={() => handleImgClick(leader.documentId)} 
                                 src={`data:image/png;base64,${leader.docThumbnail}`}/>
                             }

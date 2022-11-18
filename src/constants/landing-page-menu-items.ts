@@ -155,7 +155,7 @@ export const menuRoutes: MenuRoute[] = [
     {
         key: 'policies',
         isExternalLink: false,
-        navigateTo: '/download-center/frequently-used-policies/',
+        navigateTo: '/download-center/policies/',
         accessList: ['PUBLIC','ADMIN-LND','ADMIN-EMPLOYEE-ENGAGEMENT','ADMIN-GLOBAL','LEADER'],
         parents: ['download-center'],
     }

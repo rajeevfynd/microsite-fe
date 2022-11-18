@@ -138,7 +138,7 @@ export default function MenuHome() {
                                 </Menu.Item>
                                 <Menu.Item
                                     key='templates'
-                                    onClick={()=>navigateTo('')}>
+                                    onClick={()=>navigateTo('/download-center/templates/')}>
                                     Templates
                                 </Menu.Item>
                                 <Menu.Item
@@ -153,7 +153,7 @@ export default function MenuHome() {
                                 </Menu.Item>
                                 <Menu.Item
                                     key='policies'
-                                    onClick={()=>navigateTo('')}>
+                                    onClick={()=>navigateTo('/download-center/policies/')}>
                                     Frequently Used Policies
                                 </Menu.Item>
                             </Menu.SubMenu>

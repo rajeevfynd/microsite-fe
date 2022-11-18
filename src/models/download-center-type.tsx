@@ -1,3 +1,5 @@
+import { DownloadOptions } from "./enums/download-center-options";
+
 export type DownloadDocumentType = {
     id: number
     name: string;
@@ -6,4 +8,10 @@ export type DownloadDocumentType = {
     documentId: number;
     updatedAt: string;
     docThumbnail: string
+}
+
+
+export type DownloadListPropsType = {
+    title : DownloadOptions;
+    url : string; 
 }
