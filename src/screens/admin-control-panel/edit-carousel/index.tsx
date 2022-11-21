@@ -5,6 +5,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import HeroCarousel from '../../learning-development/learning-center/lnd-hero/views/hero-carousel';
 import { editCarouselSlide } from '../../../service/program-service';
 import { UPLOAD_IMG } from '../../../constants/urls';
+import { CourseSearchInput } from '../../../components/search-course-input/search-course-input';
+import { CourseSearch } from '../../learning-development/learning-center/add-skill/views/course-search';
+import { CourseMapType } from '../../../models/journey-details';
 
 
 const { Panel } = Collapse;
@@ -47,16 +50,16 @@ const EditCarousal = () => {
 
     const [update , setupdate ]= React.useState("")
 
-    const onSearch = (val: any) => {
-        let updatedForm: carouselFormtype = {
-            fileId: form[Number(active)].fileId ? form[Number(active)].fileId : 0,
-            value: val
-        }
+    // const onSearch = (val: any) => {
+    //     let updatedForm: carouselFormtype = {
+    //         fileId: form[Number(active)].fileId ? form[Number(active)].fileId : 0,
+    //         value: val
+    //     }
 
-        let updatedFormList = [...form]
-        updatedFormList.splice(Number(active), 1, updatedForm);
-        setFormFile(updatedFormList);
-    }
+    //     let updatedFormList = [...form]
+    //     updatedFormList.splice(Number(active), 1, updatedForm);
+    //     setFormFile(updatedFormList);
+    // }
 
     const handleRemove = ()=> {
         console.log("inside remove")
@@ -89,6 +92,20 @@ const EditCarousal = () => {
         setupdate("is_updated "+Number(active) + 1)
     }
 
+    const [courses, setCourse] = React.useState<CourseMapType>()
+
+    const handleOnSelect = (e: any) => {
+        setCourse(e.key)
+        let updatedForm: carouselFormtype = {
+            fileId: form[Number(active)].fileId ? form[Number(active)].fileId : 0,
+            value: e.key
+        }
+
+        let updatedFormList = [...form]
+        updatedFormList.splice(Number(active), 1, updatedForm);
+        setFormFile(updatedFormList);
+    }
+
     return (
         <>
         <h2>Edit Carousel</h2>
@@ -109,9 +126,11 @@ const EditCarousal = () => {
                                 </Upload>
                             </Form.Item>
                             <Form.Item>
-                                <Space direction="vertical">
+                                <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }} 
+                                    placeholder='Select Course' style={{ width: 250 }}/>
+                                {/* <Space direction="vertical">
                                     <Search placeholder="input search text" onSearch={onSearch} enterButton />
-                                </Space>
+                                </Space> */}
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -134,9 +153,11 @@ const EditCarousal = () => {
                                 </Upload>
                             </Form.Item>
                             <Form.Item>
-                                <Space direction="vertical">
+                                <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }} 
+                                    placeholder='Select Course' style={{ width: 250 }}/>
+                                {/* <Space direction="vertical">
                                     <Search placeholder="input search text" onSearch={onSearch} enterButton />
-                                </Space>
+                                </Space> */}
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -159,9 +180,11 @@ const EditCarousal = () => {
                                 </Upload>
                             </Form.Item>
                             <Form.Item>
-                                <Space direction="vertical">
-                                    <Search placeholder="input search text" onSearch={onSearch} enterButton />
-                                </Space>
+                                {/* <Space direction="vertical">
+                                    <Search placeholder="input search text" onSearch={onSearch} enterButton /> */}
+                                    <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }} 
+                                    placeholder='Select Course' style={{ width: 250 }}/>
+                                {/* </Space> */}
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -178,3 +201,7 @@ const EditCarousal = () => {
 };
 
 export default EditCarousal;
+
+function onCourseSelectHandler(index: number, e: any, courses: CourseMapType[]): React.SetStateAction<CourseMapType[]> {
+    throw new Error('Function not implemented.');
+}

@@ -22,6 +22,8 @@ export const AddAnnouncement = () =>{
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        const s = prop.fileList.pop();
+        console.log(s)
     };
 
     const handleOk = () => {
@@ -67,6 +69,8 @@ export const AddAnnouncement = () =>{
             message.success("Created Announcement")
             setIsModalOpen(false);
             setupdatedprops("updated")
+            form.resetFields()
+            //prop.fileList.pop()
         }
 
     }

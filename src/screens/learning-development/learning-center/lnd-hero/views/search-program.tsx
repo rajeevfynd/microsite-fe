@@ -14,8 +14,8 @@ const SearchProgram = () => {
     const [load, setLoad] = React.useState(false)
     const [courses, setCourses] = React.useState<CourseListType[]>([])
     const [page, setPage] = React.useState(0)
-    const [keyState, setKeyState] = React.useState('')
-    let key = ''
+    const [keyState, setKeyState] = React.useState(' ')
+    let key = ' '
 
     const loadMoreData = () => {
         if (load) { return; }
@@ -70,7 +70,7 @@ const SearchProgram = () => {
                     dataSource={courses}
                     renderItem={item => (
                         <List.Item key={item.title}>
-                            {console.log(item)}
+                            {/* {console.log(item)} */}
                             <Card
                                 hoverable
                                 style={{
