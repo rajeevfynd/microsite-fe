@@ -3,7 +3,7 @@ import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import "../../new-survey/views/questionForm.css";
-import { getSurvyesByStatus } from "../../../../service/survey-service";
+import { getSurveysByStatus } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
 
 function CompletedSurveyList() {
@@ -35,7 +35,7 @@ function CompletedSurveyList() {
   const getSurveys = () => {
     console.log("Inside get surveys");
     setIsLoading(true);
-    getSurvyesByStatus(true)
+    getSurveysByStatus(true)
       .then((res) => {
         setSurvey(res.data);
         setIsLoading(false);

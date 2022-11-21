@@ -14,29 +14,15 @@ import {
 } from "../../../../service/survey-service";
 import type { PaginationProps } from "antd";
 import Meta from "antd/lib/card/Meta";
+import { SurveyDto } from "../../../../models/survey";
 
-interface surveyType {
-  id: string;
-  surveyTitle: string;
-  description: string;
-  imgUrl: string;
-  questions: questionsType[];
-}
-interface questionsType {
-  id: string;
-  questionText: string;
-  questionType: string;
-  choice: Choice[];
-}
-interface Choice {
-  choiceText: string;
-}
+
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
   let navigate = useNavigate();
   const [pageNumber, setPageNumber] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [Surveys, setSurvey] = React.useState<surveyType[]>([
+  const [Surveys, setSurvey] = React.useState<SurveyDto[]>([
     {
       id: "",
       surveyTitle: "",

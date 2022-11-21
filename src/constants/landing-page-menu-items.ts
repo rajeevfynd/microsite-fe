@@ -54,13 +54,6 @@ export const menuRoutes: MenuRoute[] = [
         parents: ['learning-and-development', 'learning-center'],
     },
     {
-        key: 'academy',
-        isExternalLink: false,
-        navigateTo: '/lnd/learning-center/academy',
-        accessList: ['PUBLIC', 'ADMIN-LND', 'ADMIN-EMPLOYEE-ENGAGEMENT', 'ADMIN-GLOBAL', 'LEADER'],
-        parents: ['learning-and-development', 'learning-center'],
-    },
-    {
         key: 'learning-passport',
         isExternalLink: false,
         navigateTo: '/lnd/learning-passport',
@@ -123,7 +116,18 @@ export const menuRoutes: MenuRoute[] = [
             "LEADER",
         ],
         parents: ["rnr-section"],
-    }
+    },
+    {
+        key: "admin-courses",
+        isExternalLink: false,
+        navigateTo: "/admin/courses",
+        accessList: [
+            "ADMIN-LND",
+            "ADMIN-EMPLOYEE-ENGAGEMENT",
+            "ADMIN-GLOBAL",
+            "LEADER",
+        ],
+    },
 ]
 
 // menu props is interface for antd menu for accepting menu items

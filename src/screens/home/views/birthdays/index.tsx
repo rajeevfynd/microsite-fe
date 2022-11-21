@@ -56,13 +56,13 @@ export const BirthDays = () => {
                     </div>
                 </div>
                 <List
-                    grid={{ gutter: 7, column: 4 }}
+                    grid={{ gutter: 7, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
                     dataSource={today}
                     renderItem={item => (
                         <List.Item key={item.name}>
                             <Card hoverable >
-                                <div style={{ alignItems: 'center', justifyContent: 'center', verticalAlign: 'middle', textAlign: 'center' }}>
-                                    <Avatar style={{ margin: 'auto', width: '56px', height: '56px' }}
+                                <div style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                    <Avatar style={{ margin: 'auto', width: '51px', height: '51px' }}
                                         src={item.image}
                                     />
                                     {item.name}

@@ -39,7 +39,7 @@
     "@ant-design/icons": "^4.7.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "antd": "^4.22.8",
+    "antd": "^4.24.3",
     "bootstrap": "^5.2.1",
     "dotenv": "^16.0.3",
     "html2canvas": "^1.4.1",
