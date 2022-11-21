@@ -30,19 +30,6 @@ const today = [
     },
 ]
 
-const upcoming = [
-    {
-        name: "Sridhar Swain",
-        date: new Date(),
-        image: "https://avatars.githubusercontent.com/u/20350203?v=4"
-    },
-    {
-        name: "Sridhar Swain",
-        date: new Date(),
-        image: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-    }
-]
-
 export const BirthDays = () => {
 
     return (
@@ -50,7 +37,7 @@ export const BirthDays = () => {
             <Card className="home-card">
                 <Meta title={<div><h4>Today's Birthday</h4></div>} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography.Text disabled style={{ fontSize: "12px", width: '35%' }}>Click to wish them</Typography.Text>
+                    <Typography.Text disabled style={{ fontSize: "12px", width: '40%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >
                         <Divider />
                     </div>
@@ -60,8 +47,8 @@ export const BirthDays = () => {
                     dataSource={today}
                     renderItem={item => (
                         <List.Item key={item.name}>
-                            <Card hoverable >
-                                <div style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                            <Card hoverable bodyStyle={{ padding: "15px" }}>
+                                <div style={{ display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                                     <Avatar style={{ margin: 'auto', width: '51px', height: '51px' }}
                                         src={item.image}
                                     />
