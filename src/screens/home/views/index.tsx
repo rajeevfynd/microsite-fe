@@ -5,6 +5,7 @@ import './index.css';
 import { ALT_THUMBNAIL } from '../../../constants/string-constants'
 import { Announcement } from './announcement'
 import { BirthDays } from './birthdays'
+import { Events } from './events';
 
 export const HomePage = () => {
     return (
@@ -19,6 +20,11 @@ export const HomePage = () => {
                     <Col span={8} className="gutter-row">
                         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                             <Col className="gutter-row" style={{ width: '100%' }}>
+                                <Events />
+                            </Col>
+                        </Row>
+                        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                            <Col className="gutter-row" style={{ marginTop: '10px', width: '100%' }}>
                                 <BirthDays />
                             </Col>
                         </Row>

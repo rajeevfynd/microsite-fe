@@ -19,7 +19,7 @@ export default function MenuHome() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [collapsed, setCollapsed] = React.useState(false);
+    const [collapsed, setCollapsed] = React.useState(true);
     const boxRef = React.useRef(null);
 
     const navigateTo = (url: string, collapse: boolean = true) => {
@@ -104,26 +104,12 @@ export default function MenuHome() {
                                 <Menu.Item onClick={() => navigateTo('/lnd/learning-journey')}>Learning Journey</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item icon={<PersonWorkspace />}>Manager Section</Menu.Item>
-                            <Menu.SubMenu icon={<ListColumns />} title="Survey">
-                                <Menu.Item
-                                    key="new-survey"
-                                    onClick={() => navigateTo("/survey/new-survey")}
-                                >
-                                    Create New Survey
-                                </Menu.Item>
-                                <Menu.Item
-                                    key="created-surveys"
-                                    onClick={() => navigateTo("/survey/created-surveys")}
-                                >
-                                    Created Surveys
-                                </Menu.Item>
-                                <Menu.Item
-                                    key="my-surveys"
-                                    onClick={() => navigateTo("/survey/my-surveys")}
-                                >
-                                    My Surveys
-                                </Menu.Item>
-                            </Menu.SubMenu>
+                            <Menu.Item
+                                icon={<ListColumns />}
+                                key="my-surveys"
+                                onClick={() => navigateTo("/survey/my-surveys")}>
+                                My Surveys
+                            </Menu.Item>
                             <Menu.SubMenu title='R&R Section' icon={<Award />}>
                                 <Menu.Item
                                     onClick={() => navigateToExternal('https://r-sammaan.ril.com/Pages/r-sammaan.aspx')}>R-Samman Portal</Menu.Item>
@@ -136,23 +122,28 @@ export default function MenuHome() {
                             <Menu.SubMenu title='Admin Control Panel' icon={<Gear />}>
                                 <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
                                 <Menu.SubMenu key='admin-lnd' title='Learning and Development'>
-                                <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
-                                <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
-                                <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
-                                <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
-                                <Menu.Item
-                                    key='addCourse'
-                                    onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
-                                    Course</Menu.Item>
-                                <Menu.Item
-                                    key='addSkill'
-                                    onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
-                                    Skill</Menu.Item>
-                                <Menu.Item
-                                    key='addRole'
-                                    onClick={() => navigateTo('/lnd/learning-center/addRole')}>
-                                    Role</Menu.Item>
+                                    <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
+                                    <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
+                                    <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
+                                    <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
+                                    <Menu.Item key='admin-courses' onClick={() => navigateTo('/admin/courses')}>Courses</Menu.Item>
+                                    <Menu.Item
+                                        key='addCourse'
+                                        onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
+                                        Course</Menu.Item>
+                                    <Menu.Item
+                                        key='addSkill'
+                                        onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
+                                        Skill</Menu.Item>
+                                    <Menu.Item
+                                        key='addRole'
+                                        onClick={() => navigateTo('/lnd/learning-center/addRole')}>
+                                        Role</Menu.Item>
                                 </Menu.SubMenu>
+                                <Menu.Item
+                                    key="created-surveys"
+                                    onClick={() => navigateTo("/admin/created-surveys")}
+                                >Surveys</Menu.Item>
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>
