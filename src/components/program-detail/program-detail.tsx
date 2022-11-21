@@ -12,8 +12,9 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
             <Row>
                 <Col span={7}>
                     <Image
-                        src={props.details.thumbnailLink}
-                        width={400}
+                        src={`data:image/png;base64,${props.details.thumbnailLink}`}
+                        height={240}
+                        width={360}
                         preview={false}
                     />
                 </Col>
@@ -35,9 +36,10 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                     <List.Item
                         extra={
                             <img
-                                width={136}
+                                width={150}
+                                height={100}
                                 alt="logo"
-                                src={item.course.thumbnailLink}
+                                src={item.course.thumbnail}
                             />}
                     >
                         <List.Item.Meta
