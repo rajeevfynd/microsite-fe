@@ -6,7 +6,7 @@ import SurveyList from "./SurveyList";
 const tabListNoTitle = [
   {
     key: "survyes",
-    tab: "My survyes",
+    tab: "My Surveys",
   },
   {
     key: "app",

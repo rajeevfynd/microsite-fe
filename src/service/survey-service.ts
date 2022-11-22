@@ -7,11 +7,17 @@ export function getAllSurveys(offset: number) {
   );
 }
 
+export function searchSurvey(keyword: string, pageNumber: number) {
+  return httpInstance.get(
+    `/microsite/surveys/search-survey?pageNumber=${pageNumber}&keyword=${keyword}&pageSize=10`
+  );
+}
+
 export function getSurveyById(id: string) {
   return httpInstance.get(`/microsite/surveys/${id}`);
 }
 ///userId should come from UI
-export function getSurvyesByStatus(status: boolean) {
+export function getSurveysByStatus(status: boolean) {
   return httpInstance.get(`/microsite/assignee?completed=${status}`);
 }
 

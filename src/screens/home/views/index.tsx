@@ -5,26 +5,32 @@ import './index.css';
 import { ALT_THUMBNAIL } from '../../../constants/string-constants'
 import { Announcement } from './announcement'
 import { BirthDays } from './birthdays'
+import { Events } from './events';
 
 export const HomePage = () => {
     return (
         <>
             <div>
-                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                    <Col span={16} className="gutter-row">
-                        <Row>
-                            <Announcement />
+                <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                    <Col span={17} className="gutter-row">
+                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                            <Col span={18}>
+                                <Announcement />
+                            </Col>
+                            <Col span={6}>
+                                <Events />
+                            </Col>
                         </Row>
                     </Col>
-                    <Col span={8} className="gutter-row">
-                        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Col span={7} className="gutter-row">
+                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
                             <Col className="gutter-row" style={{ width: '100%' }}>
                                 <BirthDays />
                             </Col>
                         </Row>
-                        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                            <Col className="gutter-row" style={{ marginTop: '10px' }}>
-                                <Card className='home-card' >
+                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                            <Col className="gutter-row" style={{ marginTop: '10px', width: "100%" }}>
+                                <Card className='home-card'>
                                     <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Idea Corner</h4></div>} />
                                     <Button type='primary' className='idea'> Submit Your Idea</Button>
                                     <br />

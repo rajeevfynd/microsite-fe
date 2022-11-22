@@ -1,22 +1,38 @@
 import Input from 'antd/lib/input';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CourseListType } from '../../../../../models/course-type';
 import { debounce, getCourses } from '../../../../../service/program-service';
-import { Button, Card, List, Typography, Modal } from 'antd';
+import { Button, Card, List, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
 import { CourseDetails } from '../../../../../components/course-detail/course-details';
 
 const SearchProgram = () => {
-    const navigate = useNavigate();
     const [load, setLoad] = React.useState(false)
     const [courses, setCourses] = React.useState<CourseListType[]>([])
     const [page, setPage] = React.useState(0)
     const [keyState, setKeyState] = React.useState(' ')
-    let key = ' '
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [courseDetails, setCourseDetails] = React.useState({});
+    let key = ''
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModel = () => {
+        setIsModalOpen(false);
+    };
+
+
+    const handleCourseDetailsClick = (course: any) => {
+
+        setCourseDetails(course);
+
+        showModal();
+    }
 
     const loadMoreData = () => {
         if (load) { return; }
@@ -51,24 +67,6 @@ const SearchProgram = () => {
         key = str
         debounce(searchCourses, 500)
     }
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [courseDetails, setCourseDetails] = React.useState({});
-
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeModel = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCourseDetailsClick = (course: any) => {
-
-        setCourseDetails(course);
-
-        showModal();
-    }
 
     return (
         <>
@@ -95,25 +93,31 @@ const SearchProgram = () => {
                                     width: 340,
                                     height: 300
                                 }}
-                                cover={<img
-                                    src={item.thumbnail} />}
+                                cover={
+                                    <img
+                                        src={item.thumbnail}
+                                    />
+                                }
                             >
                                 <Meta
                                     title={item.title}
-                                    description={item.description} />
-                                <Button type='link' style={{ width: '100%' }} onClick={() => { handleCourseDetailsClick(item); } }> Go to Course <ArrowRight /> </Button>
+                                    description={item.description}
+                                />
+                                <Button type='link' style={{ width: '100%' }} onClick={()  => handleCourseDetailsClick(item) }> Go to Course <ArrowRight /> </Button>
                             </Card>
+
                         </List.Item>
-                    )} /><Modal
-                        title="Course Details"
-                        visible={isModalOpen}
-                        footer={null}
-                        onCancel={closeModel}
-                        width={1000}
-                        style={{ top: 100 }}>
-                        <CourseDetails course={courseDetails} />
-                    </Modal></>
+                    )} /></>
             }
+            <Modal
+                title="Course Details"
+                visible={isModalOpen}
+                footer={null}
+                onCancel={closeModel}
+                width={1000}
+                style={{ top: 100 }}>
+                <CourseDetails course={courseDetails} />
+            </Modal>
         </>
     )
 }

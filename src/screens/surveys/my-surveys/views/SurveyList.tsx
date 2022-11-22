@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import "../../new-survey/views/questionForm.css";
 import {
-  getSurvyesByStatus,
+  getSurveysByStatus,
   getImage,
 } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
@@ -48,7 +48,7 @@ function SurveyList() {
   const getSurveys = async () => {
     setIsLoading(true);
     try {
-      let res = await getSurvyesByStatus(false);
+      let res = await getSurveysByStatus(false);
       setSurvey(res.data);
     } catch (error) {
       openNotificationWithIcon("error", error.message);
