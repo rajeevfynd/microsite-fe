@@ -17,30 +17,6 @@ interface carouselFormtype {
 
 const EditCarousal = () => {
 
-    // const prop: UploadProps = {
-    //     name: 'file',
-    //     action: UPLOAD_IMG,
-    //     headers: {
-    //         authorization: 'authorization-text',
-    //     },
-    //     onChange(info) {
-    //         if (info.file.status !== 'uploading') {
-    //         }
-    //         if (info.file.status === 'done') {
-    //             message.success(`${info.file.name} file uploaded successfully`);
-    //             let updatedForm: carouselFormtype = {
-    //                 fileId: info.file.response.data.id,
-    //                 value: form[Number(active)].value ? form[Number(active)].value : ""
-    //             }
-    //             let updatedFormList = form
-    //             updatedFormList.splice(Number(active), 1, updatedForm)
-    //             setFormFile(updatedFormList);
-    //         } else if (info.file.status === 'error') {
-    //             console.log(info.file.response.data.message)
-    //             message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
-    //         }
-    //     },
-    // };
     const [form, setFormFile] = React.useState<carouselFormtype[]>([
         {}, {}, {}
     ]);
