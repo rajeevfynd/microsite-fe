@@ -1,7 +1,7 @@
-export const Tagtype = Object.freeze({
+export const Tagtype = {
     skill: "SKILL",
     role: "ROLE"
-})
+}
 
 export const TagStatus = Object.freeze({
     active: "ACTIVE",

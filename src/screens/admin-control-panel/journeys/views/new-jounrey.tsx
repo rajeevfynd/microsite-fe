@@ -1,13 +1,14 @@
-import { Button, Form, Input, message, Select, Switch } from 'antd';
+import { Button, Form, Input, List, message, Select, Switch } from 'antd';
 import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { SortableElement, SortableContainer, SortableContainerProps, SortableElementProps } from 'react-sortable-hoc'
-import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, sortEndHandler } from '../../../../service/journey-service';
+import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Upload } from '../../../../components/upload.component';
+import ReactDragListView from "react-drag-listview";
+import { arrayMove } from '../../../../utility/array-utils';
 
 type editJourneyDetails = {
   id?: string,
@@ -47,10 +48,6 @@ export const NewJourney: React.FC = () => {
     setPrograms([...programs, { index: programs.length, program: undefined, programName: undefined }])
   }
 
-  const onSortEnd = (index: { oldIndex: any, newIndex: any }) => {
-    setPrograms(sortEndHandler(index, programs))
-  }
-
   const removeProgram = (index: number) => {
     setPrograms(removeProgramHadler(index, programs))
   }
@@ -59,28 +56,14 @@ export const NewJourney: React.FC = () => {
     setPrograms(onSelectHandler(index, e, programs))
   }
 
-  const SortableItem: any = SortableElement((data: { item: ProgramMapType }) => {
-    return (
-      <li key={data.item.index}>
-        <HolderOutlined style={{ width: 50, cursor: 'grab' }} />
-        <SearchInput
-          defaultValue={data.item.programName}
-          onSelect={(e: any) => { handleOnSelect(e, data.item.index) }}
-          placeholder='Select Program'
-          style={{ width: 250 }}
-        />
-        <Button danger className='remove-btn' type='primary' onClick={() => { removeProgram(data.item.index) }}>-</Button>
-      </li>
-    )
-  })
+  const onDragEnd = (fromIndex: number, toIndex: number) => {
+    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
+    /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
+    if (toIndex < 0) return;
 
-  const SortableList: any = SortableContainer((data: { programs: ProgramMapType[] }) => (<div>
-    {data.programs
-      .sort((a: ProgramMapType, b: ProgramMapType) => { return a.index - b.index; })
-      .map((program: ProgramMapType, index: number) => (
-        <div><SortableItem item={program} index={index} key={program.index} /></div>
-      ))}
-  </div>));
+    let sortedPrograms = arrayMove(programs, fromIndex, toIndex);
+    return setPrograms(sortedPrograms);
+  };
 
   return (<>
     <React.Fragment>
@@ -135,16 +118,36 @@ export const NewJourney: React.FC = () => {
 
           <Form.Item >
             Programs
-            <SortableList
-              helperClass="helper"
-              programs={programs}
-              axis='y'
-              onSortEnd={onSortEnd} />
-            <Button type='dashed'
-              onClick={() => { addProgram() }
-              }>
-              <PlusOutlined /> Add Program
-            </Button>
+            <div style={{ width: "325px" }}>
+              <ReactDragListView
+                nodeSelector=".ant-list-item.draggable-item"
+                lineClassName="dragLine"
+                onDragEnd={(fromIndex, toIndex) =>
+                  onDragEnd(fromIndex, toIndex)
+                }
+              >
+                {programs
+                  .map((program: ProgramMapType, index: number) => (
+                    <List.Item key={index} className="draggable-item">
+                      <div>
+                        <HolderOutlined style={{ cursor: 'grab' }} />
+                        <SearchInput
+                          defaultValue={program.programName}
+                          onSelect={(e: any) => { handleOnSelect(e, index) }}
+                          placeholder='Select Program'
+                          style={{ width: 250 }}
+                        />
+                        <Button danger className='remove-btn' type='primary' onClick={() => { removeProgram(index) }} style={{ marginLeft: "5px" }}>-</Button>
+                      </div>
+                    </List.Item>
+                  ))}
+              </ReactDragListView>
+              <Button type='dashed'
+                onClick={() => { addProgram() }
+                }>
+                <PlusOutlined /> Add Program
+              </Button>
+            </div>
           </Form.Item>
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
@@ -162,4 +165,3 @@ export const NewJourney: React.FC = () => {
 function validateJourney(value: any) {
   throw new Error('Function not implemented.');
 }
-

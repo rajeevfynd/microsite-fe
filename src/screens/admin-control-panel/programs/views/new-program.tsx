@@ -1,14 +1,17 @@
-import { Button, Form, Input, message, Select, Switch } from 'antd';
+import { Button, Form, Input, List, message, Select, Switch } from 'antd';
 import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { SortableElement, SortableContainer, SortableContainerProps, SortableElementProps } from 'react-sortable-hoc'
-import { courseSortEndHandler, removeCourseHandler, handleProgramFormSubmit, onSelectHandler, removeProgramHadler, setJourney, sortEndHandler, onCourseSelectHandler } from '../../../../service/journey-service';
+import { removeCourseHandler, handleProgramFormSubmit, onSelectHandler, removeProgramHadler, setJourney, onCourseSelectHandler } from '../../../../service/journey-service';
 import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
 import { formatBase64 } from '../../../../utility/image-utils';
 import { Upload } from '../../../../components/upload.component';
+import { SearchInput } from '../../../../components/search-input/search-input';
+import ReactDragListView from "react-drag-listview";
+import { arrayMove } from '../../../../utility/array-utils';
+
 
 type editProgramDetails = {
   id?: string,
@@ -49,10 +52,6 @@ export const NewProgram: React.FC = () => {
     setCourses([...courses, { index: courses.length, course: undefined, courseName: undefined }])
   }
 
-  const onSortEnd = (index: { oldIndex: any, newIndex: any }) => {
-    setCourses(courseSortEndHandler(index, courses))
-  }
-
   const removeCourse = (index: number) => {
     setCourses(removeCourseHandler(index, courses))
   }
@@ -61,29 +60,13 @@ export const NewProgram: React.FC = () => {
     setCourses(onCourseSelectHandler(index, e, courses))
   }
 
+  const onDragEnd = (fromIndex: number, toIndex: number) => {
+    /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
+    if (toIndex < 0) return;
 
-  const SortableItem: any = SortableElement((data: { item: CourseMapType }) => {
-    return (
-      <li key={data.item.index}>
-        <HolderOutlined style={{ width: 50, cursor: 'grab' }} />
-        <CourseSearchInput
-          defaultValue={data.item.courseName}
-          onSelect={(e: any) => { handleOnSelect(e, data.item.index) }}
-          placeholder='Select Course'
-          style={{ width: 250 }}
-        />
-        <Button danger className='remove-btn' type='primary' onClick={() => { removeCourse(data.item.index) }}>-</Button>
-      </li>
-    )
-  })
-
-  const SortableList: any = SortableContainer((data: { courses: CourseMapType[] }) => (<div>
-    {data.courses
-      .sort((a: CourseMapType, b: CourseMapType) => { return a.index - b.index; })
-      .map((course: CourseMapType, index: number) => (
-        <div><SortableItem item={course} index={index} key={course.index} /></div>
-      ))}
-  </div>));
+    let sortedCourses = arrayMove(courses, fromIndex, toIndex);
+    return setCourses(sortedCourses);
+  };
 
   return (<>
     <React.Fragment>
@@ -156,16 +139,36 @@ export const NewProgram: React.FC = () => {
 
           <Form.Item >
             Courses
-            <SortableList
-              helperClass="helper"
-              courses={courses}
-              axis='y'
-              onSortEnd={onSortEnd} />
-            <Button type='dashed'
-              onClick={() => { addCourse() }
-              }>
-              <PlusOutlined /> Add Course
-            </Button>
+            <div style={{ width: "325px" }}>
+              <ReactDragListView
+                nodeSelector=".ant-list-item.draggable-item"
+                lineClassName="dragLine"
+                onDragEnd={(fromIndex, toIndex) =>
+                  onDragEnd(fromIndex, toIndex)
+                }
+              >
+                {courses
+                  .map((course: CourseMapType, index: number) => (
+                    <List.Item key={index} className="draggable-item">
+                      <div>
+                        <HolderOutlined style={{ cursor: 'grab' }} />
+                        <CourseSearchInput
+                          defaultValue={course.courseName}
+                          onSelect={(e: any) => { handleOnSelect(e, index) }}
+                          placeholder='Select Course'
+                          style={{ width: "250px" }}
+                        />
+                        <Button danger className='remove-btn' type='primary' onClick={() => { removeCourse(index) }} style={{ marginLeft: "5px" }}>-</Button>
+                      </div>
+                    </List.Item>
+                  ))}
+              </ReactDragListView>
+              <Button type='dashed'
+                onClick={() => { addCourse() }
+                }>
+                <PlusOutlined /> Add Course
+              </Button>
+            </div>
           </Form.Item>
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
