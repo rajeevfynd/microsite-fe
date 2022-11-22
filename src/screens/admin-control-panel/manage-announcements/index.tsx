@@ -1,15 +1,9 @@
-import { Button, Form, Input, message, Modal, Radio, Upload, UploadProps } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import * as React from 'react';
-import { UPLOAD_IMG } from '../../../constants/urls';
-import { PlusOutlined } from '@ant-design/icons';
 import { addAnnouncement } from '../../../service/announcment-service';
 import { DeleteAnnouncement } from './delete-announcement';
+import { Upload } from '../../../components/upload.component'
 
-interface announcementRequest {
-    title?: string,
-    description?: string,
-    documentId?: number
-}
 
 export const AddAnnouncement = () =>{
 
@@ -17,48 +11,26 @@ export const AddAnnouncement = () =>{
     const [isDocActive, setIsDocActive] = React.useState<boolean>(true);
     const [isTextActive, setIsTextActive] = React.useState(true);
     const [updatedprops, setupdatedprops] = React.useState("");
+    const [file, setFile] = React.useState("")
     const showModal = () => {
         setIsModalOpen(true);
     };
     const handleCancel = () => {
         setIsModalOpen(false);
-        const s = prop.fileList.pop();
-        console.log(s)
     };
 
     const handleOk = () => {
         setIsModalOpen(false);
     };
 
-    const prop: UploadProps = {
-        name: 'file',
-        action: UPLOAD_IMG,
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-                setIsTextActive(false)
-                setDocument(info.file.response.data.id);
-            } else if (info.file.status === 'error') {
-                console.log(info.file.response.data.message)
-                message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);
-            }
-        },
-    };
-
-    const onRemove = (file: any) =>{
-        setDocument(null)
-        setIsTextActive(true)
-    }
-
     const [form] = Form.useForm();
-    const [documentId, setDocument] = React.useState();
+    const [documentId, setDocument] = React.useState<string| null >();
 
     const onFinish = async (values: any)=>{
+        if(values.description == null && (documentId == null || documentId === '' )){
+            message.error("Either Document or Description must be present in Announcements ")
+            return
+        }
         const body = {
             "title": values.title,
             "description": values.description,
@@ -70,6 +42,7 @@ export const AddAnnouncement = () =>{
             setIsModalOpen(false);
             setupdatedprops("updated")
             form.resetFields()
+            setFile("")
             //prop.fileList.pop()
         }
 
@@ -83,6 +56,9 @@ export const AddAnnouncement = () =>{
             form = {form}
             layout = "vertical"
             onFinish={onFinish}
+            onAbort = {()=>{
+                console.log("close")
+            }}
             >
                 <Form.Item
                     name="title"
@@ -95,12 +71,19 @@ export const AddAnnouncement = () =>{
                 <Form.Item
                     label='Announcement Document'
                 >
-                            <Upload {...prop} listType="picture-card" maxCount={1} onRemove={onRemove} disabled={isDocActive?false:true}>
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </div>
-                            </Upload>
+                            <Upload
+                                file = {file}
+                             onDone={(info) => {
+                                setIsTextActive(false)
+                                setDocument(info.documentId);   
+                                setFile(info.file)
+                                }}
+                                onRemove={()=>{
+                                    setDocument("")
+                                    setIsTextActive(true)
+                                    setFile("")
+                                }}
+                                />
                 </Form.Item>
                 <Form.Item
                     name = "description"

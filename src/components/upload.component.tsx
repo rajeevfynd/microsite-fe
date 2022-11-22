@@ -9,6 +9,7 @@ export const Upload = (props: UploadProps) => {
     const [fileList, setFileList] = React.useState<UploadFile[]>([]);
 
     React.useEffect(() => {
+        console.log("inside effect")
         if (props.file) {
             setFileList([{
                 uid: `${Math.random()}`,
@@ -16,6 +17,9 @@ export const Upload = (props: UploadProps) => {
                 status: 'done',
                 url: formatBase64(props.file),
             }])
+        }
+        else{
+            setFileList([])
         }
     }, [props.file]);
 
@@ -28,7 +32,7 @@ export const Upload = (props: UploadProps) => {
                 message.success(`${info.file.name} file uploaded successfully`);
                 props.onDone({
                     documentId: info.file.response.data.id,
-                    thumbnailUrl: info.file.response.data.thumbnail
+                    file: info.file.response.data.thumbnail
                 });
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed due to ${info.file.response.data.message}.`);

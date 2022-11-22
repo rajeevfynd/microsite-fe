@@ -4,10 +4,11 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseListType } from '../../../../../models/course-type';
 import { debounce, getCourses } from '../../../../../service/program-service';
-import { Button, Card, List, Typography } from 'antd';
+import { Button, Card, List, Typography, Modal } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
+import { CourseDetails } from '../../../../../components/course-detail/course-details';
 
 const SearchProgram = () => {
     const navigate = useNavigate();
@@ -50,6 +51,24 @@ const SearchProgram = () => {
         key = str
         debounce(searchCourses, 500)
     }
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [courseDetails, setCourseDetails] = React.useState({});
+
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModel = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCourseDetailsClick = (course: any) => {
+
+        setCourseDetails(course);
+
+        showModal();
+    }
 
     return (
         <>
@@ -64,34 +83,36 @@ const SearchProgram = () => {
             </div>
             {courses.length != 0 &&
 
-                <List
+                <><List
                     grid={{ gutter: 1, column: 3 }}
                     style={{ padding: "1%" }}
                     dataSource={courses}
                     renderItem={item => (
                         <List.Item key={item.title}>
-                            {/* {console.log(item)} */}
                             <Card
                                 hoverable
                                 style={{
                                     width: 340,
                                     height: 300
-                                  }}
-                                cover={
-                                    <img
-                                        src={item.thumbnail}
-                                    />
-                                }
+                                }}
+                                cover={<img
+                                    src={item.thumbnail} />}
                             >
                                 <Meta
                                     title={item.title}
-                                    description={item.description}
-                                />
-                                <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(item.id.toString()) }}> Go to Course <ArrowRight /> </Button>
+                                    description={item.description} />
+                                <Button type='link' style={{ width: '100%' }} onClick={() => { handleCourseDetailsClick(item); } }> Go to Course <ArrowRight /> </Button>
                             </Card>
                         </List.Item>
-                    )}
-                />
+                    )} /><Modal
+                        title="Course Details"
+                        visible={isModalOpen}
+                        footer={null}
+                        onCancel={closeModel}
+                        width={1000}
+                        style={{ top: 100 }}>
+                        <CourseDetails course={courseDetails} />
+                    </Modal></>
             }
         </>
     )
