@@ -4,8 +4,8 @@
   "description": "Front End for Microsite ",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --port 3000",
-    "build": "webpack",
+    "start": "webpack-dev-server --open --port 3000 --config webpack.local.js",
+    "build": "webpack --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -38,8 +38,8 @@
     "webpack-dev-server": "^4.10.0"
   },
   "dependencies": {
-    "@babel/register": "^7.18.9",
     "@ant-design/icons": "^4.7.0",
+    "@babel/register": "^7.18.9",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "antd": "^4.24.3",

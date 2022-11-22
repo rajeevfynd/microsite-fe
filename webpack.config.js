@@ -23,7 +23,6 @@ function resolveEnvironment() {
 }
 
 module.exports = {
-    mode: "development",
     entry: path.resolve(__dirname, "src", "index.tsx"),
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -61,16 +60,6 @@ module.exports = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
-    },
-    devServer: {
-        historyApiFallback: true,
-        proxy: {
-            "/microsite/**": {
-                target: "http://localhost:8080",
-                secure: false,
-                changeOrigin: true,
-            },
-        },
     },
     plugins: [
         new HtmlWebpackPlugin({ template: path.resolve(__dirname, "index.html") }),
