@@ -1,7 +1,9 @@
-import { Space, message, Table, Layout, Button } from "antd";
+import { CaretDownFilled } from "@ant-design/icons";
+import { Space, message, Table, Layout, Button, Row, Col, Dropdown, Menu } from "antd";
+import Search from "antd/lib/input/Search";
 import { ColumnsType } from "antd/lib/table";
+import * as moment from "moment";
 import * as React from "react";
-import { GET_NEW_EMPLOYEE_DOWNLOADS_URL } from "../../../constants/urls";
 import { DownloadDocumentType, DownloadListPropsType } from "../../../models/download-center-type";
 import httpInstance from "../../../utility/http-client";
 
@@ -9,47 +11,12 @@ import httpInstance from "../../../utility/http-client";
 export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
     const [documentsList, setDocumentsList] = React.useState<DownloadDocumentType[]>()
-    const [documentLink, setDocumentLink] = React.useState(null)
-
-
-    function forceDownload(blob: string, filename: string) {
-        var a = document.createElement('a');
-        a.download = filename;
-        a.rel = "noopener noreferrer"
-        a.target = "_blank"
-        a.href = blob;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
+    const [departmentList, setDepartmentList] = React.useState<string[]>() 
 
     const downloadDocument =  async (documentId : number) => {
         let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
-        // setDocumentLink(docUrl.data.url)
         console.log(docUrl.data.url)
-        forceDownload(docUrl.data.url, "xyz.jpg")
-
-        // fetch(docUrl.data.url, 
-        //     {
-        //     headers: new Headers({
-        //         'Origin': location.origin,
-        //         'Access-Control-Allow-Origin' : '*',
-        //     //     'Access-Control-Allow-Credentials' : 'true'
-        //     //     // 'conte'
-        //     }),
-        //     // mode: 'cors'
-        //     }
-        //     )
-        //     .then(response => {
-        //         console.log(response)
-        //         return response.blob()
-        //     })
-        //     .then(blob => {
-        //     let blobUrl = window.URL.createObjectURL(blob);
-        //     forceDownload(blobUrl, "");
-        //     })
-        //     .catch(e => console.error(e));
-
+        window.open(docUrl.data.url, '_blank').focus();
     }
 
 
@@ -88,15 +55,26 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
         },
         {
           title: 'Last Modified',
-          key: 'date_modified',
-          dataIndex: 'date_modified',
+          dataIndex: 'updatedAt',
+          key: 'updatedAt',
+          render: (_, record) => (
+            <Space size="middle">
+                <div><small><i className='text-muted'>{moment(record.updatedAt).fromNow()}</i></small></div>
+            </Space>
+          ),
         },
     ];
 
-    const getNewEmployeeDownloads = () => {
-        httpInstance.get(downloadListProps.url)
+    const handleDeptClick = (department : string) => {
+        const url = downloadListProps.url + "?department=" + department
+        getNewEmployeeDownloads(url)
+    }
+
+    const getNewEmployeeDownloads = (url : string) => {
+        httpInstance.get(url)
             .then(response => {
-                setDocumentsList(response.data)
+                setDocumentsList(response.data.downloadDocumentsList)
+                setDepartmentList(response.data.departmentList)
                 console.log(response.data)
             })
             .catch((error) => {
@@ -104,8 +82,18 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
             });
     }
 
+    const departments = (
+        <Menu>
+            {departmentList != undefined && departmentList.map(department => (
+                <Menu.Item onClick={(event) => handleDeptClick(department)}>{department}</Menu.Item>
+            ))}
+        </Menu>
+    );
+
+    const onSearch = (value: string) => console.log(value);
+
     React.useEffect(() => {
-        getNewEmployeeDownloads();
+        getNewEmployeeDownloads(downloadListProps.url);
         console.log("downloadList")
     }, [])
       
@@ -116,10 +104,24 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
         <style>
             {css}
         </style>
-
             <h3>{downloadListProps.title}</h3>
+            <br />
+            <Row>
+                <Col span={16} >
+                    <Search  placeholder="Search Document" size="middle" onSearch={onSearch} enterButton />
+                </Col>
+                <Col span={8} style={{display: 'flex', justifyContent: 'flex-end'}}>
+                    <Dropdown overlay={departments}>
+                        <Button shape="round">Department <CaretDownFilled /></Button>
+                    </Dropdown>
+                </Col>
+            </Row>
             <Table columns={columns} dataSource={documentsList} className="downloads-table"/>
         </>
     )
 
+}
+
+function styled(Search: any) {
+    throw new Error("Function not implemented.");
 }

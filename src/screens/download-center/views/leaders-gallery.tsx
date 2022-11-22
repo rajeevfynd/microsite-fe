@@ -27,7 +27,8 @@ export const LeadersGallery = () => {
         const url = GET_LEADERS_GALLERY_URL
         httpInstance.get(url)
             .then(response => {
-                setLeadersList(response.data)
+                setLeadersList(response.data.downloadDocumentsList)
+                console.log(response.data.downloadDocumentsList)
             })
             .catch((error) => {
                 message.error(error);
@@ -52,7 +53,7 @@ export const LeadersGallery = () => {
                 <Row>
                     
                     {leadersList != undefined && leadersList.map((leader) => (
-                        <Col xs={24} xl={8}>
+                        <Col xs={24} xl={8} sm={24} md={12} lg={12}>
                         <Card
                             style={{ width: 300 }}
                             cover={
@@ -61,7 +62,7 @@ export const LeadersGallery = () => {
                                 src={`data:image/png;base64,${leader.docThumbnail}`}/>
                             }
                             actions={[
-                                <DownloadOutlined></DownloadOutlined>
+                                <DownloadOutlined onClick={() => handleImgClick(leader.documentId)}></DownloadOutlined>
                             ]}
                             >
                             <Meta
