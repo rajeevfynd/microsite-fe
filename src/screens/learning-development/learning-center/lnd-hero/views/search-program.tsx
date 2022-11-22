@@ -4,10 +4,11 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseListType } from '../../../../../models/course-type';
 import { debounce, getCourses } from '../../../../../service/program-service';
-import { Button, Card, List, Typography } from 'antd';
+import { Button, Card, List, Modal, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
+import { CourseDetails } from '../../../../../components/course-detail/course-details';
 
 const SearchProgram = () => {
     const navigate = useNavigate();
@@ -15,7 +16,25 @@ const SearchProgram = () => {
     const [courses, setCourses] = React.useState<CourseListType[]>([])
     const [page, setPage] = React.useState(0)
     const [keyState, setKeyState] = React.useState('')
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [courseDetails, setCourseDetails] = React.useState({});
     let key = ''
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModel = () => {
+        setIsModalOpen(false);
+    };
+
+
+    const handleCourseDetailsClick = (course: any) => {
+
+        setCourseDetails(course);
+
+        showModal();
+    }
 
     const loadMoreData = () => {
         if (load) { return; }
@@ -76,7 +95,7 @@ const SearchProgram = () => {
                                 style={{
                                     width: 340,
                                     height: 300
-                                  }}
+                                }}
                                 cover={
                                     <img
                                         src={item.thumbnail}
@@ -87,12 +106,22 @@ const SearchProgram = () => {
                                     title={item.title}
                                     description={item.description}
                                 />
-                                <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(item.id.toString()) }}> Go to Course <ArrowRight /> </Button>
+                                <Button type='link' style={{ width: '100%' }} onClick={()  => handleCourseDetailsClick(item) }> Go to Course <ArrowRight /> </Button>
                             </Card>
+
                         </List.Item>
                     )}
                 />
             }
+            <Modal
+                title="Course Details"
+                visible={isModalOpen}
+                footer={null}
+                onCancel={closeModel}
+                width={1000}
+                style={{ top: 100 }}>
+                <CourseDetails course={courseDetails} />
+            </Modal>
         </>
     )
 }

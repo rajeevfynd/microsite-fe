@@ -23,7 +23,7 @@ export const Upload = (props: UploadProps) => {
         name: 'file',
         action: "/microsite/document/upload",
         onChange(info) {
-            setFileList(info.fileList)
+            setFileList(info.fileList);
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
                 props.onDone({

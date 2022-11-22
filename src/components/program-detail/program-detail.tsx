@@ -39,7 +39,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                                 width={150}
                                 height={100}
                                 alt="logo"
-                                src={`data:image/png;base64,${item.course.thumbnail}`}
+                                src={item.course.thumbnail}
                             />}
                     >
                         <List.Item.Meta

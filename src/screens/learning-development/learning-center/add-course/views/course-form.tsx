@@ -200,51 +200,47 @@ export default function CourseForm() {
     };
 
     const onFinish = (values: any) => {
+        console.log(course)
+        // setIsLoading(true);
+        httpInstance.post(`/microsite/course`, course)
+            .then((response) => {
+                if (!response.data.error) {
+                    setCourse({
+                        rruCourseId: null,
+                        title: null,
+                        description: null,
+                        programIds: [],
+                        skills: [],
+                        skillIds: [],
+                        roles: [],
+                        roleIds: [],
+                        programs: [],
+                        rruDeepLink: null,
+                        thumbnail: null,
+                        duration: null,
+                        minCourseCoin: null,
+                        courseCoin: null,
+                        careerCoin: null,
+                        createdBy: null,
+                        updatedBy: null,
+                        isActive: true
+                    });
 
-        (() => {
-            setIsLoading(true);
-            httpInstance.post(`/microsite/course/`, course)
-                .then((response) => {
+                    setSearch({
+                        text: "",
+                        type: "",
+                        hasFeedback: false,
+                        validateStatus: "",
+                        options: []
+                    });
+                }
 
-
-                    if (!response.data.error) {
-                        setCourse({
-                            rruCourseId: null,
-                            title: null,
-                            description: null,
-                            programIds: [],
-                            skills: [],
-                            skillIds: [],
-                            roles: [],
-                            roleIds: [],
-                            programs: [],
-                            rruDeepLink: null,
-                            thumbnail: null,
-                            duration: null,
-                            minCourseCoin: null,
-                            courseCoin: null,
-                            careerCoin: null,
-                            createdBy: null,
-                            updatedBy: null,
-                            isActive: true
-                        });
-
-                        setSearch({
-                            text: "",
-                            type: "",
-                            hasFeedback: false,
-                            validateStatus: "",
-                            options: []
-                        });
-                    }
-
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                    window.alert(`${error.message}`);
-                });
-        })();
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                window.alert(`${error}`);
+            });
     };
 
     const onFinishFailed = (errorInfo: any) => {
