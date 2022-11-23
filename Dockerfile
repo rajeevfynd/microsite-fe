@@ -1,7 +1,6 @@
 FROM node:16
 
-RUN npm install webpack -g
-RUN npx install serve
+RUN npm install webpack serve -g
 
 WORKDIR /tmp
 COPY package.json /tmp/
