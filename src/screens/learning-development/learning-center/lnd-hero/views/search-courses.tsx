@@ -2,17 +2,19 @@ import Input from 'antd/lib/input';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import { CourseListType } from '../../../../../models/course-type';
-import { debounce, getCourses } from '../../../../../service/program-service';
-import { Button, Card, List, Modal } from 'antd';
+import { debounce, getCourses, getCoursesFts } from '../../../../../service/program-service';
+import { Button, Card, Divider, List, Modal, Spin } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
 import { CourseDetails } from '../../../../../components/course-detail/course-details';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-const SearchProgram = () => {
+const SearchCourses = () => {
     const [load, setLoad] = React.useState(false)
     const [courses, setCourses] = React.useState<CourseListType[]>([])
     const [page, setPage] = React.useState(0)
+    const [hasMore, setHasMore ] = React.useState(false)
     const [keyState, setKeyState] = React.useState(' ')
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [courseDetails, setCourseDetails] = React.useState({});
@@ -37,9 +39,11 @@ const SearchProgram = () => {
     const loadMoreData = () => {
         if (load) { return; }
         setLoad(false);
-        getCourses(keyState, page.toString()).then(
+        getCoursesFts(keyState, page.toString()).then(
             resp => {
+                console.log(resp.data.last)
                 setCourses([...courses, ...resp.data.content])
+                setHasMore(!resp.data.last)
                 setPage(page + 1)
                 setLoad(false)
             }
@@ -50,9 +54,11 @@ const SearchProgram = () => {
         setKeyState(key)
         if (load) { return; }
         setLoad(false);
-        getCourses(key).then(
+        getCoursesFts(key).then(
             resp => {
+                console.log(resp.data.last)
                 setCourses([...resp.data.content])
+                setHasMore(!resp.data.last)
                 setPage(1)
                 setLoad(false)
             }
@@ -79,9 +85,18 @@ const SearchProgram = () => {
                     onChange={(e) => { searchKey(e.target.value); }}
                 />
             </div>
+            
             {courses.length != 0 &&
 
-                <><List
+                <InfiniteScroll
+                    dataLength={courses.length}
+                    next={loadMoreData}
+                    hasMore = {hasMore}
+                    loader={<>&nbsp; <Spin size="large" /></>}
+                    scrollThreshold="20%"
+                    endMessage={<Divider plain></Divider>}
+                >
+                    <div><List
                     grid={{ gutter: 1, column: 3 }}
                     style={{ padding: "1%" }}
                     dataSource={courses}
@@ -107,7 +122,7 @@ const SearchProgram = () => {
                             </Card>
 
                         </List.Item>
-                    )} /></>
+                    )} /></div></InfiniteScroll>
             }
             <Modal
                 title="Course Details"
@@ -121,4 +136,4 @@ const SearchProgram = () => {
         </>
     )
 }
-export default SearchProgram;
+export default SearchCourses;
