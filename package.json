@@ -50,9 +50,9 @@
     "react-bootstrap-icons": "^1.8.4",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-drag-listview": "^0.2.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-jwt": "^1.1.7",
-    "react-player": "^2.10.1",
-    "react-sortable-hoc": "^2.0.0"
+    "react-player": "^2.10.1"
   }
 }
