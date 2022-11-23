@@ -163,3 +163,8 @@ export const updateProgram = (body: any, id: string) => {
   const url = "/microsite/lnd/programs/edit/" + id
   return httpInstance.post(url, body)
 }
+
+export const deleteJourney = (id: string) => {
+  const url = "/microsite/lnd/journeys/"+id;
+  return httpInstance.delete(url);
+}

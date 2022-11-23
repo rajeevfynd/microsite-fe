@@ -5,7 +5,7 @@ import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
-import { getJourneys, debounce } from '../../../service/journey-service';
+import { getJourneys, debounce, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
@@ -53,6 +53,10 @@ export  const AdminJourneyList = () => {
     key = str
     debounce(searchJourneys,500)
   }
+
+  const handleDelete = (id: string) => {
+    deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
+  }
  
   return (
     <>
@@ -95,7 +99,7 @@ export  const AdminJourneyList = () => {
                 }
                 actions={[
                   <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                  <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+                  <Button onClick={()=>handleDelete(item.id.toString())} style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
               ]}
               >
                 <Meta
