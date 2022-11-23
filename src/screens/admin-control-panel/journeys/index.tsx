@@ -1,6 +1,6 @@
-import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { SearchOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
@@ -54,8 +54,21 @@ export  const AdminJourneyList = () => {
     debounce(searchJourneys,500)
   }
 
-  const handleDelete = (id: string) => {
-    deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
+  const confirm = (id: string, title: string) => {
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to delete '+title,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+          deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
+      }
+    });
+  };
+
+  const handleDelete = (id: string, title: string) => {
+    confirm(id, title)
   }
  
   return (
@@ -99,7 +112,7 @@ export  const AdminJourneyList = () => {
                 }
                 actions={[
                   <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                  <Button onClick={()=>handleDelete(item.id.toString())} style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+                  <Button onClick={()=>handleDelete(item.id.toString(), item.title)} style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
               ]}
               >
                 <Meta
