@@ -14,11 +14,11 @@ export const HomePage = () => {
                 <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
                     <Col span={17} className="gutter-row">
                         <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
-                            <Col span={18}>
-                                <Announcement />
-                            </Col>
                             <Col span={6}>
                                 <Events />
+                            </Col>
+                            <Col span={18}>
+                                <Announcement />
                             </Col>
                         </Row>
                     </Col>
