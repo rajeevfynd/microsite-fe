@@ -19,7 +19,7 @@ export default function MenuHome() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [collapsed, setCollapsed] = React.useState(false);
+    const [collapsed, setCollapsed] = React.useState(true);
     const boxRef = React.useRef(null);
 
     const navigateTo = (url: string, collapse: boolean = true) => {
