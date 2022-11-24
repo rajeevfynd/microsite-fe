@@ -1,20 +1,23 @@
-.username{
+.username {
     text-align: right;
 }
-.username-container{
+
+.username-container {
     margin: 6%;
 }
-.pro-pic{
+
+.pro-pic {
     border-radius: 100%;
     height: 50px;
     width: 50px;
 }
 
-.body{
+.body {
     padding: 1% 4%;
+    font-family: 'Nanum Gothic', sans-serif;
 }
 
-.content{
+.content {
     margin: 1% 1%;
     padding: 2% 3%;
     height: 80vh;
@@ -25,7 +28,7 @@
     overflow: scroll;
 }
 
-.menu{
+.menu {
     margin: 2% 0 4% 0;
     position: fixed;
     z-index: 2;
@@ -33,7 +36,7 @@
     width: fit-content;
 }
 
-.menu-list{
+.menu-list {
     text-align: left;
     width: fit-content;
     overflow-y: scroll;
