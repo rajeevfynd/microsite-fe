@@ -1,18 +1,11 @@
 import { Button, Form, Input, message, Modal, Radio } from 'antd';
 import * as React from 'react';
-import { UPLOAD_IMG } from '../../../constants/urls';
-import { PlusOutlined } from '@ant-design/icons';
 import { addAnnouncement } from '../../../service/announcment-service';
 import { DeleteAnnouncement } from './delete-announcement';
 import { Upload } from '../../../components/upload.component';
 import { UploadProps } from '../../../models/upload-props';
 import { PlusLg } from 'react-bootstrap-icons';
 
-interface announcementRequest {
-    title?: string,
-    description?: string,
-    documentId?: number
-}
 
 export const AddAnnouncement = () => {
 
@@ -20,6 +13,7 @@ export const AddAnnouncement = () => {
     const [isDocActive, setIsDocActive] = React.useState<boolean>(true);
     const [isTextActive, setIsTextActive] = React.useState(true);
     const [updatedprops, setupdatedprops] = React.useState("");
+    const [file, setFile] = React.useState("")
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -51,6 +45,10 @@ export const AddAnnouncement = () => {
     const [documentId, setDocument] = React.useState<string>();
 
     const onFinish = async (values: any) => {
+        if(values.description == null && (documentId == null || documentId === '' )){
+            message.error("Either Document or Description must be present in Announcements ")
+            return
+        }
         const body = {
             "title": values.title,
             "description": values.description,
@@ -61,6 +59,9 @@ export const AddAnnouncement = () => {
             message.success("Created Announcement")
             setIsModalOpen(false);
             setupdatedprops("updated")
+            form.resetFields()
+            setFile("")
+            //prop.fileList.pop()
         }
 
     }
