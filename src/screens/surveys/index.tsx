@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MySurveys from "./my-surveys";
 import ResponseSurvey from "./my-surveys/views/ResponseSurvey";
 import Survey from "./my-surveys/views/Survey";
-import NewSurvey from "./new-survey";
+import SurveyDashBoard from "./survey-dash-board";
 import "./new-survey/views/questionForm.css";
 
 function Surveys() {
@@ -15,6 +15,7 @@ function Surveys() {
           path="/submit/survey/:surveyId/:assigneeId"
           element={<Survey />}
         />
+        <Route path="/survey/dash-board" element={<SurveyDashBoard />} />
         <Route
           path="/assignee/response/:surveyId/:assigneeId"
           element={<ResponseSurvey />}
