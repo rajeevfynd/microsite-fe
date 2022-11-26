@@ -70,11 +70,12 @@ export function getSurveyResponseById(assigneeId: string) {
   return httpInstance.get(`/microsite/assignee/response/${assigneeId}`);
 }
 
-export function assignSurveyToUserId(userId: string, surveyId: string) {
-  return httpInstance.post(
-    `/microsite/surveys/assign?userId=${userId}&surveyId=${surveyId}`,
-    {}
-  );
+export function assignSurveyToUserId(reqBody: {
+  surveyId: string;
+  assigneeId: string;
+  expireDate: string;
+}) {
+  return httpInstance.post("/microsite/surveys/assign", reqBody);
 }
 
 export function getImage(id: string) {
