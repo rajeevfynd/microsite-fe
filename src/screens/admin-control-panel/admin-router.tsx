@@ -12,6 +12,8 @@ import { EditProgram } from './programs/views/edit-program'
 import { AdminCoursePage } from './courses'
 import NewSurvey from '../surveys/new-survey'
 import {CreatedSurvey} from '../surveys/created-surveys'
+import { DownloadPolicies, DownloadTemplates, NewEmployeeDownloads } from './download-center'
+import { AdminLeadersGallery } from './download-center/views/leaders-gallery'
 
 export const AdminRouter = () => {
   return (
@@ -30,6 +32,11 @@ export const AdminRouter = () => {
         <Route path="/new-survey" element={<NewSurvey />} />
         <Route path="/created-surveys" element={<CreatedSurvey />} />
         <Route path="/created-surveys/edit/:id" element={<NewSurvey />} />
+        <Route path="/new-employee-downloads" element={<NewEmployeeDownloads />} />
+        <Route path="/templates" element={<DownloadTemplates />} />
+        <Route path="/leaders-gallery" element={<AdminLeadersGallery />} />
+        <Route path="/logo" element={<AdminLeadersGallery />} />
+        <Route path="/policies" element={<DownloadPolicies />} />
         <Route path='*' element={<Navigate replace to="/induction/*" />} ></Route>
       </Routes>
     </>

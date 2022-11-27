@@ -170,6 +170,14 @@ export default function MenuHome() {
                                     key="created-surveys"
                                     onClick={() => navigateTo("/admin/created-surveys")}
                                 >Surveys</Menu.Item>
+
+                                <Menu.SubMenu key="admin-download-center" title="Download Center">
+                                    <Menu.Item key='admin-new-emp-downloads' onClick={() => navigateTo('/admin/new-employee-downloads')}>New Employee Downloads</Menu.Item>
+                                    <Menu.Item key='admin-templates' onClick={() => navigateTo('/admin/templates')}>Templates</Menu.Item>
+                                    <Menu.Item key='admin-leaders-gallery' onClick={() => navigateTo('/admin/leaders-gallery')}>Leaders' Gallery</Menu.Item>
+                                    <Menu.Item key='admin-logo' onClick={() => navigateTo('/admin/logo')}>Logo</Menu.Item>
+                                    <Menu.Item key='admin-policies' onClick={() => navigateTo('/admin/policies')}>Frequently Used Policies</Menu.Item>
+                                </Menu.SubMenu>
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>

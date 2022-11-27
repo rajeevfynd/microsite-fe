@@ -56,6 +56,7 @@ export const LeadersGallery = () => {
                         <Col xs={24} xl={8} sm={24} md={12} lg={12}>
                         <Card
                             style={{ width: 300 }}
+                            hoverable
                             cover={
                                 <img 
                                 onClick={() => handleImgClick(leader.documentId)} 

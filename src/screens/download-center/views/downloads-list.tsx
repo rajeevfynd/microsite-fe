@@ -1,17 +1,43 @@
-import { CaretDownFilled } from "@ant-design/icons";
-import { Space, message, Table, Layout, Button, Row, Col, Dropdown, Menu } from "antd";
-import Search from "antd/lib/input/Search";
+import { CaretDownFilled, SearchOutlined } from "@ant-design/icons";
+import { Space, message, Table, Button, Row, Col, Dropdown, Menu, Input } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import * as moment from "moment";
 import * as React from "react";
 import { DownloadDocumentType, DownloadListPropsType } from "../../../models/download-center-type";
+import { debounce } from "../../../service/program-service";
 import httpInstance from "../../../utility/http-client";
 
 
 export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
     const [documentsList, setDocumentsList] = React.useState<DownloadDocumentType[]>()
-    const [departmentList, setDepartmentList] = React.useState<string[]>() 
+    const [departmentList, setDepartmentList] = React.useState<string[]>()
+    const [load, setLoad] = React.useState(false) 
+    const [keyState, setKeyState] = React.useState('')
+    let key = ''
+    
+    const searchDownloads = () => {
+        setKeyState(key)
+        if(load) { return ;}
+        setLoad(false);
+        getDownloads(key).then(
+          response => {
+            setDocumentsList(response.data.downloadDocumentsList)
+            setDepartmentList(response.data.departmentList)
+                console.log(response.data)
+          }
+        )
+      }
+
+      const searchKey = (str: string) =>{
+        key = str
+        debounce(searchDownloads,500)
+      }
+
+    function getDownloads(key:string = ''){
+        return httpInstance.get(downloadListProps.url+'/search?key='+key.toString())
+    }
+    
 
     const downloadDocument =  async (documentId : number) => {
         let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
@@ -73,7 +99,7 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
     const getNewEmployeeDownloads = (url : string) => {
         httpInstance.get(url)
             .then(response => {
-                setDocumentsList(response.data.downloadDocumentsList)
+                setDocumentsList(response.data.content)
                 setDepartmentList(response.data.departmentList)
                 console.log(response.data)
             })
@@ -89,8 +115,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
             ))}
         </Menu>
     );
-
-    const onSearch = (value: string) => console.log(value);
 
     React.useEffect(() => {
         getNewEmployeeDownloads(downloadListProps.url);
@@ -108,7 +132,12 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
             <br />
             <Row>
                 <Col span={16} >
-                    <Search  placeholder="Search Document" size="middle" onSearch={onSearch} enterButton />
+                    <Input 
+                        size='large' 
+                        className='search-box' 
+                        suffix={<SearchOutlined/>} 
+                        onChange={(e) => {searchKey(e.target.value);} } 
+                    />
                 </Col>
                 <Col span={8} style={{display: 'flex', justifyContent: 'flex-end'}}>
                     <Dropdown overlay={departments}>
@@ -116,12 +145,9 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
                     </Dropdown>
                 </Col>
             </Row>
+            
             <Table columns={columns} dataSource={documentsList} className="downloads-table"/>
         </>
     )
 
-}
-
-function styled(Search: any) {
-    throw new Error("Function not implemented.");
 }
