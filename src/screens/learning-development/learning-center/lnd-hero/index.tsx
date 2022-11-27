@@ -1,5 +1,5 @@
 import * as React from 'react'
-import SearchPrograms from './views/search-program'
+import SearchCourses from './views/search-courses'
 import Scrollable_programs from './views/program-list'
 import HeroCarousel from './views/hero-carousel'
 
@@ -9,7 +9,7 @@ export const LndHero = () => {
       <HeroCarousel></HeroCarousel>
       <br>
       </br>
-      <SearchPrograms />
+      <SearchCourses />
       <br></br>
       <h3>Enrolled Programs</h3>
       <Scrollable_programs {...{ "props": "current" }} />

@@ -7,32 +7,23 @@ import HeaderHome from './views/header-home'
 import MenuHome from './views/menu-home'
 
 const LandingPage = () => {
-  return (
-    <>
-        <Layout>
-            <Header className="header">
-                <HeaderHome></HeaderHome>
-            </Header>
-        </Layout>
-        <div className='menu'>
-            <MenuHome></MenuHome>
-        </div>
-        <Layout className='body'>
-            <div className='content'>
-            <Content>
-                <MenuRouter></MenuRouter>
-            </Content>
-            </div>            
-        </Layout>
-        <Layout>
-            <Footer className="footer">
-                <div className="footer">
-                    <FooterHome></FooterHome>
+    return (
+        <>
+            <Layout className='body'>
+                <div className='menu'>
+                    <MenuHome></MenuHome>
                 </div>
-            </Footer>
-        </Layout> 
-    </>
-  )
+                <Layout>
+                    <Header className="header">
+                        <HeaderHome></HeaderHome>
+                    </Header>
+                    <Content className='content'>
+                        <MenuRouter></MenuRouter>
+                    </Content>
+                </Layout>
+            </Layout>
+        </>
+    )
 }
 
 export default LandingPage
