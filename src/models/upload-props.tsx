@@ -1,6 +1,6 @@
 export interface UploadOnDoneParams {
     documentId: string
-    thumbnailUrl: string
+    file: string
 }
 
 export interface UploadonRemoveParams {
