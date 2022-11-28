@@ -1,7 +1,7 @@
 import { Avatar, Card, Col, Row, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
-import { ListColumns } from 'react-bootstrap-icons';
+import { BookHalf, ListColumns } from 'react-bootstrap-icons';
 import "./index.scss";
 
 interface EventType {
@@ -24,7 +24,7 @@ const surveys: EventType[] = [
 const assignedCourse: EventType[] = [
     {
         src: "https://prod-discovery.edx-cdn.org/media/course/image/156313d6-f892-4b08-9cee-43ea582f4dfb-7b98c686abcc.small.png",
-        icon: <ListColumns />,
+        icon: <BookHalf />,
         message: "AI beginner course is in progress",
         type: "COURSE_IN_PROGRESS"
     }
@@ -33,7 +33,7 @@ const assignedCourse: EventType[] = [
 export const Events = () => {
     return (
         <>
-            <Card className="home-card">
+            <Card className="home-card" style={{height: "270px"}}>
                 <Row gutter={[8, 8]}>
                     <Col className='gutter-row' span={16}>
                         <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>
@@ -42,7 +42,7 @@ export const Events = () => {
                                     src={assignedCourse[0].src}
                                     icon={assignedCourse[0].icon}
                                 />
-                                <Typography.Text style={{ fontSize: "12px" }}>{assignedCourse[0].message}</Typography.Text>
+                                <Typography.Text style={{ fontSize: "13px" }}>{assignedCourse[0].message}</Typography.Text>
                             </div>
                         </Card>
                     </Col>
@@ -57,7 +57,7 @@ export const Events = () => {
                         <Card hoverable className='home-card' style={{ marginTop: "5px" }} bodyStyle={{ padding: "10px" }}>
                             <div className='event-box'>
                                 <Avatar className='small-event'
-                                    icon={assignedCourse[0].icon}
+                                    icon={surveys[0].icon}
                                 />
                             </div>
                         </Card>

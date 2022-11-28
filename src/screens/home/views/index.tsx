@@ -7,19 +7,27 @@ import { Announcement } from './announcement'
 import { BirthDays } from './birthdays'
 import { Events } from './events';
 import { LearningChamps } from './learning-champs';
+import { Feeds } from './feeds';
+
+const ROW_GUTTER = { xs: 16, sm: 32, md: 48, lg: 64 };
 
 export const HomePage = () => {
     return (
         <>
             <div>
-                <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                <Row gutter={ROW_GUTTER}>
                     <Col span={17} className="gutter-row">
-                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                        <Row gutter={ROW_GUTTER}>
+                            <Col span={6}>
+                                <Events />
+                            </Col>
                             <Col span={18}>
                                 <Announcement />
                             </Col>
-                            <Col span={6}>
-                                <Events />
+                        </Row>
+                        <Row gutter={ROW_GUTTER}>
+                            <Col span={24} style={{ marginTop: '40px', width: "100%" }}>
+                                <Feeds />
                             </Col>
                         </Row>
                     </Col>
@@ -29,15 +37,15 @@ export const HomePage = () => {
                                 <LearningChamps />
                             </Col>
                         </Row>
-                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                        <Row gutter={ROW_GUTTER}>
                             <Col className="gutter-row" style={{ width: '100%' }}>
                                 <BirthDays />
                             </Col>
                         </Row>
-                        <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
-                            <Col className="gutter-row" style={{ marginTop: '10px', width: "100%" }}>
+                        <Row gutter={ROW_GUTTER}>
+                            <Col className="gutter-row" style={{ marginTop: '40px', width: "100%" }}>
                                 <Card className='home-card'>
-                                    <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Idea Corner</h4></div>} />
+                                    <Meta title={<div><h4>Idea Corner</h4></div>} />
                                     <Button type='primary' className='idea'> Submit Your Idea</Button>
                                     <br />
                                     <Card title="Idea Number 1">

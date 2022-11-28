@@ -1,0 +1,15 @@
+.text-input-post {
+    border-radius: 100px;
+    padding: 10px;
+}
+
+.feed-container {
+    overflow: scroll;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
