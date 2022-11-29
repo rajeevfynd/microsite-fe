@@ -71,7 +71,7 @@ export const SkillForm = (props: any) => {
                 .catch((error) => {
                     console.log(error.message);
                     handleLoading(false);
-                    message.error("Something went wrong, Please after sometime");
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
     }, [skill])

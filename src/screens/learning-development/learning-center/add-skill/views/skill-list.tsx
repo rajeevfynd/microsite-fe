@@ -67,8 +67,9 @@ export const SkillList = (props: any) => {
                     setIsLoading(false);
                 })
                 .catch((error) => {
+                    setIsLoading(false);
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
@@ -95,7 +96,7 @@ export const SkillList = (props: any) => {
                 .catch((error) => {
                     console.log(error.message);
                     setIsLoading(false);
-                    message.error("Something went wrong, Please after sometime");
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
@@ -126,7 +127,8 @@ export const SkillList = (props: any) => {
                 .catch((error) => {
                     console.log(error.message);
                     setIsLoading(false);
-                    message.error("Something went wrong, Please after sometime");                });
+                    message.error("Something went wrong, Please try after sometime");
+                });
         })();
 
     }, [courseTagMapping])
