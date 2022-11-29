@@ -1,11 +1,19 @@
-import ArrowRightOutlined from "@ant-design/icons/lib/icons/ArrowRightOutlined";
-import { Card, Divider, List, Avatar, Typography, Button } from "antd";
-import Meta from "antd/lib/card/Meta";
+import { Card, Avatar } from "antd";
 import * as React from "react";
 
 
 
-export const ChampCard = (props: { champ: { id: number, profilePicture: string, name: string, department: string, score: number }; }) => {
+export const ChampCard = (props: {
+    champ: {
+        id: number,
+        profilePicture:
+        string,
+        name: string,
+        department: string,
+        score: number
+    };
+}) => {
+    
     const { champ } = props;
 
 

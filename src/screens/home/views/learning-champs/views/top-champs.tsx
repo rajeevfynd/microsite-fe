@@ -1,12 +1,21 @@
 import * as React from "react";
-import { Divider, Typography, Button, Modal } from "antd";
+import { Modal } from "antd";
 import { ChampsList } from "./champs-list";
 import { ChampsPopup } from "./champs-popup";
+import { ChampsTitle } from "./champ-title";
+import { SeeAllButton } from "./see-all-button";
+import { Champs } from '../constant';
 
 
 
 export const TopChamps = (props: {
-    data: { id: number, profilePicture: string, name: string, department: string, score: number }[];
+    data: {
+        id: number,
+        profilePicture: string,
+        name: string,
+        department: string,
+        score: number
+    }[];
 }) => {
 
     const { data } = props;
@@ -29,25 +38,14 @@ export const TopChamps = (props: {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                <Typography.Text disabled style={{ fontSize: "12px", width: '50%' }}>Top Champs</Typography.Text>
-                <div style={{ width: '100%' }} >
-                    <Divider />
-                </div>
-            </div>
+            <ChampsTitle title={Champs.topChamps} />
 
             <ChampsList data={data.slice(0, 2)} />
 
-            <div style={{ display: 'flex', flexDirection: "row", padding: "5px" }}>
-                <Button style={{ width: '100%', textAlign: "center", borderRadius: "10px" }} onClick={() => handleSeeAllClick()}>
-                    <Typography.Text disabled style={{ fontSize: "12px", width: '50%' }}>
-                        {"See All"}
-                    </Typography.Text>
-                </Button>
-            </div >
+            <SeeAllButton handleSeeAllClick={handleSeeAllClick} />
 
             <Modal
-                title="Top Champs"
+                title={Champs.topChamps}
                 visible={isModalOpen}
                 footer={null}
                 onCancel={closeModel}

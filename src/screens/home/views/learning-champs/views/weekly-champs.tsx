@@ -1,7 +1,10 @@
 import * as React from "react";
-import { Divider, Typography, Button, Modal } from "antd";
+import { Modal } from "antd";
 import { ChampsList } from "./champs-list";
 import { ChampsPopup } from "./champs-popup";
+import { ChampsTitle } from "./champ-title";
+import { SeeAllButton } from "./see-all-button";
+import { Champs } from "../constant";
 
 
 
@@ -29,25 +32,14 @@ export const WeeklyChamps = (props: {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                <Typography.Text disabled style={{ fontSize: "12px", width: '50%' }}>Top Champs</Typography.Text>
-                <div style={{ width: '100%' }} >
-                    <Divider />
-                </div>
-            </div>
+            <ChampsTitle title={Champs.weeklyChamps} />
 
             <ChampsList data={data.slice(0, 3)} />
 
-            <div style={{ display: 'flex', flexDirection: "row", padding: "5px" }}>
-                <Button style={{ width: '100%', textAlign: "center", borderRadius: "10px" }} onClick={() => handleSeeAllClick()}>
-                    <Typography.Text disabled style={{ fontSize: "12px", width: '50%' }}>
-                        {"See All"}
-                    </Typography.Text>
-                </Button>
-            </div >
+            <SeeAllButton handleSeeAllClick={handleSeeAllClick} />
 
             <Modal
-                title="Weekly Champs"
+                title={Champs.weeklyChamps}
                 visible={isModalOpen}
                 footer={null}
                 onCancel={closeModel}

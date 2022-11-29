@@ -4,7 +4,13 @@ import { ChampsList } from "./champs-list";
 
 
 export const ChampsPopup = (props: {
-    data: { id: number, profilePicture: string, name: string, department: string, score: number }[];
+    data: {
+        id: number,
+        profilePicture: string,
+        name: string,
+        department: string,
+        score: number
+    }[];
 }) => {
 
     const { data } = props;
