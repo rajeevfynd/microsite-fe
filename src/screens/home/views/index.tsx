@@ -37,16 +37,16 @@ export const HomePage = (props: HomePageProps) => {
         <>
             <Row gutter={ROW_GUTTER}>
                 <Col span={6} className="gutter-row">
-                        <Events />
-                        <Announcement />
-                        <Row gutter={INNER_ROW_GUTTER}>
-                            <QuickLink title="R Samman" />
-                            <QuickLink title="Idea Corner" />
-                        </Row>
-                        <Row gutter={INNER_ROW_GUTTER} >
-                            <QuickLink title="Podcast" />
-                            <QuickLink title="Rnr Corner" />
-                        </Row>
+                    <Events />
+                    <Announcement />
+                    <Row gutter={INNER_ROW_GUTTER}>
+                        <QuickLink title="R Samman" />
+                        <QuickLink title="Idea Corner" />
+                    </Row>
+                    <Row gutter={INNER_ROW_GUTTER} >
+                        <QuickLink title="Podcast" />
+                        <QuickLink title="Rnr Corner" />
+                    </Row>
                 </Col>
 
                 <Col span={12} className="gutter-row">
@@ -54,9 +54,7 @@ export const HomePage = (props: HomePageProps) => {
                 </Col>
                 <Col span={6} className="gutter-row" style={{ position: "initial" }}>
                     <BirthDays />
-                    <Card className='home-card'>
-                        <Meta title={<div><h4>Learning Champs</h4></div>} />
-                    </Card>
+                    <LearningChamps />
                 </Col>
 
             </Row>
