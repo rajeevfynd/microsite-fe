@@ -1,0 +1,29 @@
+.footer-content {
+    width: 100%;
+    height: min-content;
+    background: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 5vh;
+    padding: 1%;
+    text-align: center;
+}
+
+.header {
+    padding: 1% 5% 5% 5%;
+}
+
+.header-text {
+    color: #f5f5f5;
+}
+
+.title {
+    margin: 6%;
+    text-align: left;
+}
+
+@font-face {
+    font-family: 'Roboto', sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+}

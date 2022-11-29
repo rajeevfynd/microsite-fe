@@ -1,0 +1,14 @@
+.li-incomplete{
+    color: gray
+}
+.link{
+    text-decoration: none;
+}
+.certified{
+    margin-left: 5px;
+}
+.drop-down-btn{
+    height: fit-content;
+    text-align: left;
+    width: 100%;
+}
