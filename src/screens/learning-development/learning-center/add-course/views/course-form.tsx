@@ -1,6 +1,8 @@
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Card, Row, Button, Image, Form, Input, AutoComplete, SelectProps, Col, } from 'antd'
 import * as React from 'react'
+import { ArrowLeft } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import { Tagtype } from '../../../../../constants/tag';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -40,8 +42,7 @@ export default function CourseForm() {
         options: []
     });
 
-
-
+    const navigate = useNavigate()
 
 
 
@@ -416,7 +417,9 @@ export default function CourseForm() {
     }
 
     return (
-        <>{isLoading ? "Loading..." : <Row style={{ justifyContent: "center" }}>
+        <>
+        <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
+        {isLoading ? "Loading..." : <Row style={{ justifyContent: "center" }}>
             <Card title="Create Course" bordered={true} style={{ width: 500, textAlign: "center" }}>
                 <Form
                     layout="vertical"
