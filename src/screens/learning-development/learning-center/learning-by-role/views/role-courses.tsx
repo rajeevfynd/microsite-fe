@@ -29,7 +29,7 @@ export function CourseList(props: { courseList: any }) {
     }
 
     return (
-        <List
+        <>        <List
             grid={{ gutter: 16 }}
             dataSource={courseList}
             renderItem={({ course }) => (<List.Item key={course.id}>
@@ -51,21 +51,19 @@ export function CourseList(props: { courseList: any }) {
 
                 <Button type="primary" block onClick={() => handleCourseDetailsClick(course)}> View Course Details </Button>
 
-
-                <Modal
-                    title="Course Details"
-                    visible={isModalOpen}
-                    footer={null}
-                    onCancel={closeModel}
-                    width={1000}
-                    style={{ top: 100 }}>
-                    <CourseDetails course={courseDetails} />
-                </Modal>
-
             </List.Item>
             )
             }
         />
-
+            <Modal
+                title="Course Details"
+                visible={isModalOpen}
+                footer={null}
+                onCancel={closeModel}
+                width={1000}
+                style={{ top: 100 }}>
+                <CourseDetails course={courseDetails} />
+            </Modal>
+        </>
     );
 }
