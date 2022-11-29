@@ -243,7 +243,7 @@ export default function CourseForm() {
             .catch((error) => {
                 console.log(error);
                 setIsLoading(false);
-                message.error("Something went wrong, Please after sometime");
+                message.error("Something went wrong, Please try after sometime");
             });
     };
 
@@ -377,7 +377,7 @@ export default function CourseForm() {
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
@@ -408,7 +408,7 @@ export default function CourseForm() {
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
