@@ -63,7 +63,7 @@ export const EditCourse = () => {
 
     const { id } = useParams();
     const navigate = useNavigate()
-    const [editCourse, setEditCourse] = React.useState<editCourseDetail>({})
+    const [editCourse, setEditCourse] = React.useState<editCourseDetail>({skills:[]})
     const [programs, setPrograms] = React.useState<coursePrograms>()
     const [buttonStatus, setButtonStatus] = React.useState(true);
     const [search, setSearch] = React.useState({
@@ -372,27 +372,28 @@ export const EditCourse = () => {
                     /> */}
                 <Select
                     mode="multiple"
-                    // showSearch
-                    // onSearch={(e)=>{(() => {
-                    //     httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${e}`)
-                    //         .then((response) => {
+                    showSearch
+                    onSearch={(e) => {
+                        console.log("test")
+                        httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${e}`)
+                            .then((response) => {
             
-                    //             const result = response.data || [];
+                                const result = response.data || [];
             
-                    //             if (!result.length) return;
+                                if (!result.length) return;
             
-                    //             setSearch({
-                    //                 ...search,
-                    //                 hasFeedback: true,
-                    //                 options: response.data.length ? searchResult(result) : []
-                    //             });
+                                setSearch({
+                                    ...search,
+                                    hasFeedback: true,
+                                    options: response.data.length ? searchResult(result) : []
+                                });
             
-                    //         })
-                    //         .catch((error) => {
-                    //             console.log(error.message);
-                    //             window.alert(`${error.message}`);
-                    //         });
-                    // })}}
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                                window.alert(`${error.message}`);
+                            });
+                    }}
                     allowClear
                     style={{ width: '100%' }}
                     placeholder='Start Typing Program Name or Keyword...'
@@ -400,8 +401,9 @@ export const EditCourse = () => {
                         console.log(e)
                         //setSearch({...search, text: e, type:Tagtype.skill, hasFeedback: true})
                     }}
-                    defaultValue = {editCourse.skills?editCourse.skills.map((t)=>{t.name}):[]}
-                    options={search.options}
+                    value = {editCourse.skills.map((t)=>{return t.name})}
+                    options={search.type === Tagtype.skill ? search.options : []}
+                    //value={search.type === Tagtype.skill ? [search.text] : [""]}
                 >
                     {search.options.map( d => { return (<Option key={d.text}>{d.text}</Option>)})}
                     </Select>
