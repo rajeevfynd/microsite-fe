@@ -6,6 +6,7 @@ import { ALT_THUMBNAIL } from '../../../constants/string-constants'
 import { Announcement } from './announcement'
 import { BirthDays } from './birthdays'
 import { Events } from './events';
+import { LearningChamps } from './learning-champs';
 import { Feeds } from './feeds';
 
 const ROW_GUTTER = { xs: 8, sm: 16, md: 24, lg: 32 };
@@ -87,6 +88,11 @@ export const HomePage = (props: HomePageProps) => {
                         </Row>
                     </Col>
                     <Col span={7} className="gutter-row">
+                    <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
+                            <Col className="gutter-row" style={{ width: '100%' }}>
+                                <LearningChamps />
+                            </Col>
+                        </Row>
                         <Row gutter={ROW_GUTTER}>
                             <Col className="gutter-row" style={{ width: '100%' }}>
                                 <BirthDays />
