@@ -9,15 +9,20 @@ import httpInstance from '../../../../utility/http-client';
 
 const { Option } = Select;
 
-const validateStatus = {
-    validating: "validating",
-    success: "success"
-}
-
 type tags = {
     id?: number,
     name?: string,
     type?: string
+}
+
+type program = {
+    id?:number,
+    title?: string
+}
+
+type intresnsicType = {
+    id?: number,
+    name?: string,
 }
 
 type editCourseRequest = {
@@ -55,24 +60,20 @@ type editCourseDetail = {
     tags?: tags[]
 }
 
-type coursePrograms = {
-    program?: []
-}
 
 export const EditCourse = () => {
 
     const { id } = useParams();
     const navigate = useNavigate()
-    const [editCourse, setEditCourse] = React.useState<editCourseDetail>({skills:[]})
-    const [programs, setPrograms] = React.useState<coursePrograms>()
-    const [buttonStatus, setButtonStatus] = React.useState(true);
-    const [search, setSearch] = React.useState({
-        text: "",
-        type: "",
-        hasFeedback: false,
-        validateStatus: "",
-        options: []
-    });
+    const [editCourse, setEditCourse] = React.useState<editCourseDetail>({skills:[], roles:[], programs:[]})
+    const [dataSkill, setDataSkill] = React.useState<intresnsicType[]>([])
+    const [dataRole, setDataRole] = React.useState<intresnsicType[]>([])
+    const [dataProgram, setDataProgram] = React.useState<program[]>([])
+    const [skillDrop,setSkillDrop] = React.useState<boolean>(false)
+    const [roleDrop,setRoleDrop] = React.useState<boolean>(false)
+    const [programDrop,setProgramDrop] = React.useState<boolean>(false)
+    
+    let key = ''
 
 
     const onFinish = async () => {
@@ -106,13 +107,6 @@ export const EditCourse = () => {
             <Image src={imageUrl} height={200} width={450} />
         </>
     }
-
-    const getEditCourse = async () => {
-        let resp = await getCourseById(id)//.then(resp=>{
-        console.log(resp.data)
-        setEditCourse(resp.data)
-
-    }
     React.useEffect(() => {
         getCourseById(id).then(resp => {
             let response = resp.data;
@@ -129,167 +123,12 @@ export const EditCourse = () => {
             console.log(response)
             setEditCourse(response)
         })
-        //getEditCourse()
     }, [])
-
-    const handlePlusIconClick = (data: { id: number; name: string; type: string }) => {
-
-
-        if (data.type === Tagtype.skill) {
-            if (editCourse.skills) {
-                const alreadyExists = editCourse.skills.find(selectedSkill => selectedSkill.id === data.id);
-
-                if (alreadyExists) return;
-            }
-
-            setEditCourse({
-                ...editCourse,
-                skills: [{ id: data.id, name: data.name }].concat(...editCourse.skills),
-                skillIds: [data.id].concat(...editCourse.skillIds)
-            });
-        }
-
-        if (data.type === Tagtype.role) {
-            if (editCourse.roles) {
-                const alreadyExists = editCourse.roles.find(selectedRole => selectedRole.id === data.id);
-
-                if (alreadyExists) return;
-            }
-
-            setEditCourse({
-                ...editCourse,
-                roles: [{ id: data.id, name: data.name }].concat(...editCourse.roles),
-                roleIds: [data.id].concat(...editCourse.roleIds)
-
-            });
-
-        }
-
-        if (data.type === "PROGRAM") {
-            if (editCourse.programs) {
-                const alreadyExists = editCourse.programs.find(selectedProgram => selectedProgram.id === data.id);
-
-                if (alreadyExists) { console.log("already exists"); return };
-            }
-
-            setEditCourse({
-                ...editCourse,
-                programs: [{ id: data.id, title: data.name }].concat(...editCourse.programs),
-                programIds: [data.id].concat(...editCourse.programIds)
-
-            });
-
-        }
-    }
-
-    const handleMinusIconClick = (data: { id: number; name: string; type: string }) => {
-        if (Tagtype.skill === data.type) {
-            const remainingSkills = editCourse.skills.filter((selectedSkill) => selectedSkill.id !== data.id);
-            console.log(remainingSkills)
-            setEditCourse({
-                ...editCourse,
-                skills: remainingSkills,
-                skillIds: remainingSkills.length ? remainingSkills.map((skill: { id: number; }) => skill.id) : []
-            });
-            console.log(editCourse)
-        };
-
-        if (Tagtype.role === data.type) {
-            const remainingRoles = editCourse.roles.filter((selectedRole) => selectedRole.id !== data.id);
-            setEditCourse({
-                ...editCourse,
-                roles: remainingRoles,
-                roleIds: remainingRoles.length ? remainingRoles.map((role: { id: number; }) => role.id) : []
-            });
-        }
-
-        if ("PROGRAM" === data.type) {
-            const remainingPrograms = editCourse.programs.filter((selectedProgram) => selectedProgram.id !== data.id);
-            setEditCourse({
-                ...editCourse,
-                programs: remainingPrograms,
-                programIds: remainingPrograms.length ? remainingPrograms.map((program: { id: number }) => program.id) : []
-            });
-        }
-        console.log(editCourse)
-    }
-
-    const searchResult = (searchResult: { id: number; name: string; title: string; }[]) => {
-        return searchResult.map((result: { id: number; name: string; title: string; }, index) => {
-            return {
-                value: result.name || result.title,
-                label: <Row key={index} style={{ justifyContent: "space-between" }} onClick={() => handlePlusIconClick({ id: result.id, name: result.name || result.title, type: search.type })}>
-                    <Col flex={1} style={{ textAlign: "start" }}><p>{result.name || result.title}</p></Col>
-                    <Col style={{ alignItems: "end" }} > <PlusCircleOutlined style={{ fontSize: 20 }} /></Col>
-                </Row>
-            }
-        })
-    }
-
-    React.useEffect(() => {
-        // search Api-> get tag by name 
-        if (!search.text && !search.type) return;
-
-        if (search.type === "PROGRAM") return;
-
-        (() => {
-            httpInstance.get(`/microsite/tag/tags-by-name/?tagType=${search.type}&name=${search.text}`)
-                .then((response) => {
-
-                    const result = response.data || [];
-
-                    if (!result.length) return;
-
-                    setSearch({
-                        ...search,
-                        hasFeedback: true,
-                        validateStatus: validateStatus.success,
-                        options: response.data.length ? searchResult(result) : []
-                    });
-
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                    window.alert(`${error.message}`);
-                });
-        })();
-
-    }, [search.text, search.type])
-
-
-    React.useEffect(() => {
-        // search Api-> get programs by name 
-        console.log("inside search")
-        if (!search.text && !search.type) return;
-
-        if (search.type !== "PROGRAM") return;
-
-        (() => {
-            httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${search.text}`)
-                .then((response) => {
-
-                    const result = response.data || [];
-
-                    if (!result.length) return;
-
-                    setSearch({
-                        ...search,
-                        hasFeedback: true,
-                        options: response.data.length ? searchResult(result) : []
-                    });
-
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                    window.alert(`${error.message}`);
-                });
-        })();
-
-    }, [search.text, search.type])
 
     return (<>
 
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
+        <h4>Edit Course</h4>
         <Form title='Edit Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
             <Form.Item>
                 Title
@@ -329,11 +168,9 @@ export const EditCourse = () => {
                 }} />
             </Form.Item>
 
-            <Form.Item
-                hasFeedback={search.hasFeedback}
-            >
+            <Form.Item>
                 Programs
-                <AutoComplete
+                {/* <AutoComplete
                     style={{ textAlign: "start" }}
                     placeholder='Start Typing Program Name or Keyword...'
                     allowClear
@@ -342,52 +179,21 @@ export const EditCourse = () => {
                     onChange={(e) => {
                         setSearch({ ...search, text: e, type: "PROGRAM", hasFeedback: true })
                     }}
-                />
-
-            </Form.Item>
-
-            {editCourse.programs ? editCourse.programs
-                .map((data, index) => <>
-                    <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.title}</h6></Col>
-                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.title, type: "PROGRAM" })} /></Col>
-                    </Row>
-                </>
-                ) : <></>
-            }
-
-            <Form.Item
-                hasFeedback={search.hasFeedback}
-            >
-                Skills
-                {/* <AutoComplete
-                            style={{ textAlign: "start" }}
-                            placeholder='Start Typing Program Name or Keyword...'
-                            allowClear
-                            options={search.type === Tagtype.skill ? search.options : []}
-                            value={search.type === Tagtype.skill ? search.text : ""}
-                            onChange = {(e)=>{
-                                setSearch({...search, text: e, type:Tagtype.skill, hasFeedback: true})
-                            }}
-                    /> */}
+                /> */}
                 <Select
                     mode="multiple"
                     showSearch
                     onSearch={(e) => {
-                        console.log("test")
+                        console.log(e)
+                        setProgramDrop(e!='')
                         httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${e}`)
                             .then((response) => {
-            
+                                console.log(response)
                                 const result = response.data || [];
-            
                                 if (!result.length) return;
-            
-                                setSearch({
-                                    ...search,
-                                    hasFeedback: true,
-                                    options: response.data.length ? searchResult(result) : []
-                                });
-            
+                                let programs: any[] = []
+                                result.forEach((d:any) => programs.push({id:d.id, title: d.title}))
+                                setDataProgram(programs)
                             })
                             .catch((error) => {
                                 console.log(error.message);
@@ -397,47 +203,163 @@ export const EditCourse = () => {
                     allowClear
                     style={{ width: '100%' }}
                     placeholder='Start Typing Program Name or Keyword...'
+                    open= {programDrop}
+                    onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
+                        console.log(e.target.value,"blur")
+                        setProgramDrop(e.target.value!='')
+                    }}
                     onChange={(e)=>{
+                        const remainingPrograms = editCourse.programs.filter((selectedPrograms) => e.indexOf(selectedPrograms.title)>-1 );
+                        setEditCourse({
+                            ...editCourse,
+                            programs: remainingPrograms,
+                            programIds: remainingPrograms.length ? remainingPrograms.map((program: { id: number; }) => program.id) : []
+                        });
+                    }}
+                    value = {editCourse.programs.map((t)=>{return t.title})}
+                    onSelect={(e)=>{
                         console.log(e)
-                        //setSearch({...search, text: e, type:Tagtype.skill, hasFeedback: true})
+                        const addProgram: program [] = dataProgram.filter((d)=> d.title==e)
+                        console.log(addProgram)
+                        setEditCourse({
+                            ...editCourse,
+                            programs: [{ id: addProgram[0].id, title: addProgram[0].title }].concat(...editCourse.programs),
+                            programIds: [addProgram[0].id].concat(...editCourse.programIds)
+                        });
+                        setProgramDrop(false)
+                    }}
+                >
+                    {dataProgram.map( d => { return (<Option key={d.title}>{d.title}</Option>)})}
+                    </Select>
+
+
+            </Form.Item>
+
+            {/* {editCourse.programs ? editCourse.programs
+                .map((data, index) => <>
+                    <Row key={index} style={{ justifyContent: "space-between" }}>
+                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.title}</h6></Col>
+                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.title, type: "PROGRAM" })} /></Col>
+                    </Row>
+                </>
+                ) : <></>
+            } */}
+
+            <Form.Item
+                // hasFeedback={search.hasFeedback}
+            >
+                Skills
+                <Select
+                    mode="multiple"
+                    showSearch
+                    onSearch={(e) => {
+                        console.log(e)
+                        setSkillDrop(e!='')
+                        httpInstance.get(`/microsite/tag/tags-by-name/?tagType=SKILL&name=${e}`)
+                            .then((response) => {
+                                console.log(response)
+                                const result = response.data || [];
+                                if (!result.length) return;
+                                let skills: any[] = []
+                                result.forEach((d:any) => skills.push({id:d.id, name: d.name}))
+                                setDataSkill(skills)
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                                window.alert(`${error.message}`);
+                            });
+                    }}
+                    allowClear
+                    style={{ width: '100%' }}
+                    placeholder='Start Typing Skill Name or Keyword...'
+                    open= {skillDrop}
+                    onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
+                        console.log(e.target.value,"blur")
+                        setSkillDrop(e.target.value!='')
+                    }}
+                    onChange={(e)=>{
+                        const remainingSkills = editCourse.skills.filter((selectedSkill) => e.indexOf(selectedSkill.name)>-1 );
+                        setEditCourse({
+                            ...editCourse,
+                            skills: remainingSkills,
+                            skillIds: remainingSkills.length ? remainingSkills.map((skill: { id: number; }) => skill.id) : []
+                        });
                     }}
                     value = {editCourse.skills.map((t)=>{return t.name})}
-                    options={search.type === Tagtype.skill ? search.options : []}
-                    //value={search.type === Tagtype.skill ? [search.text] : [""]}
+                    onSelect={(e)=>{
+                        console.log(e)
+                        const addSkill: intresnsicType [] = dataSkill.filter((d)=> d.name==e)
+                        console.log(addSkill)
+                        setEditCourse({
+                            ...editCourse,
+                            skills: [{ id: addSkill[0].id, name: addSkill[0].name }].concat(...editCourse.skills),
+                            skillIds: [addSkill[0].id].concat(...editCourse.skillIds)
+                        });
+                        setSkillDrop(false)
+                    }}
                 >
-                    {search.options.map( d => { return (<Option key={d.text}>{d.text}</Option>)})}
+                    {dataSkill.map( d => { return (<Option key={d.name}>{d.name}</Option>)})}
                     </Select>
 
             </Form.Item>
 
-            {/* {editCourse.skills?editCourse.skills
-            .map((data, index) => <>
-                        <Row key={index} style={{ justifyContent: "space-between" }}>
-                            <Col flex={1/10} style={{ textAlign: "start" }}><h6 style={{color:"red"}}>{data.name}</h6></Col>
-                            <Col flex={9/10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.name, type: Tagtype.skill })} /></Col>
-                        </Row>
-                    </>
-                ): <></>
-            } */}
-
-            <Form.Item
-                hasFeedback={search.hasFeedback}
-            >
+            <Form.Item>
                 Roles
-                <AutoComplete
-                    style={{ textAlign: "start" }}
-                    placeholder='Start Typing Program Name or Keyword...'
-                    allowClear
-                    options={search.type === Tagtype.role ? search.options : []}
-                    value={search.type === Tagtype.role ? search.text : ""}
-                    onChange={(e) => {
-                        setSearch({ ...search, text: e, type: Tagtype.role, hasFeedback: true })
+                <Select
+                    mode="multiple"
+                    showSearch
+                    onSearch={(e) => {
+                        setRoleDrop(e!='')
+                        console.log(e);
+                        httpInstance.get(`/microsite/tag/tags-by-name/?tagType=ROLE&name=${e}`)
+                            .then((response) => {
+                                console.log(response)
+                                const result = response.data || [];
+                                if (!result.length) return;
+                                let roles: any[] = []
+                                result.forEach((d:any) => roles.push({id:d.id, name: d.name}))
+                                setDataRole(roles)
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                                window.alert(`${error.message}`);
+                            });
                     }}
-                />
+                    allowClear
+                    style={{ width: '100%' }}
+                    placeholder='Start Typing Role Name or Keyword...'
+                    open= {roleDrop}
+                    onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
+                        console.log(e.target.value,"blur")
+                        setRoleDrop(e.target.value!='')
+                    }}
+                    onChange={(e)=>{
+                        const remainingRoles = editCourse.roles.filter((selectedRole) => e.indexOf(selectedRole.name)>-1 );
+                        setEditCourse({
+                            ...editCourse,
+                            roles: remainingRoles,
+                            roleIds: remainingRoles.length ? remainingRoles.map((role: { id: number; }) => role.id) : []
+                        });
+                    }}
+                    value = {editCourse.roles.map((t)=>{return t.name})}
+                    onSelect={(e)=>{
+                        console.log(e)
+                        const addRole: intresnsicType [] = dataRole.filter((d)=> d.name==e)
+                        console.log(addRole)
+                        setEditCourse({
+                            ...editCourse,
+                            roles: [{ id: addRole[0].id, name: addRole[0].name }].concat(...editCourse.roles),
+                            roleIds: [addRole[0].id].concat(...editCourse.roleIds)
+                        });
+                        setRoleDrop(false)
+                    }}
+                >
+                    {dataRole.map( d => { return (<Option key={d.name}>{d.name}</Option>)})}
+                    </Select>
 
             </Form.Item>
 
-            {editCourse.roles ? editCourse.roles
+            {/* {editCourse.roles ? editCourse.roles
                 .map((data, index) => <>
                     <Row key={index} style={{ justifyContent: "space-between" }}>
                         <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.name}</h6></Col>
@@ -445,7 +367,7 @@ export const EditCourse = () => {
                     </Row>
                 </>
                 ) : <></>
-            }
+            } */}
 
             <Form.Item>
                 Duration
