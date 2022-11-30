@@ -33,7 +33,7 @@ export const getCarouselImageData = (d: carouselFormtype) =>{
 }
 
 export const getCarouselCourse = (d: carouselFormtype) =>{
-    return httpInstance.get('/microsite/course?id='+d.courseHyperlink)
+    return httpInstance.get('/microsite/course/'+d.courseHyperlink)
 }
 
 export const getCourseById = (d: string) =>{
