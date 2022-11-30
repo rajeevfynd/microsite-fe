@@ -12,7 +12,7 @@ function formatEnvironmentEntries(env) {
 }
 
 function resolveEnvironment() {
-    let envFile = path.resolve(__dirname, "local.env");
+    let envFile = path.resolve(__dirname, ".env");
     let localEnv = dotenv.parse(fs.readFileSync(envFile, { encoding: "utf8" }));
     let environmentEntries = formatEnvironmentEntries(process.env);
     let localEnvironmentEntries = formatEnvironmentEntries(localEnv);
