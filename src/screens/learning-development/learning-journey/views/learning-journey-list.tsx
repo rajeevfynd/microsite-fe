@@ -61,10 +61,13 @@ export  const LearningJourneyList = () => {
     <div className='search-container'>
       <Input 
         size='large' 
-        className='search-box' 
+        className='home-card search-card search-box' 
+        style={{padding:15}}
         suffix={<SearchOutlined/>} 
+        placeholder='Search Journeys...'
+        allowClear
         onChange={(e) => {searchKey(e.target.value);} } 
-      />
+    />
     </div>
     <div
       id="scrollableDiv"
