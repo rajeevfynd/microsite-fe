@@ -1,46 +1,48 @@
-.username{
+.username {
     text-align: right;
 }
-.username-container{
+
+.username-container {
     margin: 6%;
 }
-.pro-pic{
+
+.pro-pic {
     border-radius: 100%;
     height: 50px;
     width: 50px;
 }
 
-.body{
-    padding: 1% 4%;
+.body {
+    font-family: 'Nanum Gothic', sans-serif;
 }
 
-.content{
-    margin: 1% 1%;
+.content {
+    margin-left: 90px;
     padding: 2% 3%;
-    height: 80vh;
-    width: 100%;
-    background: white;
+    height: 90vh;
     overflow-x: scroll;
     overflow-y: scroll;
     overflow: scroll;
 }
 
-.menu{
-    margin: 2% 0 4% 0;
-    position: fixed;
-    z-index: 2;
+.menu {
+    top: 30%;
+    position: absolute;
+    height: fit-content;
+    max-height: 70%;
+    z-index: 4;
     float: left;
     width: fit-content;
-}
-
-.menu-list{
-    text-align: left;
-    width: fit-content;
-    overflow-y: scroll;
+    overflow: scroll;
     border-style: solid;
     border-width: 1px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    max-height: 70vh;
     border-color: lightblue;
+}
+
+.menu-list {
+    text-align: left;
+    width: fit-content;
+    overflow: scroll;
 }

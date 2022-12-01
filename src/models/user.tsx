@@ -1,6 +1,6 @@
 import { Role } from "./enums/roles"
 
-type User = {
+export type User = {
     domainId?: string,
     email?: string,
     exp?: number,

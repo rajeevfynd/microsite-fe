@@ -48,18 +48,10 @@ export default function MenuHome() {
     return (
         <>
             <div ref={boxRef}>
-                <Button
-                    size='large'
-                    type='primary'
-                    style={{ width: '50px' }}
-                    onClick={() => setCollapsed(!collapsed)}
-                    onBlur={() => console.log("Button Blurred")}
-                >
-                    {collapsed ? <><MenuUnfoldOutlined /></> : <><MenuFoldOutlined /></>}
-                </Button>
-
                 <div className='menu-list'>
-                    <Sider theme='light' collapsed={collapsed} width={350} collapsedWidth={0} onBlur={() => console.log("Menu Blurred")}>
+                    <Sider theme='light' collapsed={collapsed} width={300}
+                        onMouseEnter={() => setCollapsed(false)}
+                        onMouseLeave={() => setCollapsed(true)}>
                         <Menu
                             mode="inline"
                             selectedKeys={getMenuRouteKeyByPath(location.pathname)}
