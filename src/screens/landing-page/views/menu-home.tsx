@@ -120,10 +120,6 @@ export default function MenuHome() {
                                     <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
                                     <Menu.Item key='admin-courses' onClick={() => navigateTo('/admin/courses')}>Courses</Menu.Item>
                                     <Menu.Item
-                                        key='addCourse'
-                                        onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
-                                        Course</Menu.Item>
-                                    <Menu.Item
                                         key='addSkill'
                                         onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
                                         Skill</Menu.Item>
