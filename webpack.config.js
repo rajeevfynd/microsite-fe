@@ -23,57 +23,46 @@ function resolveEnvironment() {
 }
 
 module.exports = {
-  mode: "development",
-  entry: path.resolve(__dirname, "src", "index.tsx"),
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
-    publicPath: "/",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      },
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        loader: "ts-loader",
-      },
-      {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          "style-loader",
-          // Translates CSS into CommonJS
-          "css-loader",
-          // Compiles Sass to CSS
-          "sass-loader",
-        ],
-      },
-    ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-  },
-  devServer: {
-    historyApiFallback: true,
-    proxy: {
-      "/microsite/**": {
-        target: "http://localhost:8082",
-        secure: false,
-        changeOrigin: true,
-      },
+    entry: path.resolve(__dirname, "src", "index.tsx"),
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "bundle.js",
+        publicPath: "/",
     },
-  },
-  plugins: [
-    new HtmlWebpackPlugin({ template: path.resolve(__dirname, "index.html") }),
-    new webpack.DefinePlugin({ process: { env: { ...resolveEnvironment() } } }),
-  ],
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+            },
+            {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                loader: "ts-loader",
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    "style-loader",
+                    // Translates CSS into CommonJS
+                    "css-loader",
+                    // Compiles Sass to CSS
+                    "sass-loader",
+                ],
+            }
+        ],
+    },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"],
+    },
+    plugins: [
+        new HtmlWebpackPlugin({ template: path.resolve(__dirname, "index.html") }),
+        new webpack.DefinePlugin({ process: { env: { ...resolveEnvironment() } } }),
+    ],
 };
