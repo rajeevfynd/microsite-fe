@@ -15,7 +15,7 @@ function Surveys() {
           path="/submit/survey/:surveyId/:assigneeId"
           element={<Survey />}
         />
-        <Route path="/survey/dash-board" element={<SurveyDashBoard />} />
+        <Route path="/survey/dash-board/:id" element={<SurveyDashBoard />} />
         <Route
           path="/assignee/response/:surveyId/:assigneeId"
           element={<ResponseSurvey />}

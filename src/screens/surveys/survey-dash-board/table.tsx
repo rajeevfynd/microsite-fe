@@ -1,21 +1,23 @@
 import * as React from "react";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-
-import { Space, Table, TableProps, Tag } from "antd";
+import { getDasboardTable } from "../../../service/survey-service";
+import { Space, Spin, Table, TableProps, Tag } from "antd";
 import { FilterValue } from "antd/es/table/interface";
-import axios from "axios";
-import { color } from "html2canvas/dist/types/css/types/color";
+import { useParams } from "react-router-dom";
+import * as moment from "moment";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
 interface DataType {
+  date: Date;
   assigneeId: string;
-
   assignedDate: string;
   expiredDate: string;
-  completed: string;
+  status: string;
 }
 const DasboardTable = () => {
   const [filteredInfo, setFilteredInfo] = useState<
@@ -36,7 +38,6 @@ const DasboardTable = () => {
   const clearAll = () => {
     setFilteredInfo({});
   };
-  let color = "volcano";
 
   const columns: ColumnsType<DataType> = [
     {
@@ -55,6 +56,10 @@ const DasboardTable = () => {
       dataIndex: "assignedDate",
 
       key: "assignedDate",
+
+      defaultSortOrder: "descend",
+      sorter: (a, b) =>
+        moment(a.assignedDate).unix() - moment(b.assignedDate).unix(),
     },
 
     {
@@ -63,21 +68,42 @@ const DasboardTable = () => {
       dataIndex: "expiredDate",
 
       key: "expiredDate",
+
+      defaultSortOrder: "descend",
+      sorter: (a, b) =>
+        moment(a.expiredDate).unix() - moment(b.expiredDate).unix(),
     },
 
     {
       title: "Status",
-      dataIndex: "completed",
-      key: "completed",
+      dataIndex: "status",
+      key: "status",
       render: (text) => (
-        <span color={color}>
-          {text ? (
-            <div style={{ color: "green" }}>submitted</div>
+        <>
+          {text == "submitted" ? (
+            <Tag color="green">submitted</Tag>
+          ) : text == "expired" ? (
+            <Tag color="volcano">Expired</Tag>
           ) : (
-            <div color={color}>Expired</div>
+            <Tag color="geekblue">pending</Tag>
           )}
-        </span>
+        </>
       ),
+      filters: [
+        {
+          text: "Expired",
+          value: "expired",
+        },
+        {
+          text: "Submitted",
+          value: "submitted",
+        },
+        {
+          text: "Pending",
+          value: "pending",
+        },
+      ],
+      onFilter: (value: string, record) => record.status.indexOf(value) === 0,
     },
 
     {
@@ -93,21 +119,26 @@ const DasboardTable = () => {
     },
   ];
 
-  const [data, setData] = React.useState<DataType[]>();
+  const params = useParams();
+
+  const [data, setData] = React.useState<DataType[]>([]);
+  const [pageNumber, setPageNumber] = React.useState(0);
+  const [hasMore, setHasMore] = React.useState(true);
+  const [initialLoad, setInitialLoad] = React.useState(false);
   // rowSelection object indicates the need for row selection
-  const getTableData = async () => {
-    try {
-      let res = await axios.get(`/microsite/surveys/dash-board/1`);
-      console.log(res.data);
-      setData(res.data.data.dashBoardResponseDto);
-      console.log("Data", data);
-    } catch (error) {
-      console.log(error.message);
-    }
+  const loadMore = () => {
+    console.log("Load MOre is called,", pageNumber);
+    getDasboardTable(params.id, pageNumber)
+      .then((res) => {
+        console.log("From Load more ", res.data);
+        setData([...data, ...res.data.content]);
+        setHasMore(!res.data.last);
+        console.log("Hasmore", hasMore);
+        console.log("Data Lenght", data.length);
+        setPageNumber(pageNumber + 1);
+      })
+      .catch((err) => console.log(err.message));
   };
-  React.useEffect(() => {
-    getTableData();
-  }, []);
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       console.log(
@@ -117,20 +148,40 @@ const DasboardTable = () => {
       );
     },
   };
-
+  React.useEffect(() => {
+    !initialLoad &&
+      getDasboardTable(params.id, pageNumber)
+        .then((res) => {
+          console.log("Inside use Effect");
+          setData(res.data.content);
+          setHasMore(!res.data.last);
+          console.log("Hasmore", hasMore);
+          console.log("Data Lenght", data.length);
+          setPageNumber(pageNumber + 1);
+          setInitialLoad(true);
+        })
+        .catch((err) => console.log(err.message));
+  }, []);
   return (
     <div>
-      <Table
-        rowSelection={{
-          type: "checkbox",
-        }}
-        columns={columns}
-        pagination={{
-          position: ["bottomRight"],
-        }}
-        dataSource={data}
-        onChange={handleChange}
-      />
+      <InfiniteScroll
+        dataLength={data.length}
+        next={loadMore}
+        hasMore={hasMore} //false
+        loader={<Spin size="small" />}
+        scrollableTarget="ant-table-row"
+      >
+        <Table
+          columns={columns}
+          dataSource={data}
+          onChange={handleChange}
+          pagination={false}
+          scroll={{
+            scrollToFirstRowOnChange: false,
+            y: 100,
+          }}
+        />
+      </InfiniteScroll>
     </div>
   );
 };

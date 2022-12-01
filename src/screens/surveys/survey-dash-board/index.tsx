@@ -26,20 +26,20 @@ function SurveyDashBoard() {
             <Col span={8}>
               <Statistic
                 title="Submitted "
-                value={66}
-                prefix={<LikeOutlined />}
+                value={1}
+                // prefix={<LikeOutlined />}
               />
             </Col>
 
             <Col span={8}>
-              <Statistic title="Pending" value={44} suffix="/ 100" />
+              <Statistic title="Pending" value={4} suffix="/ 5" />
             </Col>
 
             <Col span={2}>
-              <Tooltip title="3 done / 3 in progress / 4 to do">
+              <Tooltip title="1 done /  4 to do">
                 <Progress
-                  percent={100}
-                  success={{ percent: 66 }}
+                  percent={(1 / 5) * 100}
+                  success={{ percent: (1 / 5) * 100 }}
                   type="circle"
                 />
               </Tooltip>

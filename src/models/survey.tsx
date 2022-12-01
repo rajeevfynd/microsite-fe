@@ -22,3 +22,9 @@ export interface AssigneeSurveyDto {
   expireData: Date;
   surveyId: string;
 }
+
+export interface UserType {
+  id: number;
+  name: string;
+  domainId: string;
+}
