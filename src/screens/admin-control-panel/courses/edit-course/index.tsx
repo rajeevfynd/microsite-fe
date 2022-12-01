@@ -9,23 +9,23 @@ import httpInstance from '../../../../utility/http-client';
 
 const { Option } = Select;
 
-type tags = {
+type Tags = {
     id?: number,
     name?: string,
     type?: string
 }
 
-type program = {
+type Program = {
     id?:number,
     title?: string
 }
 
-type intresnsicType = {
+type IntresnsicType = {
     id?: number,
     name?: string,
 }
 
-type editCourseRequest = {
+type EditCourseRequest = {
     rruCourseId?: number,
     title?: string,
     description?: string,
@@ -40,7 +40,7 @@ type editCourseRequest = {
     roleIds?: number[]
 }
 
-type editCourseDetail = {
+type EditCourseDetail = {
     rruCourseId?: number,
     title?: string,
     description?: string,
@@ -57,7 +57,7 @@ type editCourseDetail = {
     skillIds?: number[],
     roles?: { id: number, name: string }[],
     roleIds?: number[],
-    tags?: tags[]
+    tags?: Tags[]
 }
 
 
@@ -65,10 +65,10 @@ export const EditCourse = () => {
 
     const { id } = useParams();
     const navigate = useNavigate()
-    const [editCourse, setEditCourse] = React.useState<editCourseDetail>({skills:[], roles:[], programs:[]})
-    const [dataSkill, setDataSkill] = React.useState<intresnsicType[]>([])
-    const [dataRole, setDataRole] = React.useState<intresnsicType[]>([])
-    const [dataProgram, setDataProgram] = React.useState<program[]>([])
+    const [editCourse, setEditCourse] = React.useState<EditCourseDetail>({skills:[], roles:[], programs:[]})
+    const [dataSkill, setDataSkill] = React.useState<IntresnsicType[]>([])
+    const [dataRole, setDataRole] = React.useState<IntresnsicType[]>([])
+    const [dataProgram, setDataProgram] = React.useState<Program[]>([])
     const [skillDrop,setSkillDrop] = React.useState<boolean>(false)
     const [roleDrop,setRoleDrop] = React.useState<boolean>(false)
     const [programDrop,setProgramDrop] = React.useState<boolean>(false)
@@ -77,7 +77,7 @@ export const EditCourse = () => {
 
 
     const onFinish = async () => {
-        const editRequestBody: editCourseRequest = {
+        const editRequestBody: EditCourseRequest = {
             rruCourseId: editCourse.rruCourseId,
             title: editCourse.title,
             description: editCourse.description,
@@ -110,12 +110,12 @@ export const EditCourse = () => {
     React.useEffect(() => {
         getCourseById(id).then(resp => {
             let response = resp.data;
-            const s: tags[] = []
+            const s: Tags[] = []
             const sId: number[] = []
-            const r: tags[] = []
+            const r: Tags[] = []
             const rId: number[] = []
-            response.tags.forEach((t: tags) => { if (t.type === 'SKILL') { s.push({ id: t.id, name: t.name }); sId.push(t.id) } })
-            response.tags.forEach((t: tags) => { if (t.type === 'ROLE') { r.push({ id: t.id, name: t.name }); rId.push(t.id) } })
+            response.tags.forEach((t: Tags) => { if (t.type === 'SKILL') { s.push({ id: t.id, name: t.name }); sId.push(t.id) } })
+            response.tags.forEach((t: Tags) => { if (t.type === 'ROLE') { r.push({ id: t.id, name: t.name }); rId.push(t.id) } })
             response.roles = r
             response.roleIds = rId
             response.skillIds = sId
@@ -219,7 +219,7 @@ export const EditCourse = () => {
                     value = {editCourse.programs.map((t)=>{return t.title})}
                     onSelect={(e)=>{
                         console.log(e)
-                        const addProgram: program [] = dataProgram.filter((d)=> d.title==e)
+                        const addProgram: Program [] = dataProgram.filter((d)=> d.title==e)
                         console.log(addProgram)
                         setEditCourse({
                             ...editCourse,
@@ -288,7 +288,7 @@ export const EditCourse = () => {
                     value = {editCourse.skills.map((t)=>{return t.name})}
                     onSelect={(e)=>{
                         console.log(e)
-                        const addSkill: intresnsicType [] = dataSkill.filter((d)=> d.name==e)
+                        const addSkill: IntresnsicType [] = dataSkill.filter((d)=> d.name==e)
                         console.log(addSkill)
                         setEditCourse({
                             ...editCourse,
@@ -344,7 +344,7 @@ export const EditCourse = () => {
                     value = {editCourse.roles.map((t)=>{return t.name})}
                     onSelect={(e)=>{
                         console.log(e)
-                        const addRole: intresnsicType [] = dataRole.filter((d)=> d.name==e)
+                        const addRole: IntresnsicType [] = dataRole.filter((d)=> d.name==e)
                         console.log(addRole)
                         setEditCourse({
                             ...editCourse,
