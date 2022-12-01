@@ -1,6 +1,6 @@
 import * as React from 'react';
 import httpInstance from '../../../../utility/http-client';
-import { Layout, Button } from 'antd';
+import { Layout, Button, message } from 'antd';
 
 const { Content, Sider } = Layout;
 
@@ -30,7 +30,7 @@ export function LearningBySkill() {
 
 
   React.useEffect(() => {
-    //Api -> get Al lActive Skill Tags
+    //Api -> get AllActive Skill Tags
 
     (() => {
       setIsLoading(true);
@@ -43,8 +43,9 @@ export function LearningBySkill() {
           setIsLoading(false);
         })
         .catch((error) => {
+          setIsLoading(false);
           console.log(error.message);
-          window.alert(`${error.message}`);
+          message.error("Something went wrong, Please try after sometime");
         });
     })();
 
@@ -64,14 +65,22 @@ export function LearningBySkill() {
 
           if (response.data.length) {
             setCourseList(courseList.concat(response.data));
+          }
+
+          if (response.data.length < 10) {
+            setButtonStatus(true);
+          } else {
             setButtonStatus(false);
           }
 
           setIsLoading(false);
         })
         .catch((error) => {
+          setButtonStatus(true);
+          setIsLoading(false);
           console.log(error.message);
-          window.alert(`${error.message}`);
+          message.error("Something went wrong, Please try after sometime");
+
         });
     })();
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Row, Card, List, Divider, Button, Modal, Tag, } from 'antd';
+import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
 import { CourseList } from './course-list';
@@ -67,8 +67,9 @@ export const SkillList = (props: any) => {
                     setIsLoading(false);
                 })
                 .catch((error) => {
+                    setIsLoading(false);
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
@@ -89,10 +90,13 @@ export const SkillList = (props: any) => {
                         setSkillId(null);
                     }
                     setIsLoading(false);
+                    message.success('Skill successfully Deleted');
+
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    setIsLoading(false);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 
@@ -117,10 +121,13 @@ export const SkillList = (props: any) => {
                         setMappingStatus(!mappingStatus);
 
                     }
+                    setIsLoading(false);
+                    message.success('Course successfully Added');
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    window.alert(`${error.message}`);
+                    setIsLoading(false);
+                    message.error("Something went wrong, Please try after sometime");
                 });
         })();
 

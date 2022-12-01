@@ -3,9 +3,8 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getJourneyDetails, handleFormSubmit, handleProgramFormSubmit, onCourseSelectHandler, onSelectHandler, removeCourseHandler, removeProgramHadler } from '../../../../service/journey-service';
-import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
-import { SearchInput } from '../../../../components/search-input/search-input';
+import { handleProgramFormSubmit, onCourseSelectHandler,removeCourseHandler } from '../../../../service/journey-service';
+import { CourseMapType } from '../../../../models/journey-details';
 import { Flow } from '../../../../models/enums/flow';
 import { getProgramDetails } from '../../../../service/program-service';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
@@ -54,7 +53,6 @@ export const EditProgram = () => {
       processedCourses = [...processedCourses, {
         course: c.course.id.toString(),
         courseName: c.course.title,
-        index: index
       }]
     })
     setCourses(processedCourses)
@@ -79,7 +77,7 @@ export const EditProgram = () => {
   };
 
   const addCourse = () => {
-    setCourses([...courses, { index: courses.length, course: undefined, courseName: undefined }])
+    setCourses([...courses, { course: null, courseName: undefined }])
   }
 
   const removeCourse = (index: number) => {
@@ -173,8 +171,8 @@ export const EditProgram = () => {
                 }
               >
                 {courses
-                  .map((course: CourseMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((course: CourseMapType, index) => (
+                    <List.Item key={course.course} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
@@ -188,7 +186,7 @@ export const EditProgram = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button type='dashed'
+              <Button disabled={! (courses.filter(p => p.courseName == undefined).length == 0)} type='dashed'
                 onClick={() => { addCourse() }
                 }>
                 <PlusOutlined /> Add Course
