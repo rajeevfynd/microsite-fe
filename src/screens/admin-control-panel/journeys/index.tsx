@@ -1,11 +1,11 @@
-import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { SearchOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
-import { getJourneys, debounce } from '../../../service/journey-service';
+import { getJourneys, debounce, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 const { Text } = Typography;
 
@@ -53,6 +53,23 @@ export  const AdminJourneyList = () => {
     key = str
     debounce(searchJourneys,500)
   }
+
+  const confirm = (id: string, title: string) => {
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to delete '+title,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+          deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
+      }
+    });
+  };
+
+  const handleDelete = (id: string, title: string) => {
+    confirm(id, title)
+  }
  
   return (
     <>
@@ -60,12 +77,15 @@ export  const AdminJourneyList = () => {
     <div className='search-container'>
       <Input 
         size='large' 
-        className='search-box' 
+        className='home-card search-card search-box' 
+        style={{padding:15}}
         suffix={<SearchOutlined/>} 
+        placeholder='Search Journeys...'
+        allowClear
         onChange={(e) => {searchKey(e.target.value);} } 
     />
-    <div style={{textAlign : 'right'}}>
-        <Button onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
+    <div>
+        <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
     </div>
     </div>
     <div
@@ -95,7 +115,7 @@ export  const AdminJourneyList = () => {
                 }
                 actions={[
                   <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                  <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+                  <Button onClick={()=>handleDelete(item.id.toString(), item.title)} style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
               ]}
               >
                 <Meta

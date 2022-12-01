@@ -1,13 +1,17 @@
 .search-box{
     width: 40%;
+    margin: 15px;
 }
 .search-container{
     margin: 10px 0;
+}
+
+.search-container{
+    text-align: center;
 }
 
 #scrollableDiv{
     height: 60vh;
     overflow: auto;
     padding: 0 16px;
-    border: 1px solid rgba(140, 140, 140, 0.35);
   }
