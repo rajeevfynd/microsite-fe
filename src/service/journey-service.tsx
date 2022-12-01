@@ -170,7 +170,6 @@ export const deleteJourney = (id: string) => {
 
 export function validateJourneyPrograms(values: ProgramMapType[]) {
   let hasDuplicate = false;
-  let hasEmpty = false;
 
   if(values.length == 0) {
     message.error('Journey should be mapped with atleast one program')
@@ -178,18 +177,16 @@ export function validateJourneyPrograms(values: ProgramMapType[]) {
   }
   values.map(v => v.program).sort().sort(
     (a:string, b:string) => {
-      if( a == null || b == null) { hasEmpty = true ; return 1 }
       if (a == b) { hasDuplicate = true; return 1
     };
   }
-)
+  )
   console.log('hasDuplicate', hasDuplicate)
-  console.log('hasEmpty', hasEmpty)
   if(hasDuplicate) {
     message.error('Journey should not have duplicate programs')
     return false
   }
-  if(hasEmpty) {
+  if(!(values.filter(p => p.program == null).length == 0)) {
     message.error('Empty program field cannot be mapped to a journey')
     return false
   }
@@ -198,22 +195,19 @@ export function validateJourneyPrograms(values: ProgramMapType[]) {
 
 export function validateProgramsCourses(values: CourseMapType[]) {
   let hasDuplicate = false;
-  let hasEmpty = false;
-
   values.map(v => v.course).sort().sort(
     (a:string, b:string) => {
-      if( a == null || b == null) { hasEmpty = true ; return 1 }
       if (a == b) { hasDuplicate = true; return 1
     };
   }
-)
+  )
+  
   console.log('hasDuplicate', hasDuplicate)
-  console.log('hasEmpty', hasEmpty)
   if(hasDuplicate) {
     message.error('Program should not have duplicate courses')
     return false
   }
-  if(hasEmpty) {
+  if(!(values.filter(p => p.course == null).length == 0)) {
     message.error('Empty course field cannot be mapped to a program')
     return false
   }

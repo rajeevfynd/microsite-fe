@@ -162,6 +162,3 @@ export const NewJourney: React.FC = () => {
   </>
   );
 };
-function validateJourney(value: any) {
-  throw new Error('Function not implemented.');
-}
