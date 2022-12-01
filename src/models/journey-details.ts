@@ -33,12 +33,10 @@ export type ProgramDetailType = {
     flow?: string
 }
 export type ProgramMapType = {
-    index: number,
     program: string,
     programName: string,
 }
 export type CourseMapType = {
-    index: number,
-    course: string;
-    courseName: string;
+    course: string,
+    courseName: string
 }

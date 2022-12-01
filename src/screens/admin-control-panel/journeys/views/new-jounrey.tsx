@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney } from '../../../../service/journey-service';
+import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, validateJourneyPrograms } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Upload } from '../../../../components/upload.component';
@@ -45,7 +45,7 @@ export const NewJourney: React.FC = () => {
   };
 
   const addProgram = () => {
-    setPrograms([...programs, { index: programs.length, program: undefined, programName: undefined }])
+    setPrograms([...programs, { program: null, programName: undefined }])
   }
 
   const removeProgram = (index: number) => {
@@ -127,8 +127,8 @@ export const NewJourney: React.FC = () => {
                 }
               >
                 {programs
-                  .map((program: ProgramMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((program: ProgramMapType, index) => (
+                    <List.Item key={program.program} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -142,7 +142,7 @@ export const NewJourney: React.FC = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button type='dashed'
+              <Button disabled={! (programs.filter(p => p.programName == undefined).length == 0)} type='dashed'
                 onClick={() => { addProgram() }
                 }>
                 <PlusOutlined /> Add Program
@@ -162,6 +162,3 @@ export const NewJourney: React.FC = () => {
   </>
   );
 };
-function validateJourney(value: any) {
-  throw new Error('Function not implemented.');
-}

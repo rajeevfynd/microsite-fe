@@ -61,12 +61,15 @@ export  const AdminProgramList = () => {
     <div className='search-container'>
       <Input 
         size='large' 
-        className='search-box' 
+        className='home-card search-card search-box' 
+        style={{padding:15}}
         suffix={<SearchOutlined/>} 
+        placeholder='Search Programs...'
+        allowClear
         onChange={(e) => {searchKey(e.target.value);} } 
     />
-    <div style={{textAlign : 'right'}}>
-        <Button onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
+    <div>
+        <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
     </div>
     </div>
     <div
