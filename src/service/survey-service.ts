@@ -85,3 +85,9 @@ export function getImage(id: string) {
 export function uploadImageToserver(formDat: FormData) {
   return httpInstance.post(`/microsite/document/upload`, formDat);
 }
+
+export function getDasboardTable(surveyId: string, pageNumber: number) {
+  return httpInstance.get(
+    `/microsite/surveys/dash-board/${surveyId}?pageNumber=${pageNumber}`
+  );
+}

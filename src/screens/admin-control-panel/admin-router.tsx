@@ -37,7 +37,7 @@ export const AdminRouter = () => {
         <Route path="/new-survey" element={<NewSurvey />} />
         <Route path="/created-surveys" element={<CreatedSurvey />} />
         <Route path="/created-surveys/edit/:id" element={<NewSurvey />} />
-        <Route path="/survey/dash-board" element={<SurveyDashBoard />} />
+        <Route path="/survey/dash-board/:id" element={<SurveyDashBoard />} />
         <Route
           path="*"
           element={<Navigate replace to="/induction/*" />}

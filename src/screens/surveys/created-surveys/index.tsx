@@ -142,6 +142,10 @@ export const CreatedSurvey = () => {
       });
   }, []);
 
+  const handleSelectedUser = (Id: string) => {
+    setAssigneeId(Id);
+  };
+
   const Popup = () => {
     return (
       <>
@@ -151,29 +155,14 @@ export const CreatedSurvey = () => {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <AssigneSearch />
-
-          {/* <Form form={form} layout="vertical" name="userForm">
-            <Form.Item
-              name="AssigneeId"
-              label="Assignee Id"
-              rules={[{ required: true }]}
-            >
-              <Input
-                onChange={(e) => {
-                  setAssigneeId(e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="expire-date" label="Expire Date">
-              <DatePicker
-                onChange={(date, dateString) => {
-                  setExpireDate(dateString);
-                  console.log("Date", dateString);
-                }}
-              />
-            </Form.Item>
-          </Form> */}
+          <AssigneSearch handleSelectedUser={handleSelectedUser} />
+          <DatePicker
+            placeholder="Expire Date"
+            onChange={(date, dateString) => {
+              setExpireDate(dateString);
+              console.log("Date", dateString);
+            }}
+          />
         </Modal>
       </>
     );
