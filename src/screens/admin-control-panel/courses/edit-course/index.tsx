@@ -1,9 +1,7 @@
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Image, AutoComplete, Row, Col, message, Card, Select } from 'antd';
+import { Button, Form, Input, Image, message, Select } from 'antd';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Tagtype } from '../../../../constants/tag';
 import { getCourseById } from '../../../../service/program-service';
 import httpInstance from '../../../../utility/http-client';
 
@@ -151,7 +149,7 @@ export const EditCourse = () => {
 
             <Form.Item>
                 Description
-                <Input value={editCourse.description} onChange={(e) => {
+                <Input.TextArea value={editCourse.description} onChange={(e) => {
                     setEditCourse({
                         ...editCourse, description: e.target.value
                     })
@@ -170,16 +168,6 @@ export const EditCourse = () => {
 
             <Form.Item>
                 Programs
-                {/* <AutoComplete
-                    style={{ textAlign: "start" }}
-                    placeholder='Start Typing Program Name or Keyword...'
-                    allowClear
-                    options={search.type === "PROGRAM" ? search.options : []}
-                    value={search.type === "PROGRAM" ? search.text : ""}
-                    onChange={(e) => {
-                        setSearch({ ...search, text: e, type: "PROGRAM", hasFeedback: true })
-                    }}
-                /> */}
                 <Select
                     mode="multiple"
                     showSearch
@@ -235,18 +223,7 @@ export const EditCourse = () => {
 
             </Form.Item>
 
-            {/* {editCourse.programs ? editCourse.programs
-                .map((data, index) => <>
-                    <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.title}</h6></Col>
-                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.title, type: "PROGRAM" })} /></Col>
-                    </Row>
-                </>
-                ) : <></>
-            } */}
-
             <Form.Item
-                // hasFeedback={search.hasFeedback}
             >
                 Skills
                 <Select
@@ -358,16 +335,6 @@ export const EditCourse = () => {
                     </Select>
 
             </Form.Item>
-
-            {/* {editCourse.roles ? editCourse.roles
-                .map((data, index) => <>
-                    <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.name}</h6></Col>
-                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.name, type: Tagtype.role })} /></Col>
-                    </Row>
-                </>
-                ) : <></>
-            } */}
 
             <Form.Item>
                 Duration
