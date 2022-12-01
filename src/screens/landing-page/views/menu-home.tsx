@@ -126,7 +126,7 @@ export default function MenuHome() {
                                 </Menu.Item>
                                 <Menu.Item
                                     key='logo'
-                                    onClick={()=>navigateTo('')}>
+                                    onClick={()=>navigateTo('/download-center/logo/')}>
                                     Logo
                                 </Menu.Item>
                                 <Menu.Item

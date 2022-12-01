@@ -5,30 +5,41 @@ export type DownloadDocumentType = {
     id: number
     name: string;
     description: string;
-    department: string;
-    documentId: number;
+    department: number[];
+    document: DocumentType;
     updatedAt: string;
     docThumbnail: string
     downloadCategoryId: number
 }
 
+export type DocumentType = {
+    id : number;
+    thumbnail : string
+}
+
+export type DepartmentType = {
+    id : number;
+    department : string;
+}
+
 
 export type DownloadListPropsType = {
     title : DownloadOptions;
-    url : string; 
+    categoryId : string; 
 }
 
 
 export type AddDocumentPropsType = {
     departmentOptionsList : SelectProps['options'];
     downloadCategoryList : SelectProps['options'];
+    downloadCategoryId : string
     onFinish : any;
 }
 
 
 export type EditDocumentsPropsType = {
     departmentOptionsList : SelectProps['options'];
-    departmentList : string[]
+    departmentList : DepartmentType[];
     onFinish : any;
     documentDetails : DownloadDocumentType
 }

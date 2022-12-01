@@ -1,16 +1,19 @@
-import { Avatar, Card, Col, message, Row } from 'antd'
+import { Card, Col, message, Modal, Row, SelectProps, Space } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
-import { DownloadDocumentType } from '../../../models/download-center-type';
-import { GET_LEADERS_GALLERY_URL } from '../../../constants/urls';
+import { DownloadListPropsType, DownloadDocumentType } from '../../../models/download-center-type';
+import { getDownloadsList } from '../../../service/download-center-service';
 import httpInstance from '../../../utility/http-client';
 
-export const LeadersGallery = () => {
-    
+export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
+    const { downloadListProps} = props;
     const { Meta } = Card;
 
+    const { confirm } = Modal;
+
     const [leadersList, setLeadersList] = React.useState<DownloadDocumentType[]>()
+    const [downloadCategoryList, setDownloadCategoryList] = React.useState<SelectProps['options']>([])
 
     const handleImgClick = async (documentId : number) => {
         let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
@@ -23,20 +26,21 @@ export const LeadersGallery = () => {
     }
         `
 
-    const getLeadersList = () => {
-        const url = GET_LEADERS_GALLERY_URL
-        httpInstance.get(url)
+
+      const getDownloadsGallery = () => {
+        getDownloadsList(downloadListProps.categoryId)
             .then(response => {
-                setLeadersList(response.data.downloadDocumentsList)
-                console.log(response.data.downloadDocumentsList)
+                setLeadersList(response.data.content)
+                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);
             });
-        }
+    }
+
 
     React.useEffect(() => {
-        getLeadersList();
+        getDownloadsGallery();
     }, [])
 
 
@@ -46,24 +50,31 @@ export const LeadersGallery = () => {
             {css}
         </style>
         <Row>
-            <h3>Leaders' Gallery</h3>
+            <h3>{props.downloadListProps.title}</h3>
         </Row>
+
         <Row>
             <Content className='leaders-gallery'>
-                <Row>
+                <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
                     
                     {leadersList != undefined && leadersList.map((leader) => (
-                        <Col xs={24} xl={8} sm={24} md={12} lg={12}>
+                        <Col>
                         <Card
                             style={{ width: 300 }}
                             hoverable
                             cover={
+                                
                                 <img 
-                                onClick={() => handleImgClick(leader.documentId)} 
-                                src={`data:image/png;base64,${leader.docThumbnail}`}/>
+                                onClick={() => handleImgClick(leader.document.id)} 
+                                src={`data:image/png;base64,${leader.document.thumbnail}`}/>
                             }
                             actions={[
-                                <DownloadOutlined onClick={() => handleImgClick(leader.documentId)}></DownloadOutlined>
+                                <>
+                                    <Space size={20}>
+
+                                        <DownloadOutlined onClick={() => handleImgClick(leader.document.id)}></DownloadOutlined>
+                                    </Space>
+                                </>
                             ]}
                             >
                             <Meta

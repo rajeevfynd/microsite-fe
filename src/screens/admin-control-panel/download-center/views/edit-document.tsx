@@ -2,10 +2,9 @@ import { EditTwoTone} from "@ant-design/icons/lib/icons";
 import { Button, Col, Divider, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
-import { EDIT_DOWNLOAD_CENTER_DOCUMENT } from "../../../../constants/urls";
 import { EditDocumentsPropsType } from "../../../../models/download-center-type";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
-import httpInstance from "../../../../utility/http-client";
+import { editDocument } from "../../../../service/download-center-service";
 
 
 export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
@@ -24,10 +23,8 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
         setIsModalOpen(true);
     }
 
-    const addDocument = (values : any) => {
-        const url = EDIT_DOWNLOAD_CENTER_DOCUMENT + props.documentDetails.id
-        console.log(values)
-        httpInstance.put(url, values)
+    const editDownloadDocument = (values : any) => {
+        editDocument(props.documentDetails.id, values)
             .then(response => {
                 setIsModalOpen(false)
                 props.onFinish()
@@ -44,21 +41,18 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
         onDone(info: UploadOnDoneParams){
             form.setFieldValue("documentId" , info.documentId)
         },
-        file : props.documentDetails.docThumbnail
+        file : props.documentDetails.document.thumbnail
     };
 
 
     React.useEffect(() => {
-        form.setFieldValue("documentId", props.documentDetails.documentId)
-        console.log(props.documentDetails.downloadCategoryId)
-        form.setFieldValue("downloadCategoryId", props.documentDetails.downloadCategoryId)
+        form.setFieldValue("documentId", props.documentDetails.document.id)
     }, [])
 
     return (
         <>
 
         <EditTwoTone onClick={() => {handleAddQnaClick()}}></EditTwoTone>
-
         <Modal
             destroyOnClose={true}
             open={isModalOpen}
@@ -66,19 +60,15 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
             footer={null}
             onCancel={handleCancel}
             
-        >
+        >   
+            
             <Form
                 form={form}
                 layout="vertical"
                 name="form_in_modal"
                 initialValues={{ modifier: 'public'}}
-                onFinish={addDocument}
+                onFinish={editDownloadDocument}
                 fields={[
-
-                    {
-                        name: ['downloadCategoryId'],
-                        value: props.documentDetails.downloadCategoryId,
-                    },
 
                     {
                         name: ['name'],
@@ -91,17 +81,10 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
                     },
                     {
                         name: ['department'],
-                        value: props.documentDetails.department ? props.documentDetails.department : "",
+                        value: props.documentDetails.department && props.documentDetails.department,
                     },
                 ]}
             >   
-                <Form.Item
-                    name="downloadCategoryId"
-                    label="downloadCategoryId"
-                    rules={[{ required: true, message: 'Enter the document name' }]}
-                    hidden={true}
-                >   
-                </Form.Item>
 
                 <Form.Item
                     name="name"
@@ -124,12 +107,11 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
                     label="Department"
                 >   
                     <Select 
-                        mode="tags"
+                        mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select the Department(s)"
                         tokenSeparators={[',']}
-                        options = {props.departmentOptionsList}
-                        
+                        options={props.departmentOptionsList}
                         >
                     </Select>
                 </Form.Item>

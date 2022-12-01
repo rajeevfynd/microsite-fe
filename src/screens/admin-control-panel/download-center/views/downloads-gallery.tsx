@@ -1,15 +1,16 @@
-import { Avatar, Card, Col, message, Modal, Row, SelectProps, Space } from 'antd'
+import { Card, Col, message, Modal, Row, SelectProps, Space } from 'antd'
 import * as React from 'react'
 import {DeleteTwoTone, DownloadOutlined, ExclamationCircleFilled} from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
-import { DELETE_DOWNLOAD_CENTER_DOCUMENT, GET_DOWNLOAD_CATEGORIES_URL, GET_LEADERS_GALLERY_URL } from '../../../../constants/urls';
-import { AddDocumentPropsType, DownloadDocumentType } from '../../../../models/download-center-type';
+import { DELETE_DOWNLOAD_CENTER_DOCUMENT, GET_DOWNLOAD_CATEGORIES_URL } from '../../../../constants/urls';
+import { AddDocumentPropsType, DownloadDocumentType, DownloadListPropsType } from '../../../../models/download-center-type';
 import httpInstance from '../../../../utility/http-client';
 import { EditDownloadDocument } from './edit-document';
 import { AddDownloadDocument } from './add-document';
+import { getDownloadsList } from '../../../../service/download-center-service';
 
-export const AdminLeadersGallery = () => {
-    
+export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
+    const { downloadListProps} = props;
     const { Meta } = Card;
 
     const { confirm } = Modal;
@@ -29,13 +30,13 @@ export const AdminLeadersGallery = () => {
         `
 
     const handleSubmit = () => {
-        getLeadersList()
+        getDownloadsGallery()
     }
 
     const handleDeleteDocument = (id : number) => {
         httpInstance.put(DELETE_DOWNLOAD_CENTER_DOCUMENT + id, {})
             .then(response => {
-                getLeadersList()
+                getDownloadsGallery()
             })
             .catch((error) => {
                 message.error(error);
@@ -58,21 +59,21 @@ export const AdminLeadersGallery = () => {
         });
       };
 
-    const getLeadersList = () => {
-        const url = GET_LEADERS_GALLERY_URL
-        httpInstance.get(url)
+      const getDownloadsGallery = () => {
+        getDownloadsList(downloadListProps.categoryId)
             .then(response => {
-                setLeadersList(response.data.downloadDocumentsList)
-                console.log(response.data.downloadDocumentsList)
+                setLeadersList(response.data.content)
+                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);
             });
-        }
+    }
 
         const addDocumentProps : AddDocumentPropsType = {
             departmentOptionsList: [],
             downloadCategoryList : downloadCategoryList,
+            downloadCategoryId : downloadListProps.categoryId,
             onFinish : handleSubmit,
         }
 
@@ -92,8 +93,7 @@ export const AdminLeadersGallery = () => {
         }
 
     React.useEffect(() => {
-        getLeadersList();
-        getDownloadsCategoryList();
+        getDownloadsGallery();
     }, [])
 
 
@@ -103,33 +103,33 @@ export const AdminLeadersGallery = () => {
             {css}
         </style>
         <Row>
-            <h3>Leaders' Gallery</h3>
+            <h3>{props.downloadListProps.title}</h3>
         </Row>
-        <Row>
-            <Col span={24} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <AddDownloadDocument {...addDocumentProps}></AddDownloadDocument>
-            </Col>
-        </Row>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+            <AddDownloadDocument {...addDocumentProps}></AddDownloadDocument>
+        </div>
+
         <Row>
             <Content className='leaders-gallery'>
-                <Row>
+                <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
                     
                     {leadersList != undefined && leadersList.map((leader) => (
-                        <Col xs={24} xl={8} sm={24} md={12} lg={12}>
+                        <Col>
                         <Card
                             style={{ width: 300 }}
                             hoverable
                             cover={
                                 
                                 <img 
-                                onClick={() => handleImgClick(leader.documentId)} 
-                                src={`data:image/png;base64,${leader.docThumbnail}`}/>
+                                onClick={() => handleImgClick(leader.document.id)} 
+                                src={`data:image/png;base64,${leader.document.thumbnail}`}/>
                             }
                             actions={[
                                 <>
                                     <Space size={20}>
 
-                                        <DownloadOutlined onClick={() => handleImgClick(leader.documentId)}></DownloadOutlined>
+                                        <DownloadOutlined onClick={() => handleImgClick(leader.document.id)}></DownloadOutlined>
 
                                         <EditDownloadDocument
                                             departmentList={[]}

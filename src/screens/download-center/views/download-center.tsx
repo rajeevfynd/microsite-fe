@@ -1,15 +1,15 @@
 import * as React from "react";
-import { GET_DOWNLOAD_POLICIES_URL, GET_DOWNLOAD_TEMPLATES_URL, GET_LEADERS_GALLERY_URL, GET_NEW_EMPLOYEE_DOWNLOADS_URL } from "../../../constants/urls";
 import { DownloadListPropsType } from "../../../models/download-center-type";
 import { DownloadOptions } from "../../../models/enums/download-center-options";
+import { DownloadsGallery } from "./downloads-gallery";
 import { DownloadsList } from "./downloads-list";
 
 
-const getDownloadsList = (title : DownloadOptions, url : string) => {
+const getDownloadsList = (title : DownloadOptions, categoryId : string) => {
 
     const downloadListProps : DownloadListPropsType = {
         title : title,
-        url : url
+        categoryId : categoryId
     }
 
     return (
@@ -18,20 +18,46 @@ const getDownloadsList = (title : DownloadOptions, url : string) => {
 }
 
 
+const getDownloadsGallery = (title : DownloadOptions, categoryId : string) => {
+    const downloadListProps : DownloadListPropsType = {
+        title : title,
+        categoryId : categoryId
+    }
+
+    return (
+        <DownloadsGallery downloadListProps = {downloadListProps}/>
+    )
+}
+
+
+
 export const NewEmployeeDownloads = () => {
     return (
-        getDownloadsList(DownloadOptions.NEW_EMPLOYEE_DOWNLOADS, GET_NEW_EMPLOYEE_DOWNLOADS_URL)
+        getDownloadsList(DownloadOptions.NEW_EMPLOYEE_DOWNLOADS, process.env.DOWNLOAD_CENTER_NEW_EMPLOYEES)
     )
 }
 
 export const DownloadTemplates = () => {
     return (
-        getDownloadsList(DownloadOptions.TEMPLATES, GET_DOWNLOAD_TEMPLATES_URL)
+        getDownloadsList(DownloadOptions.TEMPLATES, process.env.DOWNLOAD_CENTER_TEMPLATES)
     )
 }
 
 export const DownloadPolicies = () => {
     return (
-        getDownloadsList(DownloadOptions.POLICIES, GET_DOWNLOAD_POLICIES_URL)
+        getDownloadsList(DownloadOptions.POLICIES, process.env.DOWNLOAD_CENTER_LEADERS_GALLERY)
+    )
+}
+
+
+export const LeadersGallery = () => {
+    return (
+        getDownloadsGallery(DownloadOptions.LEADERS_GALLERY, process.env.DOWNLOAD_CENTER_POLICIES)
+    )
+}
+
+export const DownloadsLogo = () => {
+    return (
+        getDownloadsGallery(DownloadOptions.LOGO, process.env.DOWNLOAD_CENTER_LOGO)
     )
 }

@@ -1,52 +1,71 @@
-import { CaretDownFilled, DeleteTwoTone, ExclamationCircleFilled, PlusCircleOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Space, message, Table, Button, Row, Col, Dropdown, Menu, Modal, SelectProps, MessageArgsProps, Input } from "antd";
-import Search from "antd/lib/input/Search";
+import { DeleteTwoTone, ExclamationCircleFilled } from "@ant-design/icons";
+import { Space, message, Table, Button, Modal, SelectProps, Card, Input, Select } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import * as moment from "moment";
 import * as React from "react";
-import { SearchInput } from "../../../../components/search-input/search-input";
-import { DELETE_DOWNLOAD_CENTER_DOCUMENT, GET_DOWNLOAD_CATEGORIES_URL } from "../../../../constants/urls";
-import { DownloadListPropsType, DownloadDocumentType, AddDocumentPropsType, EditDocumentsPropsType } from "../../../../models/download-center-type";
-import { debounce } from "../../../../service/program-service";
+import { GET_DOWNLOADS_DEPARTMENT_URL } from "../../../../constants/urls";
+import { DownloadListPropsType, DownloadDocumentType, AddDocumentPropsType, DepartmentType } from "../../../../models/download-center-type";
+import { deleteDocument, getDownloadsList } from "../../../../service/download-center-service";
 import httpInstance from "../../../../utility/http-client";
+import { AddDepartment } from "./add-department";
 import { AddDownloadDocument } from "./add-document";
 import { EditDownloadDocument } from "./edit-document";
+import { useVT } from "virtualizedtableforantd4";
 
 
 const { confirm } = Modal;
+const { Option } = Select;
 
 
 export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
-    const [documentsList, setDocumentsList] = React.useState<DownloadDocumentType[]>()
-    const [departmentList, setDepartmentList] = React.useState<string[]>([])
+    const [documentsList, setDocumentsList] = React.useState<DownloadDocumentType[]>([])
+    const [departmentList, setDepartmentList] = React.useState<DepartmentType[]>([])
     const [downloadCategoryList, setDownloadCategoryList] = React.useState<SelectProps['options']>([])
     const [departmentOptionsList, setDepartmentOptionslist] = React.useState<SelectProps['options']>([])
     const [load, setLoad] = React.useState(false) 
+    const [pageNumber,setPageNumber ] = React.useState<number>(0)
+    const [totalLength, setTotalLength] = React.useState<number>(0)
+    const [initialLoad, setInitialLoad] = React.useState(false);
     const [keyState, setKeyState] = React.useState('')
-    let key = ''
+    const [loading, setLoading] = React.useState(false);
+    const [department, setDepartment] = React.useState<number>(null);
+
+
     
-    const searchDownloads = () => {
+    const searchDownloads = (key : string) => {
         setKeyState(key)
+        setDepartment(null)
         if(load) { return ;}
         setLoad(false);
         getDownloads(key).then(
           response => {
-            setDocumentsList(response.data.downloadDocumentsList)
-            setDepartmentList(response.data.departmentList)
-                console.log(response.data)
+            setDocumentsList(response.data.content)
+            setPageNumber(1)
+            setTotalLength(response.data.totalElements)
           }
         )
       }
 
-      const searchKey = (str: string) =>{
-        key = str
-        debounce(searchDownloads,500)
-      }
+
+
+      const loadMoreData = () => {
+        console.log("Load MOre is called");
+        getDownloadsList(downloadListProps.categoryId, department, keyState,pageNumber.toString()).then(res => {
+            setDocumentsList([...documentsList, ...res.data.content])
+            setTotalLength(res.data.totalElements)
+            setInitialLoad(false)
+          })
+          .catch((err) => console.log(err.message));
+          setPageNumber(pageNumber + 1);
+      };
+
+
 
     function getDownloads(key:string = ''){
-        return httpInstance.get(downloadListProps.url+'/search?key='+key.toString())
+        return getDownloadsList(downloadListProps.categoryId, department, key.toString())
     }
+
 
     const downloadDocument =  async (documentId : number) => {
         let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
@@ -54,16 +73,12 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
     }
 
 
-    const css = `
-    span:hover{color:blue;
-        cursor: pointer;
+    const getDepartmentStringList = (departmentIdList : number[]) => {
+        let deptStringList : string = departmentList && departmentIdList.map(dept => (
+            departmentList.find(obj => obj.id == dept).department
+            )).join(' | ')
+        return deptStringList
     }
-    span:active {color:green}
-    .downloads-table {
-        margin-top : 50px
-    }
-        `
-
     
 
     const columns: ColumnsType<DownloadDocumentType> = [
@@ -73,7 +88,7 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
           key: 'name',
           render: (_, record) => (
             <Space size="middle">
-                <Button type="link" onClick={() => {downloadDocument(record.documentId)}}>{record.name}</Button>
+                <Button type="link" onClick={() => {downloadDocument(record.document.id)}}>{record.name}</Button>
             </Space>
           ),
         },
@@ -87,9 +102,9 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
           dataIndex: 'department',
           key: 'department',
           render: (_, record) => (
-            <Space size="middle">
-                <div >{record.department.toString().replace(",", " | ")}</div>
-            </Space>
+            <div>
+                {record.department && getDepartmentStringList(record.department)}
+            </div>
           ),
         },
         {
@@ -110,7 +125,7 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
             <Space size="middle">
                 <EditDownloadDocument  
                     departmentOptionsList={departmentOptionsList}
-                    departmentList = {departmentList} 
+                    departmentList = {departmentList}
                     onFinish={handleSubmit}
                     documentDetails = {record}
                 />
@@ -122,9 +137,10 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
 
     const handleDeleteDocument = (id : number) => {
-        httpInstance.put(DELETE_DOWNLOAD_CENTER_DOCUMENT + id, {})
+
+      deleteDocument(id)
             .then(response => {
-                getNewEmployeeDownloads(downloadListProps.url);
+              handleSubmit()
             })
             .catch((error) => {
                 message.error(error);
@@ -148,33 +164,25 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
       };
 
 
-    const handleDeptClick = (department : string) => {
-        const url = downloadListProps.url + "?department=" + department
-        getNewEmployeeDownloads(url)
+    const handleDeptClick = (departmentId:any) => {
+      console.log(departmentId)
+      setKeyState("")
+      setPageNumber(1)
+      getDownloadsList(downloadListProps.categoryId, departmentId)
+          .then(response => {
+              setDocumentsList(response.data.content)
+              setTotalLength(response.data.totalElements)
+          })
+          .catch((error) => {
+              message.error(error);
+          });
     }
 
-    const getNewEmployeeDownloads = (url : string) => {
-        httpInstance.get(url)
+    const getDepartmentList = () => {
+        httpInstance.get(GET_DOWNLOADS_DEPARTMENT_URL)
             .then(response => {
-                console.log(response.data)
-                setDocumentsList(response.data.downloadDocumentsList)
-                setDepartmentList(response.data.departmentList)
-                createDepartmentList(response.data.departmentList)
-            })
-            .catch((error: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | MessageArgsProps) => {
-                message.error(error);
-            });
-    }
-
-    const getDownloadsCategoryList = () => {
-        httpInstance.get(GET_DOWNLOAD_CATEGORIES_URL)
-            .then(response => {
-                console.log(response.data)
-                response.data.map((category: any) => downloadCategoryList.push({
-                    value: category.id,
-                    label: category.category,
-                }))
-
+                setDepartmentList(response.data)
+                createDepartmentList(response.data)
             })
             .catch((error) => {
                 message.error(error);
@@ -182,63 +190,112 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
     }
 
     const createDepartmentList = (departmentListArg: any[]) => {
-        departmentListArg.map((department: any) => departmentOptionsList.push({
-            value: department,
-            label: department,
-        }))
+      departmentListArg.map((department: any) => departmentOptionsList.push({
+          value: department.id,
+          label: department.department,
+      }))
     }
 
+  const handleAddDepartment = () => {
+      getDepartmentList()
+  }
+
     const handleSubmit = () => {
-        getNewEmployeeDownloads(downloadListProps.url)
+        setPageNumber(1)
+        getDownloadsList(downloadListProps.categoryId, department, keyState.toString()).then(res => {
+          setDocumentsList(res.data.content)
+          setTotalLength(res.data.totalElements)
+        })
+        .catch((err) => console.log(err.message));
     }
 
     const addDocumentProps : AddDocumentPropsType = {
         departmentOptionsList: departmentOptionsList,
         downloadCategoryList : downloadCategoryList,
+        downloadCategoryId : downloadListProps.categoryId,
         onFinish : handleSubmit,
     }
 
-    const departments = (
-        <Menu>
-            {departmentList != undefined && departmentList.map((department: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal) => (
-                <Menu.Item onClick={() => handleDeptClick(department.toString())}>{department}</Menu.Item>
-            ))}
-        </Menu>
+
+
+    const [vt] = useVT(
+      () => ({
+        onScroll: async ({ top, isEnd }) => {
+          if (isEnd) {
+            if(documentsList.length != totalLength){
+              console.log("VT is called");
+              console.log("pageNumber in VT ", pageNumber)
+              loadMoreData()
+            }
+          }
+        },
+        scroll: {
+          y: 500
+        },
+        debug: false
+      }),
+      [documentsList]
     );
 
+
     React.useEffect(() => {
-        getNewEmployeeDownloads(downloadListProps.url);
-        getDownloadsCategoryList();
+        getDepartmentList();
+        console.log("pageNumber initially ", pageNumber)
+        !initialLoad &&
+        getDownloadsList(downloadListProps.categoryId, department, keyState, pageNumber.toString()).then(res => {
+          setDocumentsList(res.data.content)
+          setTotalLength(res.data.totalElements)
+          setInitialLoad(true);
+        })
+        .catch((err) => console.log(err.message));
+        setPageNumber(pageNumber + 1);
+
     }, [])
       
 
     return (
         <>  
 
-        <style>
-            {css}
-        </style>
-            <h3>{downloadListProps.title}</h3>
-            <br />
-            <Row>
-                <Col span={18} >
-                    <Input 
-                        size='large' 
-                        className='search-box' 
-                        suffix={<SearchOutlined/>} 
-                        onChange={(e) => {searchKey(e.target.value);} } 
-                    />
-                </Col>
-                <Col span={3} style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <h3>{props.downloadListProps.title}</h3>
+
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                <div style={{ width: "50%", marginTop: "30px", marginBottom: "30px" }}>
+                    <Card className='home-card search-card' bodyStyle={{ padding: "12px" }}>
+                        <Input.Group compact >
+                            <Select defaultValue="Department" bordered={false} style={{ width: '20%' }} onChange={(id) =>handleDeptClick(id)}>
+                                <Option >All</Option>
+                                {departmentList && departmentList.map(department => (
+                                    <Option value={department.id}>{department.department}</Option>
+                                ))}
+                            </Select>
+                            <Input allowClear style={{ width: '80%' }} placeholder='Type in the document title you are looking for...' 
+                                bordered={false} onChange={(e) => searchDownloads(e.target.value)}/>
+                        </Input.Group>
+                    </Card>
+                </div>
+                    
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Space size={40}>
                         <AddDownloadDocument {...addDocumentProps}></AddDownloadDocument>
-                </Col>
-                <Col span={3} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <Dropdown overlay={departments}>
-                        <Button shape="round">Department <CaretDownFilled /></Button>
-                    </Dropdown>
-                </Col>
-            </Row>
-            <Table columns={columns} pagination={{ pageSize: 6}} dataSource={documentsList} className="downloads-table"/>
+                        <AddDepartment onSubmit={handleAddDepartment}></AddDepartment>
+                    </Space>
+                </div>
+
+                  <Table 
+                      columns={columns}
+                      dataSource={documentsList}
+                      style= {{padding : 20}}
+                      components={vt}
+                      pagination={false}
+                      loading={loading}
+                      scroll={{
+                          scrollToFirstRowOnChange: false,
+                          y: 450,
+                      }}
+                  />
+
         </>
     )
 

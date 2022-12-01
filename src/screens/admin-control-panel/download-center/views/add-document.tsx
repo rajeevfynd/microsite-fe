@@ -1,11 +1,9 @@
-import { PlusCircleOutlined } from "@ant-design/icons/lib/icons";
 import { Button, Col, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
-import { ADD_DOWNLOAD_CENTER_DOCUMENT } from "../../../../constants/urls";
 import { AddDocumentPropsType } from "../../../../models/download-center-type";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
-import httpInstance from "../../../../utility/http-client";
+import { addDocument } from "../../../../service/download-center-service";
 
 
 export const AddDownloadDocument = (props: AddDocumentPropsType) => {
@@ -24,10 +22,10 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
         setIsModalOpen(true);
     }
 
-    const addDocument = (values : any) => {
-        const url = ADD_DOWNLOAD_CENTER_DOCUMENT
+    const addDownloadDocument = (values : any) => {
+        values["downloadCategoryId"] = props.downloadCategoryId
         console.log(values)
-        httpInstance.post(url, values)
+        addDocument(values)
             .then(response => {
                 console.log("added")
                 setIsModalOpen(false)
@@ -48,9 +46,10 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
         file : ""
     };
 
+
     return (
         <>
-        <Button shape="round" onClick={() => {handleAddQnaClick()}}>Add Document</Button>
+        <Button type="primary" onClick={() => {handleAddQnaClick()}}>Add Document</Button>
 
         <Modal
             destroyOnClose={true}
@@ -64,7 +63,7 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                 layout="vertical"
                 name="form_in_modal"
                 initialValues={{ modifier: 'public'}}
-                onFinish={addDocument}
+                onFinish={addDownloadDocument}
                 fields={[
                     {
                         name: ['department'],
@@ -72,20 +71,6 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                     },
                 ]}
             >   
-
-                <Form.Item
-                    name="downloadCategoryId"
-                    label="Download Category"
-                    rules={[{ required: true, message: 'Please select the download category' }]}
-                >   
-                    <Select 
-                        style={{ width: '100%' }}
-                        placeholder="Select the Category"
-                        defaultActiveFirstOption = {false}
-                        options={props.downloadCategoryList}
-                        >
-                    </Select>
-                </Form.Item>
 
                 <Form.Item
                     name="name"
@@ -108,7 +93,7 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                     label="Department"
                 >   
                     <Select 
-                        mode="tags"
+                        mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select the Department(s)"
                         tokenSeparators={[',']}
