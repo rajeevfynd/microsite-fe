@@ -5,8 +5,9 @@ import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
-import { getJourneys, debounce, deleteJourney } from '../../../service/journey-service';
+import { getJourneys, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
+import { debounce } from '../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const AdminJourneyList = () => {

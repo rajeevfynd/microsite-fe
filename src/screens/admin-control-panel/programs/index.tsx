@@ -5,9 +5,10 @@ import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ProgramDetailType } from '../../../models/journey-details';
-import { debounce, deleteJourney, deleteProgram } from '../../../service/journey-service';
+import { deleteProgram } from '../../../service/program-service';
 import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
+import { debounce } from '../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const AdminProgramList = () => {
