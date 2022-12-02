@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { removeCourseHandler, handleProgramFormSubmit, onSelectHandler, removeProgramHadler, setJourney, onCourseSelectHandler } from '../../../../service/journey-service';
+import { removeCourseHandler, handleProgramFormSubmit, onCourseSelectHandler } from '../../../../service/program-service';
 import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
 import { formatBase64 } from '../../../../utility/image-utils';

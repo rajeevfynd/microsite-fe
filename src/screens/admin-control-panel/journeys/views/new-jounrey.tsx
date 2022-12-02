@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, validateJourneyPrograms } from '../../../../service/journey-service';
+import { handleFormSubmit, onSelectHandler, removeProgramHadler } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Upload } from '../../../../components/upload.component';
