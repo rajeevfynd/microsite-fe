@@ -1,11 +1,11 @@
-import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { SearchOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ProgramDetailType } from '../../../models/journey-details';
-import { debounce } from '../../../service/journey-service';
+import { debounce, deleteJourney, deleteProgram } from '../../../service/journey-service';
 import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
 const { Text } = Typography;
@@ -54,6 +54,19 @@ export  const AdminProgramList = () => {
     key = str
     debounce(searchPrograms,500)
   }
+
+  const handleDelete = (id: string, title: string) => {
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to delete '+title,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+          deleteProgram(id).then( res => { if(res.data == 'success') { searchPrograms() } }) 
+      }
+    });
+  }
  
   return (
     <>
@@ -99,7 +112,7 @@ export  const AdminProgramList = () => {
                 }
                 actions={[
                     <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                    <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
+                    <Button onClick={()=>handleDelete(item.id.toString(), item.title)} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
                 ]}
               >
                 <Meta

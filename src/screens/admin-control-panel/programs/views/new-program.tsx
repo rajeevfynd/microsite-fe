@@ -29,22 +29,24 @@ export const NewProgram: React.FC = () => {
 
   const { Option } = Select;
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(program.title != null && program.title.trim() != '') {
     handleProgramFormSubmit(program, courses, thumbnail).then(resp => {
       if (resp.data) {
         message.success('Program added successfully');
         navigate("/admin/programs");
       }
     })
+  }
+  else{
+    setProgram({
+      id: program.id,
+      title: '',
+      description: program.description,
+      sequence: program.sequence,
+      issueCertificate: program.issueCertificate
+    })
+  }
   };
 
   const addCourse = () => {
@@ -73,22 +75,19 @@ export const NewProgram: React.FC = () => {
 
       <h4>Create New Program</h4>
 
-      <div className='scroll-container'>
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-
-          <Form.Item>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
             <Form.Item>
+              Thumbnail
               <Upload
                 onDone={(info) => setThumbnail(info.documentId)}
                 onRemove={() => setThumbnail('')} />
-
             </Form.Item>
 
-          </Form.Item>
-
-          <Form.Item rules={[{ required: true }]}>
-            Title
-            <Input value={program.title} onChange={(e) => {
+            <Form.Item>
+            Title<span style={{color: 'red'}}>* { program.title != undefined && program.title.trim() == '' && <>Title Cannot be Blank</>}</span>
+            <Input value={program.title} 
+              onChange={(e) => {
               setProgram({
                 id: program.id,
                 title: e.target.value,
@@ -99,8 +98,8 @@ export const NewProgram: React.FC = () => {
             }} />
           </Form.Item>
 
-          <Form.Item >
-            Description
+          <Form.Item label='Description'>
+
             <Input.TextArea value={program.description} onChange={(e) => {
               setProgram({
                 id: program.id,
@@ -170,7 +169,7 @@ export const NewProgram: React.FC = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

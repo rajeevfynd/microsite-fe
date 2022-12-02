@@ -26,22 +26,23 @@ export const NewJourney: React.FC = () => {
 
   const { Option } = Select;
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(journey.title != null && journey.title.trim() != '') {
     handleFormSubmit(journey, programs, thumbnail, 'GENERAL').then(resp => {
       if (resp.data) {
         message.success('Journey added successfully');
         navigate("/admin/journeys");
       }
     })
+  }
+  else{
+    setJourney({
+      id: journey.id,
+      title: '',
+      description : journey.description,
+      sequence : journey.sequence
+    })
+  }
   };
 
   const addProgram = () => {
@@ -71,18 +72,18 @@ export const NewJourney: React.FC = () => {
 
       <h4>Create New Journey</h4>
 
-      <div className='scroll-container'>
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+      <div className='scroll-container' style={{width: '60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
+            Thumbnail
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { journey.title != undefined && journey.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={journey.title} onChange={(e) => {
               setJourney({
                 id: journey.id,
@@ -150,7 +151,7 @@ export const NewJourney: React.FC = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

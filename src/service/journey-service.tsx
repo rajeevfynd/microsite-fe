@@ -168,6 +168,11 @@ export const deleteJourney = (id: string) => {
   return httpInstance.delete(url);
 }
 
+export const deleteProgram = (id: string) => {
+  const url = "/microsite/lnd/programs/"+id;
+  return httpInstance.delete(url);
+}
+
 export function validateJourneyPrograms(values: ProgramMapType[]) {
   let hasDuplicate = false;
 

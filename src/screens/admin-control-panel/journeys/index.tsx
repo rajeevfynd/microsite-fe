@@ -54,7 +54,7 @@ export  const AdminJourneyList = () => {
     debounce(searchJourneys,500)
   }
 
-  const confirm = (id: string, title: string) => {
+  const handleDelete = (id: string, title: string) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
@@ -65,10 +65,6 @@ export  const AdminJourneyList = () => {
           deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
       }
     });
-  };
-
-  const handleDelete = (id: string, title: string) => {
-    confirm(id, title)
   }
  
   return (
