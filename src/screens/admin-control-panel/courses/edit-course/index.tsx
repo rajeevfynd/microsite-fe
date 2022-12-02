@@ -78,11 +78,11 @@ export const EditCourse = () => {
     const urlReg = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
 
     const onFinish = async () => {
-        if(urlReg.test(editCourse.rruDeepLink)){
+        if(!urlReg.test(editCourse.rruDeepLink)){
             message.error("Deeplink should be valid url")
             return;
         }
-        if(stringReg.test(editCourse.rruCourseId)){
+        if(!stringReg.test(editCourse.rruCourseId)){
             message.error("RRU ID must be a string")
             return;
         }
