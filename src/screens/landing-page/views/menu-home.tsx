@@ -8,12 +8,36 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined } from '@ant-design/
 
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
+import { PrimaryMenuItem } from "../../../components/menu";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
 
     return isClicked;
 }
+
+export const MenuStructure: PrimaryMenuItem[] = [
+    {
+        title: "Home",
+        key: "home"
+    },
+    {
+        title: "My Learnings",
+        key: "home"
+    },
+    {
+        title: "My Surveys",
+        key: "home"
+    },
+    {
+        title: "Downloads",
+        key: "home"
+    },
+    {
+        title: "Admin Panel",
+        key: "home"
+    }
+]
 
 export default function MenuHome() {
     const navigate = useNavigate();
