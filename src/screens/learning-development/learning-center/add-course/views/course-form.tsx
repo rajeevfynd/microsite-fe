@@ -27,7 +27,7 @@ type IntresnsicType = {
     name?: string,
 }
 
-type EditCourseRequest = {
+type CourseRequest = {
     rruCourseId?: string,
     title?: string,
     description?: string,
@@ -42,7 +42,7 @@ type EditCourseRequest = {
     roleIds?: number[]
 }
 
-type EditCourseDetail = {
+type CourseDetail = {
     rruCourseId?: string,
     title?: string,
     description?: string,
@@ -65,7 +65,7 @@ type EditCourseDetail = {
 export default function CourseForm() {
 
     const navigate = useNavigate()
-    const [editCourse, setEditCourse] = React.useState<EditCourseDetail>({skills:[], roles:[], programs:[]})
+    const [course, setCourse] = React.useState<CourseDetail>({skills:[], roles:[], programs:[]})
     const [dataSkill, setDataSkill] = React.useState<IntresnsicType[]>([])
     const [dataRole, setDataRole] = React.useState<IntresnsicType[]>([])
     const [dataProgram, setDataProgram] = React.useState<Program[]>([])
@@ -80,33 +80,33 @@ export default function CourseForm() {
 
 
     const onFinish = async () => {
-        if(!urlReg.test(editCourse.rruDeepLink)){
+        if(!urlReg.test(course.rruDeepLink)){
             message.error("Deeplink should be valid url")
             return;
         }
-        if(!stringReg.test(editCourse.rruCourseId)){
-            console.log(stringReg.test(editCourse.rruCourseId))
+        if(!stringReg.test(course.rruCourseId)){
+            console.log(stringReg.test(course.rruCourseId))
             message.error("RRU Course ID must be a string")
             return;
         }
-        const editRequestBody: EditCourseRequest = {
-            rruCourseId: editCourse.rruCourseId,
-            title: editCourse.title,
-            description: editCourse.description,
-            duration: editCourse.duration,
-            rruDeepLink: editCourse.rruDeepLink,
-            thumbnail: editCourse.thumbnail,
-            minCourseCoin: editCourse.minCourseCoin,
-            courseCoin: editCourse.courseCoin,
-            careerCoin: editCourse.careerCoin,
-            skillIds: editCourse.skillIds,
-            roleIds: editCourse.roleIds,
-            programIds: editCourse.programIds
+        const RequestBody: CourseRequest = {
+            rruCourseId: course.rruCourseId,
+            title: course.title,
+            description: course.description,
+            duration: course.duration,
+            rruDeepLink: course.rruDeepLink,
+            thumbnail: course.thumbnail,
+            minCourseCoin: course.minCourseCoin,
+            courseCoin: course.courseCoin,
+            careerCoin: course.careerCoin,
+            skillIds: course.skillIds,
+            roleIds: course.roleIds,
+            programIds: course.programIds
         }
-        console.log(editRequestBody)
-        const resp = await httpInstance.post("/microsite/course", editRequestBody);
+        console.log(RequestBody)
+        const resp = await httpInstance.post("/microsite/course", RequestBody);
         if (resp.data) {
-            message.success(`${editCourse.title} updated successfully`);
+            message.success(`${course.title} created successfully`);
             navigate(-1)
         }
     }
@@ -124,12 +124,12 @@ export default function CourseForm() {
 
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
         <h4>Create Course</h4>
-        <Form title='Edit Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+        <Form title='Create Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
             <Form.Item>
                 Title
                 <Input onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, title: e.target.value
+                    setCourse({
+                        ...course, title: e.target.value
                     })
                 }} />
 
@@ -138,8 +138,8 @@ export default function CourseForm() {
             <Form.Item>
                 RRU Course Id
                 <Input onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, rruCourseId: e.target.value
+                    setCourse({
+                        ...course, rruCourseId: e.target.value
                     })
                 }} />
             </Form.Item>
@@ -147,8 +147,8 @@ export default function CourseForm() {
             <Form.Item>
                 Description
                 <Input.TextArea onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, description: e.target.value
+                    setCourse({
+                        ...course, description: e.target.value
                     })
                 }} />
 
@@ -157,8 +157,8 @@ export default function CourseForm() {
             <Form.Item>
                 RRU Deeplink
                 <Input onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, rruDeepLink: e.target.value
+                    setCourse({
+                        ...course, rruDeepLink: e.target.value
                     })
                 }} />
             </Form.Item>
@@ -191,19 +191,19 @@ export default function CourseForm() {
                         setProgramDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
-                        const remainingPrograms = editCourse.programs.filter((selectedPrograms) => e.indexOf(selectedPrograms.title)>-1 );
-                        setEditCourse({
-                            ...editCourse,
+                        const remainingPrograms = course.programs.filter((selectedPrograms) => e.indexOf(selectedPrograms.title)>-1 );
+                        setCourse({
+                            ...course,
                             programs: remainingPrograms,
                             programIds: remainingPrograms.length ? remainingPrograms.map((program: { id: number; }) => program.id) : []
                         });
                     }}
                     onSelect={(e)=>{
                         const addProgram: Program [] = dataProgram.filter((d)=> d.title==e)
-                        setEditCourse({
-                            ...editCourse,
-                            programs: [{ id: addProgram[0].id, title: addProgram[0].title }].concat(...editCourse.programs),
-                            programIds: [addProgram[0].id].concat(...editCourse.programIds)
+                        setCourse({
+                            ...course,
+                            programs: [{ id: addProgram[0].id, title: addProgram[0].title }].concat(...course.programs),
+                            programIds: [addProgram[0].id].concat(...course.programIds)
                         });
                         setProgramDrop(false)
                     }}
@@ -243,19 +243,19 @@ export default function CourseForm() {
                         setSkillDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
-                        const remainingSkills = editCourse.skills.filter((selectedSkill) => e.indexOf(selectedSkill.name)>-1 );
-                        setEditCourse({
-                            ...editCourse,
+                        const remainingSkills = course.skills.filter((selectedSkill) => e.indexOf(selectedSkill.name)>-1 );
+                        setCourse({
+                            ...course,
                             skills: remainingSkills,
                             skillIds: remainingSkills.length ? remainingSkills.map((skill: { id: number; }) => skill.id) : []
                         });
                     }}
                     onSelect={(e)=>{
                         const addSkill: IntresnsicType [] = dataSkill.filter((d)=> d.name==e)
-                        setEditCourse({
-                            ...editCourse,
-                            skills: [{ id: addSkill[0].id, name: addSkill[0].name }].concat(...editCourse.skills),
-                            skillIds: [addSkill[0].id].concat(...editCourse.skillIds)
+                        setCourse({
+                            ...course,
+                            skills: [{ id: addSkill[0].id, name: addSkill[0].name }].concat(...course.skills),
+                            skillIds: [addSkill[0].id].concat(...course.skillIds)
                         });
                         setSkillDrop(false)
                     }}
@@ -293,19 +293,19 @@ export default function CourseForm() {
                         setRoleDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
-                        const remainingRoles = editCourse.roles.filter((selectedRole) => e.indexOf(selectedRole.name)>-1 );
-                        setEditCourse({
-                            ...editCourse,
+                        const remainingRoles = course.roles.filter((selectedRole) => e.indexOf(selectedRole.name)>-1 );
+                        setCourse({
+                            ...course,
                             roles: remainingRoles,
                             roleIds: remainingRoles.length ? remainingRoles.map((role: { id: number; }) => role.id) : []
                         });
                     }}
                     onSelect={(e)=>{
                         const addRole: IntresnsicType [] = dataRole.filter((d)=> d.name==e)
-                        setEditCourse({
-                            ...editCourse,
-                            roles: [{ id: addRole[0].id, name: addRole[0].name }].concat(...editCourse.roles),
-                            roleIds: [addRole[0].id].concat(...editCourse.roleIds)
+                        setCourse({
+                            ...course,
+                            roles: [{ id: addRole[0].id, name: addRole[0].name }].concat(...course.roles),
+                            roleIds: [addRole[0].id].concat(...course.roleIds)
                         });
                         setRoleDrop(false)
                     }}
@@ -318,8 +318,8 @@ export default function CourseForm() {
             <Form.Item>
                 Duration
                 <Input type='number' onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, duration: Number(e.target.value)
+                    setCourse({
+                        ...course, duration: Number(e.target.value)
                     })
                 }} />
 
@@ -327,8 +327,8 @@ export default function CourseForm() {
             <Form.Item>
                 Minimum Course Coin
                 <Input type='number' onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, minCourseCoin: Number(e.target.value)
+                    setCourse({
+                        ...course, minCourseCoin: Number(e.target.value)
                     })
                 }} />
 
@@ -336,8 +336,8 @@ export default function CourseForm() {
             <Form.Item>
                 Course Coin
                 <Input type='number' onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, courseCoin: Number(e.target.value)
+                    setCourse({
+                        ...course, courseCoin: Number(e.target.value)
                     })
                 }} />
 
@@ -345,8 +345,8 @@ export default function CourseForm() {
             <Form.Item>
                 Career Coin
                 <Input type='number' onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, careerCoin: Number(e.target.value)
+                    setCourse({
+                        ...course, careerCoin: Number(e.target.value)
                     })
                 }} />
             </Form.Item>
@@ -355,13 +355,13 @@ export default function CourseForm() {
                 Thumbnail
 
                 <Input onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, thumbnail: e.target.value
+                    setCourse({
+                        ...course, thumbnail: e.target.value
                     })
                 }} />
 
             </Form.Item>
-            {renderImage(editCourse.thumbnail)}
+            {renderImage(course.thumbnail)}
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Save
