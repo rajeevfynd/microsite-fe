@@ -1,9 +1,7 @@
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Image, AutoComplete, Row, Col, message, Card, Select } from 'antd';
+import { Button, Form, Input, Image, message, Select } from 'antd';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Tagtype } from '../../../../constants/tag';
 import { getCourseById } from '../../../../service/program-service';
 import httpInstance from '../../../../utility/http-client';
 
@@ -26,7 +24,7 @@ type IntresnsicType = {
 }
 
 type EditCourseRequest = {
-    rruCourseId?: number,
+    rruCourseId?: string,
     title?: string,
     description?: string,
     rruDeepLink?: string,
@@ -41,7 +39,7 @@ type EditCourseRequest = {
 }
 
 type EditCourseDetail = {
-    rruCourseId?: number,
+    rruCourseId?: string,
     title?: string,
     description?: string,
     rruDeepLink?: string,
@@ -75,8 +73,19 @@ export const EditCourse = () => {
     
     let key = ''
 
+    const stringReg = new RegExp("[a-zA-Z0-9]*");
+    // const integerReg = new RegExp("(?<!-)(?<!\d)[1-9][0-9]*");
+    const urlReg = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
 
     const onFinish = async () => {
+        if(!urlReg.test(editCourse.rruDeepLink)){
+            message.error("Deeplink should be valid url")
+            return;
+        }
+        if(!stringReg.test(editCourse.rruCourseId)){
+            message.error("RRU ID must be a string")
+            return;
+        }
         const editRequestBody: EditCourseRequest = {
             rruCourseId: editCourse.rruCourseId,
             title: editCourse.title,
@@ -144,14 +153,14 @@ export const EditCourse = () => {
                 RRU Course Id
                 <Input value={editCourse.rruCourseId} onChange={(e) => {
                     setEditCourse({
-                        ...editCourse, rruCourseId: Number(e.target.value)
+                        ...editCourse, rruCourseId: e.target.value
                     })
                 }} />
             </Form.Item>
 
             <Form.Item>
                 Description
-                <Input value={editCourse.description} onChange={(e) => {
+                <Input.TextArea value={editCourse.description} onChange={(e) => {
                     setEditCourse({
                         ...editCourse, description: e.target.value
                     })
@@ -170,25 +179,13 @@ export const EditCourse = () => {
 
             <Form.Item>
                 Programs
-                {/* <AutoComplete
-                    style={{ textAlign: "start" }}
-                    placeholder='Start Typing Program Name or Keyword...'
-                    allowClear
-                    options={search.type === "PROGRAM" ? search.options : []}
-                    value={search.type === "PROGRAM" ? search.text : ""}
-                    onChange={(e) => {
-                        setSearch({ ...search, text: e, type: "PROGRAM", hasFeedback: true })
-                    }}
-                /> */}
                 <Select
                     mode="multiple"
                     showSearch
                     onSearch={(e) => {
-                        console.log(e)
                         setProgramDrop(e!='')
                         httpInstance.get(`/microsite/lnd/programs/programs-by-title/?title=${e}`)
                             .then((response) => {
-                                console.log(response)
                                 const result = response.data || [];
                                 if (!result.length) return;
                                 let programs: any[] = []
@@ -205,7 +202,6 @@ export const EditCourse = () => {
                     placeholder='Start Typing Program Name or Keyword...'
                     open= {programDrop}
                     onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
-                        console.log(e.target.value,"blur")
                         setProgramDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
@@ -218,9 +214,7 @@ export const EditCourse = () => {
                     }}
                     value = {editCourse.programs.map((t)=>{return t.title})}
                     onSelect={(e)=>{
-                        console.log(e)
                         const addProgram: Program [] = dataProgram.filter((d)=> d.title==e)
-                        console.log(addProgram)
                         setEditCourse({
                             ...editCourse,
                             programs: [{ id: addProgram[0].id, title: addProgram[0].title }].concat(...editCourse.programs),
@@ -235,29 +229,16 @@ export const EditCourse = () => {
 
             </Form.Item>
 
-            {/* {editCourse.programs ? editCourse.programs
-                .map((data, index) => <>
-                    <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.title}</h6></Col>
-                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.title, type: "PROGRAM" })} /></Col>
-                    </Row>
-                </>
-                ) : <></>
-            } */}
-
             <Form.Item
-                // hasFeedback={search.hasFeedback}
             >
                 Skills
                 <Select
                     mode="multiple"
                     showSearch
                     onSearch={(e) => {
-                        console.log(e)
                         setSkillDrop(e!='')
                         httpInstance.get(`/microsite/tag/tags-by-name/?tagType=SKILL&name=${e}`)
                             .then((response) => {
-                                console.log(response)
                                 const result = response.data || [];
                                 if (!result.length) return;
                                 let skills: any[] = []
@@ -274,7 +255,6 @@ export const EditCourse = () => {
                     placeholder='Start Typing Skill Name or Keyword...'
                     open= {skillDrop}
                     onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
-                        console.log(e.target.value,"blur")
                         setSkillDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
@@ -287,9 +267,7 @@ export const EditCourse = () => {
                     }}
                     value = {editCourse.skills.map((t)=>{return t.name})}
                     onSelect={(e)=>{
-                        console.log(e)
                         const addSkill: IntresnsicType [] = dataSkill.filter((d)=> d.name==e)
-                        console.log(addSkill)
                         setEditCourse({
                             ...editCourse,
                             skills: [{ id: addSkill[0].id, name: addSkill[0].name }].concat(...editCourse.skills),
@@ -310,10 +288,8 @@ export const EditCourse = () => {
                     showSearch
                     onSearch={(e) => {
                         setRoleDrop(e!='')
-                        console.log(e);
                         httpInstance.get(`/microsite/tag/tags-by-name/?tagType=ROLE&name=${e}`)
                             .then((response) => {
-                                console.log(response)
                                 const result = response.data || [];
                                 if (!result.length) return;
                                 let roles: any[] = []
@@ -330,7 +306,6 @@ export const EditCourse = () => {
                     placeholder='Start Typing Role Name or Keyword...'
                     open= {roleDrop}
                     onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
-                        console.log(e.target.value,"blur")
                         setRoleDrop(e.target.value!='')
                     }}
                     onChange={(e)=>{
@@ -343,9 +318,7 @@ export const EditCourse = () => {
                     }}
                     value = {editCourse.roles.map((t)=>{return t.name})}
                     onSelect={(e)=>{
-                        console.log(e)
                         const addRole: IntresnsicType [] = dataRole.filter((d)=> d.name==e)
-                        console.log(addRole)
                         setEditCourse({
                             ...editCourse,
                             roles: [{ id: addRole[0].id, name: addRole[0].name }].concat(...editCourse.roles),
@@ -358,16 +331,6 @@ export const EditCourse = () => {
                     </Select>
 
             </Form.Item>
-
-            {/* {editCourse.roles ? editCourse.roles
-                .map((data, index) => <>
-                    <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1 / 10} style={{ textAlign: "start" }}><h6 style={{ color: "red" }}>{data.name}</h6></Col>
-                        <Col flex={9 / 10} style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: data.id, name: data.name, type: Tagtype.role })} /></Col>
-                    </Row>
-                </>
-                ) : <></>
-            } */}
 
             <Form.Item>
                 Duration
