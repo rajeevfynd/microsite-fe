@@ -7,7 +7,6 @@ import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListCol
 import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
-import { isUserAuthorized } from '../../../service/user-service';
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
@@ -109,7 +108,34 @@ export default function MenuHome() {
                                 <Menu.Item>R&R placeholder</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item icon={<People />}>Employee Engagement Center</Menu.Item>
-                            <Menu.Item icon={<Download />}>Download Center</Menu.Item>
+                            <Menu.SubMenu icon={<Download/>} title = 'Download Center'>
+                                <Menu.Item
+                                    key='new-employee-downloads'
+                                    onClick={()=>navigateTo('/download-center/new-employees/')}>
+                                    New Employee Downloads
+                                </Menu.Item>
+                                <Menu.Item
+                                    key='templates'
+                                    onClick={()=>navigateTo('/download-center/templates/')}>
+                                    Templates
+                                </Menu.Item>
+                                <Menu.Item
+                                    key='leaders-gallery'
+                                    onClick={()=>navigateTo('/download-center/leaders-gallery/')}>
+                                    Leaders' Gallery
+                                </Menu.Item>
+                                <Menu.Item
+                                    key='logo'
+                                    onClick={()=>navigateTo('/download-center/logo/')}>
+                                    Logo
+                                </Menu.Item>
+                                <Menu.Item
+                                    key='policies'
+                                    onClick={()=>navigateTo('/download-center/policies/')}>
+                                    Frequently Used Policies
+                                </Menu.Item>
+                            </Menu.SubMenu>
+
                             <Menu.Item icon={<InfoCircle />}>Information Center</Menu.Item>
                             <Menu.SubMenu title='Admin Control Panel' icon={<Gear />}>
                                 <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
@@ -119,10 +145,6 @@ export default function MenuHome() {
                                     <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
                                     <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
                                     <Menu.Item key='admin-courses' onClick={() => navigateTo('/admin/courses')}>Courses</Menu.Item>
-                                    <Menu.Item
-                                        key='addCourse'
-                                        onClick={() => navigateTo('/lnd/learning-center/addCourse')}>
-                                        Course</Menu.Item>
                                     <Menu.Item
                                         key='addSkill'
                                         onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
@@ -136,6 +158,14 @@ export default function MenuHome() {
                                     key="created-surveys"
                                     onClick={() => navigateTo("/admin/created-surveys")}
                                 >Surveys</Menu.Item>
+
+                                <Menu.SubMenu key="admin-download-center" title="Download Center">
+                                    <Menu.Item key='admin-new-emp-downloads' onClick={() => navigateTo('/admin/new-employee-downloads')}>New Employee Downloads</Menu.Item>
+                                    <Menu.Item key='admin-templates' onClick={() => navigateTo('/admin/templates')}>Templates</Menu.Item>
+                                    <Menu.Item key='admin-leaders-gallery' onClick={() => navigateTo('/admin/leaders-gallery')}>Leaders' Gallery</Menu.Item>
+                                    <Menu.Item key='admin-logo' onClick={() => navigateTo('/admin/logo')}>Logo</Menu.Item>
+                                    <Menu.Item key='admin-policies' onClick={() => navigateTo('/admin/policies')}>Frequently Used Policies</Menu.Item>
+                                </Menu.SubMenu>
                             </Menu.SubMenu>
                         </Menu>
                     </Sider>
