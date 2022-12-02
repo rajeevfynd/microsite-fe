@@ -14,6 +14,8 @@ function AnnouncementModal(props: announcementType) {
 
     const showModal = () => {
         setIsModalOpen(true);
+        if(props.description == null)
+        fetchAnnouncmentDoc(props)
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -23,18 +25,11 @@ function AnnouncementModal(props: announcementType) {
         setIsModalOpen(false);
     };
 
-    const fetchAnnouncmentDoc = React.useCallback(async (props: announcementType) => {
+    const fetchAnnouncmentDoc = async (props: announcementType) => {
         let resp = await getAnnouncementDoc(props)
         console.log(resp.data.url)
         setdoc(resp.data.url);
-    }, [])
-    // if(props){
-    //     fetchAnnouncmentDoc
-    // }
-    React.useEffect(() => {
-        fetchAnnouncmentDoc(props)
-    }, [props, fetchAnnouncmentDoc(props)])
-
+    }
     return (<>
         <div>
             <div>
