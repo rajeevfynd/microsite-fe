@@ -12,8 +12,6 @@ import { EditProgram } from './programs/views/edit-program'
 import { AdminCoursePage } from './courses'
 import NewSurvey from '../surveys/new-survey'
 import {CreatedSurvey} from '../surveys/created-surveys'
-import { EditCourse } from './courses/edit-course'
-import { AddCourse } from '../learning-development/learning-center/add-course'
 import { AdminDownloadPolicies, AdminDownloadsLogo, AdminDownloadTemplates, AdminLeadersGallery, AdminNewEmployeeDownloads} from './download-center'
 
 export const AdminRouter = () => {
@@ -29,12 +27,10 @@ export const AdminRouter = () => {
         <Route path='/programs/*' element={<AdminProgramList />}></Route>
         <Route path='/programs/new' element={<NewProgram />}></Route>
         <Route path='/programs/:id' element={<EditProgram />}></Route>
-        <Route path='/courses/*' element={<AdminCoursePage />} />
-        <Route path='/courses/:id' element={<EditCourse />} />
+        <Route path='/courses' element={<AdminCoursePage />} />
         <Route path="/new-survey" element={<NewSurvey />} />
         <Route path="/created-surveys" element={<CreatedSurvey />} />
         <Route path="/created-surveys/edit/:id" element={<NewSurvey />} />
-        <Route path='/addCourse' element={<AddCourse></AddCourse>}></Route>
         <Route path="/new-employee-downloads" element={<AdminNewEmployeeDownloads />} />
         <Route path="/templates" element={<AdminDownloadTemplates />} />
         <Route path="/leaders-gallery" element={<AdminLeadersGallery />} />

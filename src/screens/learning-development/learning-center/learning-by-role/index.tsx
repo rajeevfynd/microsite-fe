@@ -1,6 +1,6 @@
 import * as React from 'react';
 import httpInstance from '../../../../utility/http-client';
-import { Layout, Button, message } from 'antd';
+import { Layout, Button } from 'antd';
 
 const { Content, Sider } = Layout;
 
@@ -43,9 +43,8 @@ export function LearningByRole() {
           setIsLoading(false);
         })
         .catch((error) => {
-          setIsLoading(false);
           console.log(error.message);
-          message.error("Something went wrong, Please try after sometime");
+          window.alert(`${error.message}`);
         });
     })();
 
@@ -65,22 +64,14 @@ export function LearningByRole() {
 
           if (response.data.length) {
             setCourseList(courseList.concat(response.data));
-          }
-
-          if (response.data.length < 10) {
-            setButtonStatus(true);
-          } else {
             setButtonStatus(false);
           }
 
           setIsLoading(false);
         })
         .catch((error) => {
-          setButtonStatus(true);
-          setIsLoading(false);
           console.log(error.message);
-          message.error("Something went wrong, Please try after sometime");
-
+          window.alert(`${error.message}`);
         });
     })();
 

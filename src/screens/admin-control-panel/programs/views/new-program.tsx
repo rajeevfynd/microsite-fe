@@ -8,6 +8,7 @@ import { CourseMapType, ProgramMapType } from '../../../../models/journey-detail
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
 import { formatBase64 } from '../../../../utility/image-utils';
 import { Upload } from '../../../../components/upload.component';
+import { SearchInput } from '../../../../components/search-input/search-input';
 import ReactDragListView from "react-drag-listview";
 import { arrayMove } from '../../../../utility/array-utils';
 
@@ -48,7 +49,7 @@ export const NewProgram: React.FC = () => {
   };
 
   const addCourse = () => {
-    setCourses([...courses, { course: null, courseName: undefined }])
+    setCourses([...courses, { index: courses.length, course: undefined, courseName: undefined }])
   }
 
   const removeCourse = (index: number) => {
@@ -147,8 +148,8 @@ export const NewProgram: React.FC = () => {
                 }
               >
                 {courses
-                  .map((course: CourseMapType, index) => (
-                    <List.Item key={course.course} className="draggable-item">
+                  .map((course: CourseMapType, index: number) => (
+                    <List.Item key={index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
@@ -162,7 +163,7 @@ export const NewProgram: React.FC = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button disabled={! (courses.filter(p => p.courseName == undefined).length == 0)} type='dashed'
+              <Button type='dashed'
                 onClick={() => { addCourse() }
                 }>
                 <PlusOutlined /> Add Course

@@ -22,7 +22,12 @@ const today = [
         name: "Albert Einstein",
         date: new Date(),
         image: "https://images.saymedia-content.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:eco%2Cw_1200/MTc0NDM3MDU1NjIxNzY4ODM4/things-that-you-may-not-know-about-albert-einstein.jpg"
-    }
+    },
+    {
+        name: "Sridhar Swain",
+        date: new Date(),
+        image: "https://avatars.githubusercontent.com/u/20350203?v=4"
+    },
 ]
 
 export const BirthDays = () => {
@@ -32,7 +37,7 @@ export const BirthDays = () => {
             <Card className="home-card">
                 <Meta title={<div><h4>Today's Birthday</h4></div>} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography.Text disabled style={{ fontSize: "12px", width: '60%' }}>Click to wish them</Typography.Text>
+                    <Typography.Text disabled style={{ fontSize: "12px", width: '40%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >
                         <Divider />
                     </div>

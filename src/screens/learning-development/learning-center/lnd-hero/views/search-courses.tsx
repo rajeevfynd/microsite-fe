@@ -77,15 +77,13 @@ const SearchCourses = () => {
     return (
         <>
             <div className='search-container'>
-            <Input 
-                size='large' 
-                className='home-card search-card search-box' 
-                style={{padding:15}}
-                suffix={<SearchOutlined/>} 
-                placeholder='Search Courses...'
-                allowClear
-                onChange={(e) => {searchKey(e.target.value);} } 
-            />
+                <Input
+                    size='large'
+                    placeholder='Search courses'
+                    className='search-box'
+                    suffix={<SearchOutlined />}
+                    onChange={(e) => { searchKey(e.target.value); }}
+                />
             </div>
             
             {courses.length != 0 &&

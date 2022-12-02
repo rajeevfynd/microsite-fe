@@ -29,42 +29,43 @@ export function CourseList(props: { courseList: any }) {
     }
 
     return (
-        <>
-            <List
-                grid={{ gutter: 16 }}
-                dataSource={courseList}
-                renderItem={({ course }) => (<List.Item key={course.id}>
+        <List
+            grid={{ gutter: 16 }}
+            dataSource={courseList}
+            renderItem={({ course }) => (<List.Item key={course.id}>
 
-                    <CourseCard
-                        key={course.id}
-                        cardStyle={{ width: 255 }}
-                        isHoverable={true}
-                        imageStyle={{
-                            width: 255,
-                            height: 154
-                        }}
-                        imageSource={course.thumbnail}
-                        metaStyle={{ justifyContent: "center", whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-                        title={course.title}
-                        description={course.description}
-                    />
+                <CourseCard
+                    key={course.id}
+                    cardStyle={{ width: 255 }}
+                    isHoverable={true}
+                    imageStyle={{
+                        width: 255,
+                        height: 154
+                    }}
+                    imageSource={course.thumbnail}
+                    metaStyle={{ justifyContent: "center", whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    title={course.title}
+                    description={course.description}
+                />
 
 
-                    <Button type="primary" block onClick={() => handleCourseDetailsClick(course)}> View Course Details </Button>
+                <Button type="primary" block onClick={() => handleCourseDetailsClick(course)}> View Course Details </Button>
 
-                </List.Item>
-                )
-                }
-            />
-            <Modal
-                title="Course Details"
-                visible={isModalOpen}
-                footer={null}
-                onCancel={closeModel}
-                width={1000}
-                style={{ top: 100 }}>
-                <CourseDetails course={courseDetails} />
-            </Modal>
-        </>
+
+                <Modal
+                    title="Course Details"
+                    visible={isModalOpen}
+                    footer={null}
+                    onCancel={closeModel}
+                    width={1000}
+                    style={{ top: 100 }}>
+                    <CourseDetails course={courseDetails} />
+                </Modal>
+
+            </List.Item>
+            )
+            }
+        />
+
     );
 }

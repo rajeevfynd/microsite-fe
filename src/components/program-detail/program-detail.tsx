@@ -1,30 +1,13 @@
-import { Image, Row, Col, Progress, List, Modal, Button } from 'antd'
+import { Image, Row, Col, Progress, List } from 'antd'
 import * as React from 'react'
 import { ArrowRight, Clock, PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import { ProgramDetailPropsType } from '../../models/journey-details'
-import { CourseDetails } from '../course-detail/course-details'
 
 export const ProgramDetail = (props: ProgramDetailPropsType) => {
 
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [courseDetails, setCourseDetails] = React.useState({});
-    const handleCourseDetailsClick = (course: any) => {
-        setCourseDetails(course.course);
-        setIsModalOpen(true);
-    }
-
   return (
     <>
-        <Modal
-            title="Course Details"
-            visible={isModalOpen}
-            footer={null}
-            onCancel={()=>{setIsModalOpen(false)}}
-            width={1000}
-            style={{ top: 100 }}>
-        <CourseDetails course={courseDetails} />
-      </Modal>
         <div className='details'>
             <Row>
                 <Col span={7}>
@@ -74,10 +57,10 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                                     <p><Clock /> {item.course.duration} mins</p>
                                     <p>
                                         {props.details.flow == 'NON_SEQUENCE' && <>
-                                            <Button type='link' onClick={()  => handleCourseDetailsClick(item.course) }><ArrowRight/> View Details </Button>
+                                            <Link className='link' to={'/lnd/courses/'+item.course.id}><ArrowRight/> Go to course </Link>
                                         </>}
                                         {props.details.flow == 'SEQUENCE' && <>
-                                            {item.isActive && <Button type='link' onClick={()  => handleCourseDetailsClick(item) }><ArrowRight/> View Details </Button>}
+                                            {item.isActive && <Link className='link' to={'/lnd/courses/'+item.course.id}><ArrowRight/> Go to course </Link>}
                                         </>}
                                         
                                     </p>

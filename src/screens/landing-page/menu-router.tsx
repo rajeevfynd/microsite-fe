@@ -7,7 +7,7 @@ import { LND } from '../learning-development'
 import { RNR } from '../rnr'
 import Surveys from '../surveys'
 
-export const MenuRouter = (props: any) => {
+export const MenuRouter = () => {
   return (
     <>
         <Routes>

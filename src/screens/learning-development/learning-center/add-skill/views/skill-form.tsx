@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { Tagtype } from '../../../../../constants/tag';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -66,12 +66,10 @@ export const SkillForm = (props: any) => {
                         console.log(response.data)
                     }
                     handleLoading(false);
-                    message.success('Skill successfully Created');
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    handleLoading(false);
-                    message.error("Something went wrong, Please try after sometime");
+                    window.alert(`${error.message}`);
                 });
         })();
     }, [skill])

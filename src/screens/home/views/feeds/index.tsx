@@ -1,11 +1,10 @@
-import { Card, Divider, List, Avatar, Typography, Input, Spin } from "antd";
+import { Card, Divider, List, Avatar, Typography, Input } from "antd";
 import Meta from "antd/lib/card/Meta";
 import * as React from "react";
 import { ShadowSearchInput } from "../../../../components/shadow-input-text";
 import "./index.css";
 import { getUser } from "../../../../utility/user-utils";
 import { User } from "../../../../models/user";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 export const Feeds = () => {
 
@@ -19,16 +18,12 @@ export const Feeds = () => {
 
     return (
         <>
-            <InfiniteScroll
-                dataLength={10}
-                next={() => {}}
-                hasMore={false}
-                loader={<Spin size="large" />}
-                scrollThreshold="20%"
-            >
-                <div className="centered-container feed-container">
-                    <div style={{ width: "90%" }}>
-                        <Card className="home-card">
+            <div className="feed-container" style={{ height: "2000px" }}>
+                <Card className="home-card">
+                    <Meta title={<div><h4>Feeds</h4></div>} />
+                    <div className="centered-container">
+                        <ShadowSearchInput placeholder="Search/Join Community..." />
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '51px', height: '51px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -36,7 +31,7 @@ export const Feeds = () => {
                                 <Input className="text-input-post" placeholder={`What's on your mind, ${firstName}?`} />
                             </div>
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -49,7 +44,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card" >
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -63,7 +58,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -77,7 +72,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -91,7 +86,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card" style={{ width: "70%", margin: "10px" }}>
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -106,8 +101,8 @@ export const Feeds = () => {
                             Like Comment
                         </Card>
                     </div>
-                </div>
-            </InfiniteScroll>
+                </Card>
+            </div >
         </>
     )
 }

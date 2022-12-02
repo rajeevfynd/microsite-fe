@@ -1,7 +1,7 @@
-import { message } from "antd";
 import { Flow } from "../models/enums/flow";
 import { ProgressStatus } from "../models/enums/progress-status";
 import { CourseMapType, ProgramMapType, ProgramType } from "../models/journey-details";
+import { arrayMove } from "../utility/array-utils";
 import httpInstance from "../utility/http-client";
 
 let debounceTimer: any;
@@ -59,23 +59,27 @@ export const processPrograms = (programs: ProgramType[], flow: string) => {
 export const removeProgramHadler = (index: number, programs: ProgramMapType[]) => {
   let updatedPrograms = [...programs]
   updatedPrograms.splice(index, 1)
+  updatedPrograms.forEach((program, index) => {
+    program.index = index
+  })
   return [...updatedPrograms]
 }
 
 export const removeCourseHandler = (index: number, courses: CourseMapType[]) => {
   let updatedCourses = [...courses]
   updatedCourses.splice(index, 1)
+  updatedCourses.forEach((course, index) => {
+    course.index = index
+  })
   return [...updatedCourses]
 }
 
 export const onSelectHandler = (index: number, e: any, programs: ProgramMapType[]) => {
-  let updatedPrograms = [...programs];
-  let updatedProgram : ProgramMapType = {
-    programName : e.text,
-    program : e.key
-  }
+  let updatedPrograms = programs;
+  let updatedProgram = programs[index];
+  updatedProgram.programName = e.text;
+  updatedProgram.program = e.key;
   updatedPrograms.splice(index, 1, updatedProgram)
-  console.log(index,e,programs,updatedPrograms)
   return [...updatedPrograms]
 }
 
@@ -90,7 +94,6 @@ export const onCourseSelectHandler = (index: number, e: any, courses: CourseMapT
 }
 
 export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumbnail: string, category: string, id: string = null) => {
-  if(validateJourneyPrograms(programs)) {
   let mappedPrograms: any[] = programs.filter(p => p.programName != undefined)
   mappedPrograms.forEach((program, index) => {
     program.programPosition = index + 1
@@ -111,11 +114,10 @@ export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumb
       category: category,
       programs: [...mappedPrograms]
     }, id)
-  }
 }
 
 export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], thumbnail: string, id: string = null) => {
-  if(validateProgramsCourses(courses)){
+  console.log(program)
   let mappedCourses: any[] = courses.filter(p => p.courseName != undefined)
   mappedCourses.forEach((course, index) => {
     course.coursePosition = index + 1
@@ -136,7 +138,6 @@ export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], 
       issueCertificate: program.issueCertificate,
       courses: [...mappedCourses]
     }, id)
-  }
 }
 
 export const setJourney = (body: any) => {
@@ -161,55 +162,4 @@ export const updateProgram = (body: any, id: string) => {
   console.log('update', body)
   const url = "/microsite/lnd/programs/edit/" + id
   return httpInstance.post(url, body)
-}
-
-export const deleteJourney = (id: string) => {
-  const url = "/microsite/lnd/journeys/"+id;
-  return httpInstance.delete(url);
-}
-
-export function validateJourneyPrograms(values: ProgramMapType[]) {
-  let hasDuplicate = false;
-
-  if(values.length == 0) {
-    message.error('Journey should be mapped with atleast one program')
-    return false
-  }
-  values.map(v => v.program).sort().sort(
-    (a:string, b:string) => {
-      if (a == b) { hasDuplicate = true; return 1
-    };
-  }
-  )
-  console.log('hasDuplicate', hasDuplicate)
-  if(hasDuplicate) {
-    message.error('Journey should not have duplicate programs')
-    return false
-  }
-  if(!(values.filter(p => p.program == null).length == 0)) {
-    message.error('Empty program field cannot be mapped to a journey')
-    return false
-  }
-  return true
-}
-
-export function validateProgramsCourses(values: CourseMapType[]) {
-  let hasDuplicate = false;
-  values.map(v => v.course).sort().sort(
-    (a:string, b:string) => {
-      if (a == b) { hasDuplicate = true; return 1
-    };
-  }
-  )
-  
-  console.log('hasDuplicate', hasDuplicate)
-  if(hasDuplicate) {
-    message.error('Program should not have duplicate courses')
-    return false
-  }
-  if(!(values.filter(p => p.course == null).length == 0)) {
-    message.error('Empty course field cannot be mapped to a program')
-    return false
-  }
-  return true
 }

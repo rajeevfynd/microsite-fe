@@ -1,6 +1,6 @@
 "strict"
 import * as React from 'react';
-import { Col, message, Row, } from 'antd';
+import { Col, Row, } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
 import httpInstance from '../../../../../utility/http-client';
 
@@ -30,12 +30,11 @@ export const CourseList = (props: any) => {
                 .then((response) => {
 
                     handleMappingStatus(!mappingStatus);
-                    message.success('Course successfully Removed');
-
+                    
                 })
                 .catch((error) => {
                     console.log(error.message);
-                    message.error("Something went wrong, Please try after sometime");
+                    window.alert(`${error.message}`);
                 });
         })();
 

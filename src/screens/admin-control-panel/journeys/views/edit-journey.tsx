@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, validateJourneyPrograms } from '../../../../service/journey-service';
+import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
@@ -50,6 +50,7 @@ export const EditJourney = () => {
       processedPrograms = [...processedPrograms, {
         program: p.program.id.toString(),
         programName: p.program.title,
+        index: index
       }]
     })
     setPrograms(processedPrograms)
@@ -74,7 +75,7 @@ export const EditJourney = () => {
   };
 
   const addProgram = () => {
-    setPrograms([...programs, { program: null, programName: undefined }])
+    setPrograms([...programs, { index: programs.length, program: undefined, programName: undefined }])
   }
 
   const removeProgram = (index: number) => {
@@ -155,8 +156,8 @@ export const EditJourney = () => {
                 }
               >
                 {programs
-                  .map((program: ProgramMapType, index) => (
-                    <List.Item key={program.program} className="draggable-item">
+                  .map((program: ProgramMapType, index: number) => (
+                    <List.Item key={index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -170,7 +171,7 @@ export const EditJourney = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button disabled={! (programs.filter(p => p.programName == undefined).length == 0)} type='dashed'
+              <Button type='dashed'
                 onClick={() => { addProgram() }
                 }>
                 <PlusOutlined /> Add Program
@@ -190,3 +191,6 @@ export const EditJourney = () => {
   </>
   );
 };
+function validateJourney(value: any) {
+  throw new Error('Function not implemented.');
+}

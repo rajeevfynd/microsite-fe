@@ -4,7 +4,7 @@ import { HomePage } from './views'
 
 
 
-export const HomeRouter = (props: any) => {
+export const HomeRouter = () => {
   return (
     <>
         <Routes>
