@@ -1,37 +1,14 @@
 import * as React from 'react';
 import "./index.css";
 
-export declare type MenuClickEventHandler = () => void;
-
-
-type MenuItemInfo = {
-    key?: string,
+export type MenuItemProps = {
     title: string,
-    icon?: React.ReactNode;
-    src?: string,
-    navigate?: string
-}
-
-export interface MenuItemProps extends MenuItemInfo {
-    onClick?: MenuClickEventHandler
+    key?: string,
     selected?: boolean | false
 }
 
 export const MenuItem = (props: MenuItemProps) => {
     return (
-        <a className={`primary-menu-item${props.selected ? ' selected' : ""}`} onClick={() => props.onClick()}>
-            {props.icon}
-            <p className='text'>{props.title}</p>
-        </a>
-    )
-}
-
-export const SecondaryMenuItem = (props: MenuItemProps) => {
-    return (
-
-        <a className={`secondary-menu-item${props.selected ? ' selected' : ""}`} onClick={() => props.onClick()}>
-            {props.icon}
-            <p>{props.title}</p>
-        </a>
+        <h6 className={`menu-text${props.selected ? ' selected' : ""}`}>{props.title}</h6>
     )
 }
