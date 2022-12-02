@@ -33,7 +33,7 @@ const assignedCourse: EventType[] = [
 export const Events = () => {
     return (
         <>
-            <Card className="home-card" style={{height: "270px"}}>
+            <Card className="home-card">
                 <Row gutter={[8, 8]}>
                     <Col className='gutter-row' span={16}>
                         <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>

@@ -16,7 +16,13 @@ export function RoleList(props: { items: ItemType[]; handleSelectedMenuItem: any
 
 
     return (
-        <Menu theme="dark" mode="inline" selectedKeys={selectedMenuItem} items={items} onSelect={(event) => handleMenuItemSelection(event)} />
+        <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={selectedMenuItem}
+            items={items}
+            onSelect={(event) => handleMenuItemSelection(event)}
+        />
     );
 }
 
