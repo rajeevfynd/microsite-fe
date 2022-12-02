@@ -30,7 +30,6 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
 
     const handleActiveCategoryList = () => {
         let result = qnaFormProps.editQnaDetails.categoryList.map(a => a.id.toString());
-        console.log(qnaFormProps.editQnaDetails.categoryList)
         setcurrentActiveCategory(result)
     }
 
