@@ -129,13 +129,12 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
             
                 <>
                     
-                    <Content>
                     <Row justify="end" style={{ margin: 20 }}>
-                    <Pagination size="small" current={currentPage} onChange={handlePageChange} total={totalElements} />
-                </Row>
+                        <Pagination size="small" current={currentPage} onChange={handlePageChange} total={totalElements} />
+                    </Row>
 
                 
-                <Collapse activeKey={activeKey} onChange={handlePanelChange}>
+                    <Collapse activeKey={activeKey} onChange={handlePanelChange}>
                         {qnaList.map((qnaList) => (
 
                             <Panel header={qnaList.faq.question} key={qnaList.faq.id}
@@ -166,8 +165,9 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                             </Panel>
 
                         ))}
-                    </Collapse><QnaPopup qnaProps={qnaProps} />
-                    </Content>
+                    </Collapse>
+                    
+                    <QnaPopup qnaProps={qnaProps} />
                         
                 </>
             
