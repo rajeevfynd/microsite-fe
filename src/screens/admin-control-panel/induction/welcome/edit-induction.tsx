@@ -157,7 +157,7 @@ export const EditInduction = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={program.program} className="draggable-item">
+                    <List.Item key={index+program.programName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
