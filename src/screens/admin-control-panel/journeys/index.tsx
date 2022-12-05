@@ -5,8 +5,9 @@ import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../models/journey-details';
-import { getJourneys, debounce, deleteJourney } from '../../../service/journey-service';
+import { getJourneys, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
+import { debounce } from '../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const AdminJourneyList = () => {
@@ -54,7 +55,7 @@ export  const AdminJourneyList = () => {
     debounce(searchJourneys,500)
   }
 
-  const confirm = (id: string, title: string) => {
+  const handleDelete = (id: string, title: string) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
@@ -65,10 +66,6 @@ export  const AdminJourneyList = () => {
           deleteJourney(id).then( res => { if(res.data == 'success') { searchJourneys() } }) 
       }
     });
-  };
-
-  const handleDelete = (id: string, title: string) => {
-    confirm(id, title)
   }
  
   return (
