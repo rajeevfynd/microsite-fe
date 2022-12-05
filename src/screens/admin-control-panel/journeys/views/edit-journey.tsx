@@ -155,7 +155,7 @@ export const EditJourney = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index} className="draggable-item">
+                    <List.Item key={index+program.programName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput

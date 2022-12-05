@@ -1,7 +1,7 @@
 import { message } from "antd";
 import { Flow } from "../models/enums/flow";
 import { ProgressStatus } from "../models/enums/progress-status";
-import { CourseMapType, ProgramMapType, ProgramType } from "../models/journey-details";
+import { ProgramMapType, ProgramType } from "../models/journey-details";
 import httpInstance from "../utility/http-client";
 
 export function getJourneys(key: string = '', page: string = '0', size: string = '8') {
