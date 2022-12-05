@@ -147,7 +147,7 @@ export const NewProgram: React.FC = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={course.course} className="draggable-item">
+                    <List.Item key={index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
