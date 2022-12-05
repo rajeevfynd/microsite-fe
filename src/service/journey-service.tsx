@@ -4,8 +4,6 @@ import { ProgressStatus } from "../models/enums/progress-status";
 import { CourseMapType, ProgramMapType, ProgramType } from "../models/journey-details";
 import httpInstance from "../utility/http-client";
 
-let debounceTimer: any;
-
 export function getJourneys(key: string = '', page: string = '0', size: string = '8') {
   return httpInstance.get('/microsite/lnd/journeys/search?key=' + key.toString() + '&page=' + page.toString() + '&size=' + size)
 }
@@ -13,11 +11,6 @@ export function getJourneys(key: string = '', page: string = '0', size: string =
 export const getJourneyDetails = (id: string) => {
   return httpInstance.get('/microsite/lnd/journeys/details/' + id)
 }
-
-export const debounce = (callback: any, time: any) => {
-  window.clearTimeout(debounceTimer);
-  debounceTimer = window.setTimeout(callback, time);
-};
 
 export const processPrograms = (programs: ProgramType[], flow: string) => {
   if (programs && programs.length > 0) {
@@ -62,11 +55,6 @@ export const removeProgramHadler = (index: number, programs: ProgramMapType[]) =
   return [...updatedPrograms]
 }
 
-export const removeCourseHandler = (index: number, courses: CourseMapType[]) => {
-  let updatedCourses = [...courses]
-  updatedCourses.splice(index, 1)
-  return [...updatedCourses]
-}
 
 export const onSelectHandler = (index: number, e: any, programs: ProgramMapType[]) => {
   let updatedPrograms = [...programs];
@@ -77,16 +65,6 @@ export const onSelectHandler = (index: number, e: any, programs: ProgramMapType[
   updatedPrograms.splice(index, 1, updatedProgram)
   console.log(index,e,programs,updatedPrograms)
   return [...updatedPrograms]
-}
-
-export const onCourseSelectHandler = (index: number, e: any, courses: CourseMapType[]) => {
-  console.log(e)
-  let updatedCourses = courses;
-  let updatedCourse = courses[index];
-  updatedCourse.course = e.key;
-  updatedCourse.courseName = e.text;
-  updatedCourses.splice(index, 1, updatedCourse)
-  return [...updatedCourses]
 }
 
 export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumbnail: string, category: string, id: string = null) => {
@@ -114,52 +92,15 @@ export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumb
   }
 }
 
-export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], thumbnail: string, id: string = null) => {
-  if(validateProgramsCourses(courses)){
-  let mappedCourses: any[] = courses.filter(p => p.courseName != undefined)
-  mappedCourses.forEach((course, index) => {
-    course.coursePosition = index + 1
-  })
-  return id == null ? setProgram({
-    thumbnailId: thumbnail,
-    title: program.title.trim(),
-    description: program.description ? program.description.trim() : program.description,
-    flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
-    issueCertificate: program.issueCertificate,
-    courses: [...mappedCourses]
-  }) :
-    updateProgram({
-      thumbnailId: thumbnail,
-      title: program.title.trim(),
-      description: program.description ? program.description.trim() : program.description,
-      flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
-      issueCertificate: program.issueCertificate,
-      courses: [...mappedCourses]
-    }, id)
-  }
-}
-
 export const setJourney = (body: any) => {
   console.log('set', body)
   const url = "/microsite/lnd/journeys/new"
   return httpInstance.post(url, body)
 }
 
-export const setProgram = (body: any) => {
-  console.log(body)
-  const url = "/microsite/lnd/programs/new"
-  return httpInstance.post(url, body)
-}
-
 export const updateJourney = (body: any, id: string) => {
   console.log('update', body)
   const url = "/microsite/lnd/journeys/edit/" + id
-  return httpInstance.post(url, body)
-}
-
-export const updateProgram = (body: any, id: string) => {
-  console.log('update', body)
-  const url = "/microsite/lnd/programs/edit/" + id
   return httpInstance.post(url, body)
 }
 
@@ -188,27 +129,6 @@ export function validateJourneyPrograms(values: ProgramMapType[]) {
   }
   if(!(values.filter(p => p.program == null).length == 0)) {
     message.error('Empty program field cannot be mapped to a journey')
-    return false
-  }
-  return true
-}
-
-export function validateProgramsCourses(values: CourseMapType[]) {
-  let hasDuplicate = false;
-  values.map(v => v.course).sort().sort(
-    (a:string, b:string) => {
-      if (a == b) { hasDuplicate = true; return 1
-    };
-  }
-  )
-  
-  console.log('hasDuplicate', hasDuplicate)
-  if(hasDuplicate) {
-    message.error('Program should not have duplicate courses')
-    return false
-  }
-  if(!(values.filter(p => p.course == null).length == 0)) {
-    message.error('Empty course field cannot be mapped to a program')
     return false
   }
   return true

@@ -1,11 +1,10 @@
+import { message } from "antd"
 import { DOWNLOAD_URL, EDIT_CAROUSEL, GET_CAROUSEL } from "../constants/urls"
 import { carouselFormtype } from "../models/carousel-form-type"
 import { Flow } from "../models/enums/flow"
 import { ProgressStatus } from "../models/enums/progress-status"
-import { ProgramType } from "../models/journey-details"
+import { CourseMapType, ProgramType } from "../models/journey-details"
 import httpInstance from "../utility/http-client"
-
-let debounceTimer:any;
 
 export const getUserPrograms = (url: string) => {
     return httpInstance.get(url)
@@ -76,7 +75,82 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
     }
 }
 
-export const debounce = (callback:any, time:any) => {
-    window.clearTimeout(debounceTimer);
-    debounceTimer = window.setTimeout(callback, time);
-};
+export function validateProgramsCourses(values: CourseMapType[]) {
+    let hasDuplicate = false;
+    values.map(v => v.course).sort().sort(
+      (a:string, b:string) => {
+        if (a == b) { hasDuplicate = true; return 1
+      };
+    }
+    )
+    
+    console.log('hasDuplicate', hasDuplicate)
+    if(hasDuplicate) {
+      message.error('Program should not have duplicate courses')
+      return false
+    }
+    if(!(values.filter(p => p.course == null).length == 0)) {
+      message.error('Empty course field cannot be mapped to a program')
+      return false
+    }
+    return true
+  }
+
+
+  export const deleteProgram = (id: string) => {
+    const url = "/microsite/lnd/programs/"+id;
+    return httpInstance.delete(url);
+  }
+
+  export const removeCourseHandler = (index: number, courses: CourseMapType[]) => {
+    let updatedCourses = [...courses]
+    updatedCourses.splice(index, 1)
+    return [...updatedCourses]
+  }
+
+  export const onCourseSelectHandler = (index: number, e: any, courses: CourseMapType[]) => {
+    console.log(e)
+    let updatedCourses = courses;
+    let updatedCourse = courses[index];
+    updatedCourse.course = e.key;
+    updatedCourse.courseName = e.text;
+    updatedCourses.splice(index, 1, updatedCourse)
+    return [...updatedCourses]
+  }
+
+  export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], thumbnail: string, id: string = null) => {
+  if(validateProgramsCourses(courses)){
+  let mappedCourses: any[] = courses.filter(p => p.courseName != undefined)
+  mappedCourses.forEach((course, index) => {
+    course.coursePosition = index + 1
+  })
+  return id == null ? setProgram({
+    thumbnailId: thumbnail,
+    title: program.title.trim(),
+    description: program.description ? program.description.trim() : program.description,
+    flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+    issueCertificate: program.issueCertificate,
+    courses: [...mappedCourses]
+  }) :
+    updateProgram({
+      thumbnailId: thumbnail,
+      title: program.title.trim(),
+      description: program.description ? program.description.trim() : program.description,
+      flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
+      issueCertificate: program.issueCertificate,
+      courses: [...mappedCourses]
+    }, id)
+  }
+}
+
+export const setProgram = (body: any) => {
+    console.log(body)
+    const url = "/microsite/lnd/programs/new"
+    return httpInstance.post(url, body)
+  }
+
+export const updateProgram = (body: any, id: string) => {
+    console.log('update', body)
+    const url = "/microsite/lnd/programs/edit/" + id
+    return httpInstance.post(url, body)
+  }
