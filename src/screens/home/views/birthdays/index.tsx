@@ -1,5 +1,6 @@
-import { Card, Divider, List, Avatar, Typography } from "antd";
+import { Card, Divider, List, Avatar, Typography, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
+import Lottie from "lottie-react";
 import * as React from "react";
 
 const today = [
@@ -27,10 +28,27 @@ const today = [
 
 export const BirthDays = () => {
 
+    const [hbdAnimation,setHbdAnimation] = React.useState()
+    const [loop, setLoop] = React.useState<boolean|number>(1)
+
+    React.useEffect( () => {
+        fetch('https://assets6.lottiefiles.com/packages/lf20_to8oip6o.json').then( response => response.json()).then( json => {
+            setHbdAnimation(json)
+        })
+    }, [] )
+
     return (
         <>
             <Card className="home-card">
-                <Meta title={<div><h4>Today's Birthday</h4></div>} />
+                <Meta title={<div>
+                    <h4>
+                        <Row>
+                            <Col style={{paddingTop:20}}>Today's Birthday</Col>
+                            <Col span='4'>{!hbdAnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))}  animationData={hbdAnimation}/> }</Col>
+                        </Row>
+                    </h4>
+                </div>} />
+                
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Typography.Text disabled style={{ fontSize: "12px", width: '60%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >
@@ -56,4 +74,8 @@ export const BirthDays = () => {
             </Card>
         </>
     )
+}
+
+function useLottie(arg0: { animationData: undefined; loop: boolean; autoplay: boolean; onDOMLoaded: () => void; }): { View: any; animationItem: any; } {
+    throw new Error("Function not implemented.");
 }

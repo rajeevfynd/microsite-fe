@@ -1,8 +1,9 @@
-import * as React from "react";
-import { Card } from "antd";
+import { Card, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import { TopChamps } from "./views/top-champs";
 import { WeeklyChamps } from "./views/weekly-champs";
+import Lottie from "lottie-react";
+import * as React from "react";
 
 const data = {
     topChamps: [
@@ -176,12 +177,28 @@ const data = {
 
 export const LearningChamps = () => {
 
+    const [champAnimation,setChampAnimation] = React.useState()
+    const [loop, setLoop] = React.useState<boolean|number>(1)
+
+    React.useEffect( () => {
+        fetch('https://assets6.lottiefiles.com/packages/lf20_touohxv0.json').then( response => response.json()).then( json => {
+            setChampAnimation(json)
+        })
+    }, [] )
+
     return (
         <>
             <Card className="home-card">
                 <Meta title={
                     <div>
-                        <h4>Learning Champs</h4>
+                    <Row>
+                        <Col style={{paddingTop: 10}}>
+                            <h4>Learning Champs</h4>
+                        </Col>
+                        <Col>
+                        <span>{!champAnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))} style={{width:50}} animationData={champAnimation}/>}</span>
+                        </Col>
+                    </Row>
                     </div>
                 }
                 />
