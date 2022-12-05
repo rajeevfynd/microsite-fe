@@ -2,13 +2,14 @@ import Input from 'antd/lib/input';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import { CourseListType } from '../../../../../models/course-type';
-import { debounce, getCourses, getCoursesFts } from '../../../../../service/program-service';
+import { getCoursesFts } from '../../../../../service/program-service';
 import { Button, Card, Divider, List, Modal, Spin } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
 import { CourseDetails } from '../../../../../components/course-detail/course-details';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { debounce } from '../../../../../utility/debounce-utils';
 
 const SearchCourses = () => {
     const [load, setLoad] = React.useState(false)
