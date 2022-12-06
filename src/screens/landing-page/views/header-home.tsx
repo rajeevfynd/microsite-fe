@@ -1,43 +1,43 @@
-import { Col, Row } from 'antd'
+import { Avatar, Col, Row } from 'antd'
 import * as React from 'react'
 import { getDefaulProPicUrl, getSiteTitle } from '../../../service/landing-page-service'
 import './../index.css'
 import { Image } from 'antd';
 import { getUser } from '../../../utility/user-utils';
+import { TopNavigationMenu } from '../../../components/menu';
+import { MenuStructure } from './menu-home';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const HeaderHome = () => {
-  
-  const user:any = getUser()
+
+  const user: any = getUser()
   const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('')
-  React.useEffect( ()=> {
-    if(user){
+  const [lastName, setLastName] = React.useState('');
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (user) {
       setFirstName(user.firstName)
       setLastName(user.lastName)
     }
   })
-  
+
   return (
-      <>
-        <Row>
-          <Col span={3}>
-            <h1 className='header-text title'>{getSiteTitle()}</h1>
-          </Col>
-          <Col span={3} offset={16}>
-            <div className='username-container'>
-              <h6 className='header-text username'>{firstName}</h6>
-              <h6 className='header-text username'>{lastName}</h6>
-            </div>
-          </Col>
-          <Col>
-          <Image
-              className='pro-pic'
-              src=''
-              fallback={getDefaulProPicUrl()}
-            />
-          </Col>
-        </Row>
-      </>
+    <>
+      <div className='header-container'>
+        <TopNavigationMenu menu={MenuStructure(navigate)} defaultKey="home"/>
+        <div className='profile-container'>
+          {/* <div className='username-container'>
+            <h6 className='header-text username' style={{ margin: '0' }}>Welcome {firstName}!</h6>
+          </div> */}
+          <Avatar
+            className='pro-pic'
+            src='https://avatars.githubusercontent.com/u/20350203?v=4'
+            icon={getDefaulProPicUrl()}
+          />
+        </div>
+      </div>
+    </>
   )
 }
 

@@ -1,26 +1,21 @@
-import { Layout } from 'antd/lib'
+import { Anchor, Layout } from 'antd/lib'
 import { Content, Footer, Header } from 'antd/lib/layout/layout'
 import * as React from 'react'
 import { MenuRouter } from './menu-router'
-import FooterHome from './views/footer-home'
 import HeaderHome from './views/header-home'
 import MenuHome from './views/menu-home'
+import './index.css';
 
 const LandingPage = () => {
     return (
         <>
             <Layout className='body'>
-                <div className='menu'>
-                    <MenuHome></MenuHome>
-                </div>
-                <Layout>
-                    <Header className="header">
-                        <HeaderHome></HeaderHome>
-                    </Header>
-                    <Content className='content'>
-                        <MenuRouter></MenuRouter>
-                    </Content>
-                </Layout>
+                <Header className="header">
+                    <HeaderHome />
+                </Header>
+                <Content className='content'>
+                    <MenuRouter></MenuRouter>
+                </Content>
             </Layout>
         </>
     )

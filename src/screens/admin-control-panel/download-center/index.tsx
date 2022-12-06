@@ -1,3 +1,4 @@
+import { Tabs } from "antd";
 import * as React from "react";
 import { DownloadListPropsType } from "../../../models/download-center-type";
 import { DownloadOptions } from "../../../models/enums/download-center-options";
@@ -6,27 +7,27 @@ import { DownloadsList } from "./views/downloads-list";
 
 
 
-const getDownloadsList = (title : DownloadOptions, categoryId : string) => {
+const getDownloadsList = (title: DownloadOptions, categoryId: string) => {
 
-    const downloadListProps : DownloadListPropsType = {
-        title : title,
-        categoryId : categoryId
+    const downloadListProps: DownloadListPropsType = {
+        title: title,
+        categoryId: categoryId
     }
 
     return (
-        <DownloadsList downloadListProps = {downloadListProps}/>
+        <DownloadsList downloadListProps={downloadListProps} />
     )
 }
 
 
-const getDownloadsGallery = (title : DownloadOptions, categoryId : string) => {
-    const downloadListProps : DownloadListPropsType = {
-        title : title,
-        categoryId : categoryId
+const getDownloadsGallery = (title: DownloadOptions, categoryId: string) => {
+    const downloadListProps: DownloadListPropsType = {
+        title: title,
+        categoryId: categoryId
     }
 
     return (
-        <AdminDownloadsGallery downloadListProps = {downloadListProps}/>
+        <AdminDownloadsGallery downloadListProps={downloadListProps} />
     )
 }
 
@@ -60,5 +61,38 @@ export const AdminLeadersGallery = () => {
 export const AdminDownloadsLogo = () => {
     return (
         getDownloadsGallery(DownloadOptions.LOGO, process.env.DOWNLOAD_CENTER_LOGO)
+    )
+}
+
+const items = [
+    {
+        label: `New Employee`,
+        key: 'new-employee',
+        children: <AdminNewEmployeeDownloads />,
+    },
+    {
+        label: `Templates`,
+        key: 'templates',
+        children: <AdminDownloadTemplates />,
+    },{
+        label: `Policies`,
+        key: 'policies',
+        children: <AdminDownloadPolicies />,
+    },{
+        label: `Leader's Gallery`,
+        key: 'leader-gallery',
+        children: <AdminLeadersGallery />,
+    },{
+        label: `Logo`,
+        key: 'downloads-logo',
+        children: <AdminDownloadsLogo />,
+    }
+];
+
+export const DownloadTabs = () => {
+    return (
+        <div className="card-container">
+            <Tabs items={items} />
+        </div>
     )
 }
