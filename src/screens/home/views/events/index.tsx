@@ -1,68 +1,74 @@
-import { Avatar, Card, Col, Row, Typography } from 'antd';
-import Meta from 'antd/lib/card/Meta';
+import { Avatar, Button, Calendar, Card, Carousel, Col, Row, Typography } from 'antd';
+import { now } from 'moment';
 import * as React from 'react';
-import { BookHalf, ListColumns } from 'react-bootstrap-icons';
+import { LearningEvent } from '../../../../models/enums/learning-event';
 import "./index.scss";
 
-interface EventType {
-    icon: React.ReactElement<any, any> | null,
-    src?: string
-    message: string,
-    navigation?: string
-    type: "SURVEY" | "COURSE_IN_PROGRESS"
+type eventDetailsType = {
+    survey ?: {
+        name : string
+        endDate : string
+    },
+    learning ?: {
+        title : string,
+        type : LearningEvent
+    }
 }
 
-const surveys: EventType[] = [
-    {
-        src: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
-        icon: <ListColumns />,
-        message: "Survey is assigned to you",
-        type: "SURVEY"
-    }
-]
+const getEvents = () => {
+    return {
+        survey : {
+            name: 'Employee Survey',
+            endDate: '2022-12-05 11:57:23.025829'
+        },
+        learning : {
+            title: 'Higher Mathematics',
+            type: LearningEvent.COURSE,
 
-const assignedCourse: EventType[] = [
-    {
-        src: "https://prod-discovery.edx-cdn.org/media/course/image/156313d6-f892-4b08-9cee-43ea582f4dfb-7b98c686abcc.small.png",
-        icon: <BookHalf />,
-        message: "AI beginner course is in progress",
-        type: "COURSE_IN_PROGRESS"
+        }
     }
-]
+}
+
 
 export const Events = () => {
+
+    const handleLearningEvent = () => {
+        console.log('click')
+    }
+
+    const [eventDetails, setEventDetails] = React.useState<eventDetailsType>()
+
+    React.useEffect( ()=>{
+        setEventDetails(getEvents());
+    },[])
     return (
         <>
-            <Card className="home-card">
-                <Row gutter={[8, 8]}>
-                    <Col className='gutter-row' span={16}>
-                        <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar style={{ margin: 'auto', width: '51px', height: '51px' }}
-                                    src={assignedCourse[0].src}
-                                    icon={assignedCourse[0].icon}
-                                />
-                                <Typography.Text style={{ fontSize: "13px" }}>{assignedCourse[0].message}</Typography.Text>
-                            </div>
-                        </Card>
-                    </Col>
-                    <Col className='gutter-row' span={8}>
-                        <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar className='small-event'
-                                    icon={assignedCourse[0].icon}
-                                />
-                            </div>
-                        </Card>
-                        <Card hoverable className='home-card' style={{ marginTop: "5px" }} bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar className='small-event'
-                                    icon={surveys[0].icon}
-                                />
-                            </div>
-                        </Card>
-                    </Col>
-                </Row>
+            <Card className="home-card" style={{ 
+                backgroundImage: `url("https://via.placeholder.com/500")` 
+            }}>
+                {eventDetails==undefined && <div>
+                    You are all caught up
+                </div>}
+                {eventDetails!=undefined && <Carousel autoplay pauseOnHover >
+                    {
+                        eventDetails.survey != undefined && 
+                        <div >
+                            <>
+                                {eventDetails.survey.name} is still pending.
+                                <Button type='link'>Click here to complete the survey</Button>
+                            </>
+                        </div>
+                    }
+                    {  
+                        eventDetails.learning != undefined && 
+                        <div>
+                            <>
+                                {eventDetails.learning.title} is in progress. 
+                                <Button onClick={handleLearningEvent} type='link'>Click here to complete the {eventDetails.learning.type.toLowerCase()}</Button>
+                            </>
+                        </div>
+                    }
+                </Carousel>}
             </Card >
         </>
     )
