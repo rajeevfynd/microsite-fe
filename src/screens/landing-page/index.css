@@ -50,25 +50,6 @@
     align-items: center;
 }
 
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    line-height: auto;
-    height: 45px;
-    width: 100%;
-}
-
-.header-text {
-    color: #f5f5f5;
-}
-
-.username-container {
-    display: flex;
-    align-items: center;
-}
-
 .content {
     padding: 0% 5%;
     margin-top: 80px;

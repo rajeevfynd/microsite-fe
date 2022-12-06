@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Menu } from "antd/lib";
 import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
-import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { NavigateFunction, NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns, Gear } from "react-bootstrap-icons";
 import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled } from '@ant-design/icons';
@@ -24,12 +24,189 @@ import CarouselSvg from '../../../assets/svg/carousel.svg';
 import DownloadSvg from '../../../assets/svg/download.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
+import { PrimaryMenuItemProps } from "../../../components/menu";
+import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItem } from "../../../components/menu";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
 
     return isClicked;
+}
+
+export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[] => {
+    return [
+        {
+            title: "Home",
+            key: "home",
+            icon: <HomeOutlined />,
+            navigate: "/home",
+            secondaryItems: [
+                {
+                    key: "podcasts",
+                    title: "Podcasts",
+                    icon: <PodcastSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                },
+                {
+                    key: "r-samman",
+                    title: "R Samman",
+                    icon: <SammanSvg />,
+                    onClick: () => window.open('https://r-sammaan.ril.com/Pages/r-sammaan.aspx', '_blank')
+                },
+                {
+                    key: "idea-corner",
+                    title: "Idea Corner",
+                    icon: <IdeaSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                },
+                {
+                    key: "rnr-corner",
+                    title: "Rewards",
+                    icon: <RnrSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                }
+            ]
+        },
+        {
+            title: "My Learnings",
+            key: "learnings",
+            icon: <BookHalf />,
+            navigate: "/lnd/learning-center/lnd-hero",
+            secondaryItems: [
+                {
+                    key: "induction3",
+                    title: "Induction",
+                    icon: <WelcomeSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome"
+                },
+                {
+                    key: "skill",
+                    title: "Skill",
+                    icon: <SkillSvg />,
+                    navigate: "/lnd/learning-center/skill"
+                },
+                {
+                    key: "role",
+                    title: "Role",
+                    icon: <RoleSvg />,
+                    navigate: "/lnd/learning-center/role"
+                },
+                {
+                    key: "journeys",
+                    title: "Journeys",
+                    icon: <JourneySvg />,
+                    navigate: "/lnd/learning-journey"
+                }
+                
+            ]
+        },
+        {
+            title: "My Surveys",
+            key: "surveys",
+            icon: <ListColumns />,
+            navigate: "/survey/my-surveys"
+        },
+        {
+            title: "Downloads",
+            key: "downloads",
+            icon: <Download />,
+            secondaryItems: [
+                {
+                    key: "new-employee-downloads",
+                    title: "New Employee",
+                    icon: <NewEmployeeSvg />,
+                    navigate: "/download-center/new-employees"
+                },
+                {
+                    key: "policies",
+                    title: "Policies",
+                    icon: <PolicySvg />,
+                    navigate: "/download-center/policies"
+                },
+                {
+                    key: "templates",
+                    title: "Templates",
+                    icon: <TemplatesSvg />,
+                    navigate: "/download-center/templates"
+                },
+                {
+                    key: "leaders-gallery",
+                    title: "Leaders",
+                    icon: <LeaderSvg />,
+                    navigate: "/download-center/leaders-gallery"
+                },
+                {
+                    key: "logo",
+                    title: "Logo",
+                    icon: <TemplatesSvg />,
+                    navigate: "/download-center/logo"
+                },
+            ]
+        },
+        {
+            title: "Admin Panel",
+            key: "admin_panel",
+            icon: <Gear />,
+            secondaryItems: [
+                {
+                    key: "admin-induction",
+                    title: "Induction",
+                    icon: <WelcomeSvg />,
+                    navigate: "/admin/induction"
+                },
+                {
+                    key: "admin-carousel",
+                    title: "Carousel",
+                    icon: <CarouselSvg />,
+                    navigate: "/admin/edit-carousel"
+                },
+                {
+                    key: "admin-programs",
+                    title: "Programs",
+                    icon: <ProgramSvg />,
+                    navigate: "/admin/programs"
+                },
+                {
+                    key: "admin-journeys",
+                    title: "Journeys",
+                    icon: <JourneySvg />,
+                    navigate: "/admin/journeys"
+                },
+                {
+                    key: "admin-courses",
+                    title: "Courses",
+                    icon: <CourseSvg />,
+                    navigate: "/admin/courses"
+                },
+                {
+                    key: "add-skill",
+                    title: "Skills",
+                    icon: <SkillSvg />,
+                    navigate: "/lnd/learning-center/addSkill"
+                },
+                {
+                    key: "add-role",
+                    title: "Roles",
+                    icon: <RoleSvg />,
+                    navigate: "/lnd/learning-center/addRole"
+                },
+                {
+                    key: "created-surveys",
+                    title: "Surveys",
+                    icon: <SurveySvg />,
+                    navigate: "/admin/created-surveys"
+                },
+                {
+                    key: "admin-downloads",
+                    title: "Downloads",
+                    icon: <DownloadSvg />,
+                    navigate: "/admin/downloads"
+                }
+
+            ]
+        }
+    ]
 }
 
 export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[] => {
