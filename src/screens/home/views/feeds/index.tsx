@@ -26,7 +26,7 @@ export const Feeds = () => {
                 loader={<Spin size="large" />}
                 scrollThreshold="20%"
             >
-                <div className="centered-container feed-container">
+                <div className="centered-container">
                     <div style={{ width: "90%" }}>
                         <Card className="home-card">
                             <div style={{ display: "flex" }}>
