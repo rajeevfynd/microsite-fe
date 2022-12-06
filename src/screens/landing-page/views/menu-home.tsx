@@ -195,6 +195,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     icon: <SurveySvg />,
                     navigate: "/admin/created-surveys"
                 },
+                {
+                    key: "admin-downloads",
+                    title: "Downloads",
+                    icon: <DownloadSvg />,
+                    navigate: "/admin/downloads"
+                }
 
             ]
         }
