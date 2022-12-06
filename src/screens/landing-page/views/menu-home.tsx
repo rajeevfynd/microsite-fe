@@ -88,7 +88,14 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Role",
                     icon: <RoleSvg />,
                     navigate: "/lnd/learning-center/role"
+                },
+                {
+                    key: "journeys",
+                    title: "Journeys",
+                    icon: <JourneySvg />,
+                    navigate: "/lnd/learning-journey"
                 }
+                
             ]
         },
         {
@@ -131,7 +138,7 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Logo",
                     icon: <TemplatesSvg />,
                     navigate: "/download-center/logo"
-                }
+                },
             ]
         },
         {
