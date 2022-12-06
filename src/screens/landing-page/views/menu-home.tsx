@@ -21,6 +21,7 @@ import TemplatesSvg from '../../../img/templates.svg';
 import PolicySvg from '../../../img/policy.svg';
 import LeaderSvg from '../../../img/leader.svg';
 import CarouselSvg from '../../../img/carousel.svg';
+import DownloadSvg from '../../../img/download.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
@@ -194,6 +195,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     icon: <SurveySvg />,
                     navigate: "/admin/created-surveys"
                 },
+                {
+                    key: "admin-downloads",
+                    title: "Downloads",
+                    icon: <DownloadSvg />,
+                    navigate: "/admin/downloads"
+                }
 
             ]
         }
