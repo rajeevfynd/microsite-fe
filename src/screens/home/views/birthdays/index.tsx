@@ -30,7 +30,7 @@ export const BirthDays = () => {
     return (
         <>
             <Card className="home-card">
-                <Meta title={<div><h4>Today's Birthday</h4></div>} />
+                <Meta title={<div><h4>Today's Birthday <video width="30" height="30" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8701/8701216.mp4" autoPlay loop={true} muted={true} playsInline></video></h4></div>} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Typography.Text disabled style={{ fontSize: "12px", width: '60%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >

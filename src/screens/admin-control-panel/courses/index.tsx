@@ -9,6 +9,8 @@ import { getCourses } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
 import './index.css';
 
+const FALLBACK_IMAGE = "https://static.vecteezy.com/system/resources/previews/005/048/106/original/black-and-yellow-grunge-modern-thumbnail-background-free-vector.jpg";
+
 export const AdminCoursePage = () => {
 
     const [load, setLoad] = React.useState(false)
@@ -76,7 +78,7 @@ export const AdminCoursePage = () => {
                         scrollableTarget="scrollableDiv"
                     >
                     <List
-                        grid={{ gutter: 1, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
+                        grid={{  xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
                         style={{ padding: "1%" }}
                         dataSource={courses}
                         renderItem={item => (
@@ -89,7 +91,15 @@ export const AdminCoursePage = () => {
                                     }}
                                     cover={
                                         <img
+                                        style={{
+                                            width: 340,
+                                            height: 190
+                                        }}
                                             src={item.thumbnail}
+                                            onError={ (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                                                event.currentTarget.src = FALLBACK_IMAGE;
+                                                event.currentTarget.className = "error";
+                                              }}
                                         />
                                     }
                                 >
