@@ -27,24 +27,18 @@ const today = [
 ]
 
 export const BirthDays = () => {
-
-    const [hbdAnimation,setHbdAnimation] = React.useState()
-    const [loop, setLoop] = React.useState<boolean|number>(1)
-
-    React.useEffect( () => {
-        fetch('https://assets6.lottiefiles.com/packages/lf20_to8oip6o.json').then( response => response.json()).then( json => {
-            setHbdAnimation(json)
-        })
-    }, [] )
-
     return (
         <>
             <Card className="home-card">
-                <Meta title={<div>
+            <Meta title={<div style={{ paddingBottom: '10px' }}>
                     <h4>
                         <Row>
-                            <Col style={{paddingTop:20}}>Today's Birthday</Col>
-                            <Col span='4'>{!hbdAnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))}  animationData={hbdAnimation}/> }</Col>
+                            <Col style={{marginTop: '10px'}}>
+                                Today's Birthday
+                            </Col>
+                            <Col>
+                                <video width="40" height="40" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8701/8701216.mp4" autoPlay loop muted playsInline />
+                            </Col>
                         </Row>
                     </h4>
                 </div>} />

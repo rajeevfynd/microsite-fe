@@ -10,34 +10,29 @@ import './index.css'
 
 export const Announcement = () => {
     const [announcements, setAnnouncements] = React.useState<announcementType[]>([])
-    const [announcementAnnimation,setAnnouncementAnimation] = React.useState()
     const fetchAnncouncement = React.useCallback(async () => {
         let response = await getAnnouncement();
         const announcement_list: announcementType[] = response.data
         setAnnouncements(announcement_list)
     }, [])
-    const [loop, setLoop] = React.useState<boolean|number>(1)
     React.useEffect(() => {
         fetchAnncouncement()
     }, [fetchAnncouncement])
 
-    React.useEffect( () => {
-        fetch('https://assets8.lottiefiles.com/private_files/lf30_ogsgtes0.json').then( response => response.json()).then( json => {
-            setAnnouncementAnimation(json)
-        })
-    }, [] )
-
     return (<>
         <Card className="home-card">
-            <Meta title={<div style={{ paddingBottom: '10px' }}>
-            <Row>
-                <Col style={{ paddingTop: 5}}>
-                <h4>Announcements & News</h4>
-                </Col>
-                <Col>
-                    <span>{!announcementAnnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))} style={{height:32}} animationData={announcementAnnimation}/>}</span>
-                </Col> 
-            </Row></div>} />
+        <Meta title={<div style={{ paddingBottom: '10px' }}>
+                    <h4>
+                        <Row>
+                            <Col style={{marginTop: '10px'}}>
+                                Announcements & News
+                            </Col>
+                            <Col>
+                                <video width="40" height="40" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/9121/9121628.mp4" autoPlay loop muted playsInline />
+                            </Col>
+                        </Row>
+                    </h4>
+                </div>} />
             <div className="microsoft announcement-container">
                 <body className="marquee">
                     {announcements.map(({ title, description, documentId, createdAt }) => (<AnnouncementModal{...{ title, description, documentId, createdAt }}></AnnouncementModal>))}

@@ -177,31 +177,21 @@ const data = {
 
 export const LearningChamps = () => {
 
-    const [champAnimation,setChampAnimation] = React.useState()
-    const [loop, setLoop] = React.useState<boolean|number>(1)
-
-    React.useEffect( () => {
-        fetch('https://assets6.lottiefiles.com/packages/lf20_touohxv0.json').then( response => response.json()).then( json => {
-            setChampAnimation(json)
-        })
-    }, [] )
-
     return (
         <>
             <Card className="home-card">
-                <Meta title={
-                    <div>
-                    <Row>
-                        <Col style={{paddingTop: 10}}>
-                            <h4>Learning Champs</h4>
-                        </Col>
-                        <Col>
-                        <span>{!champAnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))} style={{width:50}} animationData={champAnimation}/>}</span>
-                        </Col>
-                    </Row>
-                    </div>
-                }
-                />
+                <Meta title={<div style={{ paddingBottom: '10px' }}>
+                    <h4>
+                        <Row>
+                            <Col style={{marginTop: '10px'}}>
+                                Learning Champs
+                            </Col>
+                            <Col>
+                                <video width="40" height="40" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8617/8617237.mp4" autoPlay loop muted playsInline />
+                            </Col>
+                        </Row>
+                    </h4>
+                </div>} />
 
                 <TopChamps data={data.topChamps} />
 
