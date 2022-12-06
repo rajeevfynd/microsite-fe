@@ -50,7 +50,9 @@ export const Events = () => {
                             <h6 style={{color: 'white'}}>
                                 Employee survey is still pending
                             </h6>
-                            <Button onClick={handleLearningEvent} type='default' className='event-link'>Go to survey </Button>
+                            <Button onClick={handleLearningEvent} type='default' className='event-link'>
+                                Go to survey 
+                            </Button>
                         </Card>
                     }
                     {  
