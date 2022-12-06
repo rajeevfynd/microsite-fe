@@ -22,7 +22,7 @@ export const Announcement = () => {
     }, [fetchAnncouncement])
 
     React.useEffect( () => {
-        fetch('https://assets5.lottiefiles.com/packages/lf20_nl6qadub.json').then( response => response.json()).then( json => {
+        fetch('https://assets8.lottiefiles.com/private_files/lf30_ogsgtes0.json').then( response => response.json()).then( json => {
             setAnnouncementAnimation(json)
         })
     }, [] )
@@ -35,7 +35,7 @@ export const Announcement = () => {
                 <h4>Announcements & News</h4>
                 </Col>
                 <Col>
-                    <span>{!announcementAnnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))} style={{width:35}} animationData={announcementAnnimation}/>}</span>
+                    <span>{!announcementAnnimation ? null : <Lottie onClick={()=>{setLoop(1)}} loop={loop} onLoopComplete = { ()=> (setLoop(false))} style={{height:32}} animationData={announcementAnnimation}/>}</span>
                 </Col> 
             </Row></div>} />
             <div className="microsoft announcement-container">
