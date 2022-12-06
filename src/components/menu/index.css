@@ -5,6 +5,14 @@
     align-items: center;
     width: 50%;
     height: 100%;
+    border-bottom-style: solid;
+    border-image: 
+    linear-gradient(
+      to right, 
+      rgba(0, 0, 0, 0),
+      aqua, 
+      rgba(0, 0, 0, 0)
+    ) 100% 1;
 }
 
 .primary-menu-item {

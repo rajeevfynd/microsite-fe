@@ -1,74 +1,75 @@
-import { Avatar, Button, Calendar, Card, Carousel, Col, Row, Typography } from 'antd';
-import { now } from 'moment';
+import { Avatar, Button, Card, Carousel, Col, Row } from 'antd';
+import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
+import { ArrowRight } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import { LearningEvent } from '../../../../models/enums/learning-event';
+import { getLearningEvents } from '../../../../service/event-service';
 import "./index.scss";
 
-type eventDetailsType = {
-    survey ?: {
-        name : string
-        endDate : string
-    },
-    learning ?: {
-        title : string,
-        type : LearningEvent
-    }
+type LearningEventType = {
+    id : number,
+    title : string,
+    thumbnailLink : string,
+    type : LearningEvent
 }
 
-const getEvents = () => {
-    return {
-        survey : {
-            name: 'Employee Survey',
-            endDate: '2022-12-05 11:57:23.025829'
-        },
-        learning : {
-            title: 'Higher Mathematics',
-            type: LearningEvent.COURSE,
-
-        }
-    }
+type SurveyEventType = {
+    title : string
 }
 
 
 export const Events = () => {
 
+    const navigate = useNavigate()
+
     const handleLearningEvent = () => {
-        console.log('click')
+       if(learningEvent.type == LearningEvent.JOURNEY){
+        navigate('/lnd/learning-journey/'+learningEvent.id)
+       }
+       else if(learningEvent.type == LearningEvent.PROGRAM){
+        navigate('/lnd/programs/'+learningEvent.id)
+       }
     }
 
-    const [eventDetails, setEventDetails] = React.useState<eventDetailsType>()
+    const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
+    const [surveyEvent, setSurveyEvent] = React.useState<SurveyEventType>()
 
     React.useEffect( ()=>{
-        setEventDetails(getEvents());
+        getLearningEvents().then( res=> {
+            setLearningEvent(res.data)
+        })
     },[])
     return (
         <>
-            <Card className="home-card" style={{ 
-                backgroundImage: `url("https://via.placeholder.com/500")` 
-            }}>
-                {eventDetails==undefined && <div>
-                    You are all caught up
-                </div>}
-                {eventDetails!=undefined && <Carousel autoplay pauseOnHover >
+            <Card className="home-card" style={{padding:0}}>
+                <Carousel autoplay pauseOnHover effect='fade'>
                     {
-                        eventDetails.survey != undefined && 
-                        <div >
-                            <>
-                                {eventDetails.survey.name} is still pending.
-                                <Button type='link'>Click here to complete the survey</Button>
-                            </>
-                        </div>
+                        <Card
+                            className='event-carousel background-yellow'>
+                            <h6 style={{color: 'white'}}>
+                                Employee survey is still pending
+                            </h6>
+                            <Button onClick={handleLearningEvent} type='default' className='event-link'>Go to survey </Button>
+                        </Card>
                     }
                     {  
-                        eventDetails.learning != undefined && 
-                        <div>
-                            <>
-                                {eventDetails.learning.title} is in progress. 
-                                <Button onClick={handleLearningEvent} type='link'>Click here to complete the {eventDetails.learning.type.toLowerCase()}</Button>
-                            </>
-                        </div>
+                        learningEvent != undefined && 
+                        <Card
+                            className='event-carousel background-blue'
+                        >
+                            <h6 style={{color: 'white'}}>Continue learning "{learningEvent.title}"</h6>
+                            <Button onClick={handleLearningEvent} type='default' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
+                        </Card>
                     }
-                </Carousel>}
+                    {   
+                        <Card
+                            className='event-carousel background-green'>
+                            <h6 style={{color: 'white'}}>You are all caught up!</h6>
+                            <Button onClick={()=>{navigate('/lnd/learning-center/lnd-hero')}} type='default' className='event-link'>Go to Learning Center </Button>
+                        </Card>
+                    }
+                </Carousel>
             </Card >
         </>
     )
