@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card } from "antd";
+import { Card, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import { TopChamps } from "./views/top-champs";
 import { WeeklyChamps } from "./views/weekly-champs";
@@ -179,12 +179,18 @@ export const LearningChamps = () => {
     return (
         <>
             <Card className="home-card">
-                <Meta title={
-                    <div>
-                        <h4>Learning Champs</h4>
-                    </div>
-                }
-                />
+                <Meta title={<div style={{ paddingBottom: '10px' }}>
+                    <h4>
+                        <Row>
+                            <Col style={{marginTop: '10px'}}>
+                                Learning Champs
+                            </Col>
+                            <Col>
+                                <video width="40" height="40" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8617/8617237.mp4" autoPlay loop muted playsInline />
+                            </Col>
+                        </Row>
+                    </h4>
+                </div>} />
 
                 <TopChamps data={data.topChamps} />
 
