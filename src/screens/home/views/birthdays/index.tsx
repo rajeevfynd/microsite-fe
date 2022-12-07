@@ -1,4 +1,4 @@
-import { Card, Divider, List, Avatar, Typography } from "antd";
+import { Card, Divider, List, Avatar, Typography, Col, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import * as React from "react";
 
@@ -30,7 +30,18 @@ export const BirthDays = () => {
     return (
         <>
             <Card className="home-card">
-                <Meta title={<div><h4>Today's Birthday</h4></div>} />
+            <Meta title={<div style={{ paddingBottom: '10px' }}>
+                    <h4>
+                        <Row>
+                            <Col style={{marginTop: '10px'}}>
+                                Today's Birthday
+                            </Col>
+                            <Col>
+                                <video width="40" height="40" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8701/8701216.mp4" autoPlay loop muted playsInline />
+                            </Col>
+                        </Row>
+                    </h4>
+                </div>} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Typography.Text disabled style={{ fontSize: "12px", width: '60%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >
