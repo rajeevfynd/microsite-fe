@@ -45,7 +45,7 @@ export const Upload = (props: UploadProps) => {
 
 
     return (
-        <AntUpload listType="picture-card" {...prop} maxCount={1} fileList={fileList}>
+        <AntUpload disabled = {props.disable} listType="picture-card" {...prop} maxCount={1} fileList={fileList}>
             {
                 fileList.length > 0
                     ? null

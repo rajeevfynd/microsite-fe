@@ -1,4 +1,4 @@
-import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ANNOUNCEMENT } from "../constants/urls"
+import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ANNOUNCEMENT, GET_BIRTHDAYS } from "../constants/urls"
 import { announcementType } from "../models/announcementType";
 import httpInstance from "../utility/http-client"
 
@@ -18,4 +18,7 @@ export const addAnnouncement = (body: any) => {
 }
 export const deleteAnnouncementService = (id: any) => {
     return httpInstance.delete(ADD_ANNOUNCEMENT+id)
+}
+export const getBirthdaysService = ()=>{
+    return httpInstance.get(GET_BIRTHDAYS);
 }

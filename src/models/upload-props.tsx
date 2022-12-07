@@ -9,6 +9,7 @@ export interface UploadonRemoveParams {
 
 export type UploadProps = {
     onRemove?: (info: UploadonRemoveParams) => void,
-    onDone?: (info: UploadOnDoneParams) => void;
-    file?: string
+    onDone?: (info: UploadOnDoneParams) => void,
+    file?: string,
+    disable?: boolean
 }

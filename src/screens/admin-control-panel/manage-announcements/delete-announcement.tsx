@@ -2,7 +2,7 @@ import { DeleteOutlined, SearchOutlined } from '@ant-design/icons'
 import { Button, Card } from 'antd';
 import * as React from 'react'
 import { announcementType } from '../../../models/announcementType';
-import { deleteAnnouncementService, getAnnouncement } from '../../../service/announcment-service';
+import { deleteAnnouncementService, getAnnouncement } from '../../../service/home-service';
 import { AnnouncementThumbnail } from './announcement-thumbnail';
 
 export const DeleteAnnouncement = (props: any) => {

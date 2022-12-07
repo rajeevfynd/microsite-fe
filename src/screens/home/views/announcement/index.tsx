@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import * as React from 'react'
 import { announcementType } from '../../../../models/announcementType';
-import { getAnnouncement } from '../../../../service/announcment-service';
+import { getAnnouncement } from '../../../../service/home-service';
 import AnnouncementModal from './announcement-modal';
 import './index.css'
 

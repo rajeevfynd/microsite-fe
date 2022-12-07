@@ -3,7 +3,7 @@ import Meta from 'antd/lib/card/Meta';
 import * as moment from 'moment';
 import * as React from 'react'
 import { announcementType } from '../../../../models/announcementType';
-import { getAnnouncementDoc } from '../../../../service/announcment-service';
+import { getAnnouncementDoc } from '../../../../service/home-service';
 import './index.css'
 
 
