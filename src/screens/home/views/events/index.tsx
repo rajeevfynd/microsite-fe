@@ -1,8 +1,6 @@
 import { CaretRightOutlined, CheckCircleFilled, CheckCircleOutlined, FieldTimeOutlined, PauseOutlined, WarningOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Carousel, Col, Modal, Row } from 'antd';
-import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
-import { ArrowRight, Check, PlayCircle } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { CourseDetails } from '../../../../components/course-detail/course-details';
 import { LearningEvent } from '../../../../models/enums/learning-event';
