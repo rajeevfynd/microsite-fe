@@ -3,11 +3,12 @@ import Meta from 'antd/lib/card/Meta';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../../models/journey-details'; 
 import './../index.css'
-import { debounce, getJourneys } from '../../../../service/journey-service';
+import { getJourneys } from '../../../../service/journey-service';
 import { ArrowRight } from 'react-bootstrap-icons';
+import { debounce } from '../../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const LearningJourneyList = () => {

@@ -4,7 +4,11 @@ import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns, Gear } from "react-bootstrap-icons";
+<<<<<<< HEAD
 import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled, QuestionCircleFilled, QuestionCircleOutlined } from '@ant-design/icons';
+=======
+import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled } from '@ant-design/icons';
+>>>>>>> develop
 import WelcomeSvg from '../../../img/welcome.svg';
 import SurveySvg from '../../../img/survey.svg';
 import RoleSvg from '../../../img/role.svg';

@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { handleProgramFormSubmit, onCourseSelectHandler,removeCourseHandler } from '../../../../service/journey-service';
+import { handleProgramFormSubmit, onCourseSelectHandler,removeCourseHandler } from '../../../../service/program-service';
 import { CourseMapType } from '../../../../models/journey-details';
 import { Flow } from '../../../../models/enums/flow';
 import { getProgramDetails } from '../../../../service/program-service';
@@ -58,22 +58,23 @@ export const EditProgram = () => {
     setCourses(processedCourses)
   }
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(program.title != null && program.title.trim() != '') {
     handleProgramFormSubmit(program, courses, thumbnail, id).then(resp => {
       if (resp.data) {
         message.success('Program updated successfully');
         navigate("/admin/programs");
       }
     })
+  }
+  else{
+    setProgram({
+      title: '',
+      description: program.description,
+      sequence: program.sequence,
+      issueCertificate: program.issueCertificate
+    })
+  }
   };
 
   const addCourse = () => {
@@ -103,19 +104,19 @@ export const EditProgram = () => {
 
       <h4>Edit Program</h4>
 
-      <div className='scroll-container'>
-        <Form onFinish={onFinish} validateMessages={validateMessages}>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
+            Thumbnail
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               file={thumbnailUrl} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { program.title != undefined && program.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={program.title} onChange={(e) => {
               setProgram({
                 title: e.target.value,
@@ -172,7 +173,7 @@ export const EditProgram = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={course.course} className="draggable-item">
+                    <List.Item key={index+course.courseName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
@@ -194,7 +195,7 @@ export const EditProgram = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

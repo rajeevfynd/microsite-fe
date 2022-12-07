@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney, validateJourneyPrograms } from '../../../../service/journey-service';
+import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
@@ -55,22 +55,22 @@ export const EditJourney = () => {
     setPrograms(processedPrograms)
   }
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(journey.title != null && journey.title.trim() != '') {
     handleFormSubmit(journey, programs, thumbnail, category, id).then(resp => {
       if (resp.data) {
         message.success('Journey updated successfully');
         navigate("/admin/journeys");
       }
     })
+  }
+  else{
+    setJourney({
+      title: '',
+      description : journey.description,
+      sequence : journey.sequence
+    })
+  }
   };
 
   const addProgram = () => {
@@ -100,8 +100,8 @@ export const EditJourney = () => {
 
       <h4>Edit Journey</h4>
 
-      <div className='scroll-container'>
-        <Form onFinish={onFinish} validateMessages={validateMessages}>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
             Thumbnail
@@ -109,11 +109,10 @@ export const EditJourney = () => {
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               file={thumbnailUrl} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { journey.title != undefined && journey.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={journey.title} onChange={(e) => {
               setJourney({
                 title: e.target.value,
@@ -156,7 +155,7 @@ export const EditJourney = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={program.program} className="draggable-item">
+                    <List.Item key={index+program.programName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -178,7 +177,7 @@ export const EditJourney = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

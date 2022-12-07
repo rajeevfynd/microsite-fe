@@ -5,7 +5,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ShadowSearchInput } from '../../../components/shadow-input-text';
 import { CourseListType } from '../../../models/course-type';
-import { debounce, getCourses } from '../../../service/program-service';
+import { getCourses } from '../../../service/program-service';
+import { debounce } from '../../../utility/debounce-utils';
 import './index.css';
 
 export const AdminCoursePage = () => {
