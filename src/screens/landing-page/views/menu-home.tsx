@@ -203,6 +203,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 }
 
             ]
+        },
+        {
+            title: "Faq",
+            key: "new-emp-faq",
+            icon: <QuestionCircleOutlined />,
+            navigate:"/lnd/new-emp-center/new-emp-faq"
         }
     ]
 }
