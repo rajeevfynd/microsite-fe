@@ -27,11 +27,11 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
       </Modal>
         <div className='details'>
             <Row>
-                <Col span={7}>
+            <Col span={7} style={{height:240}}>
                     <Image
                         src={`data:image/png;base64,${props.details.thumbnailLink}`}
-                        height={240}
-                        width={360}
+                        height={"100%"}
+                        width={'80%'}
                         preview={false}
                     />
                 </Col>
@@ -44,7 +44,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div className='programs-list'>
+        <div style={{padding:'0 50px'}}>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.courses}
@@ -52,12 +52,13 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                     
                     <List.Item
                         extra={
+                            <div style={{height:100, width:150}}>
                             <img
-                                width={150}
-                                height={100}
+                                width={'80%'}
+                                height={'100%'}
                                 alt="logo"
-                                src={item.course.thumbnail}
-                            />}
+                                src={`data:image/png;base64,${item.course.thumbnailLink}`}
+                            /></div>}
                     >
                         <List.Item.Meta
                             title= {
