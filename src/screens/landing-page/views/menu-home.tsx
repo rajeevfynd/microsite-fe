@@ -4,7 +4,7 @@ import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns, Gear } from "react-bootstrap-icons";
-import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled } from '@ant-design/icons';
+import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled, QuestionCircleOutlined } from '@ant-design/icons';
 import WelcomeSvg from '../../../img/welcome.svg';
 import SurveySvg from '../../../img/survey.svg';
 import RoleSvg from '../../../img/role.svg';
@@ -210,6 +210,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 }
 
             ]
+        },
+        {
+            title: "Faq",
+            key: "new-emp-faq",
+            icon: <QuestionCircleOutlined />,
+            navigate:"/lnd/new-emp-center/new-emp-faq"
         }
     ]
 }
