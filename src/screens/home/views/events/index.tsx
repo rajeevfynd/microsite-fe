@@ -1,4 +1,4 @@
-import { CaretRightOutlined, CheckCircleFilled, CheckCircleOutlined, FieldTimeOutlined, PauseOutlined, WarningOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Card, Carousel, Image, Modal } from 'antd';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
