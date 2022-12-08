@@ -50,6 +50,7 @@ const Survey = () => {
   const [imgId, setImgId] = React.useState("");
   const [imgString, setImgString] = React.useState("");
   const [newScreenShot, setNewScreenShot] = React.useState(false);
+  const [disableSubmit, setDisableSubmit] = React.useState(false);
   const newQuestion = {
     id: "",
     questionText: "",
@@ -364,6 +365,7 @@ const Survey = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setDisableSubmit(true)
     if (imgId.length == 0 || newScreenShot) {
       /// length is zero if the image is not uploaded by user, so take ScreenShot
       console.log("Take Screen Shot");
@@ -606,7 +608,7 @@ const Survey = () => {
                     style={{ float: "right" }}
                     data-html2canvas-ignore="true"
                   >
-                    <button type="submit" className="btn btn-primary">
+                    <button disabled= {disableSubmit} type="submit" className="btn btn-primary">
                       {params.id ? "Save the Changes" : "Submit"}
                     </button>
                   </div>
