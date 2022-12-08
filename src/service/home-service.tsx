@@ -1,4 +1,4 @@
-import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ANNOUNCEMENT, GET_BIRTHDAYS } from "../constants/urls"
+import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ALL_BIRTHDAYS, GET_ANNOUNCEMENT, GET_BIRTHDAYS } from "../constants/urls"
 import { announcementType } from "../models/announcementType";
 import httpInstance from "../utility/http-client"
 
@@ -16,9 +16,19 @@ export const getAnnouncementThumb = (d: announcementType) =>{
 export const addAnnouncement = (body: any) => {
     return httpInstance.post(ADD_ANNOUNCEMENT,body)
 }
+
 export const deleteAnnouncementService = (id: any) => {
     return httpInstance.delete(ADD_ANNOUNCEMENT+id)
 }
+
 export const getBirthdaysService = ()=>{
     return httpInstance.get(GET_BIRTHDAYS);
+}
+
+export const getAllBirthdaysService = ()=>{
+    return httpInstance.get(GET_ALL_BIRTHDAYS);
+}
+
+export const addBirthday = (body: any) =>{
+    return httpInstance.post(GET_BIRTHDAYS,body);
 }

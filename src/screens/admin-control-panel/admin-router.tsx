@@ -15,12 +15,14 @@ import {CreatedSurvey} from '../surveys/created-surveys'
 import { EditCourse } from './courses/edit-course'
 import { AddCourse } from '../learning-development/learning-center/add-course'
 import { DownloadTabs} from './download-center'
+import { ManageBirthdays } from './birthdays'
 
 export const AdminRouter = () => {
   return (
     <>
       <Routes>
         <Route path='/manage-announcement/*' element={<AddAnnouncement></AddAnnouncement>}></Route>
+        <Route path='/birthdays/' element={<ManageBirthdays/>}></Route>
         <Route path='/edit-carousel/*' element={<EditCarousal></EditCarousal>}></Route>
         <Route path='/induction/*' element={<AdminInduction />}></Route>
         <Route path='/journeys/*' element={<AdminJourneyList />}></Route>
