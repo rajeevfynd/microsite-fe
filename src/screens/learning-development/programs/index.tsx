@@ -25,6 +25,7 @@ export const ProgramDetailsView = () => {
     React.useEffect( ()=>
     {   
         getProgramDetails(id).then( res => {
+            console.log(res.data)
             processData(res.data);
         })
     }, [])

@@ -1,5 +1,5 @@
 import { CaretRightOutlined, CheckCircleFilled, CheckCircleOutlined, FieldTimeOutlined, PauseOutlined, WarningOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Carousel, Col, Modal, Row } from 'antd';
+import { Button, Card, Carousel, Image, Modal } from 'antd';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseDetails } from '../../../../components/course-detail/course-details';
@@ -7,10 +7,12 @@ import { LearningEvent } from '../../../../models/enums/learning-event';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
 import "./index.scss";
+import Meta from 'antd/lib/card/Meta';
 
 type LearningEventType = {
     id : string,
     title : string,
+    thumbnailLink : string,
     type : LearningEvent
 }
 
@@ -43,7 +45,6 @@ export const Events = () => {
     }
 
     const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
-    const [surveyEvent, setSurveyEvent] = React.useState<SurveyEventType>()
 
     React.useEffect( ()=>{
         getLearningEvents().then( res=> {
@@ -62,49 +63,34 @@ export const Events = () => {
             style={{ top: 100 }}>
                 <CourseDetails course={courseDetails} />
             </Modal>
-            <Card className="home-card" style={{padding:0}}>
-                <Carousel autoplay pauseOnHover effect='fade'>
-                    {
-                        <Card
-                            className='event-carousel background-yellow'>
-                            <h6 style={{color: 'white', height:'50px'}}>
-                                "Employee Happiness Survey" is still pending
-                            </h6>
-                            <div style={{color:'white', margin:'10px'}}>
-                                <FieldTimeOutlined style={{fontSize:'30px'}}/>
-                             </div>
-                            
-                            <Button onClick={handleLearningEvent} type='default' className='event-link'>
-                                Go to survey 
-                            </Button>
-                        </Card>
-                    }
+            <Card className="home-card">
+                <Carousel autoplay pauseOnHover effect='fade' dots={false}>
                     {  
                         learningEvent != undefined && 
-                        <Card
-                            className='event-carousel background-blue'
+                        <div
+                            className='event-carousel'
                         >
-                            <h6 style={{color: 'white', height:'50px'}}>
+                            <h6 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
                             </h6>
-                            <div style={{color:'white', margin:'10px'}}>
-                                <PauseOutlined style={{fontSize:'30px'}}/>
+                            <Image src={`data:image/png;base64,${learningEvent.thumbnailLink}`} preview={false} height='80px' width='100px'/>
+                            <div>
+                                <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
                              </div>
-                            
-                            <Button onClick={handleLearningEvent} type='default' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
-                        </Card>
+                        </div>
                     }
-                    {   
-                        <Card
-                            className='event-carousel background-green'>
-                            <h6 style={{color: 'white', height:'50px'}}>
+                    {
+                        learningEvent != undefined &&
+                        <div
+                            className='event-carousel'>
+                            <h6 style={{height:'40px'}}>
                                 You are all caught up!
                             </h6>
-                            <div style={{color:'white', margin:'10px'}}>
-                                <CheckCircleOutlined style={{fontSize:'30px'}}/>
+                            <div style={{margin:'10px'}}>
+                                <CheckCircleOutlined style={{fontSize:'75px', color:'green'}}/>
                              </div>
-                            <Button onClick={()=>{navigate('/lnd/learning-center/lnd-hero')}} type='default' className='event-link'>Go to Learning Center </Button>
-                        </Card>
+                            <Button onClick={()=>{navigate('/lnd/learning-center/lnd-hero')}} type='link' className='event-link'>Go to Learning Center </Button>
+                        </div>
                     }
                 </Carousel>
             </Card >

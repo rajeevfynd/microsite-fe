@@ -13,6 +13,7 @@ export const getJourneyDetails = (id: string) => {
 }
 
 export const processPrograms = (programs: ProgramType[], flow: string) => {
+  console.log(programs)
   if (programs && programs.length > 0) {
     const progress = Math.round(programs.filter(program => program.status == 'COMPLETED').length * 100 / programs.length);
     let flowKey = flow as keyof typeof Flow;
@@ -25,11 +26,14 @@ export const processPrograms = (programs: ProgramType[], flow: string) => {
         }
         return true;
       })
-
     return {
       programs: programs,
       progress: progress
     };
+  }
+  return {
+    programs: programs,
+    progress: 0
   }
 }
 
@@ -111,11 +115,6 @@ export const deleteJourney = (id: string) => {
 
 export function validateJourneyPrograms(values: ProgramMapType[]) {
   let hasDuplicate = false;
-
-  if(values.length == 0) {
-    message.error('Journey should be mapped with atleast one program')
-    return false
-  }
   values.map(v => v.program).sort().sort(
     (a:string, b:string) => {
       if (a == b) { hasDuplicate = true; return 1
