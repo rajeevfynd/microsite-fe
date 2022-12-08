@@ -80,7 +80,7 @@ export const Events = () => {
                         </div>
                     }
                     {
-                        learningEvent != undefined &&
+                        learningEvent == undefined &&
                         <div
                             className='event-carousel'>
                             <h6 style={{height:'40px'}}>
