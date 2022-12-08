@@ -413,7 +413,7 @@ const Survey = () => {
       creatSurvey(body)
         .then((res) => {
           openNotificationWithIcon("success", surveyTitle + " created");
-          navigate(`/survey/created-surveys`);
+          navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
           openNotificationWithIcon("error", err.message);
