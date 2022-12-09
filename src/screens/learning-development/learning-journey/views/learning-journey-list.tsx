@@ -101,7 +101,7 @@ export  const LearningJourneyList = () => {
               >
                 <Meta
                   title={item.title}
-                  description={<p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{item.description}</p>}
+                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                 />
               </Card>
             </List.Item>
