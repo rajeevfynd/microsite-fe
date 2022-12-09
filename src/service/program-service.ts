@@ -73,6 +73,10 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
         progress: progress
       };
     }
+    return {
+      courses: courses,
+      progress: 0
+    }
 }
 
 export function validateProgramsCourses(values: CourseMapType[]) {
