@@ -7,7 +7,6 @@ import { LearningEvent } from '../../../../models/enums/learning-events';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
 import "./index.scss";
-import Meta from 'antd/lib/card/Meta';
 
 type LearningEventType = {
     id : string,
@@ -16,16 +15,12 @@ type LearningEventType = {
     type : LearningEvent
 }
 
-type SurveyEventType = {
-    title : string
-}
-
-
 export const Events = () => {
 
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [courseDetails, setCourseDetails] = React.useState({});
+    const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
 
     const handleLearningEvent = () => {
         if(learningEvent){
@@ -46,11 +41,8 @@ export const Events = () => {
         }
     }
 
-    const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
-
     React.useEffect( ()=>{
         getLearningEvents().then( res=> {
-            console.log(res)
             setLearningEvent(res.data)
         })
     },[])
