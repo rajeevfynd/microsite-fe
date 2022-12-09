@@ -10,11 +10,11 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
     <>
         <div className='details'>
             <Row>
-                <Col span={7}>
+                <Col span={7} style={{height:240}}>
                     <Image
                         src={`data:image/png;base64,${props.details.thumbnailLink}`}
-                        height={240}
-                        width={360}
+                        height={"100%"}
+                        width={'80%'}
                         preview={false}
                     />
                 </Col>
@@ -27,20 +27,21 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div className='programs-list'>
+        <div style={{padding:'0 50px'}}>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.programs}
                 renderItem={item => (
-                    
+
                     <List.Item
                         extra={
+                            <div style={{height:100, width:150}}>
                             <img
-                                width={150}
-                                height={100}
+                                width={'80%'}
+                                height={'100%'}
                                 alt="logo"
                                 src={`data:image/png;base64,${item.program.thumbnailLink}`}
-                            />}
+                            /></div>}
                     >
                         <List.Item.Meta
                             title= {
