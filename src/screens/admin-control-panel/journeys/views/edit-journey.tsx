@@ -28,10 +28,12 @@ export const EditJourney = () => {
   const { Option } = Select;
 
   React.useEffect(() => {
+    if(id) {
     getJourneyDetails(id).then(res => {
       processPrograms(res.data.programs);
       processJourneys(res.data);
     })
+    }
   }, [])
 
   const processJourneys = (data: any) => {
@@ -57,12 +59,15 @@ export const EditJourney = () => {
 
   const onFinish = () => {
     if(journey.title != null && journey.title.trim() != '') {
-    handleFormSubmit(journey, programs, thumbnail, category, id).then(resp => {
-      if (resp.data) {
-        message.success('Journey updated successfully');
-        navigate("/admin/journeys");
-      }
-    })
+    let data = handleFormSubmit(journey, programs, thumbnail, category, id)
+    if(data){
+      data.then(resp => {
+        if (resp.data) {
+          message.success('Journey updated successfully');
+          navigate("/admin/journeys");
+        }
+      })
+    }
   }
   else{
     setJourney({
@@ -73,8 +78,8 @@ export const EditJourney = () => {
   }
   };
 
-  const addProgram = () => {
-    setPrograms([...programs, { program: null, programName: undefined }])
+  const addProgram = () => { 
+    setPrograms([...programs, { program: null , programName: undefined }])
   }
 
   const removeProgram = (index: number) => {
@@ -155,7 +160,7 @@ export const EditJourney = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index+program.programName} className="draggable-item">
+                    <List.Item key={program.programName ? index+program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
