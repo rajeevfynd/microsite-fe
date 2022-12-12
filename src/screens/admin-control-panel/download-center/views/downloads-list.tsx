@@ -168,6 +168,7 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
       console.log(departmentId)
       setKeyState("")
       setPageNumber(1)
+      setDepartment(departmentId)
       getDownloadsList(downloadListProps.categoryId, departmentId)
           .then(response => {
               setDocumentsList(response.data.content)
