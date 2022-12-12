@@ -30,7 +30,10 @@ export const UploadQnaForm = (props : {uploadQnaFormProps : UploadQnaFormProps})
             uploadQnaFormProps.onUploadQnaSubmit()
             message.info("File Uploaded Successfully")
             })
-          .catch((e) => (message.info(e)))
+          .catch((e) => {
+            message.error("File not uploaded due to " + e.response.data.data.message)
+            uploadQnaFormProps.onUploadQnaSubmit()
+          })
     };
       
 

@@ -3,7 +3,7 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney } from '../../../../service/journey-service';
+import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
@@ -28,10 +28,12 @@ export const EditJourney = () => {
   const { Option } = Select;
 
   React.useEffect(() => {
+    if(id) {
     getJourneyDetails(id).then(res => {
       processPrograms(res.data.programs);
       processJourneys(res.data);
     })
+    }
   }, [])
 
   const processJourneys = (data: any) => {
@@ -50,32 +52,34 @@ export const EditJourney = () => {
       processedPrograms = [...processedPrograms, {
         program: p.program.id.toString(),
         programName: p.program.title,
-        index: index
       }]
     })
     setPrograms(processedPrograms)
   }
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
-    handleFormSubmit(journey, programs, thumbnail, category, id).then(resp => {
-      if (resp.data) {
-        message.success('Journey updated successfully');
-        navigate("/admin/journeys");
-      }
+    if(journey.title != null && journey.title.trim() != '') {
+    let data = handleFormSubmit(journey, programs, thumbnail, category, id)
+    if(data){
+      data.then(resp => {
+        if (resp.data) {
+          message.success('Journey updated successfully');
+          navigate("/admin/journeys");
+        }
+      })
+    }
+  }
+  else{
+    setJourney({
+      title: '',
+      description : journey.description,
+      sequence : journey.sequence
     })
+  }
   };
 
-  const addProgram = () => {
-    setPrograms([...programs, { index: programs.length, program: undefined, programName: undefined }])
+  const addProgram = () => { 
+    setPrograms([...programs, { program: null , programName: undefined }])
   }
 
   const removeProgram = (index: number) => {
@@ -101,8 +105,8 @@ export const EditJourney = () => {
 
       <h4>Edit Journey</h4>
 
-      <div className='scroll-container'>
-        <Form onFinish={onFinish} validateMessages={validateMessages}>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
             Thumbnail
@@ -110,11 +114,10 @@ export const EditJourney = () => {
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               file={thumbnailUrl} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { journey.title != undefined && journey.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={journey.title} onChange={(e) => {
               setJourney({
                 title: e.target.value,
@@ -156,8 +159,8 @@ export const EditJourney = () => {
                 }
               >
                 {programs
-                  .map((program: ProgramMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((program: ProgramMapType, index) => (
+                    <List.Item key={program.programName ? index+program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -171,7 +174,7 @@ export const EditJourney = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button type='dashed'
+              <Button disabled={! (programs.filter(p => p.programName == undefined).length == 0)} type='dashed'
                 onClick={() => { addProgram() }
                 }>
                 <PlusOutlined /> Add Program
@@ -179,7 +182,7 @@ export const EditJourney = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>
@@ -191,6 +194,3 @@ export const EditJourney = () => {
   </>
   );
 };
-function validateJourney(value: any) {
-  throw new Error('Function not implemented.');
-}

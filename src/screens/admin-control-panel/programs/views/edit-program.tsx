@@ -3,9 +3,8 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getJourneyDetails, handleFormSubmit, handleProgramFormSubmit, onCourseSelectHandler, onSelectHandler, removeCourseHandler, removeProgramHadler } from '../../../../service/journey-service';
-import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
-import { SearchInput } from '../../../../components/search-input/search-input';
+import { handleProgramFormSubmit, onCourseSelectHandler,removeCourseHandler } from '../../../../service/program-service';
+import { CourseMapType } from '../../../../models/journey-details';
 import { Flow } from '../../../../models/enums/flow';
 import { getProgramDetails } from '../../../../service/program-service';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
@@ -54,32 +53,32 @@ export const EditProgram = () => {
       processedCourses = [...processedCourses, {
         course: c.course.id.toString(),
         courseName: c.course.title,
-        index: index
       }]
     })
     setCourses(processedCourses)
   }
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(program.title != null && program.title.trim() != '') {
     handleProgramFormSubmit(program, courses, thumbnail, id).then(resp => {
       if (resp.data) {
         message.success('Program updated successfully');
         navigate("/admin/programs");
       }
     })
+  }
+  else{
+    setProgram({
+      title: '',
+      description: program.description,
+      sequence: program.sequence,
+      issueCertificate: program.issueCertificate
+    })
+  }
   };
 
   const addCourse = () => {
-    setCourses([...courses, { index: courses.length, course: undefined, courseName: undefined }])
+    setCourses([...courses, { course: null, courseName: undefined }])
   }
 
   const removeCourse = (index: number) => {
@@ -105,19 +104,19 @@ export const EditProgram = () => {
 
       <h4>Edit Program</h4>
 
-      <div className='scroll-container'>
-        <Form onFinish={onFinish} validateMessages={validateMessages}>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
+            Thumbnail
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               file={thumbnailUrl} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { program.title != undefined && program.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={program.title} onChange={(e) => {
               setProgram({
                 title: e.target.value,
@@ -173,8 +172,8 @@ export const EditProgram = () => {
                 }
               >
                 {courses
-                  .map((course: CourseMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((course: CourseMapType, index) => (
+                    <List.Item key={index+course.courseName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
@@ -188,7 +187,7 @@ export const EditProgram = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button type='dashed'
+              <Button disabled={! (courses.filter(p => p.courseName == undefined).length == 0)} type='dashed'
                 onClick={() => { addCourse() }
                 }>
                 <PlusOutlined /> Add Course
@@ -196,7 +195,7 @@ export const EditProgram = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

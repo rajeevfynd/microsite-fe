@@ -3,11 +3,12 @@ import Meta from 'antd/lib/card/Meta';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { JourneyDetailType } from '../../../../models/journey-details'; 
 import './../index.css'
-import { debounce, getJourneys } from '../../../../service/journey-service';
+import { getJourneys } from '../../../../service/journey-service';
 import { ArrowRight } from 'react-bootstrap-icons';
+import { debounce } from '../../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const LearningJourneyList = () => {
@@ -61,10 +62,13 @@ export  const LearningJourneyList = () => {
     <div className='search-container'>
       <Input 
         size='large' 
-        className='search-box' 
+        className='home-card search-card search-box' 
+        style={{padding:15}}
         suffix={<SearchOutlined/>} 
+        placeholder='Search Journeys...'
+        allowClear
         onChange={(e) => {searchKey(e.target.value);} } 
-      />
+    />
     </div>
     <div
       id="scrollableDiv"
@@ -97,7 +101,7 @@ export  const LearningJourneyList = () => {
               >
                 <Meta
                   title={item.title}
-                  description={<p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{item.description}</p>}
+                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                 />
               </Card>
             </List.Item>

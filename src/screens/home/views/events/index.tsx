@@ -1,68 +1,92 @@
-import { Avatar, Card, Col, Row, Typography } from 'antd';
-import Meta from 'antd/lib/card/Meta';
+import { CheckCircleOutlined } from '@ant-design/icons';
+import { Button, Card, Carousel, Image, Modal } from 'antd';
 import * as React from 'react';
-import { BookHalf, ListColumns } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
+import { CourseDetails } from '../../../../components/course-detail/course-details';
+import { LearningEvent } from '../../../../models/enums/learning-events';
+import { getLearningEvents } from '../../../../service/event-service';
+import { getCourseById } from '../../../../service/program-service';
 import "./index.scss";
 
-interface EventType {
-    icon: React.ReactElement<any, any> | null,
-    src?: string
-    message: string,
-    navigation?: string
-    type: "SURVEY" | "COURSE_IN_PROGRESS"
+type LearningEventType = {
+    id : string,
+    title : string,
+    thumbnailLink : string,
+    type : LearningEvent
 }
 
-const surveys: EventType[] = [
-    {
-        src: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
-        icon: <ListColumns />,
-        message: "Survey is assigned to you",
-        type: "SURVEY"
-    }
-]
-
-const assignedCourse: EventType[] = [
-    {
-        src: "https://prod-discovery.edx-cdn.org/media/course/image/156313d6-f892-4b08-9cee-43ea582f4dfb-7b98c686abcc.small.png",
-        icon: <BookHalf />,
-        message: "AI beginner course is in progress",
-        type: "COURSE_IN_PROGRESS"
-    }
-]
-
 export const Events = () => {
+
+    const navigate = useNavigate()
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [courseDetails, setCourseDetails] = React.useState({});
+    const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
+
+    const handleLearningEvent = () => {
+        if(learningEvent){
+            if(learningEvent.type == LearningEvent.JOURNEY){
+                navigate('/lnd/learning-journey/'+learningEvent.id)
+           }
+           else if(learningEvent.type == LearningEvent.PROGRAM){
+                navigate('/lnd/programs/'+learningEvent.id)
+           }
+           else if(learningEvent.type == LearningEvent.COURSE){
+                getCourseById(learningEvent.id).then( res =>
+                    {
+                        setCourseDetails(res.data)
+                        setIsModalOpen(true)
+                    }
+                )
+            }
+        }
+    }
+
+    React.useEffect( ()=>{
+        getLearningEvents().then( res=> {
+            setLearningEvent(res.data)
+        })
+    },[])
     return (
         <>
-            <Card className="home-card" style={{height: "270px"}}>
-                <Row gutter={[8, 8]}>
-                    <Col className='gutter-row' span={16}>
-                        <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar style={{ margin: 'auto', width: '51px', height: '51px' }}
-                                    src={assignedCourse[0].src}
-                                    icon={assignedCourse[0].icon}
-                                />
-                                <Typography.Text style={{ fontSize: "13px" }}>{assignedCourse[0].message}</Typography.Text>
-                            </div>
-                        </Card>
-                    </Col>
-                    <Col className='gutter-row' span={8}>
-                        <Card hoverable className='home-card' bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar className='small-event'
-                                    icon={assignedCourse[0].icon}
-                                />
-                            </div>
-                        </Card>
-                        <Card hoverable className='home-card' style={{ marginTop: "5px" }} bodyStyle={{ padding: "10px" }}>
-                            <div className='event-box'>
-                                <Avatar className='small-event'
-                                    icon={surveys[0].icon}
-                                />
-                            </div>
-                        </Card>
-                    </Col>
-                </Row>
+            <Modal
+            title="Course Details"
+            visible={isModalOpen}
+            footer={null}
+            onCancel={()=>{setIsModalOpen(false)}}
+            width={1000}
+            style={{ top: 100 }}>
+                <CourseDetails course={courseDetails} />
+            </Modal>
+            <Card className="home-card">
+                <Carousel autoplay pauseOnHover effect='fade' dots={false}>
+                    {  
+                        learningEvent != undefined && 
+                        <div
+                            className='event-carousel'
+                        >
+                            <h6 style={{height:'40px'}}>
+                                Continue learning "{learningEvent.title}"
+                            </h6>
+                            <Image src={`data:image/png;base64,${learningEvent.thumbnailLink}`} preview={false} height='80px' width='100px'/>
+                            <div>
+                                <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
+                             </div>
+                        </div>
+                    }
+                    {
+                        learningEvent == undefined &&
+                        <div
+                            className='event-carousel'>
+                            <h6 style={{height:'40px'}}>
+                                You are all caught up!
+                            </h6>
+                            <div style={{margin:'10px'}}>
+                                <CheckCircleOutlined style={{fontSize:'75px', color:'green'}}/>
+                             </div>
+                            <Button onClick={()=>{navigate('/lnd/learning-center/lnd-hero')}} type='link' className='event-link'>Go to Learning Center </Button>
+                        </div>
+                    }
+                </Carousel>
             </Card >
         </>
     )

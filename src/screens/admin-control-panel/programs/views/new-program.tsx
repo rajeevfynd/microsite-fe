@@ -3,12 +3,11 @@ import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { removeCourseHandler, handleProgramFormSubmit, onSelectHandler, removeProgramHadler, setJourney, onCourseSelectHandler } from '../../../../service/journey-service';
+import { removeCourseHandler, handleProgramFormSubmit, onCourseSelectHandler } from '../../../../service/program-service';
 import { CourseMapType, ProgramMapType } from '../../../../models/journey-details';
 import { CourseSearchInput } from '../../../../components/search-course-input/search-course-input';
 import { formatBase64 } from '../../../../utility/image-utils';
 import { Upload } from '../../../../components/upload.component';
-import { SearchInput } from '../../../../components/search-input/search-input';
 import ReactDragListView from "react-drag-listview";
 import { arrayMove } from '../../../../utility/array-utils';
 
@@ -30,26 +29,28 @@ export const NewProgram: React.FC = () => {
 
   const { Option } = Select;
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
+    if(program.title != null && program.title.trim() != '') {
     handleProgramFormSubmit(program, courses, thumbnail).then(resp => {
       if (resp.data) {
         message.success('Program added successfully');
         navigate("/admin/programs");
       }
     })
+  }
+  else{
+    setProgram({
+      id: program.id,
+      title: '',
+      description: program.description,
+      sequence: program.sequence,
+      issueCertificate: program.issueCertificate
+    })
+  }
   };
 
   const addCourse = () => {
-    setCourses([...courses, { index: courses.length, course: undefined, courseName: undefined }])
+    setCourses([...courses, { course: null, courseName: undefined }])
   }
 
   const removeCourse = (index: number) => {
@@ -74,22 +75,19 @@ export const NewProgram: React.FC = () => {
 
       <h4>Create New Program</h4>
 
-      <div className='scroll-container'>
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-
-          <Form.Item>
+      <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
             <Form.Item>
+              Thumbnail
               <Upload
                 onDone={(info) => setThumbnail(info.documentId)}
                 onRemove={() => setThumbnail('')} />
-
             </Form.Item>
 
-          </Form.Item>
-
-          <Form.Item rules={[{ required: true }]}>
-            Title
-            <Input value={program.title} onChange={(e) => {
+            <Form.Item>
+            Title<span style={{color: 'red'}}>* { program.title != undefined && program.title.trim() == '' && <>Title Cannot be Blank</>}</span>
+            <Input value={program.title} 
+              onChange={(e) => {
               setProgram({
                 id: program.id,
                 title: e.target.value,
@@ -100,8 +98,8 @@ export const NewProgram: React.FC = () => {
             }} />
           </Form.Item>
 
-          <Form.Item >
-            Description
+          <Form.Item label='Description'>
+
             <Input.TextArea value={program.description} onChange={(e) => {
               setProgram({
                 id: program.id,
@@ -148,8 +146,8 @@ export const NewProgram: React.FC = () => {
                 }
               >
                 {courses
-                  .map((course: CourseMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((course: CourseMapType, index) => (
+                    <List.Item key={index+course.courseName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
@@ -163,7 +161,7 @@ export const NewProgram: React.FC = () => {
                     </List.Item>
                   ))}
               </ReactDragListView>
-              <Button type='dashed'
+              <Button disabled={! (courses.filter(p => p.courseName == undefined).length == 0)} type='dashed'
                 onClick={() => { addCourse() }
                 }>
                 <PlusOutlined /> Add Course
@@ -171,7 +169,7 @@ export const NewProgram: React.FC = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Save
             </Button>

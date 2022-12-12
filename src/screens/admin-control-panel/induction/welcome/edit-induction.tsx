@@ -1,10 +1,8 @@
 import { Button, Form, Input, List, message, Select, Switch } from 'antd';
 import { PlusOutlined, HolderOutlined } from '@ant-design/icons';
 import * as React from 'react';
-import { ArrowLeft } from 'react-bootstrap-icons';
-import { useNavigate, useParams } from 'react-router-dom';
 import ReactDragListView from "react-drag-listview";
-import { getJourneyDetails, handleFormSubmit, onSelectHandler, removeProgramHadler, setJourney } from '../../../../service/journey-service';
+import { handleFormSubmit, onSelectHandler, removeProgramHadler } from '../../../../service/journey-service';
 import { ProgramMapType } from '../../../../models/journey-details';
 import { SearchInput } from '../../../../components/search-input/search-input';
 import { Flow } from '../../../../models/enums/flow';
@@ -50,31 +48,31 @@ export const EditInduction = () => {
       processedPrograms = [...processedPrograms, {
         program: p.program.id.toString(),
         programName: p.program.title,
-        index: index
       }]
     })
     setPrograms(processedPrograms)
   }
 
-  const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 16 },
-  };
-
-  const validateMessages = {
-    required: '${label} is required!',
-  };
-
   const onFinish = () => {
-    handleFormSubmit(journey, programs, thumbnail, 'INDUCTION', journey.id).then(resp => {
-      if (resp.data) {
-        message.success('Journey updated successfully');
-      }
-    })
+    if(journey.title != null && journey.title.trim() != '') {
+      handleFormSubmit(journey, programs, thumbnail, 'INDUCTION', journey.id).then(resp => {
+        if (resp.data) {
+          message.success('Journey updated successfully');
+        }
+      })
+    }
+    else{
+      setJourney({
+        id: journey.id,
+        title: '',
+        description : journey.description,
+        sequence : journey.sequence
+      })
+    }
   };
 
   const addProgram = () => {
-    setPrograms([...programs, { index: programs.length, program: undefined, programName: undefined }])
+    setPrograms([...programs, { program: null, programName: undefined }])
   }
 
   // const onSortEnd = (index: { oldIndex: any, newIndex: any }) => {
@@ -101,19 +99,19 @@ export const EditInduction = () => {
   return (<>
     <React.Fragment>
 
-      <div className='scroll-container'>
-        <Form onFinish={onFinish} validateMessages={validateMessages}>
+    <div className='scroll-container' style={{width:'60%'}}>
+        <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
+            Thumbnail
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               file={thumbnailUrl} />
-
           </Form.Item>
 
-          <Form.Item rules={[{ required: true }]}>
-            Title
+          <Form.Item>
+            Title<span style={{color: 'red'}}>* { journey.title != undefined && journey.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={journey.title} onChange={(e) => {
               setJourney({
                 id: journey.id,
@@ -158,8 +156,8 @@ export const EditInduction = () => {
                 }
               >
                 {programs
-                  .map((program: ProgramMapType, index: number) => (
-                    <List.Item key={index} className="draggable-item">
+                  .map((program: ProgramMapType, index) => (
+                    <List.Item key={index+program.programName} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -174,7 +172,7 @@ export const EditInduction = () => {
                   ))}
               </ReactDragListView>
 
-              <Button type='dashed'
+              <Button disabled={! (programs.filter(p => p.programName == undefined).length == 0)} type='dashed'
                 onClick={() => { addProgram() }
                 }>
                 <PlusOutlined /> Add Program
@@ -182,7 +180,7 @@ export const EditInduction = () => {
             </div>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol }}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Edit Induction
             </Button>
@@ -194,7 +192,6 @@ export const EditInduction = () => {
   </>
   );
 };
-function validateJourney(value: any) {
-  throw new Error('Function not implemented.');
+function validateJourneyPrograms(value: any) {
+  return false;
 }
-

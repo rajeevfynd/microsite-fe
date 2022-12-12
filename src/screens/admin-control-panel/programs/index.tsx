@@ -1,13 +1,14 @@
-import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { SearchOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ProgramDetailType } from '../../../models/journey-details';
-import { debounce } from '../../../service/journey-service';
+import { deleteProgram } from '../../../service/program-service';
 import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
+import { debounce } from '../../../utility/debounce-utils';
 const { Text } = Typography;
 
 export  const AdminProgramList = () => {
@@ -54,6 +55,19 @@ export  const AdminProgramList = () => {
     key = str
     debounce(searchPrograms,500)
   }
+
+  const handleDelete = (id: string, title: string) => {
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to delete '+title,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+          deleteProgram(id).then( res => { if(res.data == 'success') { searchPrograms() } }) 
+      }
+    });
+  }
  
   return (
     <>
@@ -61,12 +75,15 @@ export  const AdminProgramList = () => {
     <div className='search-container'>
       <Input 
         size='large' 
-        className='search-box' 
+        className='home-card search-card search-box' 
+        style={{padding:15}}
         suffix={<SearchOutlined/>} 
+        placeholder='Search Programs...'
+        allowClear
         onChange={(e) => {searchKey(e.target.value);} } 
     />
-    <div style={{textAlign : 'right'}}>
-        <Button onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
+    <div>
+        <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
     </div>
     </div>
     <div
@@ -96,12 +113,12 @@ export  const AdminProgramList = () => {
                 }
                 actions={[
                     <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                    <Button style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
+                    <Button onClick={()=>handleDelete(item.id.toString(), item.title)} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
                 ]}
               >
                 <Meta
                   title={item.title}
-                  description={<p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{item.description}</p>}
+                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                 />
               </Card>
             </List.Item>
