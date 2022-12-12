@@ -1,15 +1,15 @@
-import { Avatar, Button, Card, DatePicker, Form, Input, List, Modal } from 'antd';
+import { Avatar, Button, Card, DatePicker, Form, Input, List, message, Modal } from 'antd';
 import * as React from 'react';
-import { PlusLg } from 'react-bootstrap-icons';
+import { PlusLg, Trash } from 'react-bootstrap-icons';
 import { Upload } from '../../../components/upload.component';
 import { UploadProps } from '../../../models/upload-props';
-import { addBirthday, getAllBirthdaysService, getBirthdaysService } from '../../../service/home-service';
+import { addBirthday, deleteBirthdayService, getAllBirthdaysService, getBirthdaysService } from '../../../service/home-service';
 
 type BirthDayType = {
     id?: number,
     name?: string,
     image?: string,
-    date?: string
+    birthDay?: string
 }
 
 export const ManageBirthdays = () => {
@@ -37,43 +37,49 @@ export const ManageBirthdays = () => {
     };
 
     const onFinish = async (values: any) => {
-        // console.log(values.birthday)
-        // console.log(values.birthday._d.getDate())
-        // console.log(values.birthday._d.getMonth()+1)
-        // console.log(values.birthday._d.getFullYear())
-        // console.log(values.birthday._d.toDateString())
-        // console.log(values.birthday._d.toString())
-        // console.log(documentId)
-        const date = values.birthday._d.getDate()<10 ? `0${values.birthday._d.getDate()}`: `${values.birthday._d.getDate()}`
-        const birthday = `${values.birthday._d.getFullYear()}-${values.birthday._d.getMonth()+1}-`+date
+        const date = values.birthday._d.getDate() < 10 ? `0${values.birthday._d.getDate()}` : `${values.birthday._d.getDate()}`
+        const birthday = `${values.birthday._d.getFullYear()}-${values.birthday._d.getMonth() + 1}-` + date
         const body = {
-            "name":values.name,
+            "name": values.name,
             "email": values.email,
             "documentId": documentId,
-            "birthDay" : birthday
+            "birthDay": birthday
         }
         const resp = await addBirthday(body);
-        console.log(resp);
-
+        if (resp.data) {
+            message.success(`${values.name} birthday created`);
+        }
+        setloadagain(values.name);
+        setIsModalOpen(false);
 
     }
 
     const [birthdays, setbirthdays] = React.useState<BirthDayType[]>([]);
+    const [loadagain, setloadagain] = React.useState("");
 
-    const fetchBirthdays = async () => {
+    const fetchBirthdays = React.useCallback(async () => {
         let resp = await getAllBirthdaysService();
+        console.log(resp)
         setbirthdays(resp.data)
-    }
+    }, [])
 
     React.useEffect(() => {
         fetchBirthdays()
-    }, [])
+    }, [loadagain, fetchBirthdays])
+
+    const handleDelete = async (id: string, title: any) => {
+        let resp = await deleteBirthdayService(id)
+        if (resp.data) {
+            message.success(`${title} birthday deleted`)
+        }
+        setloadagain(id)
+    }
 
     return (
         <>
             <br></br>
             <Button onClick={showModal} type='primary'><PlusLg style={{ marginRight: "5px" }} />Add Birthday</Button>
-            <Modal title="Create Announcement" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
+            <Modal title="Create Birthday" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
                 <Form
                     form={form}
                     layout="vertical"
@@ -113,22 +119,32 @@ export const ManageBirthdays = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <List
-                grid={{ gutter: 7, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
-                dataSource={birthdays}
-                renderItem={item => (
-                    <List.Item key={item.name}>
-                        <Card hoverable bodyStyle={{ padding: "15px" }}>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-                                <img style={{ margin: 'auto', width: '51px', height: '51px' }}
-                                    src={`data:image/png;base64,${item.image}`}
-                                />
-                                {item.name}
-                            </div>
-                        </Card>
-                    </List.Item>
-                )}
-            />
+            <div>
+                <br></br>
+                <List
+                    grid={{ gutter: 7, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
+                    dataSource={birthdays}
+                    renderItem={item => (
+                        <List.Item key={item.id}>
+                            <Card hoverable //bodyStyle={{ padding: "15px" }}
+                                actions={[
+                                    <Button onClick={() => handleDelete(item.id.toString(), item.name)} type='link' danger> Delete <Trash style={{ margin: '5%' }} /> </Button>
+                                ]}
+                            >
+                                <div style={{ display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                    <img style={{ margin: 'auto', width: '100px', height: '100px' }}
+                                        src={`data:image/png;base64,${item.image}`}
+                                    />
+                                    {item.name}
+                                </div>
+                                <div style={{ opacity: 0.5, display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                    {item.birthDay}
+                                </div>
+                            </Card>
+                        </List.Item>
+                    )}
+                />
+            </div>
         </>
     )
 

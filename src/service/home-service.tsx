@@ -21,8 +21,8 @@ export const deleteAnnouncementService = (id: any) => {
     return httpInstance.delete(ADD_ANNOUNCEMENT+id)
 }
 
-export const getBirthdaysService = ()=>{
-    return httpInstance.get(GET_BIRTHDAYS);
+export const getBirthdaysService = (page:string = '0', size:string = '4')=>{
+    return httpInstance.get(GET_BIRTHDAYS+'?&pageNumber='+page+'&pageSize='+size);
 }
 
 export const getAllBirthdaysService = ()=>{
@@ -31,4 +31,8 @@ export const getAllBirthdaysService = ()=>{
 
 export const addBirthday = (body: any) =>{
     return httpInstance.post(GET_BIRTHDAYS,body);
+}
+
+export const deleteBirthdayService = (id: any) => {
+    return httpInstance.delete(GET_BIRTHDAYS+id)
 }
