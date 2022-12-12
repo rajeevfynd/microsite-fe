@@ -1,17 +1,216 @@
 import * as React from "react";
 import { Button, Menu } from "antd/lib";
 import { getMenuRouteKeyByPath } from '../../../service/landing-page-service';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import './../index.css'
 import { Award, BookHalf, PersonWorkspace, People, Download, InfoCircle, ListColumns, Gear } from "react-bootstrap-icons";
-import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined } from '@ant-design/icons';
-
+import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, StarFilled, QuestionCircleOutlined } from '@ant-design/icons';
+import WelcomeSvg from '../../../img/welcome.svg';
+import SurveySvg from '../../../img/survey.svg';
+import RoleSvg from '../../../img/role.svg';
+import SkillSvg from '../../../img/skill.svg';
+import CourseSvg from '../../../img/course.svg';
+import JourneySvg from '../../../img/journey.svg';
+import ProgramSvg from '../../../img/program.svg';
+import PodcastSvg from '../../../img/podcast.svg';
+import SammanSvg from '../../../img/samman.svg';
+import IdeaSvg from '../../../img/idea.svg';
+import RnrSvg from '../../../img/rnr.svg';
+import NewEmployeeSvg from '../../../img/new-employee.svg';
+import TemplatesSvg from '../../../img/templates.svg';
+import PolicySvg from '../../../img/policy.svg';
+import LeaderSvg from '../../../img/leader.svg';
+import CarouselSvg from '../../../img/carousel.svg';
+import DownloadSvg from '../../../img/download.svg';
 import Sider from 'antd/lib/layout/Sider';
+import { isUserAuthorized } from '../../../service/user-service';
+import { PrimaryMenuItemProps } from "../../../components/menu";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
 
     return isClicked;
+}
+
+export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[] => {
+    return [
+        {
+            title: "Home",
+            key: "home",
+            icon: <HomeOutlined />,
+            navigate: "/home",
+            secondaryItems: [
+                {
+                    key: "podcasts",
+                    title: "Podcasts",
+                    icon: <PodcastSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                },
+                {
+                    key: "r-samman",
+                    title: "R Samman",
+                    icon: <SammanSvg />,
+                    onClick: () => window.open('https://r-sammaan.ril.com/Pages/r-sammaan.aspx', '_blank')
+                },
+                {
+                    key: "idea-corner",
+                    title: "Idea Corner",
+                    icon: <IdeaSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                },
+                {
+                    key: "rnr-corner",
+                    title: "Rewards",
+                    icon: <RnrSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                }
+            ]
+        },
+        {
+            title: "My Learnings",
+            key: "learnings",
+            icon: <BookHalf />,
+            navigate: "/lnd/learning-center/lnd-hero",
+            secondaryItems: [
+                {
+                    key: "induction3",
+                    title: "Induction",
+                    icon: <WelcomeSvg />,
+                    navigate: "/lnd/new-emp-center/induction/welcome"
+                },
+                {
+                    key: "skill",
+                    title: "Skill",
+                    icon: <SkillSvg />,
+                    navigate: "/lnd/learning-center/skill"
+                },
+                {
+                    key: "role",
+                    title: "Role",
+                    icon: <RoleSvg />,
+                    navigate: "/lnd/learning-center/role"
+                },
+                {
+                    key: "journeys",
+                    title: "Journeys",
+                    icon: <JourneySvg />,
+                    navigate: "/lnd/learning-journey"
+                }
+                
+            ]
+        },
+        {
+            title: "My Surveys",
+            key: "surveys",
+            icon: <ListColumns />,
+            navigate: "/survey/my-surveys"
+        },
+        {
+            title: "Downloads",
+            key: "downloads",
+            icon: <Download />,
+            secondaryItems: [
+                {
+                    key: "new-employee-downloads",
+                    title: "New Employee",
+                    icon: <NewEmployeeSvg />,
+                    navigate: "/download-center/new-employees"
+                },
+                {
+                    key: "policies",
+                    title: "Policies",
+                    icon: <PolicySvg />,
+                    navigate: "/download-center/policies"
+                },
+                {
+                    key: "templates",
+                    title: "Templates",
+                    icon: <TemplatesSvg />,
+                    navigate: "/download-center/templates"
+                },
+                {
+                    key: "leaders-gallery",
+                    title: "Leaders",
+                    icon: <LeaderSvg />,
+                    navigate: "/download-center/leaders-gallery"
+                },
+                {
+                    key: "logo",
+                    title: "Logo",
+                    icon: <TemplatesSvg />,
+                    navigate: "/download-center/logo"
+                },
+            ]
+        },
+        {
+            title: "Admin Panel",
+            key: "admin_panel",
+            icon: <Gear />,
+            secondaryItems: [
+                {
+                    key: "admin-induction",
+                    title: "Induction",
+                    icon: <WelcomeSvg />,
+                    navigate: "/admin/induction"
+                },
+                {
+                    key: "admin-carousel",
+                    title: "Carousel",
+                    icon: <CarouselSvg />,
+                    navigate: "/admin/edit-carousel"
+                },
+                {
+                    key: "admin-programs",
+                    title: "Programs",
+                    icon: <ProgramSvg />,
+                    navigate: "/admin/programs"
+                },
+                {
+                    key: "admin-journeys",
+                    title: "Journeys",
+                    icon: <JourneySvg />,
+                    navigate: "/admin/journeys"
+                },
+                {
+                    key: "admin-courses",
+                    title: "Courses",
+                    icon: <CourseSvg />,
+                    navigate: "/admin/courses"
+                },
+                {
+                    key: "add-skill",
+                    title: "Skills",
+                    icon: <SkillSvg />,
+                    navigate: "/lnd/learning-center/addSkill"
+                },
+                {
+                    key: "add-role",
+                    title: "Roles",
+                    icon: <RoleSvg />,
+                    navigate: "/lnd/learning-center/addRole"
+                },
+                {
+                    key: "created-surveys",
+                    title: "Surveys",
+                    icon: <SurveySvg />,
+                    navigate: "/admin/created-surveys"
+                },
+                {
+                    key: "admin-downloads",
+                    title: "Downloads",
+                    icon: <DownloadSvg />,
+                    navigate: "/admin/downloads"
+                }
+
+            ]
+        },
+        {
+            title: "Faq",
+            key: "new-emp-faq",
+            icon: <QuestionCircleOutlined />,
+            navigate:"/lnd/new-emp-center/new-emp-faq"
+        }
+    ]
 }
 
 export default function MenuHome() {
@@ -108,30 +307,30 @@ export default function MenuHome() {
                                 <Menu.Item>R&R placeholder</Menu.Item>
                             </Menu.SubMenu>
                             <Menu.Item icon={<People />}>Employee Engagement Center</Menu.Item>
-                            <Menu.SubMenu icon={<Download/>} title = 'Download Center'>
+                            <Menu.SubMenu icon={<Download />} title='Download Center'>
                                 <Menu.Item
                                     key='new-employee-downloads'
-                                    onClick={()=>navigateTo('/download-center/new-employees/')}>
+                                    onClick={() => navigateTo('/download-center/new-employees/')}>
                                     New Employee Downloads
                                 </Menu.Item>
                                 <Menu.Item
                                     key='templates'
-                                    onClick={()=>navigateTo('/download-center/templates/')}>
+                                    onClick={() => navigateTo('/download-center/templates/')}>
                                     Templates
                                 </Menu.Item>
                                 <Menu.Item
                                     key='leaders-gallery'
-                                    onClick={()=>navigateTo('/download-center/leaders-gallery/')}>
+                                    onClick={() => navigateTo('/download-center/leaders-gallery/')}>
                                     Leaders' Gallery
                                 </Menu.Item>
                                 <Menu.Item
                                     key='logo'
-                                    onClick={()=>navigateTo('/download-center/logo/')}>
+                                    onClick={() => navigateTo('/download-center/logo/')}>
                                     Logo
                                 </Menu.Item>
                                 <Menu.Item
                                     key='policies'
-                                    onClick={()=>navigateTo('/download-center/policies/')}>
+                                    onClick={() => navigateTo('/download-center/policies/')}>
                                     Frequently Used Policies
                                 </Menu.Item>
                             </Menu.SubMenu>

@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import * as React from "react";
-import { debounce, getJourneys } from "../../service/journey-service";
-import { getCourses, getPrograms } from "../../service/program-service";
+import { getCourses } from "../../service/program-service";
+import { debounce } from "../../utility/debounce-utils";
 
 const { Option } = Select;
   

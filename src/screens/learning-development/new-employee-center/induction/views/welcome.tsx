@@ -8,15 +8,18 @@ import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import { WelcomeMessage } from './welcome-message';
 import { getActiveInductionJourney, getWelcomeMessageDetails } from '../../../../../service/induction-service';
 import { processPrograms } from '../../../../../service/journey-service';
+const { Text } = Typography;
 
 export const Welcome = () => {
 
-  const [inductionJourney, setInductionJourney] = React.useState({})
-  const [activeCollapseKey, setActiveCollapseKey] = React.useState('');
+  const [inductionJourney, setInductionJourney] = React.useState<JourneyDetailType>()
+  const [activeCollapseKey, setActiveCollapseKey] = React.useState<string | string[] >();
   const [welcomeMessageDetails, setWelcomeMessageDetails] = React.useState({ isCompleted: false, fileUrl: '' })
+  const [isInductionJourneyExists, setIsInductionJourneyExists] = React.useState<boolean>(false)
 
   const getWelcomeMsgUrl = () => {
     getWelcomeMessageDetails().then(res => {
+      console.log(res)
       setWelcomeMessageDetails({
         fileUrl: res.data.fileUrl,
         isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE
@@ -35,6 +38,7 @@ export const Welcome = () => {
   const getInductionJourneyDetails = () => {
     getActiveInductionJourney().then(res => {
       processData(res.data);
+      setIsInductionJourneyExists(true)
     }
     )
   }
@@ -46,18 +50,28 @@ export const Welcome = () => {
 
   return (
     <>
-      <Collapse onChange={(e: string) => { setActiveCollapseKey(e) }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
+      <Collapse onChange={(e: string | string[]) => { setActiveCollapseKey(e); }} activeKey={activeCollapseKey} accordion expandIconPosition='end'>
         <CollapsePanel key={'1'} header='Welcome to Jio' >
           <WelcomeMessage
             onComplete={() => { getWelcomeMsgUrl()}}
             details={welcomeMessageDetails} />
         </CollapsePanel>
 
-        <CollapsePanel key={'2'} header='Induction Journey' disabled = {!welcomeMessageDetails.isCompleted}>
-          {welcomeMessageDetails.isCompleted &&
+        <CollapsePanel key={'2'} header='Induction Journey' disabled = {! (welcomeMessageDetails.isCompleted)}>
+          {welcomeMessageDetails.isCompleted && 
             <div>
-              <JourneyDetail details={inductionJourney}></JourneyDetail>
-            </div>}
+                {isInductionJourneyExists &&
+                <div>
+                  <JourneyDetail details={inductionJourney}></JourneyDetail>
+                </div>}
+                {!isInductionJourneyExists &&
+                <Result
+                  status="404"
+                  title={<Text type='secondary'>No Active Induction Journey Found</Text>}
+                /> }
+            </div>
+            
+            }
         </CollapsePanel>
       </Collapse>
     </>

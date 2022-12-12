@@ -1,12 +1,12 @@
 export type WelcomeMessageDetailsType = {
-    details ?: WelcomeMessageDetails
+    details : WelcomeMessageDetails
     onComplete : any
 }
 export type AdminWelcomeMessageDetailsType = {
-    details ?: WelcomeMessageDetails
+    details : WelcomeMessageDetails
     onFileUrlUpdate : any
 }
 export type WelcomeMessageDetails = {
-    fileUrl ?: string;
-    isCompleted ?: boolean
+    fileUrl : string;
+    isCompleted : boolean
 }
