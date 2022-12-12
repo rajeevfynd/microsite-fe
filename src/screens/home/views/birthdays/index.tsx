@@ -66,7 +66,7 @@ export const BirthDays = () => {
                     dataLength={birthdays.length}
                     next={loadMore}
                     hasMore={hasMore}
-                    loader={<Spin size="large" />}
+                    loader={<h6 style={{opacity:'50%'}}>Scroll Here</h6>}
                     scrollThreshold="50%"
                 >
                     <List
