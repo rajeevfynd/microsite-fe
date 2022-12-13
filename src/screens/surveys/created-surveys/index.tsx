@@ -74,6 +74,8 @@ export const CreatedSurvey = () => {
         .catch((err) => {
           showNotification("error", err.data.data.message);
         });
+    } else {
+      showNotification("error", `Select users and expire data`);
     }
   };
 
