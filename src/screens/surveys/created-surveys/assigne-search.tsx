@@ -6,13 +6,13 @@ import axios from "axios";
 const { Option } = Select;
 
 type propsType = {
-  handleSelectedUser(value: string): void;
+  handleSelectedUser(value: React.SetStateAction<string[]>): void;
 };
 
 const AssigneSearch = (props: propsType) => {
   const [users, SetUsers] = React.useState<UserType[]>([]);
 
-  function onChange(value: string) {
+  function onChange(value: React.SetStateAction<string[]>) {
     props.handleSelectedUser(value);
     console.log(`selected ${value}`);
   }
@@ -47,12 +47,6 @@ const AssigneSearch = (props: propsType) => {
         onFocus={onFocus}
         onBlur={onBlur}
         onSearch={onSearch}
-
-        // filterOption={(input, option) =>
-        //   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-        //     0 ||
-        //   option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        // }
       >
         {users.length == 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />

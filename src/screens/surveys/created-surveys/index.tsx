@@ -40,7 +40,7 @@ export const CreatedSurvey = () => {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const [assigneeId, setAssigneeId] = React.useState("");
+  const [assigneeId, setAssigneeId] = React.useState<Array<string>>([]);
 
   const [surveyId, setSurveyId] = React.useState("");
 
@@ -60,12 +60,12 @@ export const CreatedSurvey = () => {
       assigneeId: assigneeId,
       expireDate: expireData,
     };
-    if (assigneeId !== "" && expireData !== "") {
+    if (assigneeId.length && expireData !== "") {
       assignSurveyToUserId(reqBody)
         .then((res) => {
           console.log("Response", res);
           showNotification("success", `Survey assigneed to ${assigneeId}`);
-          setAssigneeId("");
+          setAssigneeId([]);
           setExpireDate("");
           setSurveyId("");
           form.resetFields();
@@ -142,7 +142,8 @@ export const CreatedSurvey = () => {
       });
   }, []);
 
-  const handleSelectedUser = (Id: string) => {
+  const handleSelectedUser = (Id: React.SetStateAction<string[]>) => {
+    console.log("Inside Handle selector", Id);
     setAssigneeId(Id);
   };
 
