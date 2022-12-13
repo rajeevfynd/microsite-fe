@@ -140,7 +140,6 @@ const Survey = () => {
 
   React.useEffect(() => {
     console.log("Inside UseEffect");
-    console.log(params.surveyId);
     getSurveyById(params.surveyId)
       .then((res) => {
         console.log("Get survey By id", res.data);

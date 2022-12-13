@@ -1,6 +1,6 @@
 import { Card } from "antd";
 
-import DasboardTable from "./table";
+//import DasboardTable from "./table";
 
 import { LikeOutlined } from "@ant-design/icons";
 
@@ -49,7 +49,7 @@ function SurveyDashBoard() {
 
         <br></br>
 
-        <DasboardTable />
+        {/* <DasboardTable /> */}
       </div>
     </>
   );

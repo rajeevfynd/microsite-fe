@@ -1,5 +1,4 @@
 import httpInstance from "../utility/http-client";
-let userId = 11;
 
 export function getAllSurveys(offset: number) {
   return httpInstance.get(
@@ -72,7 +71,7 @@ export function getSurveyResponseById(assigneeId: string) {
 
 export function assignSurveyToUserId(reqBody: {
   surveyId: string;
-  assigneeId: string;
+  assigneeId: Array<string>;
   expireDate: string;
 }) {
   return httpInstance.post("/microsite/surveys/assign", reqBody);
