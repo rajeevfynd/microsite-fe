@@ -100,7 +100,6 @@ const ResponseSurvey = () => {
   };
   React.useEffect(() => {
     setIsLoading(true);
-
     getSurveyResponse().then((res) => {
       getSurveyById(params.surveyId)
         .then((res) => {
