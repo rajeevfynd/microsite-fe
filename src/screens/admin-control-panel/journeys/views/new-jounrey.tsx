@@ -81,6 +81,7 @@ export const NewJourney: React.FC = () => {
           <Form.Item>
             Thumbnail
             <Upload
+              fileType='image'
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
               accept='image/png, image/jpeg' 
