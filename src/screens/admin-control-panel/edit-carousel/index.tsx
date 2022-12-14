@@ -81,7 +81,9 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 1' onFinish={handleSubmit} >
                             <Form.Item label="Upload" valuePropName="fileList">
-                                <Upload onDone={(info) => {
+                                <Upload
+                                fileType='image'
+                                onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -102,7 +104,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
@@ -119,7 +121,9 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 2' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                            <Upload onDone={(info) => {
+                            <Upload 
+                            fileType='image'
+                            onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -140,7 +144,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
@@ -157,7 +161,9 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 3' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                            <Upload onDone={(info) => {
+                            <Upload 
+                            fileType='image'
+                            onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -178,7 +184,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
