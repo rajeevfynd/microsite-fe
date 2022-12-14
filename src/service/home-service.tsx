@@ -25,6 +25,10 @@ export const getBirthdaysService = (page:string = '0', size:string = '4')=>{
     return httpInstance.get(GET_BIRTHDAYS+'?&pageNumber='+page+'&pageSize='+size);
 }
 
+export const getBirthdayCards = () =>{
+    return httpInstance.get(GET_BIRTHDAYS+'wishes/');
+}
+
 export const getAllBirthdaysService = ()=>{
     return httpInstance.get(GET_ALL_BIRTHDAYS);
 }

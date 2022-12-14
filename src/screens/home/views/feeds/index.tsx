@@ -24,7 +24,7 @@ export const Feeds = () => {
                 next={() => {}}
                 hasMore={false}
                 loader={<Spin size="large" />}
-                scrollThreshold="20%"
+                scrollThreshold="80%"
             >
                 <div className="centered-container">
                     <div style={{ width: "90%" }}>
