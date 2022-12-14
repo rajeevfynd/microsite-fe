@@ -20,7 +20,7 @@ const CheckBoxUi = (props: propsType) => {
     <div>
       <div className="row">
         <div className="col-6">
-          <Checkbox onChange={handleCheckBox}>
+          <Checkbox onChange={handleCheckBox} disabled={true}>
             {" "}
             <Input
               value={props.optionText}

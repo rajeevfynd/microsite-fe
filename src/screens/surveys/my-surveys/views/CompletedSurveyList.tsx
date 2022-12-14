@@ -1,4 +1,4 @@
-import { notification, Space, Card } from "antd";
+import { notification, Space, Card, Empty } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -57,7 +57,7 @@ function CompletedSurveyList() {
             {isLoading ? (
               <h3>Loading...</h3>
             ) : Surveys.length === 0 ? (
-              <h3>No surveys to submit</h3>
+              <Empty description={<span>No Surveys</span>} />
             ) : (
               Surveys.map((i) => (
                 <div className="col-lg-3">

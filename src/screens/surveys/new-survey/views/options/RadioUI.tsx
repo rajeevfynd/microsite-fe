@@ -26,6 +26,7 @@ const RadioUi = (props: radioProps) => {
                 className="form-check-input"
                 type="radio"
                 name="flexRadioDefault"
+                disabled
               />
               <Input
                 placeholder="Enter option"

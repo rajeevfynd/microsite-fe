@@ -1,4 +1,4 @@
-import { Collapse, Typography, notification, Space, Card } from "antd";
+import { Collapse, Typography, notification, Space, Card, Empty } from "antd";
 import { EditTwoTone, InfoCircleFilled, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -69,7 +69,7 @@ function SurveyList() {
             {isLoading ? (
               "Loading"
             ) : Surveys.length === 0 ? (
-              <h3>No surveys</h3>
+              <Empty description={<span>No Surveys</span>} />
             ) : (
               Surveys.map((i) => (
                 <div className="col-lg-3">
