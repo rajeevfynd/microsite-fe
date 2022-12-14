@@ -101,6 +101,7 @@ export const AdminCoursePage = () => {
                                     }
                                 >
                                     <Meta
+                                    style= {{overflow:"hidden"}}
                                         title={item.title}
                                         description={item.description}
                                     />
