@@ -112,9 +112,9 @@ export const EditProgram = () => {
           <Form.Item>
             Thumbnail
             <Upload
-              fileType='image'
+              //fileType='image'
               onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
+              onRemove={() => { setThumbnail('');setThumbnailUrl(''); } }
               file={thumbnailUrl}
               accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>

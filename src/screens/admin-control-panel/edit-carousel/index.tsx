@@ -82,7 +82,7 @@ const EditCarousal = () => {
                         <Form name='Slide 1' onFinish={handleSubmit} >
                             <Form.Item label="Upload" valuePropName="fileList">
                                 <Upload
-                                fileType='image'
+                                //fileType='image'
                                 onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
@@ -122,7 +122,7 @@ const EditCarousal = () => {
                         <Form name='Slide 2' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
                             <Upload 
-                            fileType='image'
+                            //fileType='image'
                             onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
@@ -162,7 +162,7 @@ const EditCarousal = () => {
                         <Form name='Slide 3' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
                             <Upload 
-                            fileType='image'
+                            //fileType='image'
                             onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
