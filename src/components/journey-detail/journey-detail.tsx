@@ -3,6 +3,7 @@ import * as React from 'react'
 import { PatchCheckFill,  Clock, ArrowRight } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import { JourneyDetailPropsType } from '../../models/journey-details'
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants'
 
 export const JourneyDetail = (props: JourneyDetailPropsType) => {
 
@@ -13,6 +14,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                 <Col span={7} style={{height:240}}>
                     <Image
                         src={`data:image/png;base64,${props.details.thumbnailLink}`}
+                        fallback={DEFAULT_LND_THUMBNAIL}
                         height={"100%"}
                         width={'80%'}
                         preview={false}
@@ -36,10 +38,10 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                     <List.Item
                         extra={
                             <div style={{height:100, width:150}}>
-                            <img
+                            <Image
                                 width={'80%'}
                                 height={'100%'}
-                                alt="logo"
+                                fallback={DEFAULT_LND_THUMBNAIL}
                                 src={`data:image/png;base64,${item.program.thumbnailLink}`}
                             /></div>}
                     >

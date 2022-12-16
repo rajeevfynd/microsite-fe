@@ -1,4 +1,4 @@
-import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Input, List, Modal, Result, Skeleton, Typography, Image } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
@@ -9,6 +9,7 @@ import { deleteProgram } from '../../../service/program-service';
 import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
+import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 const { Text } = Typography;
 
 export  const AdminProgramList = () => {
@@ -106,9 +107,10 @@ export  const AdminProgramList = () => {
               <Card 
                 hoverable
                 cover={
-                  <img
+                  < Image
                     width='150' height='250'
                     src={`data:image/png;base64,${item.thumbnailLink}`}
+                    fallback={DEFAULT_LND_THUMBNAIL}
                   />
                 }
                 actions={[
