@@ -28,7 +28,9 @@ export const NewJourney: React.FC = () => {
 
   const onFinish = () => {
     if(journey.title != null && journey.title.trim() != '') {
-    handleFormSubmit(journey, programs, thumbnail, 'GENERAL').then(resp => {
+    let resp = handleFormSubmit(journey, programs, thumbnail, 'GENERAL')
+    if(resp)
+      resp.then(resp => {
       if (resp.data) {
         message.success('Journey added successfully');
         navigate("/admin/journeys");
@@ -80,7 +82,8 @@ export const NewJourney: React.FC = () => {
             <Upload
               fileType='image'
               onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')} />
+              onRemove={() => setThumbnail('')}
+              accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 
           <Form.Item>
@@ -130,7 +133,7 @@ export const NewJourney: React.FC = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index + program.programName} className="draggable-item">
+                    <List.Item key={program.programName ? index + program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput

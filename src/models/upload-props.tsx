@@ -12,4 +12,5 @@ export type UploadProps = {
     onDone?: (info: UploadOnDoneParams) => void;
     file?: string
     fileType?: string
+    accept?: string
 }

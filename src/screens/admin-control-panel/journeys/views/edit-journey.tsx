@@ -44,6 +44,7 @@ export const EditJourney = () => {
     })
     setCategory(data.category);
     setThumbnailUrl(data.thumbnailLink);
+    setThumbnail(data.thumbnailId);
   }
 
   const processPrograms = (programs: any[]) => {
@@ -114,7 +115,8 @@ export const EditJourney = () => {
               fileType='image'
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
-              file={thumbnailUrl} />
+              file={thumbnailUrl}
+              accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 
           <Form.Item>
