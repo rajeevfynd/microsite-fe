@@ -182,13 +182,13 @@ export const CreatedSurvey = () => {
         loader={<Spin size="large" />}
         scrollThreshold="20%"
       >
-        <h3>Surveys</h3>
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            padding: "0% 3%"
           }}
         >
           <ShadowSearchInput
