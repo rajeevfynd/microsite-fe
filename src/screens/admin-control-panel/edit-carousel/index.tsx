@@ -83,6 +83,7 @@ const EditCarousal = () => {
                             <Form.Item label="Upload" valuePropName="fileList">
                                 <Upload
                                 //fileType='image'
+                                accept="image/png, image/jpeg, image/jpg"
                                 onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
@@ -123,6 +124,7 @@ const EditCarousal = () => {
                             <Form.Item label="Upload" valuePropName="fileList">
                             <Upload 
                             //fileType='image'
+                            accept="image/png, image/jpeg, image/jpg"
                             onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
@@ -163,6 +165,7 @@ const EditCarousal = () => {
                             <Form.Item label="Upload" valuePropName="fileList">
                             <Upload 
                             //fileType='image'
+                            accept="image/png, image/jpeg, image/jpg"
                             onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
