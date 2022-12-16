@@ -40,7 +40,8 @@ export const Upload = (props: UploadProps) => {
         },
         onRemove(info) {
             props.onRemove({});
-        }
+        },
+        accept : props.accept
     };
 
 

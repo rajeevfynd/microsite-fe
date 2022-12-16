@@ -11,4 +11,5 @@ export type UploadProps = {
     onRemove?: (info: UploadonRemoveParams) => void,
     onDone?: (info: UploadOnDoneParams) => void;
     file?: string
+    accept?: string
 }

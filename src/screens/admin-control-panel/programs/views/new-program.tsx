@@ -31,12 +31,15 @@ export const NewProgram: React.FC = () => {
 
   const onFinish = () => {
     if(program.title != null && program.title.trim() != '') {
-    handleProgramFormSubmit(program, courses, thumbnail).then(resp => {
-      if (resp.data) {
-        message.success('Program added successfully');
-        navigate("/admin/programs");
-      }
-    })
+    let resp = handleProgramFormSubmit(program, courses, thumbnail)
+    if(resp){
+      resp.then(resp => {
+        if (resp.data) {
+          message.success('Program added successfully');
+          navigate("/admin/programs");
+        }
+      })
+    }
   }
   else{
     setProgram({
@@ -81,7 +84,9 @@ export const NewProgram: React.FC = () => {
               Thumbnail
               <Upload
                 onDone={(info) => setThumbnail(info.documentId)}
-                onRemove={() => setThumbnail('')} />
+                onRemove={() => setThumbnail('')} 
+                accept='image/png, image/jpeg'
+                />
             </Form.Item>
 
             <Form.Item>
@@ -147,7 +152,7 @@ export const NewProgram: React.FC = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={index+course.courseName} className="draggable-item">
+                    <List.Item key={course.courseName ? index+course.courseName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
