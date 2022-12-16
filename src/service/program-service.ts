@@ -51,7 +51,7 @@ export function getCoursesFts(key:string = '', page:string = '0', size:string = 
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
-export const getProgramDetails = (id:string) => {
+export const getProgramDetails = (id:string| undefined) => {
     return httpInstance.get('/microsite/lnd/programs/details/'+id)
 }
 
@@ -122,7 +122,7 @@ export function validateProgramsCourses(values: CourseMapType[]) {
     return [...updatedCourses]
   }
 
-  export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], thumbnail: string, id: string = null) => {
+  export const handleProgramFormSubmit = (program: any, courses: CourseMapType[], thumbnail: string, id: string | undefined = null) => {
   if(validateProgramsCourses(courses)){
   let mappedCourses: any[] = courses.filter(p => p.courseName != undefined)
   mappedCourses.forEach((course, index) => {

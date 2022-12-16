@@ -42,6 +42,7 @@ export const EditJourney = () => {
       description: data.description,
       sequence: data.flow == Flow.SEQUENCE
     })
+    setThumbnail(data.thumbnailId);
     setCategory(data.category);
     setThumbnailUrl(data.thumbnailLink);
   }

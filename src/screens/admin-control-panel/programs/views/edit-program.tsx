@@ -44,6 +44,8 @@ export const EditProgram = () => {
       sequence: data.flow == Flow.SEQUENCE,
       issueCertificate: data.issueCertificate
     })
+    console.log(data.thumbnailId)
+    setThumbnail(data.thumbnailId);
     setThumbnailUrl(data.thumbnailLink);
   }
 
@@ -60,12 +62,15 @@ export const EditProgram = () => {
 
   const onFinish = () => {
     if(program.title != null && program.title.trim() != '') {
-    handleProgramFormSubmit(program, courses, thumbnail, id).then(resp => {
-      if (resp.data) {
-        message.success('Program updated successfully');
-        navigate("/admin/programs");
-      }
-    })
+    let responseData = handleProgramFormSubmit(program, courses, thumbnail, id)
+    if(responseData){
+      responseData.then(resp => {
+        if (resp.data) {
+          message.success('Program updated successfully');
+          navigate("/admin/programs");
+        }
+      })
+    }
   }
   else{
     setProgram({
@@ -173,7 +178,7 @@ export const EditProgram = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={index+course.courseName} className="draggable-item">
+                    <List.Item key={course.courseName? index+course.courseName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput
