@@ -1,6 +1,6 @@
 import * as React from 'react'
 import SearchCourses from './views/search-courses'
-import Scrollable_programs from './views/program-list'
+import ScrollablePrograms from './views/program-list'
 import HeroCarousel from './views/hero-carousel'
 
 export const LndHero = () => {
@@ -12,10 +12,10 @@ export const LndHero = () => {
       <SearchCourses />
       <br></br>
       <h3>Enrolled Programs</h3>
-      <Scrollable_programs {...{ "props": "current" }} />
+      <ScrollablePrograms {...{ "props": "current" }} />
       <br></br>
       <h3>Completed Programs</h3>
-      <Scrollable_programs {...{ "props": "completed" }} />
+      <ScrollablePrograms {...{ "props": "completed" }} />
       <br></br>
     </>
   )
