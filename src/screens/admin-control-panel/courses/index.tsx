@@ -1,9 +1,10 @@
-import { Button, Card, List, Skeleton } from 'antd';
+import { Button, Card, Image, List, Skeleton } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ShadowSearchInput } from '../../../components/shadow-input-text';
+import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 import { CourseListType } from '../../../models/course-type';
 import { getCourses } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
@@ -91,12 +92,13 @@ export const AdminCoursePage = () => {
                                         height: 300
                                     }}
                                     cover={
-                                        <img
+                                        <Image
                                             src={item.thumbnail}
                                             style={{
                                                 width: 340,
                                                 height: 195
                                             }}
+                                            fallback={DEFAULT_LND_THUMBNAIL}
                                         />
                                     }
                                 >
