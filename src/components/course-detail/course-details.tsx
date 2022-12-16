@@ -39,11 +39,11 @@ export function CourseDetails(props: { course: any }) {
                                 </h5>
                             </Col>
                         </Row>
-                        <Divider />
-                        <Row style={{ textAlign: "justify" }}>
-                            <Row>
-                                <Col style={{ width: 400, }}>
-                                    <b> <i> {course.description}</i></b>
+
+                        <Row style={{ textAlign: "justify", overflow: "scroll" }}>
+                            <Row style={{marginRight:"10px"}}>
+                                <Col style={{ width: 400, height: 200 }}>
+                                    <> <i> {course.description}</i></>
                                 </Col>
                             </Row>
 

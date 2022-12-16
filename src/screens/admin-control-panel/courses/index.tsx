@@ -103,7 +103,7 @@ export const AdminCoursePage = () => {
                                     }
                                 >
                                     <Meta
-                                    style= {{overflow:"hidden"}}
+                                    style= {{ textAlign: "center"}}
                                         title={item.title}
                                         description={item.description}
                                     />
