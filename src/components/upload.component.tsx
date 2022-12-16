@@ -4,7 +4,7 @@ import { UploadProps } from '../models/upload-props';
 import { PlusOutlined } from '@ant-design/icons';
 import { formatBase64 } from '../utility/image-utils';
 
-const supportedImages = ['png','jpg','jpeg']
+//const supportedImages = ['png','jpg','jpeg']
 
 export const Upload = (props: UploadProps) => {
     const [fileList, setFileList] = React.useState<UploadFile[]>([]);
@@ -28,11 +28,11 @@ export const Upload = (props: UploadProps) => {
         name: 'file',
         action: "/microsite/document/upload",
         onChange(info) {
-            if(props.fileType !== 'image' || !(supportedImages.includes(info.file.type.split('/')[1])))
+            /* if(props.fileType !== 'image' || !(supportedImages.includes(info.file.type.split('/')[1])))
             {
                 message.error("Only png, jpg and jpeg are allowed to be uploaded")
                 return
-            }
+            } */
             setFileList(info.fileList);
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
@@ -46,7 +46,8 @@ export const Upload = (props: UploadProps) => {
         },
         onRemove(info) {
             props.onRemove({});
-        }
+        },
+        accept: props.accept
     };
 
 
