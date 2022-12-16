@@ -58,12 +58,15 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
     .menu-item {
         display: inline-block;
         text-align: center;
-        padding: 14px;
         text-decoration: none;
     }
     
     div.scrollmenu a:hover {
         background-color: #777;
+    }
+
+    .last-menu {
+        cursor: default;
     }
         `
 
@@ -76,9 +79,9 @@ export const CategoryList = (props : {categoryProps : FaqCategoryPropType}) => {
         <div id="wrapper">
             <Menu onClick={onClick} selectedKeys={[currentActiveCategory]} id="scrollmenu"> 
                 {categoryList.map((categoryList) => (
-                    <MenuItem key={categoryList.id} className="menu-item"> 
+                    <><MenuItem key={categoryList.id} className="menu-item">
                         {categoryList.category}
-                    </MenuItem>
+                    </MenuItem><MenuItem className="menu-item last-menu" disabled></MenuItem></>
                 ))}
             </Menu>
         </div>
