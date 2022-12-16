@@ -13,12 +13,14 @@ const HeaderHome = () => {
   const user: any = getUser()
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
+  const [alternateProfilePic, setAlternateProfileUPic] = React.useState('');
   const navigate = useNavigate();
 
   React.useEffect(() => {
     if (user) {
       setFirstName(user.firstName)
       setLastName(user.lastName)
+      setAlternateProfileUPic(user.alternateProfilePicUrl)
     }
   })
 
@@ -32,7 +34,7 @@ const HeaderHome = () => {
           </div> */}
           <Avatar
             className='pro-pic'
-            src='https://avatars.githubusercontent.com/u/20350203?v=4'
+            src={alternateProfilePic}
             icon={getDefaulProPicUrl()}
           />
         </div>
