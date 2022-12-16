@@ -80,6 +80,7 @@ export const NewProgram: React.FC = () => {
             <Form.Item>
               Thumbnail
               <Upload
+                fileType='image'
                 onDone={(info) => setThumbnail(info.documentId)}
                 onRemove={() => setThumbnail('')} />
             </Form.Item>

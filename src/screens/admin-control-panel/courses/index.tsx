@@ -67,16 +67,19 @@ export const AdminCoursePage = () => {
                 onChange={(e:any) => { console.log(e); searchKey(e); }}
                 />
                 <Button type="primary" style={{marginBottom: "30px"}} onClick={() => navigate("/admin/addCourse")}>Create new Course</Button>
+                <div style={{ width:"100%"}} >
                 {courses.length != 0 &&
+
                     <InfiniteScroll
                         dataLength={courses.length}
                         next={loadMoreData}
                         hasMore={hasMore}
                         loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
                         scrollableTarget="scrollableDiv"
+                        
                     >
                     <List
-                        grid={{ gutter: 1, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }}
+                        grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
                         style={{ padding: "1%" }}
                         dataSource={courses}
                         renderItem={item => (
@@ -90,10 +93,15 @@ export const AdminCoursePage = () => {
                                     cover={
                                         <img
                                             src={item.thumbnail}
+                                            style={{
+                                                width: 340,
+                                                height: 195
+                                            }}
                                         />
                                     }
                                 >
                                     <Meta
+                                    style= {{overflow:"hidden"}}
                                         title={item.title}
                                         description={item.description}
                                     />
@@ -105,6 +113,7 @@ export const AdminCoursePage = () => {
                     />
                     </InfiniteScroll>
                 }
+                </div>
             </div>
         </>
     )
