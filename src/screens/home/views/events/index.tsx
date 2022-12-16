@@ -3,6 +3,7 @@ import { Button, Card, Carousel, Image, Modal } from 'antd';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseDetails } from '../../../../components/course-detail/course-details';
+import { DEFAULT_LND_THUMBNAIL } from '../../../../constants/string-constants';
 import { LearningEvent } from '../../../../models/enums/learning-events';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
@@ -67,7 +68,7 @@ export const Events = () => {
                             <h6 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
                             </h6>
-                            <Image src={`data:image/png;base64,${learningEvent.thumbnailLink}`} preview={false} height='80px' width='100px'/>
+                            <Image src={`data:image/png;base64,${learningEvent.thumbnailLink}`} preview={false} height='80px' width='100px' fallback={DEFAULT_LND_THUMBNAIL}/>
                             <div>
                                 <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
                              </div>

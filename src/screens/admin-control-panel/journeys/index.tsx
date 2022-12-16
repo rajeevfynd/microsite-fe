@@ -1,4 +1,4 @@
-import { Button, Card, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Image, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
@@ -8,6 +8,7 @@ import { JourneyDetailType } from '../../../models/journey-details';
 import { getJourneys, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 import { debounce } from '../../../utility/debounce-utils';
+import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 const { Text } = Typography;
 
 export  const AdminJourneyList = () => {
@@ -105,9 +106,10 @@ export  const AdminJourneyList = () => {
               <Card 
                 hoverable
                 cover={
-                  <img
+                  <Image
                     width='150' height='250'
                     src={`data:image/png;base64,${item.thumbnailLink}`}
+                    fallback={DEFAULT_LND_THUMBNAIL}
                   />
                 }
                 actions={[
