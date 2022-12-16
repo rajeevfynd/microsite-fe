@@ -97,7 +97,7 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     icon: <JourneySvg />,
                     navigate: "/lnd/learning-journey"
                 }
-                
+
             ]
         },
         {
@@ -215,7 +215,7 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Faq",
             key: "new-emp-faq",
             icon: <QuestionCircleOutlined />,
-            onClick: () => window.open('/lnd/new-emp-center/new-emp-faq', '_blank')
+            navigate: "/lnd/new-emp-center/new-emp-faq"
         }
     ]
 }
