@@ -17,7 +17,7 @@ type GetProgramResponse = {
 };
 
 
-function Scrollable_programs(props: any) {
+function ScrollablePrograms(props: any) {
 
   let url : string;
   if(props.props =="current"){
@@ -83,4 +83,4 @@ function Scrollable_programs(props: any) {
     );
   }
 
-export default Scrollable_programs;
+export default ScrollablePrograms;

@@ -1,4 +1,4 @@
-import { Carousel, Modal } from 'antd';
+import { Carousel, Image, Modal, Skeleton } from 'antd';
 import * as React from 'react';
 import './index.css'
 import 'antd/dist/antd.css';
@@ -59,20 +59,23 @@ function HeroCarousel(props: any) {
     fetchCarousel()
   }, [props.props, fetchCarousel]);
 
+  const CarouselImage = (props: any) => {
+    return (
+      <div>
+        <a onClick={() => { handleCourseDetailsClick(props.item); }}><Image width="100%" height={300} src={props.item.imageDocumentId} preview={false} placeholder={
+          <Skeleton.Input active block style={{ height: "300px" }} />
+        } /></a>
+      </div>
+    )
+  }
+
   return (
     <>
       <span>
-        {/* <ModalCarousal></ModalCarousal> */}
         <Carousel effect="fade" autoplay>
-          <div>
-            <a onClick={() => { handleCourseDetailsClick(carouselList[0]); }}><img width={1600} height={300} alt="example" src={carouselList[0].imageDocumentId} ></img></a>
-          </div>
-          <div>
-            <a onClick={() => { handleCourseDetailsClick(carouselList[1]); }}><img width={1600} height={300} alt="example" src={carouselList[1].imageDocumentId} ></img> </a>
-          </div>
-          <div>
-            <a onClick={() => { handleCourseDetailsClick(carouselList[2]); }}><img width={1600} height={300} alt="example" src={carouselList[2].imageDocumentId} ></img> </a>
-          </div>
+          <CarouselImage item={carouselList[0]} />
+          <CarouselImage item={carouselList[1]} />
+          <CarouselImage item={carouselList[2]} />
         </Carousel>
 
       </span>
