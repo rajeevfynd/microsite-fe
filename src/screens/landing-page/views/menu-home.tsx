@@ -23,6 +23,7 @@ import LeaderSvg from '../../../img/leader.svg';
 import CarouselSvg from '../../../img/carousel.svg';
 import DownloadSvg from '../../../img/download.svg';
 import AnnouncementSvg from '../../../img/promotion.svg';
+import ComingSoonSvg from '../../../img/coming-soon.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
@@ -44,8 +45,8 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 {
                     key: "podcasts",
                     title: "Podcasts",
-                    icon: <PodcastSvg />,
-                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                    icon: <ComingSoonSvg />,
+                    disabled: true
                 },
                 {
                     key: "r-samman",
@@ -56,14 +57,14 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 {
                     key: "idea-corner",
                     title: "Idea Corner",
-                    icon: <IdeaSvg />,
-                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                    icon: <ComingSoonSvg />,
+                    disabled: true
                 },
                 {
                     key: "rnr-corner",
                     title: "Rewards",
-                    icon: <RnrSvg />,
-                    navigate: "/lnd/new-emp-center/induction/welcome1"
+                    icon: <ComingSoonSvg />,
+                    disabled: true
                 }
             ]
         },

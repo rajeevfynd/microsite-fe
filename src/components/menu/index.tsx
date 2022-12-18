@@ -57,27 +57,38 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
 
     React.useEffect(() => {
         let item = getSelectedPrimaryItemByKey(props.menu, menuPrimaryKey);
+        onPrimaryMenuItemClick(item);
+    }, []);
+
+    function onPrimaryMenuItemClick(item: PrimaryMenuItemProps) {
         if (item.navigate) {
             setMenuSecondaryKey(null);
         }
         setSecondaryItems(item?.secondaryItems || []);
-    }, [menuPrimaryKey]);
+    }
+
+    function onMenuItemClick(item: MenuItemProps) {
+        if (item.disabled) {
+            return;
+        }
+        item.onClick && item.onClick();
+        item.navigate && navigate(item.navigate);
+    }
 
     return (
         <>
             <div className='menu-container'>
                 {props.menu.map(item => <MenuItem {...item} selected={menuPrimaryKey == item.key} onClick={() => {
                     setMenuPrimaryKey(item.key);
-                    item.onClick && item.onClick();
-                    item.navigate && navigate(item.navigate);
+                    onMenuItemClick(item);
+                    onPrimaryMenuItemClick(item);
                 }} />)}
             </div>
             <div className='secondary-menu'>
                 <div className='secondary-menu-container'>
                     {secondaryItems.map(item => <SecondaryMenuItem {...item} selected={menuSecondaryKey == item.key} onClick={() => {
                         setMenuSecondaryKey(item.key);
-                        item.onClick && item.onClick();
-                        item.navigate && navigate(item.navigate);
+                        onMenuItemClick(item);
                     }} />)}
                 </div>
             </div>
