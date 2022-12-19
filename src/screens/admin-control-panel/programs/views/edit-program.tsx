@@ -45,7 +45,7 @@ export const EditProgram = () => {
       sequence: data.flow == Flow.SEQUENCE,
       issueCertificate: data.issueCertificate
     })
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
     setThumbnail(data.thumbnailId);
   }
 

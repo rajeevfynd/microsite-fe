@@ -12,7 +12,7 @@ import "./index.scss";
 type LearningEventType = {
     id : string,
     title : string,
-    thumbnailLink : string,
+    thumbnail : string,
     type : LearningEvent
 }
 
@@ -68,7 +68,7 @@ export const Events = () => {
                             <h6 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
                             </h6>
-                            <Image src={`data:image/png;base64,${learningEvent.thumbnailLink}`} preview={false} height='80px' width='100px' fallback={DEFAULT_LND_THUMBNAIL}/>
+                            <Image src={`data:image/png;base64,${learningEvent.thumbnail}`} preview={false} height='80px' width='100px' fallback={DEFAULT_LND_THUMBNAIL}/>
                             <div>
                                 <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
                              </div>

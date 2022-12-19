@@ -30,7 +30,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
             <Row>
             <Col span={7} style={{height:240}}>
                     <Image
-                        src={`data:image/png;base64,${props.details.thumbnailLink}`}
+                        src={`data:image/png;base64,${props.details.thumbnail}`}
                         height={"100%"}
                         width={'80%'}
                         preview={false}

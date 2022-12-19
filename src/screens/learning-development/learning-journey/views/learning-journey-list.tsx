@@ -99,7 +99,7 @@ export  const LearningJourneyList = () => {
                       width: 340,
                       height: 195
                     }}
-                    src={`data:image/png;base64,${item.thumbnailLink}`}
+                    src={`data:image/png;base64,${item.thumbnail}`}
                     fallback={DEFAULT_LND_THUMBNAIL}
                     preview={false}
                   />

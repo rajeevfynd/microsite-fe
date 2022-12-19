@@ -13,7 +13,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
             <Row>
                 <Col span={7} style={{height:240}}>
                     <Image
-                        src={`data:image/png;base64,${props.details.thumbnailLink}`}
+                        src={`data:image/png;base64,${props.details.thumbnail}`}
                         fallback={DEFAULT_LND_THUMBNAIL}
                         height={"100%"}
                         width={'80%'}
@@ -42,7 +42,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                                 width={'80%'}
                                 height={'100%'}
                                 fallback={DEFAULT_LND_THUMBNAIL}
-                                src={`data:image/png;base64,${item.program.thumbnailLink}`}
+                                src={`data:image/png;base64,${item.program.thumbnail}`}
                                 preview={false}
                             /></div>}
                     >
