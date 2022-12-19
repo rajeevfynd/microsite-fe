@@ -7,6 +7,7 @@ import { DEFAULT_LND_THUMBNAIL } from '../../../../constants/string-constants';
 import { LearningEvent } from '../../../../models/enums/learning-events';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
+import { getSurveyEvent } from '../../../../service/survey-service';
 import "./index.scss";
 
 type LearningEventType = {
@@ -16,12 +17,19 @@ type LearningEventType = {
     type : LearningEvent
 }
 
+type SurveyEventType = {
+    id: string,
+    surveyTitle: string,
+    imgUrl: string,
+}
+
 export const Events = () => {
 
     const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [courseDetails, setCourseDetails] = React.useState({});
     const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
+    const [surveyEvent, setSurveyEvent] = React.useState<SurveyEventType>()
 
     const handleLearningEvent = () => {
         if(learningEvent){
@@ -46,6 +54,10 @@ export const Events = () => {
         getLearningEvents().then( res=> {
             setLearningEvent(res.data)
         })
+        getSurveyEvent().then( res=> {
+            setSurveyEvent(res.data)
+            console.log(res)
+        })
     },[])
     return (
         <>
@@ -60,6 +72,20 @@ export const Events = () => {
             </Modal>
             <Card className="home-card">
                 <Carousel autoplay pauseOnHover effect='fade' dots={false}>
+                    {
+                        surveyEvent != undefined &&
+                        <div
+                            className='event-carousel'
+                        >
+                            <h6 style={{height:'40px'}}>
+                                "{surveyEvent.surveyTitle}" is due
+                            </h6>
+                            <Image src={`data:image/png;base64,${surveyEvent.imgUrl}`} className='event-img' preview={false} height='80px' width='80px'/>
+                            <div>
+                                <Button onClick={()=>navigate('/survey/submit/survey/'+surveyEvent.id+'/2')} type='link' className='event-link'>Go to Survey </Button>
+                             </div>
+                        </div>
+                    }
                     {  
                         learningEvent != undefined && 
                         <div
@@ -68,7 +94,7 @@ export const Events = () => {
                             <h6 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
                             </h6>
-                            <Image src={`data:image/png;base64,${learningEvent.thumbnail}`} preview={false} height='80px' width='100px' fallback={DEFAULT_LND_THUMBNAIL}/>
+                            <Image src={`data:image/png;base64,${learningEvent.thumbnail}`} className='event-img' preview={false} height='80px' width='80px' fallback={DEFAULT_LND_THUMBNAIL} />
                             <div>
                                 <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
                              </div>
