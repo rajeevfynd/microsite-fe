@@ -10,6 +10,7 @@ import { PlusLg, Trash, PencilSquare } from 'react-bootstrap-icons';
 import { getPrograms } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
+import { ShadowSearchInput } from '../../../components/shadow-input-text';
 const { Text } = Typography;
 
 export  const AdminProgramList = () => {
@@ -72,25 +73,20 @@ export  const AdminProgramList = () => {
  
   return (
     <>
-    <h3>Programs</h3>
-    <div className='search-container'>
-      <Input 
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+      <ShadowSearchInput 
         size='large' 
-        className='home-card search-card search-box' 
-        style={{padding:15}}
-        suffix={<SearchOutlined/>} 
-        placeholder='Search Programs...'
-        allowClear
-        onChange={(e) => {searchKey(e.target.value);} } 
+        placeholder='Type in the program title you are looking for...'
+        onChange={(e:string) => {searchKey(e);} } 
     />
-    <div>
-        <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
-    </div>
-    </div>
+    <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
     <div
       id="scrollableDiv"
-    >
-      { programs.length != 0 &&
+      style={{
+        width: '100%',
+        height: '100%'
+      }}
+    >{ programs.length != 0 &&
       <InfiniteScroll
         dataLength={programs.length}
         next={loadMoreData}
@@ -99,18 +95,26 @@ export  const AdminProgramList = () => {
         scrollableTarget="scrollableDiv"
       >
         <List
-          grid={{gutter: 16, column: 4}}
+          grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
           style={{padding : "1%"}}
           dataSource={programs}
           renderItem={item => (
             <List.Item key={item.title}>
               <Card 
                 hoverable
+                style={{
+                  width: 340,
+                  height: 350
+                }}
                 cover={
                   < Image
-                    width='150' height='250'
+                    style={{
+                      width: 340,
+                      height: 195
+                    }}
                     src={`data:image/png;base64,${item.thumbnailLink}`}
                     fallback={DEFAULT_LND_THUMBNAIL}
+                    preview={false}
                   />
                 }
                 actions={[
@@ -135,6 +139,8 @@ export  const AdminProgramList = () => {
           title={<Text type='secondary'>No Program Found</Text>}
         />
       }
+    </div>
+
     </div>
     </>
   );

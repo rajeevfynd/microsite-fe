@@ -18,7 +18,7 @@ function Programs (props: Program){
       width: 340,
       height: 300
     }}
-    cover={<Image src={props.thumbnailLink} fallback={DEFAULT_LND_THUMBNAIL} />}
+    cover={<Image src={props.thumbnailLink} fallback={DEFAULT_LND_THUMBNAIL} preview={false}/>}
   >
     <Meta title={props.title} description={props.description}  />
     <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(props.title.toString()) }}> Go to Program <ArrowRight /> </Button>

@@ -113,8 +113,8 @@ export const EditJourney = () => {
             Thumbnail
             <Upload
               //fileType='image'
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
               file={thumbnailUrl}
               accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>

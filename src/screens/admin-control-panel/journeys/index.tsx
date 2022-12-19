@@ -1,6 +1,6 @@
 import { Button, Card, Image, Input, List, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import * as React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { getJourneys, deleteJourney } from '../../../service/journey-service';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 import { debounce } from '../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
+import { ShadowSearchInput } from '../../../components/shadow-input-text';
 const { Text } = Typography;
 
 export  const AdminJourneyList = () => {
@@ -71,61 +72,65 @@ export  const AdminJourneyList = () => {
  
   return (
     <>
-    <h3>Journeys</h3>
-    <div className='search-container'>
-      <Input 
-        size='large' 
-        className='home-card search-card search-box' 
-        style={{padding:15}}
-        suffix={<SearchOutlined/>} 
-        placeholder='Search Journeys...'
-        allowClear
-        onChange={(e) => {searchKey(e.target.value);} } 
-    />
-    <div>
-        <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
-    </div>
-    </div>
-    <div
-      id="scrollableDiv"
-    >
-      { journeys.length != 0 &&
-      <InfiniteScroll
-        dataLength={journeys.length}
-        next={loadMoreData}
-        hasMore={hasMore}
-        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-        scrollableTarget="scrollableDiv"
-      >
-        <List
-          grid={{gutter: 16, column: 4}}
-          style={{padding : "1%"}}
-          dataSource={journeys}
-          renderItem={item => (
-            <List.Item key={item.title}>
-              <Card 
-                hoverable
-                cover={
-                  <Image
-                    width='150' height='250'
-                    src={`data:image/png;base64,${item.thumbnailLink}`}
-                    fallback={DEFAULT_LND_THUMBNAIL}
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+      <ShadowSearchInput
+        size='large'   
+        placeholder='Type in the journey title you are looking for...'
+        onChange={(e:string) => {searchKey(e);} } 
+      />
+      <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Journey</Button>
+    
+      <div
+        id="scrollableDiv"
+        style={{
+          width: '100%',
+          height: '100%'
+        }}
+      > { journeys.length != 0 &&
+        <InfiniteScroll
+          dataLength={journeys.length}
+          next={loadMoreData}
+          hasMore={hasMore}
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
+            style={{padding : "1%"}}
+            dataSource={journeys}
+            renderItem={item => (
+              <List.Item key={item.title}>
+                <Card 
+                  hoverable
+                  style={{
+                    width: 340,
+                    height: 350
+                  }}
+                  cover={
+                    <Image
+                      style={{
+                        width: 340,
+                        height: 195
+                      }}
+                      src={`data:image/png;base64,${item.thumbnailLink}`}
+                      fallback={DEFAULT_LND_THUMBNAIL}
+                      preview={false}
+                    />
+                  }
+                  actions={[
+                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
+                    <Button onClick={()=>handleDelete(item.id.toString(), item.title? item.title : '')} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+                ]}
+                >
+                  <Meta
+                    title={item.title}
+                    description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                   />
-                }
-                actions={[
-                  <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                  <Button onClick={()=>handleDelete(item.id.toString(), item.title)} style={{width: '100%'}} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
-              ]}
-              >
-                <Meta
-                  title={item.title}
-                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
-                />
-              </Card>
-            </List.Item>
-          )}
-        />
-      </InfiniteScroll>
+                </Card>
+              </List.Item>
+            )}
+          />
+        </InfiniteScroll>
       }
       {
         journeys.length == 0 &&
@@ -134,6 +139,8 @@ export  const AdminJourneyList = () => {
           title={<Text type='secondary'>No Journey Found</Text>}
         />
       }
+    </div>
+    
     </div>
     </>
   );

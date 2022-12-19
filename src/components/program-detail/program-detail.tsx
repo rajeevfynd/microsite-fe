@@ -2,6 +2,7 @@ import { Image, Row, Col, Progress, List, Modal, Button } from 'antd'
 import * as React from 'react'
 import { ArrowRight, Clock, PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants'
 import { ProgramDetailPropsType } from '../../models/journey-details'
 import { CourseDetails } from '../course-detail/course-details'
 
@@ -33,6 +34,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                         height={"100%"}
                         width={'80%'}
                         preview={false}
+                        fallback={DEFAULT_LND_THUMBNAIL}
                     />
                 </Col>
                 <Col span={15}>
@@ -53,11 +55,13 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                     <List.Item
                         extra={
                             <div style={{height:100, width:150}}>
-                            <img
+                            <Image
                                 width={'80%'}
                                 height={'100%'}
                                 alt="logo"
-                                src={item.course.thumbnail}
+                                src={`data:image/png;base64,${item.course.thumbnail}`}
+                                fallback={DEFAULT_LND_THUMBNAIL}
+                                preview={false}
                             /></div>}
                     >
                         <List.Item.Meta

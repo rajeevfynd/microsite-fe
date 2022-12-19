@@ -31,6 +31,7 @@ export const EditProgram = () => {
   const { Option } = Select;
 
   React.useEffect(() => {
+    if(id)
     getProgramDetails(id).then(res => {
       processCourses(res.data.courses);
       processProgram(res.data);
@@ -113,8 +114,8 @@ export const EditProgram = () => {
             Thumbnail
             <Upload
               //fileType='image'
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => { setThumbnail('');setThumbnailUrl(''); } }
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
               file={thumbnailUrl}
               accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>

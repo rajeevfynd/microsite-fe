@@ -14,8 +14,9 @@ export function CourseCard(props: { cardStyle: object, isHoverable: boolean, ima
             cover={
                 < Image style={imageStyle}
                     alt="image"
-                    src={imageSource}
+                    src={`data:image/png;base64,${imageSource}`}
                     fallback={DEFAULT_LND_THUMBNAIL}
+                    preview={false}
                 />
             }>
 

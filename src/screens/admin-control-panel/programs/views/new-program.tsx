@@ -25,6 +25,7 @@ export const NewProgram: React.FC = () => {
   const navigate = useNavigate()
   const [courses, setCourses] = React.useState<CourseMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
+  const [thumbnailUrl, setThumbnailUrl] = React.useState('')
   const [program, setProgram] = React.useState<editProgramDetails>({ sequence: true, issueCertificate: false })
 
   const { Option } = Select;
@@ -83,8 +84,9 @@ export const NewProgram: React.FC = () => {
               Thumbnail
               <Upload
                 //fileType='image'
-                onDone={(info) => setThumbnail(info.documentId)}
-                onRemove={() => setThumbnail('')}
+                onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+                onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+                file={thumbnailUrl}
                 accept="image/png, image/jpeg, image/jpg"  />
             </Form.Item>
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { List, Button, Modal, Row, Col, Image, Divider } from 'antd';
 import Card from 'antd/lib/card/Card';
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
 
 
 export function CourseDetails(props: { course: any }) {
@@ -18,8 +19,9 @@ export function CourseDetails(props: { course: any }) {
                                 <Image
                                     width={400}
                                     height={200}
-                                    src={course.thumbnail}
-                                    fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7"
+                                    src={`data:image/png;base64,${course.thumbnail}`}
+                                    fallback={DEFAULT_LND_THUMBNAIL} 
+                                    preview={false}
                                 />
                             </Col>
                         </Row>

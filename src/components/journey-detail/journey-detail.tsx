@@ -43,6 +43,7 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                                 height={'100%'}
                                 fallback={DEFAULT_LND_THUMBNAIL}
                                 src={`data:image/png;base64,${item.program.thumbnailLink}`}
+                                preview={false}
                             /></div>}
                     >
                         <List.Item.Meta

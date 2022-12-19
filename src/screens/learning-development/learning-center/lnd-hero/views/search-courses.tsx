@@ -114,8 +114,9 @@ const SearchCourses = () => {
                                 }}
                                 cover={
                                     <Image
-                                        src={item.thumbnail}
+                                        src={`data:image/png;base64,${item.thumbnail}`}
                                         fallback={DEFAULT_LND_THUMBNAIL}
+                                        preview={false}
                                     />
                                 }
                             >

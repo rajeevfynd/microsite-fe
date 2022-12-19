@@ -1,3 +1,4 @@
+import { SearchOutlined } from '@ant-design/icons';
 import { Card, Input } from 'antd';
 import * as React from 'react';
 
@@ -6,10 +7,8 @@ import * as React from 'react';
 export const ShadowSearchInput = (props: any) => {
     return (
         <>
-            <div style={{ width: props.width || "50%", marginTop: "30px", marginBottom: "30px" }}>
-                <Card className='home-card search-card' bodyStyle={{ padding: "12px" }}>
-                    <Input {...props} bordered={false} allowClear onChange={(e) => props.onChange(e.target.value)} />
-                </Card>
+            <div style={{ width: props.width || "50%", marginTop: "12px", marginBottom: "12px" }}>
+                    <Input {...props} className='home-card search-card' style={{padding: '1.1%'}} allowClear onChange={(e) => props.onChange(e.target.value)} suffix={<SearchOutlined/>}/>
             </div>
         </>
     )
