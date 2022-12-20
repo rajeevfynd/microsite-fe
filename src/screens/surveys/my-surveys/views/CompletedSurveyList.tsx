@@ -34,7 +34,6 @@ function CompletedSurveyList() {
   ]);
 
   const getSurveys = () => {
-    console.log("Inside get surveys");
     setIsLoading(true);
     getSurveysByStatus(true)
       .then((res) => {
@@ -42,7 +41,6 @@ function CompletedSurveyList() {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err.message);
         setIsLoading(false);
       });
   };

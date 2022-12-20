@@ -67,7 +67,6 @@ export const onSelectHandler = (index: number, e: any, programs: ProgramMapType[
     program : e.key
   }
   updatedPrograms.splice(index, 1, updatedProgram)
-  console.log(index,e,programs,updatedPrograms)
   return [...updatedPrograms]
 }
 
@@ -97,13 +96,11 @@ export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumb
 }
 
 export const setJourney = (body: any) => {
-  console.log('set', body)
   const url = "/microsite/lnd/journeys/new"
   return httpInstance.post(url, body)
 }
 
 export const updateJourney = (body: any, id: string) => {
-  console.log('update', body)
   const url = "/microsite/lnd/journeys/edit/" + id
   return httpInstance.post(url, body)
 }
@@ -123,7 +120,6 @@ export function validateJourneyPrograms(values: ProgramMapType[]) {
     return 0;
   }
   )
-  console.log('hasDuplicate', hasDuplicate)
   if(hasDuplicate) {
     message.error('Journey should not have duplicate programs')
     return false

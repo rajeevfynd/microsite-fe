@@ -87,7 +87,6 @@ export default function CourseForm() {
             return;
         }
         if(!stringReg.test(course.rruCourseId)){
-            console.log(stringReg.test(course.rruCourseId))
             message.error("RRU Course ID must be a string")
             return;
         }
@@ -105,7 +104,6 @@ export default function CourseForm() {
             roleIds: course.roleIds,
             programIds: course.programIds
         }
-        console.log(RequestBody)
         const resp = await httpInstance.post("/microsite/course", RequestBody);
         if (resp.data) {
             message.success(`${course.title} created successfully`);
@@ -181,7 +179,6 @@ export default function CourseForm() {
                                 setDataProgram(programs)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -233,7 +230,6 @@ export default function CourseForm() {
                                 setDataSkill(skills)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -283,7 +279,6 @@ export default function CourseForm() {
                                 setDataRole(roles)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}

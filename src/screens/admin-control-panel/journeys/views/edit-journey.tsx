@@ -92,7 +92,6 @@ export const EditJourney = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 

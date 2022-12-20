@@ -57,7 +57,6 @@ export const Events = () => {
         })
         getSurveyEvent().then( res=> {
             setSurveyEvent(res.data)
-            console.log(res)
         })
     },[])
     return (

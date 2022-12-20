@@ -95,7 +95,6 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
             .then(response => {
                 setQnaList(response.data.content)
                 setTotalElements(response.data.totalElements)
-                console.log(response.data.content)
             })
             .catch((error) => {
                 message.error(error);

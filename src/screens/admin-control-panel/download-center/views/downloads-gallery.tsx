@@ -64,7 +64,6 @@ export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListProp
         getDownloadsList(downloadListProps.categoryId)
             .then(response => {
                 setLeadersList(response.data.content)
-                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);
@@ -81,7 +80,6 @@ export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListProp
         const getDownloadsCategoryList = () => {
             httpInstance.get(GET_DOWNLOAD_CATEGORIES_URL)
                 .then(response => {
-                    console.log(response.data)
                     response.data.map((category: any) => downloadCategoryList.push({
                         value: category.id,
                         label: category.category,

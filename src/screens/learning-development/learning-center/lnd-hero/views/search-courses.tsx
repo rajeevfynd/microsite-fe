@@ -44,7 +44,6 @@ const SearchCourses = () => {
         setLoad(false);
         getCoursesFts(keyState, page.toString()).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...courses, ...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(page + 1)
@@ -59,7 +58,6 @@ const SearchCourses = () => {
         setLoad(false);
         getCoursesFts(key).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(1)

@@ -102,7 +102,6 @@ export const EditCourse = () => {
             roleIds: editCourse.roleIds,
             programIds: editCourse.programIds
         }
-        console.log(editRequestBody)
         const resp = await httpInstance.put("/microsite/course?id=" + id, editRequestBody);
         if (resp.data) {
             message.success(`${editCourse.title} updated successfully`);
@@ -122,7 +121,6 @@ export const EditCourse = () => {
             response.roleIds = rId
             response.skillIds = sId
             response.skills = s
-            console.log(response)
             setEditCourse(response)
         })
     }, [])
@@ -195,7 +193,6 @@ export const EditCourse = () => {
                                 setDataProgram(programs)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -248,7 +245,6 @@ export const EditCourse = () => {
                                 setDataSkill(skills)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -299,7 +295,6 @@ export const EditCourse = () => {
                                 setDataRole(roles)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}

@@ -28,7 +28,6 @@ export const AdminCoursePage = () => {
         setLoad(false);
         getCourses(keyState, page.toString()).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...courses, ...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(page + 1)
@@ -43,7 +42,6 @@ export const AdminCoursePage = () => {
         setLoad(false);
         getCourses(key).then(
             resp => {
-                console.log(resp.data.last.thumbnail)
                 setCourses([...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(1)
@@ -59,7 +57,6 @@ export const AdminCoursePage = () => {
 
     const searchKey = (str: string) => {
         key = str
-        console.log(key)
         debounce(searchCourses, 500)
     }
 
@@ -68,7 +65,7 @@ export const AdminCoursePage = () => {
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                 <ShadowSearchInput placeholder='Type in the course title you are looking for...'
                     size='large'
-                    onChange={(e:any) => { console.log(e); searchKey(e); }}
+                    onChange={(e:any) => { searchKey(e); }}
                 />
                 <Button style={{borderRadius: 5}} onClick={() => navigate("/admin/addCourse")} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Course</Button>
                 <div style={{ width:"100%", height:'100%'}} >

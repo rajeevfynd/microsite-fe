@@ -32,7 +32,6 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
         getDownloadsList(downloadListProps.categoryId)
             .then(response => {
                 setLeadersList(response.data.content)
-                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);

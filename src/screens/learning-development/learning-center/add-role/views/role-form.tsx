@@ -63,14 +63,12 @@ export const RoleForm = (props: any) => {
                     if (!!Object.keys(response.data).length) {
                         handleLoading(false);
                         setRole({});
-                        console.log(response.data)
                     }
                     handleLoading(false);
                     message.success('Role successfully Created');
 
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     handleLoading(false);
                     message.error("Something went wrong, Please try after sometime");
                 });
