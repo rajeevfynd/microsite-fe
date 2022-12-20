@@ -87,8 +87,6 @@ export function validateProgramsCourses(values: CourseMapType[]) {
       };
     }
     )
-    
-    console.log('hasDuplicate', hasDuplicate)
     if(hasDuplicate) {
       message.error('Program should not have duplicate courses')
       return false
@@ -113,7 +111,6 @@ export function validateProgramsCourses(values: CourseMapType[]) {
   }
 
   export const onCourseSelectHandler = (index: number, e: any, courses: CourseMapType[]) => {
-    console.log(e)
     let updatedCourses = courses;
     let updatedCourse = courses[index];
     updatedCourse.course = e.key;
@@ -148,13 +145,11 @@ export function validateProgramsCourses(values: CourseMapType[]) {
 }
 
 export const setProgram = (body: any) => {
-    console.log(body)
     const url = "/microsite/lnd/programs/new"
     return httpInstance.post(url, body)
   }
 
 export const updateProgram = (body: any, id: string) => {
-    console.log('update', body)
     const url = "/microsite/lnd/programs/edit/" + id
     return httpInstance.post(url, body)
   }

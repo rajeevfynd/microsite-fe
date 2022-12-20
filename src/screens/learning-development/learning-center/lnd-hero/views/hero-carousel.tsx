@@ -24,8 +24,6 @@ function HeroCarousel(props: any) {
 
   const handleCourseDetailsClick = (d: carouselFormtype) => {
     setCourseDetails(d.courseDetail);
-    console.log(courseDetails)
-
     showModal();
   }
 
@@ -37,8 +35,6 @@ function HeroCarousel(props: any) {
       d.imageDocumentId = img_res.data.url
       let carouselCourse = await getCarouselCourse(d)
       d.courseDetail = carouselCourse.data
-      console.log(d)
-
     }
     if (carouselData.length == 3) {
       setList(carouselData)

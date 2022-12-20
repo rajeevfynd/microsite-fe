@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { getAnnouncementThumb } from '../../../service/announcment-service';
+import { formatBase64 } from '../../../utility/image-utils';
 
 export const AnnouncementThumbnail =(props:any)=>{
 
@@ -15,7 +16,7 @@ export const AnnouncementThumbnail =(props:any)=>{
     return (
         <>
             <div>
-                <img src={`data:image/png;base64,${thumb}`} ></img>
+                <img src={formatBase64(thumb)} ></img>
             </div>
         </>
     )

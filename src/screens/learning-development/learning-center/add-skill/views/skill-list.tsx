@@ -68,7 +68,6 @@ export const SkillList = (props: any) => {
                 })
                 .catch((error) => {
                     setIsLoading(false);
-                    console.log(error.message);
                     message.error("Something went wrong, Please try after sometime");
                 });
         })();
@@ -94,7 +93,6 @@ export const SkillList = (props: any) => {
 
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     setIsLoading(false);
                     message.error("Something went wrong, Please try after sometime");
                 });
@@ -125,7 +123,6 @@ export const SkillList = (props: any) => {
                     message.success('Course successfully Added');
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     setIsLoading(false);
                     message.error("Something went wrong, Please try after sometime");
                 });

@@ -2,6 +2,7 @@ import { Button, Form, Input, Image, message, Select } from 'antd';
 import * as React from 'react';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Upload } from '../../../../components/upload.component';
 import { getCourseById } from '../../../../service/program-service';
 import httpInstance from '../../../../utility/http-client';
 
@@ -28,7 +29,7 @@ type EditCourseRequest = {
     title?: string,
     description?: string,
     rruDeepLink?: string,
-    thumbnail?: string,
+    thumbnailId?: string,
     duration?: number,
     minCourseCoin?: number,
     courseCoin?: number,
@@ -44,6 +45,7 @@ type EditCourseDetail = {
     description?: string,
     rruDeepLink?: string,
     thumbnail?: string,
+    thumbnailId?: string,
     duration?: number,
     minCourseCoin?: number,
     courseCoin?: number,
@@ -92,7 +94,7 @@ export const EditCourse = () => {
             description: editCourse.description,
             duration: editCourse.duration,
             rruDeepLink: editCourse.rruDeepLink,
-            thumbnail: editCourse.thumbnail,
+            thumbnailId: editCourse.thumbnailId,
             minCourseCoin: editCourse.minCourseCoin,
             courseCoin: editCourse.courseCoin,
             careerCoin: editCourse.careerCoin,
@@ -100,21 +102,11 @@ export const EditCourse = () => {
             roleIds: editCourse.roleIds,
             programIds: editCourse.programIds
         }
-        console.log(editRequestBody)
         const resp = await httpInstance.put("/microsite/course?id=" + id, editRequestBody);
         if (resp.data) {
             message.success(`${editCourse.title} updated successfully`);
             navigate(-1)
         }
-    }
-
-    const renderImage = (imageUrl: string) => {
-        if (!imageUrl)
-            return;
-
-        return <>
-            <Image src={imageUrl} height={200} width={450} />
-        </>
     }
     React.useEffect(() => {
         getCourseById(id).then(resp => {
@@ -129,7 +121,6 @@ export const EditCourse = () => {
             response.roleIds = rId
             response.skillIds = sId
             response.skills = s
-            console.log(response)
             setEditCourse(response)
         })
     }, [])
@@ -139,6 +130,15 @@ export const EditCourse = () => {
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
         <h4>Edit Course</h4>
         <Form title='Edit Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+            <Form.Item>
+            Thumbnail
+            <Upload
+              onDone={(info) => { setEditCourse({...editCourse, thumbnailId: info.documentId, thumbnail: info.file}); } }
+              onRemove={() => setEditCourse({...editCourse, thumbnailId: '', thumbnail: ''})}
+              file={editCourse.thumbnail}
+              accept="image/png, image/jpeg, image/jpg"  />
+            </Form.Item>
+          
             <Form.Item>
                 Title
                 <Input value={editCourse.title} onChange={(e) => {
@@ -193,7 +193,6 @@ export const EditCourse = () => {
                                 setDataProgram(programs)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -246,7 +245,6 @@ export const EditCourse = () => {
                                 setDataSkill(skills)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -297,7 +295,6 @@ export const EditCourse = () => {
                                 setDataRole(roles)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -367,18 +364,6 @@ export const EditCourse = () => {
                     })
                 }} />
             </Form.Item>
-
-            <Form.Item>
-                Thumbnail
-
-                <Input value={editCourse.thumbnail} onChange={(e) => {
-                    setEditCourse({
-                        ...editCourse, thumbnail: e.target.value
-                    })
-                }} />
-
-            </Form.Item>
-            {renderImage(editCourse.thumbnail)}
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Save

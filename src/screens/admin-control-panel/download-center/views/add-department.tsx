@@ -24,7 +24,6 @@ export const AddDepartment = (props : {onSubmit : any}) => {
         const url = ADD_DEPARTMENT_DOWNLOAD_CENTER
         httpInstance.post(url, values)
             .then(response => {
-                console.log("added")
                 setIsModalOpen(false)
                 props.onSubmit()
             })

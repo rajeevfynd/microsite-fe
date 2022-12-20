@@ -54,7 +54,6 @@ export const CourseSearch = (props: any) => {
 
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     window.alert(`${error.message}`);
                 });
         })();

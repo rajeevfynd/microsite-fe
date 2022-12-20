@@ -104,7 +104,6 @@ const Survey = () => {
     i: number,
     qId: string
   ) => {
-    console.log(e.target.value);
     let newAnswer = { questionId: qId, answer: e.target.value };
     if (response[0].questionId.length == 0) {
       setResponse([newAnswer]);
@@ -139,10 +138,8 @@ const Survey = () => {
   };
 
   React.useEffect(() => {
-    console.log("Inside UseEffect");
     getSurveyById(params.surveyId)
       .then((res) => {
-        console.log("Get survey By id", res.data);
         setSurvey(res.data);
       })
       .catch((err) => console.log(err.message));

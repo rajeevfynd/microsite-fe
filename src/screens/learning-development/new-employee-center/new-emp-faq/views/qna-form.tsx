@@ -4,6 +4,7 @@ import { QnaFormPropsType } from '../../../../../models/faq-qna-details';
 import { PlusOutlined, DeleteOutlined, EyeOutlined} from '@ant-design/icons';
 import httpInstance from '../../../../../utility/http-client';
 import { EDIT_QNA_URL, UPLOAD_IMG } from '../../../../../constants/urls';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 
 const { Option } = Select;
@@ -61,7 +62,7 @@ export const QnaForm = (props: {qnaFormProps :QnaFormPropsType}) => {
                 "uid" : element.documentId ,
                 "name" : "xyz.png",
                 "status" : 'done',
-                "thumbUrl" : `data:image/png;base64,${element.thumbnailUrl}`,
+                "thumbUrl" : formatBase64(element.thumbnailUrl),
                 "url" : ""
                 })
         });

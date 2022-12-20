@@ -44,7 +44,6 @@ export function LearningBySkill() {
         })
         .catch((error) => {
           setIsLoading(false);
-          console.log(error.message);
           message.error("Something went wrong, Please try after sometime");
         });
     })();
@@ -78,7 +77,6 @@ export function LearningBySkill() {
         .catch((error) => {
           setButtonStatus(true);
           setIsLoading(false);
-          console.log(error.message);
           message.error("Something went wrong, Please try after sometime");
 
         });

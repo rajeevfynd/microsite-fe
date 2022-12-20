@@ -10,7 +10,6 @@ export const DeleteAnnouncement = (props: any) => {
     const [loadagain, setloadagain] = React.useState()
 
     const fetchAnncouncement = React.useCallback(async () => {
-        console.log("inside render")
         let response = await getAnnouncement();
         const announcement_list: announcementType[] = response.data
         setAnnouncements(announcement_list)
