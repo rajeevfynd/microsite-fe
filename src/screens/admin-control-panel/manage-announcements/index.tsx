@@ -88,7 +88,7 @@ export const AddAnnouncement = () => {
                     <Form.Item
                         label='Announcement Document'
                     >
-                        <Upload {...prop} />
+                        <Upload {...prop} accept="application/pdf"/>
                     </Form.Item>
                     <Form.Item
                         name="description"
