@@ -37,7 +37,7 @@ export const NewProgram: React.FC = () => {
         resp.then(resp => {
           if (resp.data) {
             message.success('Program added successfully');
-            navigate("/admin/programs");
+            navigate("/admin/admin-lnds/programs");
           }
     })
   }

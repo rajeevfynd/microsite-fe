@@ -156,47 +156,53 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             icon: <Gear />,
             secondaryItems: [
                 {
-                    key: "admin-induction",
-                    title: "Induction",
+                    key: "admin-lnds",
+                    title: "LND",
                     icon: <WelcomeSvg />,
-                    navigate: "/admin/induction"
+                    navigate: "/admin/admin-lnds"
                 },
-                {
-                    key: "admin-carousel",
-                    title: "Carousel",
-                    icon: <CarouselSvg />,
-                    navigate: "/admin/edit-carousel"
-                },
-                {
-                    key: "admin-programs",
-                    title: "Programs",
-                    icon: <ProgramSvg />,
-                    navigate: "/admin/programs"
-                },
-                {
-                    key: "admin-journeys",
-                    title: "Journeys",
-                    icon: <JourneySvg />,
-                    navigate: "/admin/journeys"
-                },
-                {
-                    key: "admin-courses",
-                    title: "Courses",
-                    icon: <CourseSvg />,
-                    navigate: "/admin/courses"
-                },
-                {
-                    key: "add-skill",
-                    title: "Skills",
-                    icon: <SkillSvg />,
-                    navigate: "/lnd/learning-center/addSkill"
-                },
-                {
-                    key: "add-role",
-                    title: "Roles",
-                    icon: <RoleSvg />,
-                    navigate: "/lnd/learning-center/addRole"
-                },
+                // {
+                //     key: "admin-induction",
+                //     title: "Induction",
+                //     icon: <WelcomeSvg />,
+                //     navigate: "/admin/induction"
+                // },
+                // {
+                //     key: "admin-carousel",
+                //     title: "Carousel",
+                //     icon: <CarouselSvg />,
+                //     navigate: "/admin/edit-carousel"
+                // },
+                // {
+                //     key: "admin-programs",
+                //     title: "Programs",
+                //     icon: <ProgramSvg />,
+                //     navigate: "/admin/programs"
+                // },
+                // {
+                //     key: "admin-journeys",
+                //     title: "Journeys",
+                //     icon: <JourneySvg />,
+                //     navigate: "/admin/journeys"
+                // },
+                // {
+                //     key: "admin-courses",
+                //     title: "Courses",
+                //     icon: <CourseSvg />,
+                //     navigate: "/admin/courses"
+                // },
+                // {
+                //     key: "add-skill",
+                //     title: "Skills",
+                //     icon: <SkillSvg />,
+                //     navigate: "/lnd/learning-center/addSkill"
+                // },
+                // {
+                //     key: "add-role",
+                //     title: "Roles",
+                //     icon: <RoleSvg />,
+                //     navigate: "/lnd/learning-center/addRole"
+                // },
                 {
                     key: "created-surveys",
                     title: "Surveys",
@@ -354,6 +360,7 @@ export default function MenuHome() {
                                 <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
                                 <Menu.SubMenu key='admin-lnd' title='Learning and Development'>
                                     <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
+                                    <Menu.Item key='admin-lnds' onClick={() => navigateTo('/admin/admin-lnds')}>Induction</Menu.Item>
                                     <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
                                     <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
                                     <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>

@@ -34,7 +34,7 @@ export const NewJourney: React.FC = () => {
       resp.then(resp => {
       if (resp.data) {
         message.success('Journey added successfully');
-        navigate("/admin/journeys");
+        navigate("/admin/admin-lnds/journeys");
       }
     })
   }

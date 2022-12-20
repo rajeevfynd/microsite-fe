@@ -65,7 +65,7 @@ export const EditJourney = () => {
       data.then(resp => {
         if (resp.data) {
           message.success('Journey updated successfully');
-          navigate("/admin/journeys");
+          navigate("/admin/admin-lnds/journeys");
         }
       })
     }
