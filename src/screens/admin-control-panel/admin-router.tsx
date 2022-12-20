@@ -15,10 +15,12 @@ import { CreatedSurvey } from "../surveys/created-surveys";
 import { EditCourse } from "./courses/edit-course";
 import { AddCourse } from "../learning-development/learning-center/add-course";
 import { DownloadTabs } from "./download-center";
+import { ProtectedComponent } from "./../../components/protected/protected-component"
 
 export const AdminRouter = () => {
   return (
     <>
+    <ProtectedComponent>
       <Routes>
         <Route
           path="/manage-announcement/*"
@@ -51,6 +53,7 @@ export const AdminRouter = () => {
           element={<Navigate replace to="/induction/*" />}
         ></Route>
       </Routes>
+      </ProtectedComponent>
     </>
   );
 };
