@@ -9,6 +9,7 @@ import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 import { CourseListType } from '../../../models/course-type';
 import { getCourses } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
+import { formatBase64 } from '../../../utility/image-utils';
 import './index.css';
 const { Text } = Typography;
 
@@ -94,7 +95,7 @@ export const AdminCoursePage = () => {
                                     }}
                                     cover={
                                         <Image
-                                        src={`data:image/png;base64,${item.thumbnail}`}
+                                        src={formatBase64(item.thumbnail)}
                                             style={{
                                                 width: 340,
                                                 height: 195

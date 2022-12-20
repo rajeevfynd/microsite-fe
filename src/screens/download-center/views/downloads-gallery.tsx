@@ -5,6 +5,7 @@ import { Content } from 'antd/lib/layout/layout';
 import { DownloadListPropsType, DownloadDocumentType } from '../../../models/download-center-type';
 import { getDownloadsList } from '../../../service/download-center-service';
 import httpInstance from '../../../utility/http-client';
+import { formatBase64 } from '../../../utility/image-utils';
 
 export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
@@ -66,7 +67,7 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
                                 
                                 <img 
                                 onClick={() => handleImgClick(leader.document.id)} 
-                                src={`data:image/png;base64,${leader.document.thumbnail}`}/>
+                                src={formatBase64(leader.document.thumbnail)}/>
                             }
                             actions={[
                                 <>

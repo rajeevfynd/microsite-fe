@@ -11,6 +11,7 @@ import { ArrowRight } from 'react-bootstrap-icons';
 import { debounce } from '../../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../constants/string-constants';
 import { ShadowSearchInput } from '../../../../components/shadow-input-text';
+import { formatBase64 } from '../../../../utility/image-utils';
 const { Text } = Typography;
 
 export  const LearningJourneyList = () => {
@@ -99,7 +100,7 @@ export  const LearningJourneyList = () => {
                       width: 340,
                       height: 195
                     }}
-                    src={`data:image/png;base64,${item.thumbnail}`}
+                    src={formatBase64(item.thumbnail)}
                     fallback={DEFAULT_LND_THUMBNAIL}
                     preview={false}
                   />

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { List, Button, Modal, Row, Col, Image, Divider } from 'antd';
 import Card from 'antd/lib/card/Card';
 import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
+import { formatBase64 } from '../../utility/image-utils';
 
 
 export function CourseDetails(props: { course: any }) {
@@ -19,7 +20,7 @@ export function CourseDetails(props: { course: any }) {
                                 <Image
                                     width={400}
                                     height={200}
-                                    src={`data:image/png;base64,${course.thumbnail}`}
+                                    src={formatBase64(course.thumbnail)}
                                     fallback={DEFAULT_LND_THUMBNAIL} 
                                     preview={false}
                                 />

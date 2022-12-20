@@ -4,6 +4,7 @@ import { ArrowRight, Clock, PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants'
 import { ProgramDetailPropsType } from '../../models/journey-details'
+import { formatBase64 } from '../../utility/image-utils'
 import { CourseDetails } from '../course-detail/course-details'
 
 export const ProgramDetail = (props: ProgramDetailPropsType) => {
@@ -30,7 +31,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
             <Row>
             <Col span={7} style={{height:240}}>
                     <Image
-                        src={`data:image/png;base64,${props.details.thumbnail}`}
+                        src={formatBase64(props.details.thumbnail)}
                         height={"100%"}
                         width={'80%'}
                         preview={false}
@@ -59,7 +60,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                                 width={'80%'}
                                 height={'100%'}
                                 alt="logo"
-                                src={`data:image/png;base64,${item.course.thumbnail}`}
+                                src={formatBase64(item.course.thumbnail)}
                                 fallback={DEFAULT_LND_THUMBNAIL}
                                 preview={false}
                             /></div>}

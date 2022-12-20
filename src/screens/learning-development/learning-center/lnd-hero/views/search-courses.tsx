@@ -11,6 +11,7 @@ import { CourseDetails } from '../../../../../components/course-detail/course-de
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from '../../../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 const SearchCourses = () => {
     const [load, setLoad] = React.useState(false)
@@ -114,7 +115,7 @@ const SearchCourses = () => {
                                 }}
                                 cover={
                                     <Image
-                                        src={`data:image/png;base64,${item.thumbnail}`}
+                                        src={ formatBase64(item.thumbnail)}
                                         fallback={DEFAULT_LND_THUMBNAIL}
                                         preview={false}
                                     />

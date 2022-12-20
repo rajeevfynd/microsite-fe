@@ -11,6 +11,7 @@ import { getPrograms } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
 import { ShadowSearchInput } from '../../../components/shadow-input-text';
 import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
+import { formatBase64 } from '../../../utility/image-utils';
 const { Text } = Typography;
 
 export  const ProgramList = () => {
@@ -99,7 +100,7 @@ export  const ProgramList = () => {
                       width: 340,
                       height: 195
                     }}
-                    src={`data:image/png;base64,${item.thumbnail}`}
+                    src={formatBase64(item.thumbnail)}
                     fallback={DEFAULT_LND_THUMBNAIL}
                     preview={false}
                   />

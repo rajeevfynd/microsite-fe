@@ -8,6 +8,7 @@ import { LearningEvent } from '../../../../models/enums/learning-events';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
 import { getSurveyEvent } from '../../../../service/survey-service';
+import { formatBase64 } from '../../../../utility/image-utils';
 import "./index.scss";
 
 type LearningEventType = {
@@ -80,7 +81,7 @@ export const Events = () => {
                             <h6 style={{height:'40px'}}>
                                 "{surveyEvent.surveyTitle}" is due
                             </h6>
-                            <Image src={`data:image/png;base64,${surveyEvent.imgUrl}`} className='event-img' preview={false} height='80px' width='80px'/>
+                            <Image src={formatBase64(surveyEvent.imgUrl)} className='event-img' preview={false} height='80px' width='80px'/>
                             <div>
                                 <Button onClick={()=>navigate('/survey/submit/survey/'+surveyEvent.id+'/2')} type='link' className='event-link'>Go to Survey </Button>
                              </div>
@@ -94,7 +95,7 @@ export const Events = () => {
                             <h6 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
                             </h6>
-                            <Image src={`data:image/png;base64,${learningEvent.thumbnail}`} className='event-img' preview={false} height='80px' width='80px' fallback={DEFAULT_LND_THUMBNAIL} />
+                            <Image src={formatBase64(learningEvent.thumbnail)} className='event-img' preview={false} height='80px' width='80px' fallback={DEFAULT_LND_THUMBNAIL} />
                             <div>
                                 <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
                              </div>

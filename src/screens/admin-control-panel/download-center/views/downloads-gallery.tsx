@@ -8,6 +8,7 @@ import httpInstance from '../../../../utility/http-client';
 import { EditDownloadDocument } from './edit-document';
 import { AddDownloadDocument } from './add-document';
 import { getDownloadsList } from '../../../../service/download-center-service';
+import { formatBase64 } from '../../../../utility/image-utils';
 
 export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
@@ -123,7 +124,7 @@ export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListProp
                                 
                                 <img 
                                 onClick={() => handleImgClick(leader.document.id)} 
-                                src={`data:image/png;base64,${leader.document.thumbnail}`}/>
+                                src={formatBase64(leader.document.thumbnail)}/>
                             }
                             actions={[
                                 <>

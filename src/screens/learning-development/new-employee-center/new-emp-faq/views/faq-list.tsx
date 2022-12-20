@@ -10,6 +10,7 @@ import { FAQ_LIST_OFFSET, FAQ_LIST_PAGESIZE } from '../../../../../constants/str
 import { FAQ_LIST_URL } from '../../../../../constants/urls';
 import { getUser } from '../../../../../utility/user-utils';
 import { Content } from 'antd/lib/layout/layout';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 
 const { Panel } = Collapse;
@@ -153,7 +154,7 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
                                             <Col xs={24} xl={6} style={{ padding: 20 }}>
                                                 <img width='200' height='200'
                                                     onClick={() => handleImgClick(attachment.documentId)}
-                                                    src={`data:image/png;base64,${attachment.thumbnailUrl}`} />
+                                                    src={formatBase64(attachment.thumbnailUrl)} />
                                             </Col>
                                         ))}
                                     </Row>
