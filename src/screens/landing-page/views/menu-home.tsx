@@ -27,6 +27,7 @@ import ComingSoonSvg from '../../../img/coming-soon.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
+import { isAdmin } from "../../../utility/user-utils";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
@@ -154,66 +155,77 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Admin Panel",
             key: "admin_panel",
             icon: <Gear />,
+            access: !isAdmin(),
             secondaryItems: [
                 {
                     key: "admin-induction",
                     title: "Induction",
                     icon: <WelcomeSvg />,
-                    navigate: "/admin/induction"
+                    navigate: "/admin/induction",
+                    access: !isAdmin(),
                 },
                 {
                     key: "admin-carousel",
                     title: "Carousel",
                     icon: <CarouselSvg />,
-                    navigate: "/admin/edit-carousel"
+                    navigate: "/admin/edit-carousel",
+                    access: !isAdmin()
                 },
                 {
                     key: "admin-programs",
                     title: "Programs",
                     icon: <ProgramSvg />,
-                    navigate: "/admin/programs"
+                    navigate: "/admin/programs",
+                    access: !isAdmin()
                 },
                 {
                     key: "admin-journeys",
                     title: "Journeys",
                     icon: <JourneySvg />,
-                    navigate: "/admin/journeys"
+                    navigate: "/admin/journeys",
+                    access: !isAdmin()
                 },
                 {
                     key: "admin-courses",
                     title: "Courses",
                     icon: <CourseSvg />,
-                    navigate: "/admin/courses"
+                    navigate: "/admin/courses",
+                    access: !isAdmin()
                 },
                 {
                     key: "add-skill",
                     title: "Skills",
                     icon: <SkillSvg />,
-                    navigate: "/lnd/learning-center/addSkill"
+                    navigate: "/lnd/learning-center/addSkill",
+                    access: !isAdmin()
                 },
                 {
                     key: "add-role",
                     title: "Roles",
                     icon: <RoleSvg />,
-                    navigate: "/lnd/learning-center/addRole"
+                    navigate: "/lnd/learning-center/addRole",
+                    access: !isAdmin()
                 },
                 {
                     key: "created-surveys",
                     title: "Surveys",
                     icon: <SurveySvg />,
-                    navigate: "/admin/created-surveys"
+                    navigate: "/admin/created-surveys",
+                    access: !isAdmin()
                 },
                 {
                     key: "admin-downloads",
                     title: "Downloads",
                     icon: <DownloadSvg />,
-                    navigate: "/admin/downloads"
+                    navigate: "/admin/downloads",
+                    access: !isAdmin()
                 },
                 {
                     key: "admin-announcements",
                     title: "Announcements",
                     icon: <AnnouncementSvg />,
-                    navigate: "/admin/manage-announcement"
+                    navigate: "/admin/manage-announcement",
+                    access: !isAdmin()
                 }
 
             ]

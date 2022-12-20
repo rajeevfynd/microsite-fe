@@ -15,6 +15,7 @@ export interface MenuItemProps extends MenuItemInfo {
     onClick?: MenuClickEventHandler
     selected?: boolean | false
     disabled?: boolean | false
+    access?: boolean | false
 }
 
 function behaviour({ selected, disabled }: MenuItemProps): string {
