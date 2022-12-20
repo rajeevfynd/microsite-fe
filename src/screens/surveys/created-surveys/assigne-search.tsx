@@ -14,7 +14,6 @@ const AssigneSearch = (props: propsType) => {
 
   function onChange(value: React.SetStateAction<string[]>) {
     props.handleSelectedUser(value);
-    console.log(`selected ${value}`);
   }
 
   function onBlur() {
@@ -29,11 +28,9 @@ const AssigneSearch = (props: propsType) => {
     axios
       .get(`/microsite/users/search?key=${val}`)
       .then((newData) => {
-        console.log("Seacrh for user", newData.data);
         SetUsers(newData.data.data);
       })
       .catch((err) => console.log(err.message));
-    console.log("search:", val);
   }
   return (
     <>

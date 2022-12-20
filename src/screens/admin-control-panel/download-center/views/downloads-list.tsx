@@ -50,7 +50,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
 
       const loadMoreData = () => {
-        console.log("Load MOre is called");
         getDownloadsList(downloadListProps.categoryId, department, keyState,pageNumber.toString()).then(res => {
             setDocumentsList([...documentsList, ...res.data.content])
             setTotalLength(res.data.totalElements)
@@ -165,7 +164,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
 
     const handleDeptClick = (departmentId:any) => {
-      console.log(departmentId)
       setKeyState("")
       setPageNumber(1)
       setDepartment(departmentId)
@@ -224,8 +222,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
         onScroll: async ({ top, isEnd }) => {
           if (isEnd) {
             if(documentsList.length != totalLength){
-              console.log("VT is called");
-              console.log("pageNumber in VT ", pageNumber)
               loadMoreData()
             }
           }
@@ -241,7 +237,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
     React.useEffect(() => {
         getDepartmentList();
-        console.log("pageNumber initially ", pageNumber)
         !initialLoad &&
         getDownloadsList(downloadListProps.categoryId, department, keyState, pageNumber.toString()).then(res => {
           setDocumentsList(res.data.content)

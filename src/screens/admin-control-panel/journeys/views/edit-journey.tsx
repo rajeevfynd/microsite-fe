@@ -43,7 +43,7 @@ export const EditJourney = () => {
       sequence: data.flow == Flow.SEQUENCE
     })
     setCategory(data.category);
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
     setThumbnail(data.thumbnailId);
   }
 
@@ -92,7 +92,6 @@ export const EditJourney = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 
@@ -113,8 +112,8 @@ export const EditJourney = () => {
             Thumbnail
             <Upload
               //fileType='image'
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
               file={thumbnailUrl}
               accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>

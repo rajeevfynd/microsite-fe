@@ -34,7 +34,6 @@ export const CourseList = (props: any) => {
                     
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     message.error("Something went wrong, Please try after sometime");
                 });
         })();

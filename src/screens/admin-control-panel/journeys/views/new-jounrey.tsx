@@ -22,6 +22,7 @@ export const NewJourney: React.FC = () => {
   const navigate = useNavigate()
   const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
+  const [thumbnailUrl, setThumbnailUrl] = React.useState('')
   const [journey, setJourney] = React.useState<editJourneyDetails>({ sequence: true })
 
   const { Option } = Select;
@@ -60,7 +61,6 @@ export const NewJourney: React.FC = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 
@@ -81,8 +81,9 @@ export const NewJourney: React.FC = () => {
             Thumbnail
             <Upload
               //fileType='image'
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+              file = {thumbnailUrl}
               accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 

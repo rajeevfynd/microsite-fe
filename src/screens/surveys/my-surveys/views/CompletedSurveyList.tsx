@@ -5,6 +5,7 @@ import * as React from "react";
 import "../../new-survey/views/questionForm.css";
 import { getSurveysByStatus } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
+import { formatBase64 } from "../../../../utility/image-utils";
 
 function CompletedSurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -33,7 +34,6 @@ function CompletedSurveyList() {
   ]);
 
   const getSurveys = () => {
-    console.log("Inside get surveys");
     setIsLoading(true);
     getSurveysByStatus(true)
       .then((res) => {
@@ -41,7 +41,6 @@ function CompletedSurveyList() {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err.message);
         setIsLoading(false);
       });
   };
@@ -67,7 +66,7 @@ function CompletedSurveyList() {
                     cover={
                       <img
                         alt="example"
-                        src={"data:image/png;base64," + i.imgUrl}
+                        src={formatBase64(i.imgUrl)}
                       />
                     }
                     actions={[

@@ -11,6 +11,7 @@ import { CourseDetails } from '../../../../../components/course-detail/course-de
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from '../../../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 const SearchCourses = () => {
     const [load, setLoad] = React.useState(false)
@@ -43,7 +44,6 @@ const SearchCourses = () => {
         setLoad(false);
         getCoursesFts(keyState, page.toString()).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...courses, ...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(page + 1)
@@ -58,7 +58,6 @@ const SearchCourses = () => {
         setLoad(false);
         getCoursesFts(key).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(1)
@@ -114,8 +113,9 @@ const SearchCourses = () => {
                                 }}
                                 cover={
                                     <Image
-                                        src={item.thumbnail}
+                                        src={ formatBase64(item.thumbnail)}
                                         fallback={DEFAULT_LND_THUMBNAIL}
+                                        preview={false}
                                     />
                                 }
                             >
