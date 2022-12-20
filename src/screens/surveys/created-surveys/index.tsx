@@ -63,7 +63,6 @@ export const CreatedSurvey = () => {
     if (assigneeId.length && expireData !== "") {
       assignSurveyToUserId(reqBody)
         .then((res) => {
-          console.log("Response", res);
           showNotification("success", `Survey assigneed to ${assigneeId}`);
           setAssigneeId([]);
           setExpireDate("");
@@ -105,7 +104,6 @@ export const CreatedSurvey = () => {
 
   const loadMore = () => {
     getSurveys(searchKeyword, pageNumber).then((data) => {
-      console.log(data);
       setSurvey([...surveys, ...data.content]);
       setHasMore(!data.last);
       setPageNumber(pageNumber + 1);
@@ -126,8 +124,6 @@ export const CreatedSurvey = () => {
     setSearchKeyword(value);
     setPageNumber(0);
     getSurveys(value, 0).then((data) => {
-      console.log("from search changed");
-      console.log(data);
       setSurvey(data.content);
       setHasMore(!data.last);
     });
@@ -136,7 +132,6 @@ export const CreatedSurvey = () => {
   React.useEffect(() => {
     !initialLoad &&
       getSurveys(searchKeyword, pageNumber).then((data) => {
-        console.log(data);
         setSurvey(data.content);
         setHasMore(!data.last);
         setPageNumber(pageNumber + 1);
@@ -145,7 +140,6 @@ export const CreatedSurvey = () => {
   }, []);
 
   const handleSelectedUser = (Id: React.SetStateAction<string[]>) => {
-    console.log("Inside Handle selector", Id);
     setAssigneeId(Id);
   };
 
@@ -163,7 +157,6 @@ export const CreatedSurvey = () => {
             placeholder="Expire Date"
             onChange={(date, dateString) => {
               setExpireDate(dateString);
-              console.log("Date", dateString);
             }}
           />
         </Modal>

@@ -39,7 +39,7 @@ export const EditInduction = () => {
       sequence: data.flow == Flow.SEQUENCE,
       id: data.id
     })
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
     setThumbnail(data.thumbnailId);
   }
 
@@ -91,7 +91,6 @@ export const EditInduction = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 

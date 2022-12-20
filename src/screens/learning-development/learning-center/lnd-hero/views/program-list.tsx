@@ -31,7 +31,7 @@ function ScrollablePrograms(props: any) {
       description: "",
       title: "",
       duration: 0,
-      thumbnailLink:"",
+      thumbnail:"",
       }]});
 
     const fetchPrograms = React.useCallback(async()=>{
@@ -61,11 +61,11 @@ function ScrollablePrograms(props: any) {
                   title,
                   description,
                   duration,
-                  thumbnailLink }) => (<Programs_tag {... {
+                  thumbnail }) => (<Programs_tag {... {
                     title,
                     description,
                     duration,
-                    thumbnailLink}}/>))}
+                    thumbnail}}/>))}
 
             </ScrollMenu>
             </div>

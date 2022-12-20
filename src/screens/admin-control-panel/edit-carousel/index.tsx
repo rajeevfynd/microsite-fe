@@ -25,7 +25,6 @@ const EditCarousal = () => {
     const [update, setupdate] = React.useState("")
 
     const handleRemove = () => {
-        console.log("inside remove")
         let updatedForm: carouselFormtype = {
             fileId: null,
             value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -37,8 +36,6 @@ const EditCarousal = () => {
     }
 
     const handleSubmit = async (e: any) => {
-        console.log("inside submit")
-        console.log(form[Number(active)].fileId)
         if (form[Number(active)].fileId === "" || form[Number(active)].fileId == null ) {
             message.error("please upload an image to carousel form");
             return
@@ -93,7 +90,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -134,7 +130,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -175,7 +170,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""

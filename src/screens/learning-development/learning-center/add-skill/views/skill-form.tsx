@@ -63,13 +63,11 @@ export const SkillForm = (props: any) => {
                     if (!!Object.keys(response.data).length) {
                         handleLoading(false);
                         setSkill({});
-                        console.log(response.data)
                     }
                     handleLoading(false);
                     message.success('Skill successfully Created');
                 })
                 .catch((error) => {
-                    console.log(error.message);
                     handleLoading(false);
                     message.error("Something went wrong, Please try after sometime");
                 });

@@ -19,7 +19,6 @@ export const Welcome = () => {
 
   const getWelcomeMsgUrl = () => {
     getWelcomeMessageDetails().then(res => {
-      console.log(res)
       setWelcomeMessageDetails({
         fileUrl: res.data.fileUrl,
         isCompleted: res.data.completeStatus == CompleteStatus.COMPLETE

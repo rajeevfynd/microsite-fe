@@ -9,7 +9,7 @@ export type JourneyDetailType = {
     title?: string;
     id: number;
     description?: string;
-    thumbnailLink?: string;
+    thumbnail?: string;
     flow?:string;
     programs?: ProgramType[];
     progress?: number;
@@ -24,7 +24,7 @@ export type ProgramDetailType = {
     id: number;
     title: string;
     description?: string;
-    thumbnailLink?: string;
+    thumbnail?: string;
     duration?: number;
     rruDeeplink?: string;
     rruProgramID?: string;
