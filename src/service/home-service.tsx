@@ -1,4 +1,4 @@
-import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ALL_BIRTHDAYS, GET_ANNOUNCEMENT, GET_BIRTHDAYS } from "../constants/urls"
+import { ADD_ANNOUNCEMENT, ANNOUNCEMENT_THUMB, DOWNLOAD_URL, GET_ALL_BIRTHDAYS, GET_ANNOUNCEMENT, GET_BIRTHDAYS, SEND_WISH, UPLOAD_BIRTHDAYS } from "../constants/urls"
 import { announcementType } from "../models/announcementType";
 import httpInstance from "../utility/http-client"
 
@@ -25,8 +25,16 @@ export const getBirthdaysService = (page:string = '0', size:string = '4')=>{
     return httpInstance.get(GET_BIRTHDAYS+'?&pageNumber='+page+'&pageSize='+size);
 }
 
+export const sendWish = (body: any) =>{
+    return httpInstance.post(SEND_WISH,body);
+}
+
 export const getBirthdayCards = () =>{
-    return httpInstance.get(GET_BIRTHDAYS+'wishes/');
+    return httpInstance.get(GET_BIRTHDAYS+'birthday_cards/');
+}
+
+export const getBirthdayWishes = () =>{
+    return httpInstance.get(GET_BIRTHDAYS+'birthday_wishes/');
 }
 
 export const getAllBirthdaysService = ()=>{
@@ -39,4 +47,8 @@ export const addBirthday = (body: any) =>{
 
 export const deleteBirthdayService = (id: any) => {
     return httpInstance.delete(GET_BIRTHDAYS+id)
+}
+
+export const uploadBirthday = (body: any) =>{
+    return httpInstance.post(UPLOAD_BIRTHDAYS,body);
 }

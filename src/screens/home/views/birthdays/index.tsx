@@ -1,14 +1,13 @@
-import { Card, Divider, List, Avatar, Typography, Modal, Spin, Skeleton, Radio, Space, Button, RadioChangeEvent } from "antd";
+import { Card, Divider, List, Avatar, Modal, Radio, Space, Button, RadioChangeEvent, message } from "antd";
 import Meta from "antd/lib/card/Meta";
-import Item from "antd/lib/list/Item";
-import { opacity } from "html2canvas/dist/types/css/property-descriptors/opacity";
 import * as React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getBirthdayCards, getBirthdaysService } from "../../../../service/home-service";
+import { getBirthdayCards, getBirthdaysService, getBirthdayWishes, sendWish } from "../../../../service/home-service";
 
 type BirthDayType = {
     id?: number,
     name?: string,
+    email?: string,
     image?: string,
     birthDay?: string
 }
@@ -17,34 +16,53 @@ export const BirthDays = () => {
 
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [modalName, setModalName] = React.useState("")
+    const [modalEmail, setModalEmail] = React.useState("")
+    const [modalBirthday, setModalBirthday] = React.useState("")
     const [birthDayCards, setBirthDayCards] = React.useState<string[]>([])
+    const [birthDayWishes, setBirthDayWishes] = React.useState<string[]>([])
     const [card, setCard] = React.useState()
+    const [wish, setWish] = React.useState()
     const fetchBirthDayCards = async () => {
         let resp = await getBirthdayCards()
         const cards = resp.data.map((item: string) => item.link)
         console.log(cards)
         setBirthDayCards(cards)
     }
+    const fetchBirthDayWishes = async () => {
+        let resp = await getBirthdayWishes()
+        const wishes = resp.data.map((item: {wish: string}) => item.wish)
+        console.log(wishes)
+        setBirthDayWishes(wishes)
+    }
     //const options = ['1','2','3']
-    const showModal = (name: any) => {
+    const showModal = (name: any, email: any, birthDay: any) => {
         setIsModalOpen(true);
         setModalName(name)
+        setModalEmail(email)
+        setModalBirthday(birthDay)
         fetchBirthDayCards()
-        // React.useEffect(()=>{
-        //     fetchBirthDayCards()
-        // },[])
+        fetchBirthDayWishes()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    const handleOk = () => {
+    const handleOk = async () => {
+        const body = {
+            receiverEmail:modalEmail,
+            receiverBirthday:modalBirthday,
+            Card:card,
+            Wish:wish
+        }
+        const resp = await sendWish(body);
+        message.info(resp.data);
+        setCard(undefined);
+        setWish(undefined);
         setIsModalOpen(false);
     };
 
     const [birthdays, setbirthdays] = React.useState<BirthDayType[]>([]);
     const [hasMore, setHasMore] = React.useState(true);
     const [pageNumber, setPageNumber] = React.useState(0);
-    const [initialLoad, setInitialLoad] = React.useState(false);
 
     const loadMore = async () => {
         let resp = await getBirthdaysService(pageNumber.toString(), '4');
@@ -54,21 +72,16 @@ export const BirthDays = () => {
 
     }
 
-    // const fetchBirthdays = async () => {
-    //     let resp = await getBirthdaysService(pageNumber.toString(), '4');
-    //     setbirthdays(resp.data.content)
-    //     setHasMore(!resp.data.last)
-    //     setPageNumber(pageNumber + 1)
-    //     setInitialLoad(true)
-    // }
-
     React.useEffect(() => {
         loadMore()
     }, [])
 
-    const handleOnChange = (e: RadioChangeEvent) =>{
-        console.log(e.target.value)
+    const handleOnChangeCard = (e: RadioChangeEvent) => {
         setCard(e.target.value)
+    }
+
+    const handleOnChangeWishes = (e: RadioChangeEvent) => {
+        setWish(e.target.value)
     }
 
     return (
@@ -94,7 +107,7 @@ export const BirthDays = () => {
                             dataSource={birthdays}
                             renderItem={item => (
                                 <List.Item key={item.name}>
-                                    <div onClick={e => showModal(item.name)}>
+                                    <div onClick={e => showModal(item.name, item.email,item.birthDay)}>
                                         <Card hoverable bodyStyle={{ padding: "15px" }} >
                                             <div style={{ display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                                                 <Avatar style={{ margin: 'auto', width: '51px', height: '51px' }}
@@ -108,10 +121,28 @@ export const BirthDays = () => {
                                 </List.Item>
                             )}
                         />
-                        <Modal title={`Send Wishes to ${modalName}`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
-                            <Radio.Group onChange={handleOnChange} >
-                                {birthDayCards.map(ele => <Radio value= {ele}><img style={{width:"50%", height:"50%"}} src={ele}></img></Radio>)}
-                            </Radio.Group>
+                        <Modal width={"900px"} title={`Send Wishes to ${modalName}`}
+                            open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+                            footer={[<Button key="submit" type="primary" onClick={handleOk}>
+                                Send The Wish!!
+                            </Button>]}>
+                            <div>
+                                <h5>Select Card:</h5>
+                                <Radio.Group name="Cards" onChange={handleOnChangeCard} value={card} >
+                                    <Space direction="horizontal">
+                                        {birthDayCards.map(ele => <Radio value={ele}><img style={{ width: "100%", height: "100%" }} src={ele}></img></Radio>)}
+                                    </Space>
+                                </Radio.Group>
+                            </div>
+                            <br></br>
+                            <div>
+                                <h5>Select Wish:</h5>
+                                <Radio.Group name="Wishes" onChange={handleOnChangeWishes} value={wish} >
+                                    <Space direction="vertical">
+                                        {birthDayWishes.map(ele => <Radio value={ele}><h6>{ele}</h6></Radio>)}
+                                    </Space>
+                                </Radio.Group>
+                            </div>
                         </Modal>
                     </InfiniteScroll>
                 </div>

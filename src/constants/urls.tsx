@@ -24,3 +24,5 @@ export const ADD_DEPARTMENT_DOWNLOAD_CENTER = "/microsite/download-center/admin/
 export const GET_DOWNLOAD_CATEGORIES_URL = "/microsite/download-center/get-download-categories/"
 export const GET_BIRTHDAYS = "/microsite/home/birthday/"
 export const GET_ALL_BIRTHDAYS = "/microsite/home/birthday/all/"
+export const SEND_WISH = "/microsite/home/birthday/send_wishes"
+export const UPLOAD_BIRTHDAYS = "/microsite/home/birthday/upload-birthdays"
