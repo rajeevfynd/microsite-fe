@@ -187,6 +187,7 @@ export const CreatedSurvey = () => {
           <ShadowSearchInput
             placeholder="Type in the survey title you are looking for..."
             onChange={refreshPage}
+            size='large'
           />
           <Button
             type="primary"

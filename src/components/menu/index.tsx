@@ -50,14 +50,17 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    let selected = getSelectedByNavigate(props.menu, location.pathname, props.defaultKey);
+
     const [secondaryItems, setSecondaryItems] = React.useState<SecondaryMenuItemProps[]>([]);
-    const [menuPrimaryKey, setMenuPrimaryKey] = React.useState<string | null>(selected[0]);
-    const [menuSecondaryKey, setMenuSecondaryKey] = React.useState<string | null>(selected[1]);
+    const [menuPrimaryKey, setMenuPrimaryKey] = React.useState<string | null>();
+    const [menuSecondaryKey, setMenuSecondaryKey] = React.useState<string | null>();
 
     React.useEffect(() => {
-        let item = getSelectedPrimaryItemByKey(props.menu, menuPrimaryKey);
-        onPrimaryMenuItemClick(item);
+        let selected = getSelectedByNavigate(props.menu, location.pathname, props.defaultKey);
+        let item = getSelectedPrimaryItemByKey(props.menu, selected[0]);
+        setMenuPrimaryKey(selected[0]);
+        setMenuSecondaryKey(selected[1]);
+        setSecondaryItems(item?.secondaryItems || []);
     }, []);
 
     function onPrimaryMenuItemClick(item: PrimaryMenuItemProps) {
