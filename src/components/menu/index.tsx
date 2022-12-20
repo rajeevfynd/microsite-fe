@@ -78,8 +78,7 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
     return (
         <>
             <div className='menu-container'>
-                {props.menu.map(item => !item.access && <MenuItem {...item} selected={menuPrimaryKey == item.key} onClick={() => {
-                    if(item.disabled){ return ;}
+                {props.menu.map(item => !(item.hasAccess === false) && <MenuItem {...item} selected={menuPrimaryKey == item.key} onClick={() => {
                     setMenuPrimaryKey(item.key);
                     onMenuItemClick(item);
                     onPrimaryMenuItemClick(item);
@@ -87,8 +86,7 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
             </div>
             <div className='secondary-menu'>
                 <div className='secondary-menu-container'>
-                    {secondaryItems.map(item => !item.access && <SecondaryMenuItem {...item} selected={menuSecondaryKey == item.key} onClick={() => {
-                        if(item.disabled){ return ;}
+                    {secondaryItems.map(item => !(item.hasAccess === false) && <SecondaryMenuItem {...item} selected={menuSecondaryKey == item.key} onClick={() => {
                         setMenuSecondaryKey(item.key);
                         onMenuItemClick(item);
                     }} />)}

@@ -155,77 +155,77 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Admin Panel",
             key: "admin_panel",
             icon: <Gear />,
-            access: !isAdmin(),
+            hasAccess: isAdmin(),
             secondaryItems: [
                 {
                     key: "admin-induction",
                     title: "Induction",
                     icon: <WelcomeSvg />,
                     navigate: "/admin/induction",
-                    access: !isAdmin(),
+                    hasAccess: isAdmin(),
                 },
                 {
                     key: "admin-carousel",
                     title: "Carousel",
                     icon: <CarouselSvg />,
                     navigate: "/admin/edit-carousel",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-programs",
                     title: "Programs",
                     icon: <ProgramSvg />,
                     navigate: "/admin/programs",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-journeys",
                     title: "Journeys",
                     icon: <JourneySvg />,
                     navigate: "/admin/journeys",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-courses",
                     title: "Courses",
                     icon: <CourseSvg />,
                     navigate: "/admin/courses",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "add-skill",
                     title: "Skills",
                     icon: <SkillSvg />,
                     navigate: "/lnd/learning-center/addSkill",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "add-role",
                     title: "Roles",
                     icon: <RoleSvg />,
                     navigate: "/lnd/learning-center/addRole",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "created-surveys",
                     title: "Surveys",
                     icon: <SurveySvg />,
                     navigate: "/admin/created-surveys",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-downloads",
                     title: "Downloads",
                     icon: <DownloadSvg />,
                     navigate: "/admin/downloads",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-announcements",
                     title: "Announcements",
                     icon: <AnnouncementSvg />,
                     navigate: "/admin/manage-announcement",
-                    access: !isAdmin()
+                    hasAccess: isAdmin()
                 }
 
             ]
