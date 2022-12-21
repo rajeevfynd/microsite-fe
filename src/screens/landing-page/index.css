@@ -20,7 +20,7 @@
 .body {
     font-family: 'Nanum Gothic', sans-serif;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #000000;
 }
 
 .header {
@@ -62,6 +62,7 @@
     max-height: 70%;
     z-index: 4;
     float: left;
+    width: -moz-fit-content;
     width: fit-content;
     border-style: solid;
     border-width: 1px;
@@ -72,6 +73,7 @@
 
 .menu-list {
     text-align: left;
+    width: -moz-fit-content;
     width: fit-content;
     overflow: scroll;
 }
