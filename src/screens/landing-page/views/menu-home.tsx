@@ -161,48 +161,6 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     icon: <WelcomeSvg />,
                     navigate: "/admin/admin-lnds"
                 },
-                // {
-                //     key: "admin-induction",
-                //     title: "Induction",
-                //     icon: <WelcomeSvg />,
-                //     navigate: "/admin/induction"
-                // },
-                // {
-                //     key: "admin-carousel",
-                //     title: "Carousel",
-                //     icon: <CarouselSvg />,
-                //     navigate: "/admin/edit-carousel"
-                // },
-                // {
-                //     key: "admin-programs",
-                //     title: "Programs",
-                //     icon: <ProgramSvg />,
-                //     navigate: "/admin/programs"
-                // },
-                // {
-                //     key: "admin-journeys",
-                //     title: "Journeys",
-                //     icon: <JourneySvg />,
-                //     navigate: "/admin/journeys"
-                // },
-                // {
-                //     key: "admin-courses",
-                //     title: "Courses",
-                //     icon: <CourseSvg />,
-                //     navigate: "/admin/courses"
-                // },
-                // {
-                //     key: "add-skill",
-                //     title: "Skills",
-                //     icon: <SkillSvg />,
-                //     navigate: "/lnd/learning-center/addSkill"
-                // },
-                // {
-                //     key: "add-role",
-                //     title: "Roles",
-                //     icon: <RoleSvg />,
-                //     navigate: "/lnd/learning-center/addRole"
-                // },
                 {
                     key: "created-surveys",
                     title: "Surveys",
@@ -358,22 +316,7 @@ export default function MenuHome() {
                             <Menu.Item icon={<InfoCircle />}>Information Center</Menu.Item>
                             <Menu.SubMenu title='Admin Control Panel' icon={<Gear />}>
                                 <Menu.Item onClick={() => navigateTo('/admin/manage-announcement')}>Announcements</Menu.Item>
-                                <Menu.SubMenu key='admin-lnd' title='Learning and Development'>
-                                    <Menu.Item onClick={() => navigateTo('/admin/edit-carousel')}>Carousel</Menu.Item>
-                                    <Menu.Item key='admin-lnds' onClick={() => navigateTo('/admin/admin-lnds')}>Induction</Menu.Item>
-                                    <Menu.Item key='admin-induction' onClick={() => navigateTo('/admin/induction')}>Induction</Menu.Item>
-                                    <Menu.Item key='admin-programs' onClick={() => navigateTo('/admin/programs')}>Programs</Menu.Item>
-                                    <Menu.Item key='admin-journeys' onClick={() => navigateTo('/admin/journeys')}>Journeys</Menu.Item>
-                                    <Menu.Item key='admin-courses' onClick={() => navigateTo('/admin/courses')}>Courses</Menu.Item>
-                                    <Menu.Item
-                                        key='addSkill'
-                                        onClick={() => navigateTo('/lnd/learning-center/addSkill')}>
-                                        Skill</Menu.Item>
-                                    <Menu.Item
-                                        key='addRole'
-                                        onClick={() => navigateTo('/lnd/learning-center/addRole')}>
-                                        Role</Menu.Item>
-                                </Menu.SubMenu>
+
                                 <Menu.Item
                                     key="created-surveys"
                                     onClick={() => navigateTo("/admin/created-surveys")}
