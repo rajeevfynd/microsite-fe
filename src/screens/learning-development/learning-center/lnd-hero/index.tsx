@@ -7,16 +7,14 @@ export const LndHero = () => {
   return (
     <>
       <HeroCarousel></HeroCarousel>
-      <br>
-      </br>
       <SearchCourses />
-      <br></br>
-      <h3>Enrolled Programs</h3>
-      <ScrollablePrograms {...{ "props": "current" }} />
-      <br></br>
-      <h3>Completed Programs</h3>
-      <ScrollablePrograms {...{ "props": "completed" }} />
-      <br></br>
+      <div className='body-container'>
+        <h3>Enrolled Programs</h3>
+        <ScrollablePrograms {...{ "props": "current" }} />
+        <br></br>
+        <h3>Completed Programs</h3>
+        <ScrollablePrograms {...{ "props": "completed" }} />
+      </div>
     </>
   )
 }
