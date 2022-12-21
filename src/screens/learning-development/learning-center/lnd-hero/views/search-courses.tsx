@@ -11,6 +11,7 @@ import { CourseDetails } from '../../../../../components/course-detail/course-de
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from '../../../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
+import { ShadowSearchInput } from '../../../../../components/shadow-input-text'
 import { formatBase64 } from '../../../../../utility/image-utils';
 
 const SearchCourses = () => {
@@ -77,15 +78,11 @@ const SearchCourses = () => {
 
     return (
         <>
-            <div className='search-container'>
-            <Input 
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+            <ShadowSearchInput
                 size='large' 
-                className='home-card search-card search-box' 
-                style={{padding:15}}
-                suffix={<SearchOutlined/>} 
                 placeholder='Search Courses...'
-                allowClear
-                onChange={(e) => {searchKey(e.target.value);} } 
+                onChange={(e:string) => {searchKey(e);} } 
             />
             </div>
             

@@ -28,6 +28,7 @@ function ScrollablePrograms(props: any) {
   }
     const [d,setd] = React.useState(false)
     const [Programs,setProgram] = React.useState({data:[{
+      id:"",
       description: "",
       title: "",
       duration: 0,
@@ -58,10 +59,12 @@ function ScrollablePrograms(props: any) {
             RightArrow={RightArrow}
             >
                 {Programs.data.map(({ 
+                  id,
                   title,
                   description,
                   duration,
                   thumbnail }) => (<Programs_tag {... {
+                    id,
                     title,
                     description,
                     duration,

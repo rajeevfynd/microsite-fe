@@ -7,10 +7,7 @@ export const LndHero = () => {
   return (
     <>
       <HeroCarousel></HeroCarousel>
-      <br>
-      </br>
       <SearchCourses />
-      <br></br>
       <h3>Enrolled Programs</h3>
       <ScrollablePrograms {...{ "props": "current" }} />
       <br></br>

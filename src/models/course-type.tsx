@@ -1,4 +1,5 @@
 export type Program = {
+    id: string;
     description: string;
     title: string;
     duration: number;

@@ -73,9 +73,7 @@ function HeroCarousel(props: any) {
           <CarouselImage item={carouselList[1]} />
           <CarouselImage item={carouselList[2]} />
         </Carousel>
-
       </span>
-      <br></br>
       <Modal
         title="Course Details"
         visible={isModalOpen}
@@ -86,7 +84,6 @@ function HeroCarousel(props: any) {
         <CourseDetails course={courseDetails} />
       </Modal>
     </>
-
   )
 };
 

@@ -22,7 +22,7 @@ function Programs (props: Program){
     cover={<Image src={formatBase64(props.thumbnail)} fallback={DEFAULT_LND_THUMBNAIL} preview={false}/>}
   >
     <Meta title={props.title} description={props.description}  />
-    <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(props.title.toString()) }}> Go to Program <ArrowRight /> </Button>
+    <Button type='link' style={{ width: '100%' }} onClick={() => { navigate('/lnd/programs/'+props.id.toString()) }}> Go to Program <ArrowRight /> </Button>
   </Card>)
 };
 
