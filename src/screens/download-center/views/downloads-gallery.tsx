@@ -45,13 +45,13 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
 
 
     return (
-        <>
+        <div className='body-container'>
         <style>
             {css}
         </style>
-        <Row>
-            <h3>{props.downloadListProps.title}</h3>
-        </Row>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                <h3>{props.downloadListProps.title}</h3>
+            </div>
 
         <Row>
             <Content className='leaders-gallery'>
@@ -87,7 +87,7 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
                 </Row>
             </Content>
         </Row>
-        </>
+        </div>
     )
 
 }

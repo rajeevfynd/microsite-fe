@@ -68,6 +68,7 @@ export const AddAnnouncement = () => {
 
     return (
         <>
+            <div className='body-container'>
             <h3>Manage Annoucements</h3>
             <Button onClick={showModal} type='primary'><PlusLg style={{marginRight:"5px"}}/>Create Announcement</Button>
             <Modal title="Create Announcement" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
@@ -106,6 +107,7 @@ export const AddAnnouncement = () => {
             <br /><br />
 
             <DeleteAnnouncement {...{ props: updatedprops }} />
+            </div>
         </>
     )
 

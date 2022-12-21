@@ -68,6 +68,7 @@ const EditCarousal = () => {
 
     return (
         <>
+        <div className='body-container'>
             <h2>Edit Carousel</h2>
             <br></br>
             <Collapse accordion onChange={(e) => { if (e != undefined) { setActive(e.toString()) } }}>
@@ -195,6 +196,7 @@ const EditCarousal = () => {
             <br></br>
             <h3>Preview</h3>
             <HeroCarousel {...{ props: update }}></HeroCarousel>
+            </div>
         </>
     );
 };

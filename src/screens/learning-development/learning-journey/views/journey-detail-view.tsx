@@ -34,6 +34,7 @@ export const JourneyDetailView = () => {
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
+        <div className='body-container'>
         {isExists &&
           <JourneyDetail details={data}></JourneyDetail>
         }
@@ -44,6 +45,7 @@ export const JourneyDetailView = () => {
             title={<Text type='secondary'>No Details Found</Text>}
           />
         }
+        </div>
     </>
   )
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import { LeftArrow, RightArrow } from "../../../../../components/arrow";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import './index.css'
-import Programs_tag from './program-component'
+import ProgramItem from './program-component'
 import { Row } from "antd";
 import Col from "antd/es/grid/col";
 import { Program } from '../../../../../models/course-type'
@@ -63,7 +63,7 @@ function ScrollablePrograms(props: any) {
                   title,
                   description,
                   duration,
-                  thumbnail }) => (<Programs_tag {... {
+                  thumbnail }) => (<ProgramItem {... {
                     id,
                     title,
                     description,

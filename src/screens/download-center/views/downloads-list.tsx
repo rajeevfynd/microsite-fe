@@ -179,11 +179,9 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
     return (
         <>  
-
-                <h3>{props.downloadListProps.title}</h3>
-
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                    <div style={{ width: "50%", marginTop: "30px", marginBottom: "30px" }}>
+                    <h3 style={{ marginTop: '25px'}}>{props.downloadListProps.title}</h3>
+                    <div style={{ width: "50%", marginBottom: "30px" }}>
                         <Card className='home-card search-card' bodyStyle={{ padding: "12px" }}>
                             <Input.Group compact >
                                 <Select defaultValue="Department" bordered={false} style={{ width: '20%' }} onChange={(id) =>handleDeptClick(id)}>

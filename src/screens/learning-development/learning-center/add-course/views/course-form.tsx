@@ -114,8 +114,9 @@ export default function CourseForm() {
     return (<>
 
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
+        <div className='body-container' style={{width:'60%'}}>
         <h4>Create Course</h4>
-
+            <Form title='Create Course' layout="vertical" onFinish={onFinish}>
             <Form.Item>
             Thumbnail
             <Upload
@@ -124,7 +125,7 @@ export default function CourseForm() {
               file={course.thumbnail}
               accept="image/png, image/jpeg, image/jpg"  />
              </Form.Item>
-            <Form title='Create Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+
             <Form.Item>
                 Title
                 <Input onChange={(e) => {
@@ -353,8 +354,7 @@ export default function CourseForm() {
                 </Button>
             </Form.Item>
         </Form>
-
-
+        </div>
     </>
     )
 }

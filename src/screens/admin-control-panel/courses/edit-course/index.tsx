@@ -126,10 +126,10 @@ export const EditCourse = () => {
     }, [])
 
     return (<>
-
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
+        <div className='body-container' style={{width:'60%'}}>
         <h4>Edit Course</h4>
-        <Form title='Edit Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+        <Form title='Edit Course' layout="vertical" onFinish={onFinish}>
             <Form.Item>
             Thumbnail
             <Upload
@@ -370,8 +370,7 @@ export const EditCourse = () => {
                 </Button>
             </Form.Item>
         </Form>
-
-
+        </div>
     </>
     )
 

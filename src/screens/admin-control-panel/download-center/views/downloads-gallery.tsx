@@ -101,15 +101,13 @@ export const AdminDownloadsGallery = (props:{downloadListProps: DownloadListProp
         <style>
             {css}
         </style>
-        <Row>
-            <h3>{props.downloadListProps.title}</h3>
-        </Row>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+        <h3>{props.downloadListProps.title}</h3>
             <AddDownloadDocument {...addDocumentProps}></AddDownloadDocument>
         </div>
 
-        <Row>
+        <Row className='body-container'>
             <Content className='leaders-gallery'>
                 <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
                     
