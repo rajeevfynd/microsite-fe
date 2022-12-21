@@ -4,6 +4,7 @@ import * as React from 'react'
 import { MenuRouter } from './menu-router'
 import HeaderHome from './views/header-home'
 import MenuHome from './views/menu-home'
+import './index.less';
 import './index.css';
 
 const LandingPage = () => {

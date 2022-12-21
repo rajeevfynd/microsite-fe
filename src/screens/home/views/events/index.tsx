@@ -9,7 +9,7 @@ import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
 import { getSurveyEvent } from '../../../../service/survey-service';
 import { formatBase64 } from '../../../../utility/image-utils';
-import "./index.scss";
+import "./index.css";
 
 type LearningEventType = {
     id : string,
