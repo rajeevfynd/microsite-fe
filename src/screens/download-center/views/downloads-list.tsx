@@ -119,7 +119,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
 
 
     const handleDeptClick = (departmentId:any) => {
-      console.log(departmentId)
       setKeyState("")
       setPageNumber(1)
       setDepartment(departmentId)
@@ -150,8 +149,6 @@ export const DownloadsList = (props:{downloadListProps: DownloadListPropsType}) 
         onScroll: async ({ top, isEnd }) => {
           if (isEnd) {
             if(documentsList.length != totalLength){
-              console.log("VT is called");
-              console.log("pageNumber in VT ", pageNumber)
               loadMoreData()
             }
           }

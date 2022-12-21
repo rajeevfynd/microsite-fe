@@ -91,3 +91,7 @@ export function getDasboardTable(surveyId: string, pageNumber: number) {
     `/microsite/surveys/dash-board/${surveyId}?pageNumber=${pageNumber}`
   );
 }
+
+export function getSurveyEvent() {
+  return httpInstance.get('/microsite/assignee/relevant');
+}

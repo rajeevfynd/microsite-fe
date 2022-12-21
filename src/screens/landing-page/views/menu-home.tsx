@@ -27,6 +27,7 @@ import ComingSoonSvg from '../../../img/coming-soon.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
+import { isAdmin } from "../../../utility/user-utils";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
@@ -97,6 +98,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Journeys",
                     icon: <JourneySvg />,
                     navigate: "/lnd/learning-journey"
+                },
+                {
+                    key: "programs",
+                    title: "Programs",
+                    icon: <ProgramSvg />,
+                    navigate: "/lnd/programs"
                 }
 
             ]
@@ -148,66 +155,77 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Admin Panel",
             key: "admin_panel",
             icon: <Gear />,
+            hasAccess: isAdmin(),
             secondaryItems: [
                 {
                     key: "admin-induction",
                     title: "Induction",
                     icon: <WelcomeSvg />,
-                    navigate: "/admin/induction"
+                    navigate: "/admin/induction",
+                    hasAccess: isAdmin(),
                 },
                 {
                     key: "admin-carousel",
                     title: "Carousel",
                     icon: <CarouselSvg />,
-                    navigate: "/admin/edit-carousel"
+                    navigate: "/admin/edit-carousel",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-programs",
                     title: "Programs",
                     icon: <ProgramSvg />,
-                    navigate: "/admin/programs"
+                    navigate: "/admin/programs",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-journeys",
                     title: "Journeys",
                     icon: <JourneySvg />,
-                    navigate: "/admin/journeys"
+                    navigate: "/admin/journeys",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-courses",
                     title: "Courses",
                     icon: <CourseSvg />,
-                    navigate: "/admin/courses"
+                    navigate: "/admin/courses",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "add-skill",
                     title: "Skills",
                     icon: <SkillSvg />,
-                    navigate: "/lnd/learning-center/addSkill"
+                    navigate: "/lnd/learning-center/addSkill",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "add-role",
                     title: "Roles",
                     icon: <RoleSvg />,
-                    navigate: "/lnd/learning-center/addRole"
+                    navigate: "/lnd/learning-center/addRole",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "created-surveys",
                     title: "Surveys",
                     icon: <SurveySvg />,
-                    navigate: "/admin/created-surveys"
+                    navigate: "/admin/created-surveys",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-downloads",
                     title: "Downloads",
                     icon: <DownloadSvg />,
-                    navigate: "/admin/downloads"
+                    navigate: "/admin/downloads",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-announcements",
                     title: "Announcements",
                     icon: <AnnouncementSvg />,
-                    navigate: "/admin/manage-announcement"
+                    navigate: "/admin/manage-announcement",
+                    hasAccess: isAdmin()
                 }
 
             ]

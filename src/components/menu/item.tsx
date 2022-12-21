@@ -13,8 +13,9 @@ type MenuItemInfo = {
 
 export interface MenuItemProps extends MenuItemInfo {
     onClick?: MenuClickEventHandler
-    selected?: boolean | false
-    disabled?: boolean | false
+    selected?: boolean 
+    disabled?: boolean 
+    hasAccess?: boolean
 }
 
 function behaviour({ selected, disabled }: MenuItemProps): string {

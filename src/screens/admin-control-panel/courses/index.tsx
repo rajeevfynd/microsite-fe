@@ -1,6 +1,7 @@
-import { Button, Card, Image, List, Skeleton } from 'antd';
+import { Button, Card, Image, List, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
+import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 import { ShadowSearchInput } from '../../../components/shadow-input-text';
@@ -8,7 +9,9 @@ import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 import { CourseListType } from '../../../models/course-type';
 import { getCourses } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
+import { formatBase64 } from '../../../utility/image-utils';
 import './index.css';
+const { Text } = Typography;
 
 export const AdminCoursePage = () => {
 
@@ -25,7 +28,6 @@ export const AdminCoursePage = () => {
         setLoad(false);
         getCourses(keyState, page.toString()).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...courses, ...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(page + 1)
@@ -40,11 +42,11 @@ export const AdminCoursePage = () => {
         setLoad(false);
         getCourses(key).then(
             resp => {
-                console.log(resp.data.last)
                 setCourses([...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(1)
                 setLoad(false)
+                
             }
         )
     }
@@ -55,22 +57,19 @@ export const AdminCoursePage = () => {
 
     const searchKey = (str: string) => {
         key = str
-        console.log(key)
         debounce(searchCourses, 500)
     }
 
     return (
         <>
-            <h3>Manage Courses</h3>
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                <ShadowSearchInput placeholder='Search Course...'
-                size='large'
-                onChange={(e:any) => { console.log(e); searchKey(e); }}
+                <ShadowSearchInput placeholder='Type in the course title you are looking for...'
+                    size='large'
+                    onChange={(e:any) => { searchKey(e); }}
                 />
-                <Button type="primary" style={{marginBottom: "30px"}} onClick={() => navigate("/admin/addCourse")}>Create new Course</Button>
-                <div style={{ width:"100%"}} >
+                <Button style={{borderRadius: 5}} onClick={() => navigate("/admin/addCourse")} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Course</Button>
+                <div style={{ width:"100%", height:'100%'}} >
                 {courses.length != 0 &&
-
                     <InfiniteScroll
                         dataLength={courses.length}
                         next={loadMoreData}
@@ -89,25 +88,27 @@ export const AdminCoursePage = () => {
                                     hoverable
                                     style={{
                                         width: 340,
-                                        height: 300
+                                        height: 350
                                     }}
                                     cover={
                                         <Image
-                                            src={item.thumbnail}
+                                        src={formatBase64(item.thumbnail)}
                                             style={{
                                                 width: 340,
                                                 height: 195
                                             }}
                                             fallback={DEFAULT_LND_THUMBNAIL}
+                                            preview={false}
                                         />
                                     }
+                                    actions={[
+                                        <Button onClick={()=>{ item.id && navigate(item.id.toString()) }} type='link' > Edit <PencilSquare style={{margin:'10%'}}/> </Button>
+                                    ]}
                                 >
                                     <Meta
-                                    style= {{ textAlign: "center"}}
                                         title={item.title}
-                                        description={item.description}
+                                        description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                                     />
-                                    <Button type='link'  onClick={()=>{navigate(item.id.toString())}} style={{ width: '100%' }} > Edit  </Button>
                                 </Card>
 
                             </List.Item>
@@ -115,7 +116,15 @@ export const AdminCoursePage = () => {
                     />
                     </InfiniteScroll>
                 }
+                {
+                    courses.length == 0 &&
+                    <Result
+                    status="404"
+                    title={<Text type='secondary'>No Courses Found</Text>}
+        />
+      }
                 </div>
+
             </div>
         </>
     )

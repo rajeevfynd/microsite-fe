@@ -18,7 +18,6 @@ const CheckBoxUi: React.FC<choiceprops> = ({
   handleCheckBoxResponse,
 }): JSX.Element => {
   const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log("checked = ", checkedValues);
     handleCheckBoxResponse(qId, checkedValues);
   };
   return (

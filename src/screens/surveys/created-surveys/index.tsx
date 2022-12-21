@@ -122,7 +122,6 @@ export const CreatedSurvey = () => {
 
   const loadMore = () => {
     getSurveys(searchKeyword, pageNumber).then((data) => {
-      console.log(data);
       setSurvey([...surveys, ...data.content]);
       setHasMore(!data.last);
       setPageNumber(pageNumber + 1);
@@ -143,8 +142,6 @@ export const CreatedSurvey = () => {
     setSearchKeyword(value);
     setPageNumber(0);
     getSurveys(value, 0).then((data) => {
-      console.log("from search changed");
-      console.log(data);
       setSurvey(data.content);
       setHasMore(!data.last);
     });
@@ -153,7 +150,6 @@ export const CreatedSurvey = () => {
   React.useEffect(() => {
     !initialLoad &&
       getSurveys(searchKeyword, pageNumber).then((data) => {
-        console.log(data);
         setSurvey(data.content);
         setHasMore(!data.last);
         setPageNumber(pageNumber + 1);
@@ -226,6 +222,7 @@ export const CreatedSurvey = () => {
           <ShadowSearchInput
             placeholder="Type in the survey title you are looking for..."
             onChange={refreshPage}
+            size="large"
           />
           <Button
             type="primary"

@@ -8,6 +8,7 @@ import {
   getImage,
 } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
+import { formatBase64 } from "../../../../utility/image-utils";
 
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -79,7 +80,7 @@ function SurveyList() {
                     cover={
                       <img
                         alt="example"
-                        src={"data:image/png;base64," + i.imgUrl}
+                        src={formatBase64(i.imgUrl)}
                       />
                     }
                     actions={[

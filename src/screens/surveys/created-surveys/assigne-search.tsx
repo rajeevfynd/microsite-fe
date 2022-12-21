@@ -13,11 +13,10 @@ type propsType = {
 const AssigneSearch = (props: propsType) => {
   const [users, SetUsers] = React.useState<UserType[]>([]);
 
-  //const [value, setValue] = React.useState<UserType[]>([]);
-
-  // function onChange(value: React.SetStateAction<string[]>) {
-  //   props.handleSelectedUser(value);
-  // }
+  function onChange(value: React.SetStateAction<string[]>) {
+    props.handleSelectedUser(value);
+    console.log(`selected ${value}`);
+  }
 
   function onBlur() {
     console.log("blur");

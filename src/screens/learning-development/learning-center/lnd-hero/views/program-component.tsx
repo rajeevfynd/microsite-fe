@@ -8,6 +8,7 @@ const { Meta } = Card;
 import { Program } from '../../../../../models/course-type'
 import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
 import { ArrowRight } from 'react-bootstrap-icons';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 function Programs (props: Program){
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function Programs (props: Program){
       width: 340,
       height: 300
     }}
-    cover={<Image src={props.thumbnailLink} fallback={DEFAULT_LND_THUMBNAIL} />}
+    cover={<Image src={formatBase64(props.thumbnail)} fallback={DEFAULT_LND_THUMBNAIL} preview={false}/>}
   >
     <Meta title={props.title} description={props.description}  />
     <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(props.title.toString()) }}> Go to Program <ArrowRight /> </Button>

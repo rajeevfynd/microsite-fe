@@ -10,7 +10,6 @@ export const Upload = (props: UploadProps) => {
     const [fileList, setFileList] = React.useState<UploadFile[]>([]);
 
     React.useEffect(() => {
-        console.log("inside effect")
         if (props.file) {
             setFileList([{
                 uid: `${Math.random()}`,
