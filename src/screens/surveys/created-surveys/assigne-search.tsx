@@ -6,16 +6,18 @@ import axios from "axios";
 const { Option } = Select;
 
 type propsType = {
-  handleSelectedUser(value: React.SetStateAction<string[]>): void;
+  handleSelectedUser(value: React.SetStateAction<UserType[]>): void;
+  userIds: UserType[];
 };
 
 const AssigneSearch = (props: propsType) => {
   const [users, SetUsers] = React.useState<UserType[]>([]);
 
-  function onChange(value: React.SetStateAction<string[]>) {
-    props.handleSelectedUser(value);
-    console.log(`selected ${value}`);
-  }
+  //const [value, setValue] = React.useState<UserType[]>([]);
+
+  // function onChange(value: React.SetStateAction<string[]>) {
+  //   props.handleSelectedUser(value);
+  // }
 
   function onBlur() {
     console.log("blur");
@@ -29,21 +31,24 @@ const AssigneSearch = (props: propsType) => {
     axios
       .get(`/microsite/users/search?key=${val}`)
       .then((newData) => {
-        console.log("Seacrh for user", newData.data);
         SetUsers(newData.data.data);
       })
       .catch((err) => console.log(err.message));
-    console.log("search:", val);
   }
   return (
     <>
       <Select
-        showSearch
         mode="multiple"
+        value={props.userIds}
         style={{ width: 200 }}
         placeholder="Select User"
         optionFilterProp="children"
-        onChange={onChange}
+        onChange={(newValue) => {
+          // setValue(newValue as UserType[]);
+          props.handleSelectedUser(newValue as UserType[]);
+          console.log("Value ", props.userIds);
+        }}
+        // onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
         onSearch={onSearch}

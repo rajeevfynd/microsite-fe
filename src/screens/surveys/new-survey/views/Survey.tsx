@@ -399,10 +399,7 @@ const Survey = () => {
         })
         .catch((err) => {
           console.log(err.data);
-          openNotificationWithIcon(
-            "error",
-            "Changes are not saved" + err.message
-          );
+          openNotificationWithIcon("error", "Changes are not saved");
           setConfirmLoading(false);
         });
     } else {
@@ -418,7 +415,7 @@ const Survey = () => {
           navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
-          openNotificationWithIcon("error", err.message);
+          openNotificationWithIcon("error", "Error ");
           setConfirmLoading(false);
         });
     }
@@ -459,7 +456,7 @@ const Survey = () => {
       console.log("Submit form");
       submitForm(res.data.id);
     } catch (error) {
-      openNotificationWithIcon("error", error.message);
+      openNotificationWithIcon("error", "Error");
     }
   };
 

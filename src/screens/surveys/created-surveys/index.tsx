@@ -12,7 +12,12 @@ import {
 import Meta from "antd/lib/card/Meta";
 import * as React from "react";
 import { ShadowSearchInput } from "../../../components/shadow-input-text";
-import { SurveyDto, AssigneeSurveyDto } from "../../../models/survey";
+import {
+  SurveyDto,
+  AssigneeSurveyDto,
+  assigneModelData,
+  UserType,
+} from "../../../models/survey";
 import "../new-survey/views/questionForm.css";
 import { useNavigate } from "react-router-dom";
 import {
@@ -20,7 +25,9 @@ import {
   deleteSurveyById,
   searchSurvey,
 } from "../../../service/survey-service";
+import dayjs from "dayjs";
 import { formatBase64 } from "../../../utility/image-utils";
+import moment from "moment";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -29,9 +36,16 @@ import {
 import { showNotification } from "../../../components/snackbar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AssigneSearch from "./assigne-search";
+import { RangePickerProps } from "antd/lib/date-picker";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 export const CreatedSurvey = () => {
   const [surveys, setSurvey] = React.useState<SurveyDto[]>([]);
+  const [assigneData, setAssigneData] = React.useState<assigneModelData[]>([]);
+  //let modelData : {[key:string]:assigneModelData}
+  const dateFormat = "YYYY/MM/DD";
   let navigate = useNavigate();
   const [pageNumber, setPageNumber] = React.useState(0);
   const [hasMore, setHasMore] = React.useState(true);
@@ -40,13 +54,13 @@ export const CreatedSurvey = () => {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const [assigneeId, setAssigneeId] = React.useState<Array<string>>([]);
+  const [users, SetUsers] = React.useState<UserType[]>([]);
 
   const [surveyId, setSurveyId] = React.useState("");
 
   const now = new Date();
   const [expireData, setExpireDate] = React.useState(
-    now.setDate(now.getDate() + 7).toString()
+    now.toISOString().slice(0, 10)
   );
 
   const showModal = () => {
@@ -57,18 +71,19 @@ export const CreatedSurvey = () => {
     form.submit();
     const reqBody = {
       surveyId,
-      assigneeId: assigneeId,
+      assigneeId: users,
       expireDate: expireData,
     };
-    if (assigneeId.length && expireData !== "") {
+    if (users.length >= 1) {
       assignSurveyToUserId(reqBody)
         .then((res) => {
           console.log("Response", res);
-          showNotification("success", `Survey assigneed to ${assigneeId}`);
-          setAssigneeId([]);
+          showNotification("success", `Survey assigneed to ${users}`);
           setExpireDate("");
           setSurveyId("");
           form.resetFields();
+          SetUsers([]);
+          setExpireDate(now.toISOString().slice(0, 10));
           setIsModalOpen(false);
         })
         .catch((err) => {
@@ -80,6 +95,8 @@ export const CreatedSurvey = () => {
   };
 
   const handleCancel = () => {
+    SetUsers([]);
+    setExpireDate(now.toISOString().slice(0, 10));
     setIsModalOpen(false);
     form.resetFields();
   };
@@ -142,11 +159,19 @@ export const CreatedSurvey = () => {
         setPageNumber(pageNumber + 1);
         setInitialLoad(true);
       });
+    console.log("Exprire Date", expireData);
   }, []);
 
-  const handleSelectedUser = (Id: React.SetStateAction<string[]>) => {
-    console.log("Inside Handle selector", Id);
-    setAssigneeId(Id);
+  const handleSelectedUser = (Ids: React.SetStateAction<UserType[]>) => {
+    console.log("Inside Handle selector", Ids);
+    SetUsers(Ids);
+    console.log("Set users", users);
+    //setAssigneeId(Id);
+  };
+
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf("day");
   };
 
   const Popup = () => {
@@ -158,12 +183,19 @@ export const CreatedSurvey = () => {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <AssigneSearch handleSelectedUser={handleSelectedUser} />
+          <AssigneSearch
+            handleSelectedUser={handleSelectedUser}
+            userIds={users}
+          />
           <DatePicker
+            // defaultValue={dayjs("21/12/2022", dateFormat)}
+            format={dateFormat}
             placeholder="Expire Date"
+            disabledDate={disabledDate}
+            value={moment(expireData, dateFormat)}
             onChange={(date, dateString) => {
               setExpireDate(dateString);
-              console.log("Date", dateString);
+              console.log("Date string", dateString);
             }}
           />
         </Modal>
@@ -188,7 +220,7 @@ export const CreatedSurvey = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            padding: "0% 3%"
+            padding: "0% 3%",
           }}
         >
           <ShadowSearchInput
