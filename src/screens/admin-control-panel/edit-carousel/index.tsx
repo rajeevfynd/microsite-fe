@@ -69,8 +69,7 @@ const EditCarousal = () => {
     return (
         <>
         <div className='body-container'>
-            <h2>Edit Carousel</h2>
-            <br></br>
+            <h4>Edit Carousel</h4>
             <Collapse accordion onChange={(e) => { if (e != undefined) { setActive(e.toString()) } }}>
                 <Panel header="Slide 1" key={0}>
                     <Form.Provider
@@ -194,7 +193,7 @@ const EditCarousal = () => {
                 </Panel>
             </Collapse>
             <br></br>
-            <h3>Preview</h3>
+            <h4>Preview</h4>
             <HeroCarousel {...{ props: update }}></HeroCarousel>
             </div>
         </>
