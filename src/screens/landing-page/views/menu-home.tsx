@@ -24,6 +24,7 @@ import CarouselSvg from '../../../img/carousel.svg';
 import DownloadSvg from '../../../img/download.svg';
 import AnnouncementSvg from '../../../img/promotion.svg';
 import ComingSoonSvg from '../../../img/coming-soon.svg';
+import FaqSvg from '../../../img/faq.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
@@ -43,6 +44,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             icon: <HomeOutlined />,
             navigate: "/home",
             secondaryItems: [
+                {
+                    title: "My Surveys",
+                    key: "surveys",
+                    icon: <SurveySvg />,
+                    navigate: "/survey/my-surveys"
+                },
                 {
                     key: "podcasts",
                     title: "Podcasts",
@@ -104,15 +111,15 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Programs",
                     icon: <ProgramSvg />,
                     navigate: "/lnd/programs"
+                },
+                {
+                    title: "Faq",
+                    key: "new-emp-faq",
+                    icon: <FaqSvg />,
+                    navigate: "/lnd/new-emp-center/new-emp-faq"
                 }
 
             ]
-        },
-        {
-            title: "My Surveys",
-            key: "surveys",
-            icon: <ListColumns />,
-            navigate: "/survey/my-surveys"
         },
         {
             title: "Downloads",
@@ -229,12 +236,6 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 }
 
             ]
-        },
-        {
-            title: "Faq",
-            key: "new-emp-faq",
-            icon: <QuestionCircleOutlined />,
-            navigate: "/lnd/new-emp-center/new-emp-faq"
         }
     ]
 }
