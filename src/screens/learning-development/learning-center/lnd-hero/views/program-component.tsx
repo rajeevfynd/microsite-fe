@@ -16,7 +16,8 @@ function Programs (props: Program){
       <Card
       style={{
         width: 340,
-        height: 350
+        height: 350,
+        margin: '0 5px'
       }}
       cover={
         <Image
