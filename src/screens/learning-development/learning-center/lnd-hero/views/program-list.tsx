@@ -3,7 +3,7 @@ import { LeftArrow, RightArrow } from "../../../../../components/arrow";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import './index.css'
 import ProgramItem from './program-component'
-import { Row } from "antd";
+import { Empty, Row } from "antd";
 import Col from "antd/es/grid/col";
 import { Program } from '../../../../../models/course-type'
 import httpInstance from "../../../../../utility/http-client";
@@ -76,10 +76,10 @@ function ScrollablePrograms(props: any) {
           </Row>
           }
           {
-            !d &&
-            <Row><Col>
-            <p> No Programs to display </p>
-            </Col></Row>
+            !d && 
+            <Row>
+              <Empty description={<p>No programs to display</p>}/>
+            </Row> 
           }
           </div>
       </>
