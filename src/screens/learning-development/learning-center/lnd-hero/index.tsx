@@ -9,11 +9,9 @@ export const LndHero = () => {
       <HeroCarousel></HeroCarousel>
       <SearchCourses />
       <div className='body-container'>
-        <h3>Enrolled Programs</h3>
-        <ScrollablePrograms {...{ "props": "current" }} />
+        <ScrollablePrograms {...{ "type": "current", "title":"Enrolled Programs" }} />
         <br></br>
-        <h3>Completed Programs</h3>
-        <ScrollablePrograms {...{ "props": "completed" }} />
+        <ScrollablePrograms {...{ "type": "completed", "title":"Completed Programs"}} />
       </div>
     </>
   )

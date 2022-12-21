@@ -20,10 +20,10 @@ type GetProgramResponse = {
 function ScrollablePrograms(props: any) {
 
   let url : string;
-  if(props.props =="current"){
+  if(props.type =="current"){
     url = CURRENT_PROGRAMS_URL
   }
-  if(props.props =="completed"){
+  if(props.type =="completed"){
     url = COMPLETED_PROGRAMS_URL
   }
     const [d,setd] = React.useState(false)
@@ -49,8 +49,9 @@ function ScrollablePrograms(props: any) {
   
     return (
       <>
-      <div className="scroll" >{
-      d && 
+      {d && <>
+      <h4>{props.title}</h4>
+      <div className="scroll" >
         <Row>
             <Col >
             <div className="arrow">
@@ -74,14 +75,9 @@ function ScrollablePrograms(props: any) {
             </div>
             </Col>
           </Row>
-          }
-          {
-            !d && 
-            <Row>
-              <Empty description={<p>No programs to display</p>}/>
-            </Row> 
-          }
           </div>
+          </>
+          }
       </>
     );
   }
