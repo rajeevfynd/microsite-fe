@@ -69,6 +69,3 @@ const HeaderHome = () => {
 
 export default HeaderHome;
 
-function getLogoutRedirect(): void {
-  throw new Error('Function not implemented.');
-}
