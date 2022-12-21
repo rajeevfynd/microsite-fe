@@ -97,9 +97,8 @@ export const AdminLnd = () => {
                 >
                     <Content style={{
                         overflow: 'auto',
-                        margin: '2px 16px 0',
+                        margin: '0px 0px 0',
                         height: '90vh',
-                        textAlign: 'center',
                         background: '#fff'
                     }}>
                         <Routes>
