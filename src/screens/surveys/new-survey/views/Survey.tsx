@@ -398,7 +398,11 @@ const Survey = () => {
           navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
-          openNotificationWithIcon("error", "Error ");
+          if (!err.message) {
+            openNotificationWithIcon("error", "somthing went wrong");
+          } else {
+            openNotificationWithIcon("error", err.message);
+          }
           setConfirmLoading(false);
         });
     }
@@ -431,7 +435,11 @@ const Survey = () => {
       //submitForm();
       submitForm(res.data.id);
     } catch (error) {
-      openNotificationWithIcon("error", "Error");
+      if (!error.message) {
+        openNotificationWithIcon("error", "somthing went wrong");
+      } else {
+        openNotificationWithIcon("error", error.message);
+      }
     }
   };
 
