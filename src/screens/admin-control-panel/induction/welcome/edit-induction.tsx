@@ -185,7 +185,7 @@ export const EditInduction = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Edit Induction
+              Save
             </Button>
           </Form.Item>
 

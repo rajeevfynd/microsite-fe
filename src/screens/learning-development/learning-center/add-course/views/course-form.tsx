@@ -114,17 +114,17 @@ export default function CourseForm() {
     return (<>
 
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
-        <h4>Create Course</h4>
-
+        <div className='body-container' style={{ width: '60%' }}>
+        <h4>Create Course</h4>    
+        <Form title='Create Course' layout="vertical" onFinish={onFinish}>
             <Form.Item>
-            Thumbnail
-            <Upload
-              onDone={(info) => { setCourse({...course, thumbnailId: info.documentId, thumbnail : info.file});} }
-              onRemove={() => setCourse({...course, thumbnailId: '', thumbnail: ''})}
-              file={course.thumbnail}
-              accept="image/png, image/jpeg, image/jpg"  />
-             </Form.Item>
-            <Form title='Create Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+                Thumbnail
+                <Upload
+                onDone={(info) => { setCourse({...course, thumbnailId: info.documentId, thumbnail : info.file});} }
+                onRemove={() => setCourse({...course, thumbnailId: '', thumbnail: ''})}
+                file={course.thumbnail}
+                accept="image/png, image/jpeg, image/jpg"  />
+            </Form.Item>
             <Form.Item>
                 Title
                 <Input onChange={(e) => {
@@ -353,8 +353,7 @@ export default function CourseForm() {
                 </Button>
             </Form.Item>
         </Form>
-
-
+        </div>
     </>
     )
 }
