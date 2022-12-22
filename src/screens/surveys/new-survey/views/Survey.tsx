@@ -154,11 +154,22 @@ const Survey = () => {
       </>
     );
   };
+
+  const addOption = (i: number) => {
+    handleAddOption(i, 0);
+    handleAddOption(i, 1);
+  };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
       case "SINGLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return radioUI(i);
       case "MULTIPLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return checkBoxUI(i);
       default:
         return <TextArea disabled></TextArea>;

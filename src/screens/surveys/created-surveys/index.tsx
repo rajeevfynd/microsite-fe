@@ -75,6 +75,7 @@ export const CreatedSurvey = () => {
       expireDate: expireData,
     };
     if (users.length >= 1) {
+      console.log(reqBody);
       assignSurveyToUserId(reqBody)
         .then((res) => {
           console.log("Response", res);
@@ -87,6 +88,8 @@ export const CreatedSurvey = () => {
           setIsModalOpen(false);
         })
         .catch((err) => {
+          console.log("Errror", err);
+          console.log(err.message);
           showNotification("error", err.data.data.message);
         });
     } else {
@@ -103,6 +106,7 @@ export const CreatedSurvey = () => {
 
   const assigneeSurvey = (id: string) => {
     setSurveyId(id);
+    console.log("Survey Id", id);
     showModal();
   };
   const [form] = Form.useForm();
