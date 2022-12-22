@@ -47,7 +47,7 @@ export function getCourses(key:string = '', page:string = '0', size:string = '8'
     return httpInstance.get('/microsite/lnd/programs/course-search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
 
-export function getCoursesFts(key:string = '', page:string = '0', size:string = '3'){
+export function getCoursesFts(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
