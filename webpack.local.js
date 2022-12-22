@@ -7,7 +7,7 @@ module.exports = merge(common, {
     historyApiFallback: true,
     proxy: {
       "/microsite/**": {
-        target: "http://localhost:8082",
+        target: "http://localhost:8080",
         secure: false,
         changeOrigin: true,
       },
