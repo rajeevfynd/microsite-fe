@@ -13,7 +13,6 @@ import { formatBase64 } from '../../../utility/image-utils';
 import './index.css';
 const { Text } = Typography;
 
-const FALLBACK_IMAGE = "https://static.vecteezy.com/system/resources/previews/005/048/106/original/black-and-yellow-grunge-modern-thumbnail-background-free-vector.jpg";
 
 export const AdminCoursePage = () => {
 

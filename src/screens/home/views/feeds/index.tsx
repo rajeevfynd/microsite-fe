@@ -27,7 +27,7 @@ export const Feeds = () => {
                 next={() => { }}
                 hasMore={false}
                 loader={<Spin size="large" />}
-                scrollThreshold="80%"
+                scrollThreshold="20%"
             >
                 <Affix offsetTop={120} className="centered-container" style={{ zIndex: 1, marginTop: "100px", textAlign: "center" }}>
                     <h3>Communities</h3>
