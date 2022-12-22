@@ -283,53 +283,48 @@ const Survey = () => {
       tmpCanvas.height = canvas.height;
       var context2 = canvas.getContext("2d"); //context from tmpCanvas
       var imageObj = new Image();
-      // ScreenShot will be croped if the hieght is more than 1200
-      if (canvas.height > 1200) {
-        imageObj.onload = function () {
-          //setup: draw cropped image
-          var sourceX = 0;
-          var sourceY = 0;
-          var sourceWidth = canvas.width;
-          var sourceHeight = 1200;
-          var destWidth = sourceWidth;
-          var destHeight = sourceHeight;
-          var destX = canvas.width / 2 - destWidth / 2;
-          var destY = canvas.height / 2 - destHeight / 2;
-          context2.drawImage(
-            imageObj,
-            sourceX,
-            sourceY,
-            sourceWidth,
-            sourceHeight,
-            destX,
-            destY,
-            destWidth,
-            destHeight
-          );
-          var data = context2.getImageData(
-            sourceX,
-            sourceY,
-            sourceWidth,
-            sourceHeight
-          );
-          context.clearRect(0, 0, canvas.width, canvas.height); //clear originalCanvas
-          canvas.width = sourceWidth;
-          canvas.height = sourceHeight;
-          context2.putImageData(data, 0, 0);
 
-          setImgString(canvas.toDataURL(formatOutput));
 
-          //memory!!!
-          context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
-          context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
-          data = null;
-          tmpCanvas = null;
-          canvas = null;
-          imageObj = null;
-        };
-      } else {
+      imageObj.onload = function () {
+        //setup: draw cropped image
+        var sourceX = 0;
+        var sourceY = 0;
+        var sourceWidth = 600;
+        var sourceHeight = canvas.height;
+        var destWidth = sourceWidth;
+        var destHeight = sourceHeight;
+
+        context.drawImage(
+          imageObj,
+          sourceX,
+          sourceY,
+          sourceWidth,
+          sourceHeight,
+        );
+
+        var data = context.getImageData(
+          sourceX,
+          sourceY,
+          sourceWidth,
+          sourceHeight
+        );
+
+        context.clearRect(0, 0, canvas.width, canvas.height); //clear originalCanvas
+        canvas.width = sourceWidth;
+        canvas.height = sourceHeight;
+        context2.putImageData(data, 0, 0);
+
         setImgString(canvas.toDataURL(formatOutput));
-      }
+
+        //memory!!!
+        context.clearRect(0, 0, sourceWidth, sourceHeight); //clear originalCanvas
+        context2.clearRect(0, 0, sourceWidth, sourceHeight); //clear tmpCanvas
+        data = null;
+        tmpCanvas = null;
+        canvas = null;
+        imageObj = null;
+      };
+
 
       imageObj.src = tmpCanvas.toDataURL("image/png");
     });
@@ -455,11 +450,11 @@ const Survey = () => {
       ) : (
         <>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <div className="question_form" id="TakeScreenShot">
+            <div className="question_form">
               <br></br>
 
-              <div className="section">
-                <div className="question_title_section">
+              <div className="section" id="TakeScreenShot">
+                <div className="question_title_section" >
                   <div className="question_form_top">
                     <input
                       type="text"

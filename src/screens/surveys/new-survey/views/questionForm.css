@@ -23,16 +23,15 @@
 .question_form_top_name {
   box-sizing: border-box;
   font-family: "Google Sans", Roboto, Arial, sans-serif;
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 400;
   line-height: 40px;
-  line-height: 135%;
   width: 100%;
   border: none;
   outline: none;
   border-bottom: 1px solid #f4f4f9;
   color: black;
-  height: 35px;
+  height: 30;
 }
 .question_form_top_desc {
   box-sizing: border-box;
@@ -45,7 +44,8 @@
   outline: none;
   border-bottom: 1px solid #f4f4f9;
   color: black;
-  height: 20px;
+  height: 20;
+  margin-top: 5px;
 }
 
 .name-div {
