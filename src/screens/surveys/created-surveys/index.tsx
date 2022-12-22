@@ -37,7 +37,6 @@ import { showNotification } from "../../../components/snackbar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AssigneSearch from "./assigne-search";
 import { RangePickerProps } from "antd/lib/date-picker";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 export const CreatedSurvey = () => {
   const [surveys, setSurvey] = React.useState<SurveyDto[]>([]);
