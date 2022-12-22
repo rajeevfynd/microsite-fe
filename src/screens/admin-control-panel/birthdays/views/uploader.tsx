@@ -1,6 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, message, Row, Space, Upload } from 'antd';
 import * as React from 'react';
+import { SAMPLE_BIRTHDAY_UPLOAD_URL } from '../../../../constants/string-constants';
 import { uploadBirthday } from '../../../../service/home-service';
 
 export const Uploader = () => {
@@ -34,6 +35,9 @@ export const Uploader = () => {
                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload>
             </Form.Item>
+            <p>
+                    <a href={SAMPLE_BIRTHDAY_UPLOAD_URL}>Sample Upload File</a>
+            </p>
 
             <Form.Item >
                     <Row>

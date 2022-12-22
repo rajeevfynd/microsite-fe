@@ -50,8 +50,8 @@ export const BirthDays = () => {
         const body = {
             receiverEmail:modalEmail,
             receiverBirthday:modalBirthday,
-            Card:card,
-            Wish:wish
+            card:card,
+            wish:wish
         }
         const resp = await sendWish(body);
         message.info(resp.data);
