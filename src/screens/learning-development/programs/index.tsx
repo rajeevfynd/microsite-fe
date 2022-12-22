@@ -34,6 +34,7 @@ export const ProgramDetailsView = () => {
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
+        <div className='body-container'>
         {isExists &&
         <>
           <ProgramDetail details={data} />
@@ -47,6 +48,7 @@ export const ProgramDetailsView = () => {
             title={<Text type='secondary'>No Details Found</Text>}
           />
         }
+        </div>
     </>
   )
 }

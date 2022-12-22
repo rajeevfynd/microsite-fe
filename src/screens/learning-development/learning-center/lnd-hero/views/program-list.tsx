@@ -2,8 +2,8 @@ import * as React from "react";
 import { LeftArrow, RightArrow } from "../../../../../components/arrow";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import './index.css'
-import Programs_tag from './program-component'
-import { Row } from "antd";
+import ProgramItem from './program-component'
+import { Empty, Row } from "antd";
 import Col from "antd/es/grid/col";
 import { Program } from '../../../../../models/course-type'
 import httpInstance from "../../../../../utility/http-client";
@@ -20,14 +20,15 @@ type GetProgramResponse = {
 function ScrollablePrograms(props: any) {
 
   let url : string;
-  if(props.props =="current"){
+  if(props.type =="current"){
     url = CURRENT_PROGRAMS_URL
   }
-  if(props.props =="completed"){
+  if(props.type =="completed"){
     url = COMPLETED_PROGRAMS_URL
   }
     const [d,setd] = React.useState(false)
     const [Programs,setProgram] = React.useState({data:[{
+      id:'',
       description: "",
       title: "",
       duration: 0,
@@ -48,8 +49,9 @@ function ScrollablePrograms(props: any) {
   
     return (
       <>
-      <div className="scroll" >{
-      d && 
+      {d && <>
+      <h4>{props.title}</h4>
+      <div className="scroll" >
         <Row>
             <Col >
             <div className="arrow">
@@ -58,10 +60,12 @@ function ScrollablePrograms(props: any) {
             RightArrow={RightArrow}
             >
                 {Programs.data.map(({ 
+                  id,
                   title,
                   description,
                   duration,
-                  thumbnail }) => (<Programs_tag {... {
+                  thumbnail }) => (<ProgramItem {... {
+                    id,
                     title,
                     description,
                     duration,
@@ -71,14 +75,9 @@ function ScrollablePrograms(props: any) {
             </div>
             </Col>
           </Row>
-          }
-          {
-            !d &&
-            <Row><Col>
-            <p> No Programs to display </p>
-            </Col></Row>
-          }
           </div>
+          </>
+          }
       </>
     );
   }

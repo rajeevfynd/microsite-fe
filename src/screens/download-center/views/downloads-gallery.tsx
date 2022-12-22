@@ -49,11 +49,12 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
         <style>
             {css}
         </style>
-        <Row>
+        
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: '25px' }}>
             <h3>{props.downloadListProps.title}</h3>
-        </Row>
+        </div>
 
-        <Row>
+        <Row className='body-container'>
             <Content className='leaders-gallery'>
                 <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
                     

@@ -13,17 +13,32 @@ import { formatBase64 } from '../../../../../utility/image-utils';
 function Programs (props: Program){
   const navigate = useNavigate();
     return(
-  <Card
-    hoverable
-    style={{
-      width: 340,
-      height: 300
-    }}
-    cover={<Image src={formatBase64(props.thumbnail)} fallback={DEFAULT_LND_THUMBNAIL} preview={false}/>}
-  >
-    <Meta title={props.title} description={props.description}  />
-    <Button type='link' style={{ width: '100%' }} onClick={() => { navigate(props.title.toString()) }}> Go to Program <ArrowRight /> </Button>
-  </Card>)
+      <Card
+      style={{
+        width: 340,
+        height: 350,
+        margin: '0 5px'
+      }}
+      cover={
+        <Image
+          style={{
+            width: 340,
+            height: 195
+          }}
+          src={formatBase64(props.thumbnail)}
+          fallback={DEFAULT_LND_THUMBNAIL}
+          preview={false}
+        />
+      }
+      actions={[
+        <Button type='link' style={{width:'100%'}} onClick={()=>{navigate('/lnd/programs/'+props.id.toString())}}> Go to Program <ArrowRight /> </Button>
+      ]}
+    >
+      <Meta
+        title={props.title}
+        description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{props.description}</div>}
+      />
+    </Card>)
 };
 
 export default Programs;
