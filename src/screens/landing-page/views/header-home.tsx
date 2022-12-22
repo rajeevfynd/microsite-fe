@@ -1,4 +1,4 @@
-import { Avatar, Col, Row } from 'antd'
+import { Avatar, Col, Dropdown, MenuProps, message, Row, Space } from 'antd'
 import * as React from 'react'
 import { getDefaulProPicUrl, getSiteTitle } from '../../../service/landing-page-service'
 import './../index.css'
@@ -7,6 +7,9 @@ import { getUser } from '../../../utility/user-utils';
 import { TopNavigationMenu } from '../../../components/menu';
 import { MenuStructure } from './menu-home';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { DownOutlined } from '@ant-design/icons';
+import httpInstance from '../../../utility/http-client';
+import { GET_LOGOUT_REDIRECT_URL } from '../../../constants/urls';
 
 const HeaderHome = () => {
 
@@ -24,19 +27,40 @@ const HeaderHome = () => {
     }
   })
 
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <span onClick={() => {
+        httpInstance.get(GET_LOGOUT_REDIRECT_URL)
+        .then((response) => {
+          window.location.href = response.data;
+        })
+        .catch((error) => {
+          message.error(error);
+      });
+      }}>Logout</span>,
+    },
+  ];
+
   return (
     <>
       <div className='header-container'>
         <TopNavigationMenu menu={MenuStructure(navigate)} defaultKey="home"/>
         <div className='profile-container'>
-          {/* <div className='username-container'>
-            <h6 className='header-text username' style={{ margin: '0' }}>Welcome {firstName}!</h6>
-          </div> */}
-          <Avatar
-            className='pro-pic'
-            src={alternateProfilePic}
-            icon={getDefaulProPicUrl()}
-          />
+
+
+          <Dropdown menu={{items}} trigger={['click']}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+              <Avatar
+              className='pro-pic'
+              src={alternateProfilePic}
+              icon={getDefaulProPicUrl()}
+            />
+              </Space>
+            </a>
+          </Dropdown>
+
         </div>
       </div>
     </>
@@ -44,3 +68,4 @@ const HeaderHome = () => {
 }
 
 export default HeaderHome;
+
