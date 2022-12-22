@@ -39,13 +39,10 @@ import AssigneSearch from "./assigne-search";
 import { RangePickerProps } from "antd/lib/date-picker";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
-dayjs.extend(customParseFormat);
-
 export const CreatedSurvey = () => {
   const [surveys, setSurvey] = React.useState<SurveyDto[]>([]);
-  const [assigneData, setAssigneData] = React.useState<assigneModelData[]>([]);
-  //let modelData : {[key:string]:assigneModelData}
-  const dateFormat = "YYYY/MM/DD";
+
+  const dateFormat = "YYYY-MM-DD";
   let navigate = useNavigate();
   const [pageNumber, setPageNumber] = React.useState(0);
   const [hasMore, setHasMore] = React.useState(true);
@@ -170,8 +167,7 @@ export const CreatedSurvey = () => {
   };
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().endOf("day");
+    return current && current < moment().endOf("day");
   };
 
   const Popup = () => {
@@ -188,7 +184,7 @@ export const CreatedSurvey = () => {
             userIds={users}
           />
           <DatePicker
-            // defaultValue={dayjs("21/12/2022", dateFormat)}
+            //defaultValue={moment().}
             format={dateFormat}
             placeholder="Expire Date"
             disabledDate={disabledDate}
