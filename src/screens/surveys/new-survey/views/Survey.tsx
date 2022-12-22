@@ -154,11 +154,22 @@ const Survey = () => {
       </>
     );
   };
+
+  const addOption = (i: number) => {
+    handleAddOption(i, 0);
+    handleAddOption(i, 1);
+  };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
       case "SINGLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return radioUI(i);
       case "MULTIPLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return checkBoxUI(i);
       default:
         return <TextArea disabled></TextArea>;
@@ -250,7 +261,7 @@ const Survey = () => {
     return (
       <>
         <div data-html2canvas-ignore="true">
-          <Upload {...prop} beforeUpload={beforeUpload}>
+          <Upload {...prop} beforeUpload={beforeUpload} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
 
@@ -382,10 +393,8 @@ const Survey = () => {
           openNotificationWithIcon("success", "Changes saved");
         })
         .catch((err) => {
-          openNotificationWithIcon(
-            "error",
-            "Changes are not saved" + err.message
-          );
+          console.log(err.data);
+          openNotificationWithIcon("error", "Changes are not saved");
           setConfirmLoading(false);
         });
     } else {
@@ -400,7 +409,11 @@ const Survey = () => {
           navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
-          openNotificationWithIcon("error", err.message);
+          if (!err.message) {
+            openNotificationWithIcon("error", "somthing went wrong");
+          } else {
+            openNotificationWithIcon("error", err.message);
+          }
           setConfirmLoading(false);
         });
     }
@@ -433,7 +446,11 @@ const Survey = () => {
       //submitForm();
       submitForm(res.data.id);
     } catch (error) {
-      openNotificationWithIcon("error", error.message);
+      if (!error.message) {
+        openNotificationWithIcon("error", "somthing went wrong");
+      } else {
+        openNotificationWithIcon("error", error.message);
+      }
     }
   };
 

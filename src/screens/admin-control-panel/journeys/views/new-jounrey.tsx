@@ -72,9 +72,8 @@ export const NewJourney: React.FC = () => {
     <React.Fragment>
       <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Back</Button></div>
 
-      <h4>Create New Journey</h4>
-
-      <div className='scroll-container' style={{width: '60%'}}>
+      <div className='body-container' style={{width: '60%'}}>
+        <h4>Create Journey</h4>
         <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>

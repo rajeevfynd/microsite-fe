@@ -75,3 +75,7 @@
     width: fit-content;
     overflow: scroll;
 }
+
+.body-container {
+    padding: 20px;
+}

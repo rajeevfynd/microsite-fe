@@ -28,3 +28,9 @@ export interface UserType {
   name: string;
   domainId: string;
 }
+
+export interface assigneModelData {
+  surveyId: string;
+  assigneedIds: UserType[];
+  Date: Date;
+}
