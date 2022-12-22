@@ -261,7 +261,7 @@ const Survey = () => {
     return (
       <>
         <div data-html2canvas-ignore="true">
-          <Upload {...prop} beforeUpload={beforeUpload}>
+          <Upload {...prop} beforeUpload={beforeUpload} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
 
