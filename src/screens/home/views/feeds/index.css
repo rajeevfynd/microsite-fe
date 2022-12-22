@@ -3,13 +3,15 @@
     padding: 10px;
 }
 
-.feed-container {
-   
-}
+.feed-container {}
 
 .centered-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.blur-effect {
+    filter: blur(20px);
 }

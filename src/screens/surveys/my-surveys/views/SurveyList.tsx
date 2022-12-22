@@ -1,4 +1,4 @@
-import { Collapse, Typography, notification, Space, Card } from "antd";
+import { Collapse, Typography, notification, Space, Card, Empty } from "antd";
 import { EditTwoTone, InfoCircleFilled, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -8,6 +8,7 @@ import {
   getImage,
 } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
+import { formatBase64 } from "../../../../utility/image-utils";
 
 function SurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -69,7 +70,7 @@ function SurveyList() {
             {isLoading ? (
               "Loading"
             ) : Surveys.length === 0 ? (
-              <h3>No surveys</h3>
+              <Empty description={<span>No Surveys</span>} />
             ) : (
               Surveys.map((i) => (
                 <div className="col-lg-3">
@@ -79,7 +80,7 @@ function SurveyList() {
                     cover={
                       <img
                         alt="example"
-                        src={"data:image/png;base64," + i.imgUrl}
+                        src={formatBase64(i.imgUrl)}
                       />
                     }
                     actions={[

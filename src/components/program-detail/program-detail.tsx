@@ -2,7 +2,9 @@ import { Image, Row, Col, Progress, List, Modal, Button } from 'antd'
 import * as React from 'react'
 import { ArrowRight, Clock, PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants'
 import { ProgramDetailPropsType } from '../../models/journey-details'
+import { formatBase64 } from '../../utility/image-utils'
 import { CourseDetails } from '../course-detail/course-details'
 
 export const ProgramDetail = (props: ProgramDetailPropsType) => {
@@ -27,12 +29,13 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
       </Modal>
         <div className='details'>
             <Row>
-                <Col span={7}>
+            <Col span={7} style={{height:240}}>
                     <Image
-                        src={`data:image/png;base64,${props.details.thumbnailLink}`}
-                        height={240}
-                        width={360}
+                        src={formatBase64(props.details.thumbnail)}
+                        height={"100%"}
+                        width={'80%'}
                         preview={false}
+                        fallback={DEFAULT_LND_THUMBNAIL}
                     />
                 </Col>
                 <Col span={15}>
@@ -44,7 +47,7 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div className='programs-list'>
+        <div style={{padding:'0 50px'}}>
             <List
                 itemLayout="horizontal"
                 dataSource={props.details.courses}
@@ -52,12 +55,15 @@ export const ProgramDetail = (props: ProgramDetailPropsType) => {
                     
                     <List.Item
                         extra={
-                            <img
-                                width={150}
-                                height={100}
+                            <div style={{height:100, width:150}}>
+                            <Image
+                                width={'80%'}
+                                height={'100%'}
                                 alt="logo"
-                                src={item.course.thumbnail}
-                            />}
+                                src={formatBase64(item.course.thumbnail)}
+                                fallback={DEFAULT_LND_THUMBNAIL}
+                                preview={false}
+                            /></div>}
                     >
                         <List.Item.Meta
                             title= {

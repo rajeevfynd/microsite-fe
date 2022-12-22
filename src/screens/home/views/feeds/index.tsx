@@ -1,4 +1,4 @@
-import { Card, Divider, List, Avatar, Typography, Input, Spin } from "antd";
+import { Card, Divider, List, Avatar, Typography, Input, Spin, Affix } from "antd";
 import Meta from "antd/lib/card/Meta";
 import * as React from "react";
 import { ShadowSearchInput } from "../../../../components/shadow-input-text";
@@ -6,14 +6,17 @@ import "./index.css";
 import { getUser } from "../../../../utility/user-utils";
 import { User } from "../../../../models/user";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ComingSoonSvg from '../../../../img/coming-soon.svg';
 
 export const Feeds = () => {
 
     const user: any = getUser()
     const [firstName, setFirstName] = React.useState('');
+    const [alternateProfilePic, setAlternateProfileUPic] = React.useState('');
     React.useEffect(() => {
         if (user) {
             setFirstName(user.firstName)
+            setAlternateProfileUPic(user.alternateProfilePicUrl)
         }
     })
 
@@ -21,17 +24,21 @@ export const Feeds = () => {
         <>
             <InfiniteScroll
                 dataLength={10}
-                next={() => {}}
+                next={() => { }}
                 hasMore={false}
                 loader={<Spin size="large" />}
                 scrollThreshold="80%"
             >
-                <div className="centered-container">
+                <Affix offsetTop={120} className="centered-container" style={{ zIndex: 1, marginTop: "100px", textAlign: "center" }}>
+                    <h3>Communities</h3>
+                    <ComingSoonSvg style={{fill: "#5f5f5f", marginTop: "5px"}}/>
+                </Affix>
+                <div className="centered-container blur-effect">
                     <div style={{ width: "90%" }}>
                         <Card className="home-card">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '51px', height: '51px' }}
-                                    src="https://avatars.githubusercontent.com/u/20350203?v=4"
+                                    src={alternateProfilePic}
                                 />
                                 <Input className="text-input-post" placeholder={`What's on your mind, ${firstName}?`} />
                             </div>

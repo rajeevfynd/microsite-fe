@@ -25,7 +25,6 @@ const EditCarousal = () => {
     const [update, setupdate] = React.useState("")
 
     const handleRemove = () => {
-        console.log("inside remove")
         let updatedForm: carouselFormtype = {
             fileId: null,
             value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -37,8 +36,6 @@ const EditCarousal = () => {
     }
 
     const handleSubmit = async (e: any) => {
-        console.log("inside submit")
-        console.log(form[Number(active)].fileId)
         if (form[Number(active)].fileId === "" || form[Number(active)].fileId == null ) {
             message.error("please upload an image to carousel form");
             return
@@ -70,9 +67,8 @@ const EditCarousal = () => {
     }
 
     return (
-        <>
-            <h2>Edit Carousel</h2>
-            <br></br>
+        <div className='body-container'>
+            <h4>Edit Carousel</h4>
             <Collapse accordion onChange={(e) => { if (e != undefined) { setActive(e.toString()) } }}>
                 <Panel header="Slide 1" key={0}>
                     <Form.Provider
@@ -81,7 +77,10 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 1' onFinish={handleSubmit} >
                             <Form.Item label="Upload" valuePropName="fileList">
-                                <Upload onDone={(info) => {
+                                <Upload
+                                //fileType='image'
+                                accept="image/png, image/jpeg, image/jpg"
+                                onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -90,7 +89,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -102,7 +100,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
@@ -119,7 +117,10 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 2' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                            <Upload onDone={(info) => {
+                            <Upload 
+                            //fileType='image'
+                            accept="image/png, image/jpeg, image/jpg"
+                            onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -128,7 +129,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -140,7 +140,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
@@ -157,7 +157,10 @@ const EditCarousal = () => {
                     >
                         <Form name='Slide 3' onFinish={handleSubmit}>
                             <Form.Item label="Upload" valuePropName="fileList">
-                            <Upload onDone={(info) => {
+                            <Upload 
+                            //fileType='image'
+                            accept="image/png, image/jpeg, image/jpg"
+                            onDone={(info) => {
                                     let updatedForm: carouselFormtype = {
                                         fileId: info.documentId,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -166,7 +169,6 @@ const EditCarousal = () => {
                                     updatedFormList.splice(Number(active), 1, updatedForm)
                                     setFormFile(updatedFormList);
                                 }} onRemove={() => {
-                                    console.log("inside remove")
                                     let updatedForm: carouselFormtype = {
                                         fileId: null,
                                         value: form[Number(active)].value ? form[Number(active)].value : ""
@@ -178,7 +180,7 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item label="Course">
                                 <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
                                     placeholder='Select Course' style={{ width: 250 }} />
                             </Form.Item>
@@ -190,9 +192,9 @@ const EditCarousal = () => {
                 </Panel>
             </Collapse>
             <br></br>
-            <h3>Preview</h3>
+            <h4>Preview</h4>
             <HeroCarousel {...{ props: update }}></HeroCarousel>
-        </>
+        </div>
     );
 };
 

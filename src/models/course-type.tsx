@@ -1,8 +1,9 @@
 export type Program = {
+    id: string,
     description: string;
     title: string;
     duration: number;
-    thumbnailLink: string;
+    thumbnail: string;
 };
 
 export type CourseListType = {

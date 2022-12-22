@@ -28,10 +28,12 @@ export const EditJourney = () => {
   const { Option } = Select;
 
   React.useEffect(() => {
+    if(id) {
     getJourneyDetails(id).then(res => {
       processPrograms(res.data.programs);
       processJourneys(res.data);
     })
+    }
   }, [])
 
   const processJourneys = (data: any) => {
@@ -41,7 +43,8 @@ export const EditJourney = () => {
       sequence: data.flow == Flow.SEQUENCE
     })
     setCategory(data.category);
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
+    setThumbnail(data.thumbnailId);
   }
 
   const processPrograms = (programs: any[]) => {
@@ -57,12 +60,15 @@ export const EditJourney = () => {
 
   const onFinish = () => {
     if(journey.title != null && journey.title.trim() != '') {
-    handleFormSubmit(journey, programs, thumbnail, category, id).then(resp => {
-      if (resp.data) {
-        message.success('Journey updated successfully');
-        navigate("/admin/journeys");
-      }
-    })
+    let data = handleFormSubmit(journey, programs, thumbnail, category, id)
+    if(data){
+      data.then(resp => {
+        if (resp.data) {
+          message.success('Journey updated successfully');
+          navigate("/admin/journeys");
+        }
+      })
+    }
   }
   else{
     setJourney({
@@ -73,8 +79,8 @@ export const EditJourney = () => {
   }
   };
 
-  const addProgram = () => {
-    setPrograms([...programs, { program: null, programName: undefined }])
+  const addProgram = () => { 
+    setPrograms([...programs, { program: null , programName: undefined }])
   }
 
   const removeProgram = (index: number) => {
@@ -86,7 +92,6 @@ export const EditJourney = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 
@@ -98,17 +103,18 @@ export const EditJourney = () => {
     <React.Fragment>
       <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Back</Button></div>
 
-      <h4>Edit Journey</h4>
-
-      <div className='scroll-container' style={{width:'60%'}}>
+      <div className='body-container' style={{width:'60%'}}>
+        <h4>Edit Journey</h4>
         <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
             Thumbnail
             <Upload
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
-              file={thumbnailUrl} />
+              //fileType='image'
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+              file={thumbnailUrl}
+              accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 
           <Form.Item>
@@ -155,7 +161,7 @@ export const EditJourney = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index+program.programName} className="draggable-item">
+                    <List.Item key={program.programName ? index+program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput

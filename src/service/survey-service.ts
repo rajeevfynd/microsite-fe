@@ -1,5 +1,5 @@
+import { UserType } from "../models/survey";
 import httpInstance from "../utility/http-client";
-let userId = 11;
 
 export function getAllSurveys(offset: number) {
   return httpInstance.get(
@@ -70,11 +70,12 @@ export function getSurveyResponseById(assigneeId: string) {
   return httpInstance.get(`/microsite/assignee/response/${assigneeId}`);
 }
 
-export function assignSurveyToUserId(userId: string, surveyId: string) {
-  return httpInstance.post(
-    `/microsite/surveys/assign?userId=${userId}&surveyId=${surveyId}`,
-    {}
-  );
+export function assignSurveyToUserId(reqBody: {
+  surveyId: string;
+  assigneeId: UserType[];
+  expireDate: string;
+}) {
+  return httpInstance.post("/microsite/surveys/assign", reqBody);
 }
 
 export function getImage(id: string) {
@@ -83,4 +84,14 @@ export function getImage(id: string) {
 
 export function uploadImageToserver(formDat: FormData) {
   return httpInstance.post(`/microsite/document/upload`, formDat);
+}
+
+export function getDasboardTable(surveyId: string, pageNumber: number) {
+  return httpInstance.get(
+    `/microsite/surveys/dash-board/${surveyId}?pageNumber=${pageNumber}`
+  );
+}
+
+export function getSurveyEvent() {
+  return httpInstance.get('/microsite/assignee/relevant');
 }

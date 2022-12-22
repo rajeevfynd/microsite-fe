@@ -1,4 +1,4 @@
-import { Button, Card, Input, List, Result, Skeleton, Typography } from 'antd';
+import { Button, Card, Image, Input, List, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
@@ -9,6 +9,9 @@ import './../index.css'
 import { getJourneys } from '../../../../service/journey-service';
 import { ArrowRight } from 'react-bootstrap-icons';
 import { debounce } from '../../../../utility/debounce-utils';
+import { DEFAULT_LND_THUMBNAIL } from '../../../../constants/string-constants';
+import { ShadowSearchInput } from '../../../../components/shadow-input-text';
+import { formatBase64 } from '../../../../utility/image-utils';
 const { Text } = Typography;
 
 export  const LearningJourneyList = () => {
@@ -58,20 +61,18 @@ export  const LearningJourneyList = () => {
  
   return (
     <>
-    <h3>Learning Journey</h3>
-    <div className='search-container'>
-      <Input 
-        size='large' 
-        className='home-card search-card search-box' 
-        style={{padding:15}}
-        suffix={<SearchOutlined/>} 
-        placeholder='Search Journeys...'
-        allowClear
-        onChange={(e) => {searchKey(e.target.value);} } 
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+      <ShadowSearchInput 
+        placeholder='Type in the journey title you are looking for...'
+        size='large'
+        onChange={(e:string) => {searchKey(e);} } 
     />
-    </div>
     <div
       id="scrollableDiv"
+      style={{
+        width: '100%',
+        height: '100%'
+      }}
     >
       { journeys.length != 0 &&
       <InfiniteScroll
@@ -82,17 +83,26 @@ export  const LearningJourneyList = () => {
         scrollableTarget="scrollableDiv"
       >
         <List
-          grid={{gutter: 16, column: 4}}
+          grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
           style={{padding : "1%"}}
           dataSource={journeys}
           renderItem={item => (
             <List.Item key={item.title}>
               <Card 
                 hoverable
+                style={{
+                  width: 340,
+                  height: 350
+                }}
                 cover={
-                  <img
-                    width='150' height='250'
-                    src={`data:image/png;base64,${item.thumbnailLink}`}
+                  <Image
+                    style={{
+                      width: 340,
+                      height: 195
+                    }}
+                    src={formatBase64(item.thumbnail)}
+                    fallback={DEFAULT_LND_THUMBNAIL}
+                    preview={false}
                   />
                 }
                 actions={[
@@ -101,7 +111,7 @@ export  const LearningJourneyList = () => {
               >
                 <Meta
                   title={item.title}
-                  description={<p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{item.description}</p>}
+                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.description}</div>}
                 />
               </Card>
             </List.Item>
@@ -116,6 +126,7 @@ export  const LearningJourneyList = () => {
           title={<Text type='secondary'>No Journey Found</Text>}
         />
       }
+    </div>
     </div>
     </>
   );

@@ -31,6 +31,10 @@ export const processPrograms = (programs: ProgramType[], flow: string) => {
       progress: progress
     };
   }
+  return {
+    programs : [],
+    progress : 0
+  }
 }
 
 // export const sortEndHandler = (oldIndex: any, newIndex: any, programs: ProgramMapType[]) => {
@@ -63,11 +67,10 @@ export const onSelectHandler = (index: number, e: any, programs: ProgramMapType[
     program : e.key
   }
   updatedPrograms.splice(index, 1, updatedProgram)
-  console.log(index,e,programs,updatedPrograms)
   return [...updatedPrograms]
 }
 
-export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumbnail: string, category: string, id: string = null) => {
+export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumbnail: string, category: string, id: null|string = null) => {
   if(validateJourneyPrograms(programs)) {
   let mappedPrograms: any[] = programs.filter(p => p.programName != undefined)
   mappedPrograms.forEach((program, index) => {
@@ -93,13 +96,11 @@ export const handleFormSubmit = (journey: any, programs: ProgramMapType[], thumb
 }
 
 export const setJourney = (body: any) => {
-  console.log('set', body)
   const url = "/microsite/lnd/journeys/new"
   return httpInstance.post(url, body)
 }
 
 export const updateJourney = (body: any, id: string) => {
-  console.log('update', body)
   const url = "/microsite/lnd/journeys/edit/" + id
   return httpInstance.post(url, body)
 }
@@ -111,18 +112,14 @@ export const deleteJourney = (id: string) => {
 
 export function validateJourneyPrograms(values: ProgramMapType[]) {
   let hasDuplicate = false;
-
-  if(values.length == 0) {
-    message.error('Journey should be mapped with atleast one program')
-    return false
-  }
-  values.map(v => v.program).sort().sort(
-    (a:string, b:string) => {
-      if (a == b) { hasDuplicate = true; return 1
-    };
+  values.map(v => v.program).sort(
+    ( a:string | null, b:string | null) => {
+      if (a == b) { hasDuplicate = true; 
+        return 1
+    }
+    return 0;
   }
   )
-  console.log('hasDuplicate', hasDuplicate)
   if(hasDuplicate) {
     message.error('Journey should not have duplicate programs')
     return false

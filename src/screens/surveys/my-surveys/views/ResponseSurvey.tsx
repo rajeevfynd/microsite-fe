@@ -95,16 +95,13 @@ const ResponseSurvey = () => {
   };
   const getSurveyResponse = async () => {
     const res = await getSurveyResponseById(params.assigneeId);
-    console.log("Assignee res", res.data);
     setResponse(res.data);
   };
   React.useEffect(() => {
     setIsLoading(true);
-
     getSurveyResponse().then((res) => {
       getSurveyById(params.surveyId)
         .then((res) => {
-          console.log("Response", res.data);
           setSurvey(res.data);
         })
         .catch((err) => console.log(err.message));

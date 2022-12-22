@@ -25,17 +25,20 @@ export const NewProgram: React.FC = () => {
   const navigate = useNavigate()
   const [courses, setCourses] = React.useState<CourseMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
+  const [thumbnailUrl, setThumbnailUrl] = React.useState('')
   const [program, setProgram] = React.useState<editProgramDetails>({ sequence: true, issueCertificate: false })
 
   const { Option } = Select;
 
   const onFinish = () => {
     if(program.title != null && program.title.trim() != '') {
-    handleProgramFormSubmit(program, courses, thumbnail).then(resp => {
-      if (resp.data) {
-        message.success('Program added successfully');
-        navigate("/admin/programs");
-      }
+      let resp = handleProgramFormSubmit(program, courses, thumbnail)
+      if(resp)
+        resp.then(resp => {
+          if (resp.data) {
+            message.success('Program added successfully');
+            navigate("/admin/programs");
+          }
     })
   }
   else{
@@ -72,16 +75,17 @@ export const NewProgram: React.FC = () => {
   return (<>
     <React.Fragment>
       <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Back</Button></div>
-
-      <h4>Create New Program</h4>
-
-      <div className='scroll-container' style={{width:'60%'}}>
+      <div className='body-container' style={{width:'60%'}}>
+        <h4>Create Program</h4>
         <Form layout='vertical' onFinish={onFinish}>
             <Form.Item>
               Thumbnail
               <Upload
-                onDone={(info) => setThumbnail(info.documentId)}
-                onRemove={() => setThumbnail('')} />
+                //fileType='image'
+                onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+                onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+                file={thumbnailUrl}
+                accept="image/png, image/jpeg, image/jpg"  />
             </Form.Item>
 
             <Form.Item>
@@ -147,7 +151,7 @@ export const NewProgram: React.FC = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={index+course.courseName} className="draggable-item">
+                    <List.Item key={course.courseName ? index+course.courseName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput

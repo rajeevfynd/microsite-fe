@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Card } from 'antd';
+import { Card, Image } from 'antd';
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
+import { formatBase64 } from '../../utility/image-utils';
 const { Meta } = Card;
 
 
@@ -11,9 +13,11 @@ export function CourseCard(props: { cardStyle: object, isHoverable: boolean, ima
             style={cardStyle}
             hoverable={isHoverable}
             cover={
-                < img style={imageStyle}
+                < Image style={imageStyle}
                     alt="image"
-                    src={imageSource}
+                    src={formatBase64(imageSource)}
+                    fallback={DEFAULT_LND_THUMBNAIL}
+                    preview={false}
                 />
             }>
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Row, Collapse, Pagination, PaginationProps, message, Col , } from 'antd';
+import { Row, Collapse, Pagination, PaginationProps, message, Col, Result, Typography , } from 'antd';
 import { CornerIcons } from './corner-icons';
 import { QnaPopup } from './qna-popup';
 import * as moment from 'moment';
@@ -9,9 +9,12 @@ import { EditQnaOption } from '../../../../../models/enums/qna-edit-options';
 import { FAQ_LIST_OFFSET, FAQ_LIST_PAGESIZE } from '../../../../../constants/string-constants';
 import { FAQ_LIST_URL } from '../../../../../constants/urls';
 import { getUser } from '../../../../../utility/user-utils';
+import { Content } from 'antd/lib/layout/layout';
+import { formatBase64 } from '../../../../../utility/image-utils';
 
 
 const { Panel } = Collapse;
+const { Text } = Typography;
 
 export const FaqList = (props : {faqProps : FaqListPropsType}) => {
     const {faqProps} = props;
@@ -112,44 +115,65 @@ export const FaqList = (props : {faqProps : FaqListPropsType}) => {
     return (
         <>  
 
-            <Row justify="end" style={{margin:20}}>
-                <Pagination size="small" current={currentPage} onChange={handlePageChange} total={totalElements} />
-            </Row>
-            <Collapse activeKey={activeKey} onChange={handlePanelChange}>
-                {qnaList.map((qnaList) => (
+            {
+                (!faqProps.activeCategory || qnaList.length == 0) &&
+
+                <Result
+                    status="404"
+                    title={<Text type='secondary'>No FAQs Found</Text>}
+                />
+
+            }
+
+            {qnaList.length > 0 && 
+            
+                <>
                     
-                    <Panel header={qnaList.faq.question} key={qnaList.faq.id} 
-                    extra={userRole == "ADMIN" && <CornerIcons
-                        qnaId={qnaList.faq.id}
-                        qnaDetails={qnaList.faq}
-                        onQnaDelete={handleQnaDelete}
-                        onEditQna={handleEditQna}
-                        />}
-                        >
-                        <div>
-                            <Row>
-                                {qnaList.faq.answer}
-                            </Row>
-                            <Row>
-                                {qnaList.faq.attachmentDetails.map((attachment : any) => (
-                                    <Col xs={24} xl={6} style={{padding : 20}}>
-                                        <img width='200' height='200' 
-                                        onClick={() => handleImgClick(attachment.documentId)} 
-                                        src={`data:image/png;base64,${attachment.thumbnailUrl}`}/>
-                                    </Col>   
-                                ))}
-                            </Row>
-                            
-                            <Row justify="end">
-                                <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updatedAt).fromNow()}</i></small></div>
-                            </Row>
-                        </div>
-                    </Panel>
+                    <Row justify="end" style={{ margin: 20 }}>
+                        <Pagination size="small" current={currentPage} onChange={handlePageChange} total={totalElements} />
+                    </Row>
 
-                ))}
-            </Collapse>
+                
+                    <Collapse activeKey={activeKey} onChange={handlePanelChange}>
+                        {qnaList.map((qnaList) => (
 
-            <QnaPopup qnaProps={qnaProps}/>
+                            <Panel header={qnaList.faq.question} key={qnaList.faq.id}
+                                extra={userRole == "ADMIN" && <CornerIcons
+                                    qnaId={qnaList.faq.id}
+                                    qnaDetails={qnaList.faq}
+                                    onQnaDelete={handleQnaDelete}
+                                    onEditQna={handleEditQna} />}
+                            >
+                                <div>
+                                    <Row>
+                                        {qnaList.faq.answer}
+                                    </Row>
+                                    <Row>
+                                        {qnaList.faq.attachmentDetails.map((attachment: any) => (
+                                            <Col xs={24} xl={6} style={{ padding: 20 }}>
+                                                <img width='200' height='200'
+                                                    onClick={() => handleImgClick(attachment.documentId)}
+                                                    src={formatBase64(attachment.thumbnailUrl)} />
+                                            </Col>
+                                        ))}
+                                    </Row>
+
+                                    <Row justify="end">
+                                        <div><small><i className='text-muted'>Updated {moment(qnaList.faq.updatedAt).fromNow()}</i></small></div>
+                                    </Row>
+                                </div>
+                            </Panel>
+
+                        ))}
+                    </Collapse>
+                    
+                    <QnaPopup qnaProps={qnaProps} />
+                        
+                </>
+            
+            } 
+
+            
         </>
 
     )

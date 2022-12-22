@@ -9,8 +9,6 @@ type radioProps = {
 const RadioUi = (props: radioProps) => {
   const [value, setValue] = React.useState(false);
   const handleChange = (e: { target: { value: any } }) => {
-    console.log(e.target.value);
-    console.log(props.optionText);
     props.handleRadioResponse(props.qId, props.optionText);
     setValue(!value);
   };

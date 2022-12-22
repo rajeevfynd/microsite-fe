@@ -27,7 +27,6 @@ function AnnouncementModal(props: announcementType) {
 
     const fetchAnnouncmentDoc = async (props: announcementType) => {
         let resp = await getAnnouncementDoc(props)
-        console.log(resp.data.url)
         setdoc(resp.data.url);
     }
     return (<>

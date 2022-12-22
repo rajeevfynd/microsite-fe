@@ -24,7 +24,6 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
 
     const addDownloadDocument = (values : any) => {
         values["downloadCategoryId"] = props.downloadCategoryId
-        console.log(values)
         addDocument(values)
             .then(response => {
                 console.log("added")

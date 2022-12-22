@@ -9,10 +9,10 @@ import { getProgramDetails, processCourses } from '../../../service/program-serv
 
 const { Text } = Typography;
 export const ProgramDetailsView = () => {
-    const { id } = useParams();
+    const { id } = useParams<string>();
     const navigate = useNavigate();
-    const [ isExists, setIsExists ] = React.useState(true)
-    const [ data, setData ] = React.useState({})
+    const [ isExists, setIsExists ] = React.useState(false)
+    const [ data, setData ] = React.useState<ProgramDetailType>()
 
     const processData = (data: ProgramDetailType | any) => {
         const processedData = processCourses(data.courses, data.flow)
@@ -24,17 +24,20 @@ export const ProgramDetailsView = () => {
 
     React.useEffect( ()=>
     {   
-        getProgramDetails(id).then( res => {
+        if(id){
+          getProgramDetails(id).then( res => {
             processData(res.data);
         })
+        }
     }, [])
     
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
+        <div className='body-container'>
         {isExists &&
         <>
-        <ProgramDetail details={data} />
+          <ProgramDetail details={data} />
         </>
           
         }
@@ -45,6 +48,7 @@ export const ProgramDetailsView = () => {
             title={<Text type='secondary'>No Details Found</Text>}
           />
         }
+        </div>
     </>
   )
 }

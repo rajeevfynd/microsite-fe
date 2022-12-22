@@ -3,7 +3,6 @@ import "./index.css";
 
 export declare type MenuClickEventHandler = () => void;
 
-
 type MenuItemInfo = {
     key?: string,
     title: string,
@@ -14,12 +13,27 @@ type MenuItemInfo = {
 
 export interface MenuItemProps extends MenuItemInfo {
     onClick?: MenuClickEventHandler
-    selected?: boolean | false
+    selected?: boolean 
+    disabled?: boolean 
+    hasAccess?: boolean
+}
+
+function behaviour({ selected, disabled }: MenuItemProps): string {
+    if (disabled) {
+        // adds disabled class to the menu
+        return 'disabled';
+    }
+
+    if (selected) {
+        // adds selected class to the menu
+        return 'selected';
+    }
+    return "";
 }
 
 export const MenuItem = (props: MenuItemProps) => {
     return (
-        <a className={`primary-menu-item${props.selected ? ' selected' : ""}`} onClick={() => props.onClick()}>
+        <a className={`primary-menu-item ${behaviour(props)}`} onClick={() => props.onClick()}>
             {props.icon}
             <p className='text'>{props.title}</p>
         </a>
@@ -29,7 +43,7 @@ export const MenuItem = (props: MenuItemProps) => {
 export const SecondaryMenuItem = (props: MenuItemProps) => {
     return (
 
-        <a className={`secondary-menu-item${props.selected ? ' selected' : ""}`} onClick={() => props.onClick()}>
+        <a className={`secondary-menu-item ${behaviour(props)}`} onClick={() => props.onClick()}>
             {props.icon}
             <p>{props.title}</p>
         </a>

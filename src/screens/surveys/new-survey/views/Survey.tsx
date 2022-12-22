@@ -50,6 +50,7 @@ const Survey = () => {
   const [imgId, setImgId] = React.useState("");
   const [imgString, setImgString] = React.useState("");
   const [newScreenShot, setNewScreenShot] = React.useState(false);
+  const [disableSubmit, setDisableSubmit] = React.useState(false);
   const newQuestion = {
     id: "",
     questionText: "",
@@ -80,10 +81,8 @@ const Survey = () => {
   };
 
   const handleAddOption = (i: number, j: number) => {
-    console.log("Inside add option ", i + " " + j);
     let temp = Survey;
     temp.questions[i].choices.splice(j + 1, 0, { id: "", choiceText: "" });
-    console.log(temp);
     setSurvey({ ...temp });
   };
 
@@ -92,25 +91,21 @@ const Survey = () => {
     i: number,
     j: number
   ) => {
-    console.log("Inside choice text ", i + " " + j);
     let temp = Survey;
     temp.questions[i].choices.splice(j, 0, {
       id: "",
       choiceText: e.target.value,
     });
     temp.questions[i].choices.splice(j + 1, 1);
-    console.log(temp);
     setSurvey({ ...temp });
   };
 
   const handleDeleteOption = (i: number, j: number) => {
-    console.log("Choice length", Survey.questions[i].choices.length);
     if (Survey.questions[i].choices.length == 2) {
       openNotificationWithIcon("error", "chocies cannot be less than 2");
     } else {
       let temp = Survey;
       temp.questions[i].choices.splice(j, 1);
-      console.log(temp);
       setSurvey({ ...temp });
     }
   };
@@ -159,11 +154,22 @@ const Survey = () => {
       </>
     );
   };
+
+  const addOption = (i: number) => {
+    handleAddOption(i, 0);
+    handleAddOption(i, 1);
+  };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
       case "SINGLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return radioUI(i);
       case "MULTIPLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return checkBoxUI(i);
       default:
         return <TextArea disabled></TextArea>;
@@ -193,7 +199,6 @@ const Survey = () => {
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
     i: number
   ) => {
-    console.log("Question length", Survey.questions.length);
     if (Survey.questions.length == 1) {
       openNotificationWithIcon(
         "error",
@@ -205,7 +210,6 @@ const Survey = () => {
         ...Survey.questions.slice(i + 1, Survey.questions.length),
       ];
       setSurvey({ ...Survey, questions: l });
-      console.log(`Delete at ${i}`);
     }
   };
 
@@ -242,14 +246,12 @@ const Survey = () => {
         console.log(info.file.status);
       }
       if (info.file.status === "done") {
-        console.log("Image id", info.file.response.data.id);
         setImgId(info.file.response.data.id);
       }
       if (info.file.status === "error") {
         message.error("error");
         setConfirmLoading(false);
       }
-      console.log("File info", info.file.status);
     },
   };
 
@@ -259,7 +261,7 @@ const Survey = () => {
     return (
       <>
         <div data-html2canvas-ignore="true">
-          <Upload {...prop} beforeUpload={beforeUpload}>
+          <Upload {...prop} beforeUpload={beforeUpload} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
 
@@ -289,9 +291,7 @@ const Survey = () => {
       var context = canvas.getContext("2d"); //context from originalCanvas
       var tmpCanvas = document.createElement("canvas");
       tmpCanvas.width = canvas.width;
-      console.log("Width :", canvas.width);
       tmpCanvas.height = canvas.height;
-      console.log("Hiegth :", canvas.height);
       var context2 = canvas.getContext("2d"); //context from tmpCanvas
       var imageObj = new Image();
       // ScreenShot will be croped if the hieght is more than 1200
@@ -300,7 +300,7 @@ const Survey = () => {
           //setup: draw cropped image
           var sourceX = 0;
           var sourceY = 0;
-          var sourceWidth = 1560;
+          var sourceWidth = canvas.width;
           var sourceHeight = 1200;
           var destWidth = sourceWidth;
           var destHeight = sourceHeight;
@@ -364,16 +364,15 @@ const Survey = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setDisableSubmit(true);
     if (imgId.length == 0 || newScreenShot) {
       /// length is zero if the image is not uploaded by user, so take ScreenShot
-      console.log("Take Screen Shot");
       takeScreenShot();
     } else {
       submitForm(imgId);
     }
   }
   const submitForm = (newImgId: string) => {
-    console.log("Img Id before submit", newImgId);
     const body = {
       id: "",
       surveyTitle,
@@ -381,11 +380,9 @@ const Survey = () => {
       documentId: newImgId,
       questions: Survey.questions,
     };
-    console.log(body);
     //// if Edit survey is true it will update the survey
     if (edit) {
       const reqBody = { ...body, id: params.id };
-      console.log(reqBody);
       reqBody.questions.map((ques) => {
         if (ques.questionType == "SMALL_TEXT") {
           ques.choices = [];
@@ -397,14 +394,10 @@ const Survey = () => {
         })
         .catch((err) => {
           console.log(err.data);
-          openNotificationWithIcon(
-            "error",
-            "Changes are not saved" + err.message
-          );
+          openNotificationWithIcon("error", "Changes are not saved");
           setConfirmLoading(false);
         });
     } else {
-      console.log("Body", body);
       body.questions.map((ques) => {
         if (ques.questionType == "SMALL_TEXT") {
           ques.choices = [];
@@ -413,17 +406,20 @@ const Survey = () => {
       creatSurvey(body)
         .then((res) => {
           openNotificationWithIcon("success", surveyTitle + " created");
-          navigate(`/survey/created-surveys`);
+          navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
-          openNotificationWithIcon("error", err.message);
+          if (!err.message) {
+            openNotificationWithIcon("error", "somthing went wrong");
+          } else {
+            openNotificationWithIcon("error", err.message);
+          }
           setConfirmLoading(false);
         });
     }
   };
 
   React.useEffect(() => {
-    console.log("Inside useEffect");
     if (params.id) {
       setIsLoading(true);
       getSurveyById(params.id).then(async (res) => {
@@ -432,11 +428,7 @@ const Survey = () => {
         setImgId(res.data.documentId);
         setSurvey({ questions: res.data.questions });
         setSurvey({ questions: res.data.questions });
-        console.log("Inside get");
-        console.log(res.data);
-        console.log(Survey);
         setIsLoading(false);
-        console.log("Inside useffect ");
       });
       setEdit(true);
     } else {
@@ -452,21 +444,20 @@ const Survey = () => {
       let res = await uploadImageToserver(formData);
       setImgId(res.data.id);
       //submitForm();
-      console.log("ScrenShot id", imgId);
-      console.log(res.data.id);
-      console.log("Submit form");
       submitForm(res.data.id);
     } catch (error) {
-      openNotificationWithIcon("error", error.message);
+      if (!error.message) {
+        openNotificationWithIcon("error", "somthing went wrong");
+      } else {
+        openNotificationWithIcon("error", error.message);
+      }
     }
   };
 
   React.useEffect(() => {
     if (imgString) {
-      console.log("ScreenShot Image", imgString); //   console.log("Inside take screenshot");
       const file = DataURIToBlob(imgString);
       formData.append("file", file, "image.png");
-      console.log("Submit ", formData);
       uploadScreenShot();
     } else {
       console.log("Image is undefiend");
@@ -606,7 +597,11 @@ const Survey = () => {
                     style={{ float: "right" }}
                     data-html2canvas-ignore="true"
                   >
-                    <button type="submit" className="btn btn-primary">
+                    <button
+                      disabled={disableSubmit}
+                      type="submit"
+                      className="btn btn-primary"
+                    >
                       {params.id ? "Save the Changes" : "Submit"}
                     </button>
                   </div>

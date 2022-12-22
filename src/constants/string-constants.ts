@@ -17,3 +17,4 @@ export const FAQ_LIST_PAGESIZE = "&pageSize=10"
 export const SAMPLE_FAQ_UPLOAD_URL = "https://storage.googleapis.com/microsite-sit-public/Sample_FAQ_Upload.xlsx"
 
 export const SAMPLE_BIRTHDAY_UPLOAD_URL = "https://storage.googleapis.com/microsite-sit-public/Sample_Birthday_Excel.xlsx"
+export const DEFAULT_LND_THUMBNAIL = 'https://storage.googleapis.com/microsite-sit-public/assets/Default%20Thumbnails/defaultCourse.jpeg'

@@ -1,10 +1,11 @@
-import { notification, Space, Card } from "antd";
+import { notification, Space, Card, Empty } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import "../../new-survey/views/questionForm.css";
 import { getSurveysByStatus } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
+import { formatBase64 } from "../../../../utility/image-utils";
 
 function CompletedSurveyList() {
   type NotificationType = "success" | "info" | "warning" | "error";
@@ -33,7 +34,6 @@ function CompletedSurveyList() {
   ]);
 
   const getSurveys = () => {
-    console.log("Inside get surveys");
     setIsLoading(true);
     getSurveysByStatus(true)
       .then((res) => {
@@ -41,7 +41,6 @@ function CompletedSurveyList() {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err.message);
         setIsLoading(false);
       });
   };
@@ -57,7 +56,7 @@ function CompletedSurveyList() {
             {isLoading ? (
               <h3>Loading...</h3>
             ) : Surveys.length === 0 ? (
-              <h3>No surveys to submit</h3>
+              <Empty description={<span>No Surveys</span>} />
             ) : (
               Surveys.map((i) => (
                 <div className="col-lg-3">
@@ -67,7 +66,7 @@ function CompletedSurveyList() {
                     cover={
                       <img
                         alt="example"
-                        src={"data:image/png;base64," + i.imgUrl}
+                        src={formatBase64(i.imgUrl)}
                       />
                     }
                     actions={[

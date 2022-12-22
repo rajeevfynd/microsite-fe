@@ -92,7 +92,7 @@ const items = [
 export const DownloadTabs = () => {
     return (
         <div className="card-container">
-            <Tabs items={items} />
+            <Tabs items={items} centered/>
         </div>
     )
 }

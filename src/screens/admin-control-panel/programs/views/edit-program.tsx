@@ -31,6 +31,7 @@ export const EditProgram = () => {
   const { Option } = Select;
 
   React.useEffect(() => {
+    if(id)
     getProgramDetails(id).then(res => {
       processCourses(res.data.courses);
       processProgram(res.data);
@@ -44,7 +45,8 @@ export const EditProgram = () => {
       sequence: data.flow == Flow.SEQUENCE,
       issueCertificate: data.issueCertificate
     })
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
+    setThumbnail(data.thumbnailId);
   }
 
   const processCourses = (courses: any[]) => {
@@ -60,7 +62,9 @@ export const EditProgram = () => {
 
   const onFinish = () => {
     if(program.title != null && program.title.trim() != '') {
-    handleProgramFormSubmit(program, courses, thumbnail, id).then(resp => {
+    let resp = handleProgramFormSubmit(program, courses, thumbnail, id)
+    if(resp)
+      resp.then(resp => {
       if (resp.data) {
         message.success('Program updated successfully');
         navigate("/admin/programs");
@@ -89,7 +93,6 @@ export const EditProgram = () => {
     setCourses(onCourseSelectHandler(index, e, courses))
   }
 
-
   const onDragEnd = (fromIndex: number, toIndex: number) => {
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
@@ -102,17 +105,20 @@ export const EditProgram = () => {
     <React.Fragment>
       <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Back</Button></div>
 
-      <h4>Edit Program</h4>
+      
 
-      <div className='scroll-container' style={{width:'60%'}}>
+      <div className='body-container' style={{width:'60%'}}>
+        <h4>Edit Program</h4>
         <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
             Thumbnail
             <Upload
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')}
-              file={thumbnailUrl} />
+              //fileType='image'
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+              file={thumbnailUrl}
+              accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 
           <Form.Item>
@@ -173,7 +179,7 @@ export const EditProgram = () => {
               >
                 {courses
                   .map((course: CourseMapType, index) => (
-                    <List.Item key={index+course.courseName} className="draggable-item">
+                    <List.Item key={course.courseName ? index+course.courseName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <CourseSearchInput

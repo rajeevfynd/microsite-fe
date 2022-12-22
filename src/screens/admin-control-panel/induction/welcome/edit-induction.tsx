@@ -39,7 +39,8 @@ export const EditInduction = () => {
       sequence: data.flow == Flow.SEQUENCE,
       id: data.id
     })
-    setThumbnailUrl(data.thumbnailLink);
+    setThumbnailUrl(data.thumbnail);
+    setThumbnail(data.thumbnailId);
   }
 
   const processPrograms = (programs: any[]) => {
@@ -55,7 +56,9 @@ export const EditInduction = () => {
 
   const onFinish = () => {
     if(journey.title != null && journey.title.trim() != '') {
-      handleFormSubmit(journey, programs, thumbnail, 'INDUCTION', journey.id).then(resp => {
+      let resp = handleFormSubmit(journey, programs, thumbnail, 'INDUCTION', journey.id)
+      if(resp)
+      resp.then(resp => {
         if (resp.data) {
           message.success('Journey updated successfully');
         }
@@ -88,7 +91,6 @@ export const EditInduction = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 
@@ -107,7 +109,8 @@ export const EditInduction = () => {
             <Upload
               onDone={(info) => setThumbnail(info.documentId)}
               onRemove={() => setThumbnail('')}
-              file={thumbnailUrl} />
+              file={thumbnailUrl}
+              accept="image/png, image/jpeg, image/jpg" />
           </Form.Item>
 
           <Form.Item>
@@ -157,7 +160,7 @@ export const EditInduction = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index+program.programName} className="draggable-item">
+                    <List.Item key={program.programName ? index+program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput
@@ -182,7 +185,7 @@ export const EditInduction = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Edit Induction
+              Save
             </Button>
           </Form.Item>
 

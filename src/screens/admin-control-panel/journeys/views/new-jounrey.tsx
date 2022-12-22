@@ -22,13 +22,16 @@ export const NewJourney: React.FC = () => {
   const navigate = useNavigate()
   const [programs, setPrograms] = React.useState<ProgramMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
+  const [thumbnailUrl, setThumbnailUrl] = React.useState('')
   const [journey, setJourney] = React.useState<editJourneyDetails>({ sequence: true })
 
   const { Option } = Select;
 
   const onFinish = () => {
     if(journey.title != null && journey.title.trim() != '') {
-    handleFormSubmit(journey, programs, thumbnail, 'GENERAL').then(resp => {
+    let resp = handleFormSubmit(journey, programs, thumbnail, 'GENERAL')
+    if(resp)
+      resp.then(resp => {
       if (resp.data) {
         message.success('Journey added successfully');
         navigate("/admin/journeys");
@@ -58,7 +61,6 @@ export const NewJourney: React.FC = () => {
   }
 
   const onDragEnd = (fromIndex: number, toIndex: number) => {
-    console.log(`Dragged from ${fromIndex} to ${toIndex}`)
     /* IGNORES DRAG IF OUTSIDE DESIGNATED AREA */
     if (toIndex < 0) return;
 
@@ -70,16 +72,18 @@ export const NewJourney: React.FC = () => {
     <React.Fragment>
       <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Back</Button></div>
 
-      <h4>Create New Journey</h4>
-
-      <div className='scroll-container' style={{width: '60%'}}>
+      <div className='body-container' style={{width: '60%'}}>
+        <h4>Create Journey</h4>
         <Form layout='vertical' onFinish={onFinish}>
 
           <Form.Item>
             Thumbnail
             <Upload
-              onDone={(info) => setThumbnail(info.documentId)}
-              onRemove={() => setThumbnail('')} />
+              //fileType='image'
+              onDone={(info) => { setThumbnail(info.documentId); setThumbnailUrl(info.file) }}
+              onRemove={() => { setThumbnail(''); setThumbnailUrl('') }}
+              file = {thumbnailUrl}
+              accept="image/png, image/jpeg, image/jpg"  />
           </Form.Item>
 
           <Form.Item>
@@ -129,7 +133,7 @@ export const NewJourney: React.FC = () => {
               >
                 {programs
                   .map((program: ProgramMapType, index) => (
-                    <List.Item key={index + program.programName} className="draggable-item">
+                    <List.Item key={program.programName ? index + program.programName : index} className="draggable-item">
                       <div>
                         <HolderOutlined style={{ cursor: 'grab' }} />
                         <SearchInput

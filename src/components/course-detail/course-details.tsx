@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { List, Button, Modal, Row, Col, Image, Divider } from 'antd';
 import Card from 'antd/lib/card/Card';
+import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
+import { formatBase64 } from '../../utility/image-utils';
 
 
 export function CourseDetails(props: { course: any }) {
@@ -18,8 +20,9 @@ export function CourseDetails(props: { course: any }) {
                                 <Image
                                     width={400}
                                     height={200}
-                                    src={course.thumbnail}
-                                    fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7"
+                                    src={formatBase64(course.thumbnail)}
+                                    fallback={DEFAULT_LND_THUMBNAIL} 
+                                    preview={false}
                                 />
                             </Col>
                         </Row>
@@ -39,11 +42,11 @@ export function CourseDetails(props: { course: any }) {
                                 </h5>
                             </Col>
                         </Row>
-                        <Divider />
-                        <Row style={{ textAlign: "justify" }}>
-                            <Row>
-                                <Col style={{ width: 400, }}>
-                                    <b> <i> {course.description}</i></b>
+
+                        <Row style={{ textAlign: "justify", overflow: "scroll" }}>
+                            <Row style={{marginRight:"10px"}}>
+                                <Col style={{ width: 400, height: 200 }}>
+                                    <> <i> {course.description}</i></>
                                 </Col>
                             </Row>
 

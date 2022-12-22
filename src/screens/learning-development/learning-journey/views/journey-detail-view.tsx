@@ -9,9 +9,9 @@ import { getJourneyDetails, processPrograms } from '../../../../service/journey-
 
 const { Text } = Typography;
 export const JourneyDetailView = () => {
-    const { id } = useParams();
+    const { id } = useParams<string>();
     const navigate = useNavigate();
-    const [ data, setData ] = React.useState({})
+    const [ data, setData ] = React.useState<JourneyDetailType>()
     const [ isExists, setIsExists ] = React.useState(false)
 
     const processData = (data: JourneyDetailType | any) => {
@@ -24,14 +24,17 @@ export const JourneyDetailView = () => {
 
     React.useEffect( ()=>
     {   
+      if(id) {
         getJourneyDetails(id).then( res => {
             processData(res.data);
         })
+      }
     }, [])
     
   return (
     <>
         <div><Button type='link' onClick={()=>{navigate(-1)}}>< ArrowLeft/> Back</Button></div>
+        <div className='body-container'>
         {isExists &&
           <JourneyDetail details={data}></JourneyDetail>
         }
@@ -42,6 +45,7 @@ export const JourneyDetailView = () => {
             title={<Text type='secondary'>No Details Found</Text>}
           />
         }
+        </div>
     </>
   )
 }

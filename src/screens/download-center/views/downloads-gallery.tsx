@@ -5,6 +5,7 @@ import { Content } from 'antd/lib/layout/layout';
 import { DownloadListPropsType, DownloadDocumentType } from '../../../models/download-center-type';
 import { getDownloadsList } from '../../../service/download-center-service';
 import httpInstance from '../../../utility/http-client';
+import { formatBase64 } from '../../../utility/image-utils';
 
 export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
     const { downloadListProps} = props;
@@ -31,7 +32,6 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
         getDownloadsList(downloadListProps.categoryId)
             .then(response => {
                 setLeadersList(response.data.content)
-                console.log(response.data)
             })
             .catch((error) => {
                 message.error(error);
@@ -49,11 +49,12 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
         <style>
             {css}
         </style>
-        <Row>
+        
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: '25px' }}>
             <h3>{props.downloadListProps.title}</h3>
-        </Row>
+        </div>
 
-        <Row>
+        <Row className='body-container'>
             <Content className='leaders-gallery'>
                 <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
                     
@@ -66,7 +67,7 @@ export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType
                                 
                                 <img 
                                 onClick={() => handleImgClick(leader.document.id)} 
-                                src={`data:image/png;base64,${leader.document.thumbnail}`}/>
+                                src={formatBase64(leader.document.thumbnail)}/>
                             }
                             actions={[
                                 <>

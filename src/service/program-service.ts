@@ -47,7 +47,7 @@ export function getCourses(key:string = '', page:string = '0', size:string = '8'
     return httpInstance.get('/microsite/lnd/programs/course-search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
 
-export function getCoursesFts(key:string = '', page:string = '0', size:string = '3'){
+export function getCoursesFts(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
@@ -73,6 +73,10 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
         progress: progress
       };
     }
+    return {
+      courses: courses,
+      progress: 0
+    }
 }
 
 export function validateProgramsCourses(values: CourseMapType[]) {
@@ -83,8 +87,6 @@ export function validateProgramsCourses(values: CourseMapType[]) {
       };
     }
     )
-    
-    console.log('hasDuplicate', hasDuplicate)
     if(hasDuplicate) {
       message.error('Program should not have duplicate courses')
       return false
@@ -109,7 +111,6 @@ export function validateProgramsCourses(values: CourseMapType[]) {
   }
 
   export const onCourseSelectHandler = (index: number, e: any, courses: CourseMapType[]) => {
-    console.log(e)
     let updatedCourses = courses;
     let updatedCourse = courses[index];
     updatedCourse.course = e.key;
@@ -144,13 +145,11 @@ export function validateProgramsCourses(values: CourseMapType[]) {
 }
 
 export const setProgram = (body: any) => {
-    console.log(body)
     const url = "/microsite/lnd/programs/new"
     return httpInstance.post(url, body)
   }
 
 export const updateProgram = (body: any, id: string) => {
-    console.log('update', body)
     const url = "/microsite/lnd/programs/edit/" + id
     return httpInstance.post(url, body)
   }

@@ -2,6 +2,7 @@ import { Button, Image, Form, Input, message, Select } from 'antd'
 import * as React from 'react'
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
+import { Upload } from '../../../../../components/upload.component';
 import httpInstance from '../../../../../utility/http-client';
 
 const validateStatus = {
@@ -32,7 +33,7 @@ type CourseRequest = {
     title?: string,
     description?: string,
     rruDeepLink?: string,
-    thumbnail?: string,
+    thumbnailId?: string,
     duration?: number,
     minCourseCoin?: number,
     courseCoin?: number,
@@ -48,6 +49,7 @@ type CourseDetail = {
     description?: string,
     rruDeepLink?: string,
     thumbnail?: string,
+    thumbnailId?: string,
     duration?: number,
     minCourseCoin?: number,
     courseCoin?: number,
@@ -85,7 +87,6 @@ export default function CourseForm() {
             return;
         }
         if(!stringReg.test(course.rruCourseId)){
-            console.log(stringReg.test(course.rruCourseId))
             message.error("RRU Course ID must be a string")
             return;
         }
@@ -95,7 +96,7 @@ export default function CourseForm() {
             description: course.description,
             duration: course.duration,
             rruDeepLink: course.rruDeepLink,
-            thumbnail: course.thumbnail,
+            thumbnailId: course.thumbnailId,
             minCourseCoin: course.minCourseCoin,
             courseCoin: course.courseCoin,
             careerCoin: course.careerCoin,
@@ -103,7 +104,6 @@ export default function CourseForm() {
             roleIds: course.roleIds,
             programIds: course.programIds
         }
-        console.log(RequestBody)
         const resp = await httpInstance.post("/microsite/course", RequestBody);
         if (resp.data) {
             message.success(`${course.title} created successfully`);
@@ -111,20 +111,20 @@ export default function CourseForm() {
         }
     }
 
-    const renderImage = (imageUrl: string) => {
-        if (!imageUrl)
-            return;
-
-        return <>
-            <Image src={imageUrl} height={200} width={450} />
-        </>
-    }
-
     return (<>
 
         <div><Button type='link' onClick={() => { navigate(-1) }}>< ArrowLeft /> Go Back</Button></div>
-        <h4>Create Course</h4>
-        <Form title='Create Course' style={{ width: '60%' }} layout="horizontal" onFinish={onFinish}>
+        <div className='body-container' style={{ width: '60%' }}>
+        <h4>Create Course</h4>    
+        <Form title='Create Course' layout="vertical" onFinish={onFinish}>
+            <Form.Item>
+                Thumbnail
+                <Upload
+                onDone={(info) => { setCourse({...course, thumbnailId: info.documentId, thumbnail : info.file});} }
+                onRemove={() => setCourse({...course, thumbnailId: '', thumbnail: ''})}
+                file={course.thumbnail}
+                accept="image/png, image/jpeg, image/jpg"  />
+            </Form.Item>
             <Form.Item>
                 Title
                 <Input onChange={(e) => {
@@ -179,7 +179,6 @@ export default function CourseForm() {
                                 setDataProgram(programs)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -231,7 +230,6 @@ export default function CourseForm() {
                                 setDataSkill(skills)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -281,7 +279,6 @@ export default function CourseForm() {
                                 setDataRole(roles)
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 window.alert(`${error.message}`);
                             });
                     }}
@@ -350,26 +347,13 @@ export default function CourseForm() {
                     })
                 }} />
             </Form.Item>
-
-            <Form.Item>
-                Thumbnail
-
-                <Input onChange={(e) => {
-                    setCourse({
-                        ...course, thumbnail: e.target.value
-                    })
-                }} />
-
-            </Form.Item>
-            {renderImage(course.thumbnail)}
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Save
                 </Button>
             </Form.Item>
         </Form>
-
-
+        </div>
     </>
     )
 }

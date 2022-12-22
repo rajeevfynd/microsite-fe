@@ -7,9 +7,9 @@ export type ProgramDetailPropsType = {
 }
 export type JourneyDetailType = {
     title?: string;
-    id?: number;
+    id: number;
     description?: string;
-    thumbnailLink?: string;
+    thumbnail?: string;
     flow?:string;
     programs?: ProgramType[];
     progress?: number;
@@ -21,10 +21,10 @@ export type ProgramType = {
     status: string;
 }
 export type ProgramDetailType = {
-    id?: number;
-    title?: string;
+    id: number;
+    title: string;
     description?: string;
-    thumbnailLink?: string;
+    thumbnail?: string;
     duration?: number;
     rruDeeplink?: string;
     rruProgramID?: string;
@@ -33,10 +33,10 @@ export type ProgramDetailType = {
     flow?: string
 }
 export type ProgramMapType = {
-    program: string,
-    programName: string,
+    program: string |null,
+    programName?: string,
 }
 export type CourseMapType = {
-    course: string,
-    courseName: string
+    course: string | null,
+    courseName?: string
 }
