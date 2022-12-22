@@ -55,7 +55,7 @@ export const FAQ = () => {
     })
 
     return (
-        <div>
+        <div className='body-container'>
 
             <h1>FAQ</h1>
 
