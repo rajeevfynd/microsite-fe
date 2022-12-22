@@ -1,13 +1,11 @@
-import { Avatar, Col, Dropdown, MenuProps, message, Row, Space } from 'antd'
+import { Avatar, Dropdown, MenuProps, message, Space } from 'antd'
 import * as React from 'react'
-import { getDefaulProPicUrl, getSiteTitle } from '../../../service/landing-page-service'
+import { getDefaulProPicUrl } from '../../../service/landing-page-service'
 import './../index.css'
-import { Image } from 'antd';
 import { getUser } from '../../../utility/user-utils';
 import { TopNavigationMenu } from '../../../components/menu';
 import { MenuStructure } from './menu-home';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { DownOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import httpInstance from '../../../utility/http-client';
 import { GET_LOGOUT_REDIRECT_URL } from '../../../constants/urls';
 
@@ -16,6 +14,7 @@ const HeaderHome = () => {
   const user: any = getUser()
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
+  const [domainId, setDomainId] = React.useState('');
   const [alternateProfilePic, setAlternateProfileUPic] = React.useState('');
   const navigate = useNavigate();
 
@@ -23,11 +22,23 @@ const HeaderHome = () => {
     if (user) {
       setFirstName(user.firstName)
       setLastName(user.lastName)
+      setDomainId(user.domainId)
       setAlternateProfileUPic(user.alternateProfilePicUrl)
     }
   })
 
   const items: MenuProps['items'] = [
+    {
+      label: <div>
+                {firstName} {lastName}
+                <br/>
+                <small><i>{domainId}</i></small>
+            </div>,
+      key: '0',
+    },
+    {
+      type: 'divider',
+    },
     {
       key: '1',
       label: <span onClick={() => {
@@ -46,10 +57,9 @@ const HeaderHome = () => {
     <>
       <div className='header-container'>
         <TopNavigationMenu menu={MenuStructure(navigate)} defaultKey="home"/>
-        <div className='profile-container'>
+        <div >
 
-
-          <Dropdown menu={{items}} trigger={['click']}>
+          <Dropdown menu={{items}}>
             <a onClick={(e) => e.preventDefault()}>
               <Space>
               <Avatar
@@ -68,4 +78,3 @@ const HeaderHome = () => {
 }
 
 export default HeaderHome;
-
