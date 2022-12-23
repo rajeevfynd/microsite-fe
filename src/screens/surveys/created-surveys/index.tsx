@@ -40,7 +40,8 @@ import { RangePickerProps } from "antd/lib/date-picker";
 
 export const CreatedSurvey = () => {
   const [surveys, setSurvey] = React.useState<SurveyDto[]>([]);
-
+  const [assigneData, setAssigneData] = React.useState<assigneModelData[]>([]);
+  //let modelData : {[key:string]:assigneModelData}
   const dateFormat = "YYYY-MM-DD";
   let navigate = useNavigate();
   const [pageNumber, setPageNumber] = React.useState(0);
@@ -174,7 +175,7 @@ export const CreatedSurvey = () => {
 
     setExpireDate(dateString);
     console.log("Date string", dateString);
-  }
+  };
 
   const Popup = () => {
     return (
