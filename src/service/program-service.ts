@@ -80,22 +80,16 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
 }
 
 export function validateProgramsCourses(values: CourseMapType[]) {
-    let hasDuplicate = false;
-    values.map(v => v.course).sort().sort(
-      (a:string, b:string) => {
-        if (a == b) { hasDuplicate = true; return 1
-      };
-    }
-    )
-    if(hasDuplicate) {
-      message.error('Program should not have duplicate courses')
-      return false
-    }
-    if(!(values.filter(p => p.course == null).length == 0)) {
-      message.error('Empty course field cannot be mapped to a program')
-      return false
-    }
-    return true
+  if(!(values.filter(c => c.course == null).length == 0)) {
+    message.error('Empty course field cannot be mapped to a program')
+    return false
+  }
+  let cids = values.map( v => v.course?.toString() )
+  if(new Set(cids).size != cids.length) {
+    message.error('Program should not have duplicate courses')
+    return false
+  }
+  return true
   }
 
 
