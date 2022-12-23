@@ -111,21 +111,13 @@ export const deleteJourney = (id: string) => {
 }
 
 export function validateJourneyPrograms(values: ProgramMapType[]) {
-  let hasDuplicate = false;
-  values.map(v => v.program).sort(
-    ( a:string | null, b:string | null) => {
-      if (a == b) { hasDuplicate = true; 
-        return 1
-    }
-    return 0;
-  }
-  )
-  if(hasDuplicate) {
-    message.error('Journey should not have duplicate programs')
-    return false
-  }
   if(!(values.filter(p => p.program == null).length == 0)) {
     message.error('Empty program field cannot be mapped to a journey')
+    return false
+  }
+  let pids = values.map( v => v.program?.toString() )
+  if(new Set(pids).size != pids.length) {
+    message.error('Journey should not have duplicate programs')
     return false
   }
   return true
