@@ -52,6 +52,8 @@ export const ManageBirthdays = () => {
         }
         setloadagain(values.name);
         setIsModalOpen(false);
+        setDocument(null);
+        form.resetFields();
 
     }
 
@@ -76,7 +78,7 @@ export const ManageBirthdays = () => {
                 </Dropdown.Button>
             </Space>
             {/* <Button onClick={showModal} type='primary'></Button> */}
-            <Modal destroyOnClose={true} title={title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
+            <Modal destroyOnClose={true}  title={title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
                 {title == "Create Birthday" ?
                     <Form
                         form={form}
