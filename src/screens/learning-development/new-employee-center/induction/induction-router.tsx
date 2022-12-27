@@ -8,7 +8,7 @@ export const InductionRouter = () => {
     <>
         <Routes>
             <Route path='/welcome' element={<Induction />}></Route>
-            <Route path='*' element={<Navigate replace to="/lnd/new-emp-center/induction"/>}></Route>
+            <Route path='*' element={<Navigate replace to="/lnd/new-emp-center/induction/welcome"/>}></Route>
         </Routes>
     </>
   )
