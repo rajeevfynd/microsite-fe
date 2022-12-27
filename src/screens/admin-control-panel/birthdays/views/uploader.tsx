@@ -2,9 +2,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Button, Col, Form, message, Row, Space, Upload } from 'antd';
 import * as React from 'react';
 import { SAMPLE_BIRTHDAY_UPLOAD_URL } from '../../../../constants/string-constants';
+import { UploadBirthdayFormProps } from '../../../../models/birthday-props';
 import { uploadBirthday } from '../../../../service/home-service';
 
-export const Uploader = () => {
+export const Uploader = (props : {uploadBirthdayFormProps : UploadBirthdayFormProps}) => {
     const [form] = Form.useForm();
     const [file, setFile] = React.useState();
     const handleBeforeUpload = (file: any) => {
@@ -20,6 +21,7 @@ export const Uploader = () => {
             message.success("Created Birthdays")
             form.resetFields()
             setFile(null)
+            props.uploadBirthdayFormProps.onUploadBirthdaySubmit()
             //prop.fileList.pop()
         }
     }
@@ -36,20 +38,20 @@ export const Uploader = () => {
                 </Upload>
             </Form.Item>
             <p>
-                    <a href={SAMPLE_BIRTHDAY_UPLOAD_URL}>Sample Upload File</a>
+                <a href={SAMPLE_BIRTHDAY_UPLOAD_URL}>Sample Upload File</a>
             </p>
 
             <Form.Item >
-                    <Row>
-                        <Col span={24} style={{ textAlign: 'right' }}>
-                            <Space>
-                                <Button type="primary" htmlType="submit">
-                                    Submit
-                                </Button>
-                            </Space>
-                        </Col>
-                    </Row>
-                </Form.Item>
+                <Row>
+                    <Col span={24} style={{ textAlign: 'right' }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Space>
+                    </Col>
+                </Row>
+            </Form.Item>
         </Form>
 
     )

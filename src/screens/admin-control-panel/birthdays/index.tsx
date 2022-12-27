@@ -2,6 +2,7 @@ import { Button, DatePicker, Dropdown, Form, Input, Menu, message, Modal, Space 
 import * as React from 'react';
 import { PlusLg } from 'react-bootstrap-icons';
 import { Upload } from '../../../components/upload.component';
+import { UploadBirthdayFormProps } from '../../../models/birthday-props';
 import { UploadProps } from '../../../models/upload-props';
 import { addBirthday } from '../../../service/home-service';
 import { BirthdayList } from './views/brthdayList';
@@ -57,8 +58,12 @@ export const ManageBirthdays = () => {
 
     }
 
-    function handleUploadQnaClick() {
+    function handleUploadBirthdayClick() {
         showModal("Upload Birthday")
+    }
+
+    const uploadBirthdayFormProps : UploadBirthdayFormProps = {
+        onUploadBirthdaySubmit: handleOk
     }
 
     return (
@@ -66,7 +71,7 @@ export const ManageBirthdays = () => {
             <br></br>
             <Space wrap>
                 <Dropdown.Button onClick={e => showModal('Create Birthday')}
-                    overlay={<Menu onClick={() => { handleUploadQnaClick(); }}
+                    overlay={<Menu onClick={() => { handleUploadBirthdayClick(); }}
                         items={[
                             {
                                 label: 'Upload Birthdays via Excel',
@@ -119,7 +124,7 @@ export const ManageBirthdays = () => {
                         </Form.Item>
                     </Form> :
                     <div>
-                        <Uploader />
+                        <Uploader uploadBirthdayFormProps={uploadBirthdayFormProps} />
                     </div>
                 }
             </Modal>
