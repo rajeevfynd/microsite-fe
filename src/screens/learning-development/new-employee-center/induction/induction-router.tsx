@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Induction } from './views/induction'
-import { Welcome } from './views/welcome'
 
 export const InductionRouter = () => {
   return (
