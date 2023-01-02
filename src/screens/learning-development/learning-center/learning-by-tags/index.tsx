@@ -11,6 +11,7 @@ import { formatBase64 } from '../../../../utility/image-utils';
 
 type tagType = {
     name: string,
+    description: string,
     id: string
 }
 
@@ -81,11 +82,20 @@ export const LearningBy = () => {
                 </div>
             </Col>
             <Col span={21}>
+                {tags.length > 0 && tags.map( (tag) => tag.id == selected && 
+                    <div style={{padding: '10px 50px'}}>
+                        <h4>{tag.name.toUpperCase()}</h4>
+                        <p>
+                            {tag.description}
+                        </p>
+                    </div>)
+                }
             <div
                 style={{
                     width: '100%',
-                    height: '100%',
+                    overflow: 'scroll',
                 }}
+                id="scrollableTagDiv"
                 >
                 { programs.length != 0 &&
                 <InfiniteScroll
@@ -93,7 +103,7 @@ export const LearningBy = () => {
                     next={()=>{loadMoreData(selected)}}
                     hasMore={hasMore}
                     loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                    scrollableTarget="scrollableDiv"
+                    scrollableTarget="scrollableTagDiv"
                 >
                     <List
                         grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
