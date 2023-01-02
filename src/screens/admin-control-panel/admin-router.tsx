@@ -16,6 +16,7 @@ import { EditCourse } from "./courses/edit-course";
 import { AddCourse } from "../learning-development/learning-center/add-course";
 import { DownloadTabs } from "./download-center";
 import { ProtectedComponent } from "./../../components/protected/protected-component"
+import { ManageBirthdays } from "./birthdays"
 
 export const AdminRouter = () => {
   return (
@@ -26,6 +27,7 @@ export const AdminRouter = () => {
           path="/manage-announcement/*"
           element={<AddAnnouncement></AddAnnouncement>}
         ></Route>
+        <Route path='/birthdays/' element={<ManageBirthdays/>}></Route>
         <Route
           path="/edit-carousel/*"
           element={<EditCarousal></EditCarousal>}

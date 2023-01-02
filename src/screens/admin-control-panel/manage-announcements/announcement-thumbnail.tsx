@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { getAnnouncementThumb } from '../../../service/announcment-service';
+import { getAnnouncementThumb } from '../../../service/home-service';
 import { formatBase64 } from '../../../utility/image-utils';
 
 export const AnnouncementThumbnail =(props:any)=>{

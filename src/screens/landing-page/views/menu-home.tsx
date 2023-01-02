@@ -23,6 +23,7 @@ import LeaderSvg from '../../../img/leader.svg';
 import CarouselSvg from '../../../img/carousel.svg';
 import DownloadSvg from '../../../img/download.svg';
 import AnnouncementSvg from '../../../img/promotion.svg';
+import CakeSvg from '../../../img/cake.svg';
 import ComingSoonSvg from '../../../img/coming-soon.svg';
 import FaqSvg from '../../../img/faq.svg';
 import Sider from 'antd/lib/layout/Sider';
@@ -232,6 +233,13 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Announcements",
                     icon: <AnnouncementSvg />,
                     navigate: "/admin/manage-announcement",
+                    hasAccess: isAdmin()
+                },
+                {
+                    key: "birthdays",
+                    title: "Birthdays",
+                    icon: <CakeSvg/>,
+                    navigate : "/admin/birthdays/",
                     hasAccess: isAdmin()
                 }
 

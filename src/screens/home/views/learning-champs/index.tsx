@@ -181,7 +181,7 @@ export const LearningChamps = () => {
             <Card className="home-card">
                 <Meta title={
                     <div>
-                        <h4>Learning Champs</h4>
+                        <h4>Learning Champs <video width="30" height="30" preload="none" src="https://cdn-icons-mp4.flaticon.com/512/8617/8617218.mp4" autoPlay loop={true} muted={true} playsInline></video></h4>
                     </div>
                 }
                 />

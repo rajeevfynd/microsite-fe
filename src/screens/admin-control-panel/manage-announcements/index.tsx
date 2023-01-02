@@ -1,6 +1,6 @@
 import { Button, Form, Input, message, Modal, Radio } from 'antd';
 import * as React from 'react';
-import { addAnnouncement } from '../../../service/announcment-service';
+import { addAnnouncement } from '../../../service/home-service';
 import { DeleteAnnouncement } from './delete-announcement';
 import { Upload } from '../../../components/upload.component';
 import { UploadProps } from '../../../models/upload-props';
@@ -10,7 +10,7 @@ import { PlusLg } from 'react-bootstrap-icons';
 export const AddAnnouncement = () => {
 
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [isDocActive, setIsDocActive] = React.useState<boolean>(true);
+    const [isDocActive, setIsDocActive] = React.useState<boolean>(false);
     const [isTextActive, setIsTextActive] = React.useState(true);
     const [updatedprops, setupdatedprops] = React.useState("");
     const [file, setFile] = React.useState("")

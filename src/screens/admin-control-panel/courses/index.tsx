@@ -13,6 +13,7 @@ import { formatBase64 } from '../../../utility/image-utils';
 import './index.css';
 const { Text } = Typography;
 
+
 export const AdminCoursePage = () => {
 
     const [load, setLoad] = React.useState(false)
