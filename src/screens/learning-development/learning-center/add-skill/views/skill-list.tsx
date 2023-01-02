@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
-import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
 import { CourseList } from './course-list';
 import httpInstance from '../../../../../utility/http-client';
 import { CourseSearch } from './course-search';
+import { SkillEditForm } from './skill-edit-form';
+import { editTagType } from '../../../../../models/tag-type';
 const { confirm } = Modal;
-
 
 
 export const SkillList = (props: any) => {
@@ -14,6 +15,9 @@ export const SkillList = (props: any) => {
     const [skillList, setSkillList] = React.useState([]);
     const [skillId, setSkillId] = React.useState(null);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [editSkill, setEditSkill] = React.useState<editTagType>();
+    
     const [courseTagMapping, setCourseTagMapping] = React.useState({
         courseIds: [],
         tagIds: [],
@@ -23,6 +27,19 @@ export const SkillList = (props: any) => {
     const [mappingStatus, setMappingStatus] = React.useState(false);
 
 
+    const showEditModal = (id:number, name:string, description:string) => {
+        const skill:editTagType = {
+            tagId:id,
+            tagName:name,
+            tagDescription:description
+        }
+        setEditSkill(skill)
+        console.log("test")
+        setIsEditModalOpen(true);
+    };
+    const closeEditModel = () => {
+        setIsEditModalOpen(false);
+    };
 
 
     const showModal = () => {
@@ -72,7 +89,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [skillId, mappingStatus])
+    }, [skillId, mappingStatus,isEditModalOpen])
 
 
     React.useEffect(() => {
@@ -137,7 +154,7 @@ export const SkillList = (props: any) => {
             {isLoading ? "Loading" :
                 <> {!!skillList.length ?
                     <List
-                        grid={{ gutter: 16, column: 2 }}
+                        grid={{ gutter: 16, column: 3 }}
                         dataSource={skillList}
                         renderItem={item => (
 
@@ -149,10 +166,18 @@ export const SkillList = (props: any) => {
                                 >
                                     <div><Row style={{ justifyContent: "space-between" }}>
                                         <Col flex={1} ><h5>{item.name}</h5></Col>
+                                        <Col style={{ alignItems: "end" }} >
+                                            <EditOutlined style={{ fontSize: 20 }} onClick={()=>{showEditModal(item.id, item.name, item.description)}}/>
+                                        </Col>
                                         <Col style={{ alignItems: "end" }}>
                                             <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.id, item.name, Tagtype.skill)} />
                                         </Col>
-                                    </Row>
+                                        </Row>
+                                        <Row >
+                                            <Col flex={1}> 
+                                                <p>{item.description}</p> 
+                                            </Col> 
+                                        </Row>
                                     </div>
                                     <Divider />
 
@@ -180,7 +205,10 @@ export const SkillList = (props: any) => {
                 }
                     <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
                         <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
-                        <Divider />
+                    </Modal>
+
+                    <Modal title="Update Skill" open={isEditModalOpen} footer={null} onCancel={closeEditModel} >
+                        <SkillEditForm props={{skill:editSkill, handleSubmit:closeEditModel}}/>
                     </Modal>
                 </>
             }
