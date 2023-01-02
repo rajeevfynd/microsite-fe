@@ -37,7 +37,6 @@ function OutsideClick(ref: any) {
 }
 
 export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[] => {
-    console.log("from here")
     return [
         {
             title: "Home",
