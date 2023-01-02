@@ -1,71 +1,81 @@
 import * as React from 'react';
-import { List, Button } from 'antd';
+import { List, Button, Card, Image, Empty, Skeleton } from 'antd';
 import { CourseCard } from '../../../../../components/cards/content-configuration-card';
 import Modal from 'antd/lib/modal/Modal';
 import { CourseDetails } from '../../../../../components/course-detail/course-details';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { ProgramDetailType } from '../../../../../models/journey-details';
+import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
+import { formatBase64 } from '../../../../../utility/image-utils';
+import Meta from 'antd/lib/card/Meta';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'react-bootstrap-icons';
 
+export function ProgramList(props: { programs: { program: ProgramDetailType }[], hasMore: boolean, loadMoreData:any }) {
 
-export function CourseList(props: { courseList: any }) {
-
-    const { courseList } = props;
-
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [courseDetails, setCourseDetails] = React.useState({});
-
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeModel = () => {
-        setIsModalOpen(false);
-    };
-
-
-    const handleCourseDetailsClick = (course: any) => {
-
-        setCourseDetails(course);
-
-        showModal();
-    }
+    const navigate = useNavigate();
+    const { programs, hasMore, loadMoreData } = props;
 
     return (
         <>
-            <List
-                grid={{ gutter: 16 }}
-                dataSource={courseList}
-                renderItem={({ course }) => (<List.Item key={course.id}>
-
-                    <CourseCard
-                        key={course.id}
-                        cardStyle={{ width: 255 }}
-                        isHoverable={true}
-                        imageStyle={{
-                            width: 255,
-                            height: 154
-                        }}
-                        imageSource={course.thumbnail}
-                        metaStyle={{ justifyContent: "center", whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-                        title={course.title}
-                        description={course.description}
-                    />
-
-                    <Button type="primary" block onClick={() => handleCourseDetailsClick(course)}> View Course Details </Button>
-
-
-                </List.Item>)
+        <div
+      style={{
+        width: '100%',
+        height: '100%'
+      }}
+    >
+            { programs.length != 0 &&
+      <InfiniteScroll
+        dataLength={programs.length}
+        next={()=>{props.loadMoreData()}}
+        hasMore={hasMore}
+        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+        scrollableTarget="scrollableDiv"
+      >
+        <List
+          grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
+          style={{padding : "1%"}}
+          dataSource={programs}
+          renderItem={item => (
+            <List.Item key={item.program.id}>
+              <Card 
+                hoverable
+                style={{
+                  width: 306,
+                  height: 330
+                }}
+                cover={
+                  <Image
+                    style={{
+                      width: 306,
+                      height: 175.5
+                    }}
+                    src={formatBase64(item.program.thumbnail)}
+                    fallback={DEFAULT_LND_THUMBNAIL}
+                    preview={false}
+                  />
                 }
-            />
-
-            <Modal
-                title="Course Details"
-                visible={isModalOpen}
-                footer={null}
-                onCancel={closeModel}
-                width={1000}
-                style={{ top: 100 }}>
-                <CourseDetails course={courseDetails} />
-            </Modal>
+                actions={[
+                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.program.id.toString())}}> Go to Program <ArrowRight /> </Button>
+                ]}
+              >
+                <Meta
+                  title={item.program.title}
+                  description={<div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", height:'20px'}}>{item.program.description}</div>}
+                />
+              </Card>
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
+      }
+      {
+        programs.length == 0 &&
+        <Empty
+          description='No programs found'
+        />
+      }
+      </div>
         </>
     );
 }

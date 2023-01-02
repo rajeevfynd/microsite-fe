@@ -68,7 +68,6 @@ export  const ProgramList = () => {
         onChange={(e:string) => {searchKey(e);} } 
     />
     <div
-      id="scrollableDiv"
       style={{
         width: '100%',
         height: '100%'

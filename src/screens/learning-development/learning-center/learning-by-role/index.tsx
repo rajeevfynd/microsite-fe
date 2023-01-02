@@ -5,27 +5,26 @@ import { Layout, Button, message } from 'antd';
 const { Content, Sider } = Layout;
 
 import { RoleList } from './views/role-list';
-import { CourseList } from './views/role-courses';
 import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
 import { Footer } from 'antd/lib/layout/layout';
+import { ProgramList } from '../learning-by-skill/views/skill-courses';
 
 export function LearningByRole() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isMenuItemChanged, setIsMenuItemChanged] = React.useState(false);
-  const [buttonStatus, setButtonStatus] = React.useState(true);
   const [roleList, setRoleList] = React.useState([]);
-  const [courseList, setCourseList] = React.useState([]);
+  const [programList, setProgramList] = React.useState([]);
   const [selectedMenuItem, setSelectedMenuItem] = React.useState([]);
   const [pagination, setPagination] = React.useState({
     offset: 0,
-    pageSize: 10
+    pageSize: 4
   });
 
 
   const handleViewMoreClick = () => {
+    console.log('hi')
     setPagination({ ...pagination, offset: pagination.offset + 1 });
-    setButtonStatus(true);
   }
 
 
@@ -56,26 +55,16 @@ export function LearningByRole() {
 
     (() => {
       setIsLoading(true);
-      httpInstance.get(`/microsite/course-tag/courses-by-tag-id/?tagId=${Number(selectedMenuItem[0])}&offset=${pagination.offset}&pageSize=${pagination.pageSize}`)
+      httpInstance.get(`/microsite/program-tag/programs-by-tag-id/?tagId=${Number(selectedMenuItem[0])}&offset=${pagination.offset}&pageSize=${pagination.pageSize}`)
         .then((response) => {
-          if (!response.data.length) {
-            setButtonStatus(true);
-          }
 
           if (response.data.length) {
-            setCourseList(courseList.concat(response.data));
-          }
-
-          if (response.data.length < 10) {
-            setButtonStatus(true);
-          } else {
-            setButtonStatus(false);
+            setProgramList(programList.concat(response.data));
           }
 
           setIsLoading(false);
         })
         .catch((error) => {
-          setButtonStatus(true);
           setIsLoading(false);
           message.error("Something went wrong, Please try after sometime");
 
@@ -88,7 +77,7 @@ export function LearningByRole() {
   React.useEffect(() => {
     if (!selectedMenuItem.length) return;
 
-    setCourseList([]);
+    setProgramList([]);
     setPagination({ ...pagination, offset: 0 });
     setIsMenuItemChanged(!isMenuItemChanged);
   }, [selectedMenuItem]);
@@ -137,13 +126,13 @@ export function LearningByRole() {
             background: '#fff'
           }}>
 
-            {courseList.length ? <CourseList courseList={courseList} /> : null}
+            { programList.length ? <ProgramList programs={programList} hasMore={false} loadMoreData={handleViewMoreClick} /> : null }
 
           </Content>
 
-          <Footer style={{ backgroundColor: "white" }}>
+          {/*<Footer style={{ backgroundColor: "white" }}>
             <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
-          </Footer>
+        </Footer> */}
         </Layout>
       </Layout >}
     </>

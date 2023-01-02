@@ -82,7 +82,6 @@ export  const AdminProgramList = () => {
     />
     <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
     <div
-      id="scrollableDiv"
       style={{
         width: '100%',
         height: '100%'

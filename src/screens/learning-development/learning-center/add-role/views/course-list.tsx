@@ -26,7 +26,7 @@ export const CourseList = (props: any) => {
         if (!tagId || !courseId) return;
 
         (() => {
-            httpInstance.delete(`/microsite/course-tag/course-tag-by-course-id-and-tag-id?courseId=${courseId}&tagId=${tagId}`)
+            httpInstance.delete(`/microsite/program-tag/program-tag-by-program-id-and-tag-id?programId=${courseId}&tagId=${tagId}`)
                 .then((response) => {
 
                     handleMappingStatus(!mappingStatus);

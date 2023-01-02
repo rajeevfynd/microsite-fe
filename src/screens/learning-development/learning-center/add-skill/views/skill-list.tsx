@@ -59,9 +59,10 @@ export const SkillList = (props: any) => {
         //Api -> get tags and courses
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.skill}`)
+            httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.skill}`)
                 .then((response) => {
-                    if (!!response.data.length) {
+                    console.log(response)
+                    if (!!response) {
                         setSkillList(response.data);
                     }
                     setIsLoading(false);
@@ -110,7 +111,7 @@ export const SkillList = (props: any) => {
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
                 .then((response) => {
 
                     if (response.data) {

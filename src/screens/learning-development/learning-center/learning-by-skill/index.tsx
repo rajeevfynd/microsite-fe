@@ -1,11 +1,11 @@
 import * as React from 'react';
 import httpInstance from '../../../../utility/http-client';
-import { Layout, Button, message } from 'antd';
+import { Layout, Button, message, List, Card, Image, Skeleton, Result, Typography } from 'antd';
 
 const { Content, Sider } = Layout;
 
 import { SkillList } from './views/skill-list';
-import { CourseList } from './views/skill-courses';
+import { ProgramList } from './views/skill-courses';
 import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
 import { Footer } from 'antd/lib/layout/layout';
@@ -15,15 +15,16 @@ export function LearningBySkill() {
   const [isMenuItemChanged, setIsMenuItemChanged] = React.useState(false);
   const [buttonStatus, setButtonStatus] = React.useState(true);
   const [skillList, setSkillList] = React.useState([]);
-  const [courseList, setCourseList] = React.useState([]);
+  const [programList, setProgramList] = React.useState<any[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = React.useState([]);
   const [pagination, setPagination] = React.useState({
     offset: 0,
-    pageSize: 10
+    pageSize: 4
   });
 
 
   const handleViewMoreClick = () => {
+    console.log('hi')
     setPagination({ ...pagination, offset: pagination.offset + 1 });
     setButtonStatus(true);
   }
@@ -35,7 +36,7 @@ export function LearningBySkill() {
     (() => {
       setIsLoading(true);
       httpInstance.get(`/microsite/tag/?tagType=${Tagtype.skill}`)
-        .then((response) => {
+        .then(  (response) => {
           if (!!getFormattedDataForMenuItems(response.data).length) {
             setSkillList(getFormattedDataForMenuItems(response.data));
             setSelectedMenuItem([response.data[0].id]);
@@ -56,17 +57,17 @@ export function LearningBySkill() {
 
     (() => {
       setIsLoading(true);
-      httpInstance.get(`/microsite/course-tag/courses-by-tag-id/?tagId=${Number(selectedMenuItem[0])}&offset=${pagination.offset}&pageSize=${pagination.pageSize}`)
+      httpInstance.get(`/microsite/program-tag/programs-by-tag-id/?tagId=${Number(selectedMenuItem[0])}&offset=${pagination.offset}&pageSize=${pagination.pageSize}`)
         .then((response) => {
-          if (!response.data.length) {
+          if (!response.data.content.length) {
             setButtonStatus(true);
           }
 
-          if (response.data.length) {
-            setCourseList(courseList.concat(response.data));
+          if (response.data.content.length) {
+            setProgramList([...programList, response.data.content]);
           }
 
-          if (response.data.length < 10) {
+          if (response.data.content.length < 10) {
             setButtonStatus(true);
           } else {
             setButtonStatus(false);
@@ -88,17 +89,11 @@ export function LearningBySkill() {
   React.useEffect(() => {
     if (!selectedMenuItem.length) return;
 
-    setCourseList([]);
+    setProgramList([]);
     setPagination({ ...pagination, offset: 0 });
     setIsMenuItemChanged(!isMenuItemChanged);
   }, [selectedMenuItem]);
 
-
-  const addSkill = () => {
-    return <Button block style={{ background: "#001529", color: "#f5f5f5" }}>
-      Skills
-    </Button>
-  }
 
   return (
     <>
@@ -114,7 +109,9 @@ export function LearningBySkill() {
             bottom: 0,
           }}
         >
-          {addSkill()}
+          <Button block style={{ background: "#001529", color: "#f5f5f5" }}>
+            Skills
+          </Button>
 
           <SkillList items={skillList}
             selectedMenuItem={selectedMenuItem}
@@ -135,14 +132,8 @@ export function LearningBySkill() {
             textAlign: 'center',
             background: '#fff'
           }}>
-
-            {courseList.length ? <CourseList courseList={courseList} /> : null}
-
+            { programList ? <ProgramList programs={programList} hasMore={false} loadMoreData = {()=>handleViewMoreClick()} /> : null }
           </Content>
-
-          <Footer style={{ backgroundColor: "white" }}>
-            <Button block type='primary' disabled={buttonStatus} onClick={() => handleViewMoreClick()} >View More</Button>
-          </Footer>
         </Layout>
       </Layout >}
     </>

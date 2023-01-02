@@ -125,7 +125,9 @@ export function validateProgramsCourses(values: CourseMapType[]) {
     description: program.description ? program.description.trim() : program.description,
     flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
     issueCertificate: program.issueCertificate,
-    courses: [...mappedCourses]
+    courses: [...mappedCourses],
+    roleIds: program.roleIds,
+    skillIds: program.skillIds
   }) :
     updateProgram({
       thumbnailId: thumbnail,
