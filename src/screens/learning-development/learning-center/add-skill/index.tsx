@@ -27,9 +27,7 @@ export const AddSkill = () => {
     return (
         <>
             {isLoading ? "Loading" :
-                <div style={{
-                    margin: "auto",
-                }}>
+                <div>
                     <AddSkillCard handleShowModel={showModal} />
 
                     <SkillList />

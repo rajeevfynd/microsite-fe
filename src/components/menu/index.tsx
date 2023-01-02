@@ -56,11 +56,16 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
     const [menuSecondaryKey, setMenuSecondaryKey] = React.useState<string | null>();
 
     React.useEffect(() => {
+        console.log(props.menu);
         let selected = getSelectedByNavigate(props.menu, location.pathname, props.defaultKey);
         let item = getSelectedPrimaryItemByKey(props.menu, selected[0]);
+        console.log(selected);
+        console.log(item);
         setMenuPrimaryKey(selected[0]);
         setMenuSecondaryKey(selected[1]);
         setSecondaryItems(item?.secondaryItems || []);
+        console.log(selected);
+        console.log(item);
     }, []);
 
     function onPrimaryMenuItemClick(item: PrimaryMenuItemProps) {
@@ -81,15 +86,15 @@ export const TopNavigationMenu = (props: TopNavigationMenuProps) => {
     return (
         <>
             <div className='menu-container'>
-                {props.menu.map(item => !(item.hasAccess === false) && <MenuItem {...item} selected={menuPrimaryKey == item.key} onClick={() => {
+                {props.menu.filter(item => !(item.hasAccess === false)).map(item => <MenuItem {...item} selected={menuPrimaryKey == item.key} onClick={() => {
                     setMenuPrimaryKey(item.key);
                     onMenuItemClick(item);
                     onPrimaryMenuItemClick(item);
-                }} />) }
+                }} />)}
             </div>
             <div className='secondary-menu'>
                 <div className='secondary-menu-container'>
-                    {secondaryItems.map(item => !(item.hasAccess === false) && <SecondaryMenuItem {...item} selected={menuSecondaryKey == item.key} onClick={() => {
+                    {secondaryItems.filter(item => !(item.hasAccess === false)).map(item => <SecondaryMenuItem {...item} selected={menuSecondaryKey == item.key} onClick={() => {
                         setMenuSecondaryKey(item.key);
                         onMenuItemClick(item);
                     }} />)}
