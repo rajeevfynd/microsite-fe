@@ -30,12 +30,12 @@ export const Feeds = () => {
                 scrollThreshold="20%"
             >
                 <Affix offsetTop={120} className="centered-container" style={{ zIndex: 1, marginTop: "100px", textAlign: "center" }}>
-                    <h3>Communities</h3>
-                    <ComingSoonSvg style={{fill: "#5f5f5f", marginTop: "5px"}}/>
+                    <h3 style={{ color: "#ffffff" }}>Communities</h3>
+                    <ComingSoonSvg style={{ fill: "#5f5f5f", marginTop: "5px" }} />
                 </Affix>
                 <div className="centered-container blur-effect">
                     <div style={{ width: "90%" }}>
-                        <Card className="home-card">
+                        <Card className="home-card dark">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '51px', height: '51px' }}
                                     src={alternateProfilePic}
@@ -43,7 +43,7 @@ export const Feeds = () => {
                                 <Input className="text-input-post" placeholder={`What's on your mind, ${firstName}?`} />
                             </div>
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card dark">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -56,7 +56,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card" >
+                        <Card className="home-card dark" >
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -70,7 +70,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card dark">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -84,7 +84,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card dark">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"
@@ -98,7 +98,7 @@ export const Feeds = () => {
                             <Divider />
                             Like Comment
                         </Card>
-                        <Card className="home-card">
+                        <Card className="home-card dark">
                             <div style={{ display: "flex" }}>
                                 <Avatar style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     src="https://avatars.githubusercontent.com/u/20350203?v=4"

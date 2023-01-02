@@ -14,8 +14,8 @@ function AnnouncementModal(props: announcementType) {
 
     const showModal = () => {
         setIsModalOpen(true);
-        if(props.description == null)
-        fetchAnnouncmentDoc(props)
+        if (props.description == null)
+            fetchAnnouncmentDoc(props)
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -33,13 +33,13 @@ function AnnouncementModal(props: announcementType) {
         <div>
             <div>
                 <a onClick={showModal} style={{ display: 'flex', flexDirection: "column" }}>
-                    <h6 style={{ fontWeight: '540' }} className='inline'>
+                    <h6 style={{ fontWeight: '540', color: "white" }} className='inline'>
                         {props.title}
                     </h6>
-                    <Typography.Text disabled style={{ fontSize: "12px" }}>{moment(props.createdAt).format("DD MMM, YYYY")}</Typography.Text>
+                    <Typography.Text disabled style={{ fontSize: "12px", color: "white" }}>{moment(props.createdAt).format("DD MMM, YYYY")}</Typography.Text>
                 </a>
             </div>
-            <Divider style={{ margin: "5px 0px 5px 0px" }} />
+            <Divider style={{ margin: "5px 0px 5px 0px" }} className="white" />
         </div>
         <Modal title={props.title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
             {props.description == null &&

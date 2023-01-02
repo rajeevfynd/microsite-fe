@@ -9,7 +9,7 @@ import './index.css';
 const LandingPage = () => {
     return (
         <>
-            <Layout className='body'>
+            <Layout className='body dark'>
                 <Header className="header">
                     <HeaderHome />
                 </Header>

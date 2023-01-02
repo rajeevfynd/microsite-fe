@@ -20,7 +20,15 @@
 .body {
     font-family: 'Nanum Gothic', sans-serif;
     height: 100%;
+}
+
+.dark {
+    background-color: #000000;
+}
+
+.white {
     background-color: #ffffff;
+    color: #ffffff;
 }
 
 .header {

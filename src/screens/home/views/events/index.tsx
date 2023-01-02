@@ -70,7 +70,7 @@ export const Events = () => {
             style={{ top: 100 }}>
                 <CourseDetails course={courseDetails} />
             </Modal>
-            <Card className="home-card">
+            <Card className="home-card dark">
                 <Carousel autoplay pauseOnHover effect='fade' dots={false}>
                     {
                         surveyEvent != undefined &&
