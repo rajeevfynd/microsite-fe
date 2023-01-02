@@ -1,5 +1,4 @@
 import { SelectProps } from "antd";
-import { DownloadOptions } from "./enums/download-center-options";
 
 export type DownloadDocumentType = {
     id: number
@@ -10,6 +9,24 @@ export type DownloadDocumentType = {
     updatedAt: string;
     docThumbnail: string
     downloadCategoryId: number
+}
+
+export type LeadersDownloadType = {
+    id: number
+    name: string;
+    designation: string;
+    description: string;
+    document: DocumentType;
+    updatedAt: string;
+}
+
+export type PolicyDownloadType = {
+    id: number
+    name: string;
+    category: string;
+    description: string;
+    document: DocumentType;
+    updatedAt: string;
 }
 
 export type DocumentType = {
@@ -23,16 +40,9 @@ export type DepartmentType = {
 }
 
 
-export type DownloadListPropsType = {
-    title : DownloadOptions;
-    categoryId : string; 
-}
-
 
 export type AddDocumentPropsType = {
     departmentOptionsList : SelectProps['options'];
-    downloadCategoryList : SelectProps['options'];
-    downloadCategoryId : string
     onFinish : any;
 }
 
@@ -42,4 +52,9 @@ export type EditDocumentsPropsType = {
     departmentList : DepartmentType[];
     onFinish : any;
     documentDetails : DownloadDocumentType
+}
+
+export type SubmenuTabsType = {
+    key : string;
+    value : string;
 }

@@ -1,13 +1,14 @@
 import { Card, Divider, List, message, Skeleton, Space } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
-import { PolicyDownloadType } from '../../../models/download-center-type';
-import { getDocumentsList } from '../../../service/download-center-service';
-import httpInstance from '../../../utility/http-client';
-import { formatBase64 } from '../../../utility/image-utils';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { PolicyDownloadType } from '../../../../models/download-center-type';
+import { getDocumentsList } from '../../../../service/download-center-service';
+import httpInstance from '../../../../utility/http-client';
+import { formatBase64 } from '../../../../utility/image-utils';
+import { ShowDeleteConfirm } from './showDeleteConfirm';
 
-export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
+export const AdminDownloadsGallery = (props:{downloadsUrl : string, deleteUrl : string}) => {
     const { Meta } = Card;
 
     const [data, setData] = React.useState<any[]>([])
@@ -26,7 +27,7 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
         let tempList : any[] = []
             downloadsList.map(doc => (
                 tempList.push({
-                    id : doc.id,
+                    key : doc.id,
                     documentId : doc.document.id,
                     thumbnail : doc.document.thumbnail,
                     title: doc.name,
@@ -34,6 +35,22 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
                 })
             ))
         setData(tempList)
+    }
+
+    const onDeleteConfirm = () => {
+        console.log("onDeleteConfirm")
+        setPageNumber(1)
+        getDocumentsList(props.downloadsUrl, "")
+        .then(response => {
+            setDownloadsList(response.data.content)
+            setHasMore(!response.data.last)
+            setLoading(false);
+        })
+        .catch((error) => {
+            message.error(error);
+            setLoading(false);
+        });
+
     }
 
     const loadMoreData = () => {
@@ -98,6 +115,7 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
                                             <Space size={20}>
 
                                                 <DownloadOutlined onClick={() => handleImgClick(item.documentId)}></DownloadOutlined>
+                                                <ShowDeleteConfirm deleteUrl={props.deleteUrl} id={item.key} onDeleteConfirm = {onDeleteConfirm}></ShowDeleteConfirm>
                                             </Space>
                                         </>
                                     ]}

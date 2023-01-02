@@ -1,14 +1,20 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
-import { AddDocumentPropsType } from "../../../../models/download-center-type";
+import { SubmenuTabsType } from "../../../../models/download-center-type";
+import { DownloadDocumentType } from "../../../../models/enums/download-document-type";
+import { HRPoliciesSubmenu } from "../../../../models/enums/hr-policies-submenu";
+import { TemplatesSubmenu } from "../../../../models/enums/templates-submenu";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
-import { addDocument } from "../../../../service/download-center-service";
+import { addDownloadDocument } from "../../../../service/download-center-service";
 
+const { Option } = Select;
 
-export const AddDownloadDocument = (props: AddDocumentPropsType) => {
+export const AddDownloadDocument = (props : {addUrl : string, downloadType : DownloadDocumentType, onAddSubmit : any}) => {
     const [form] = Form.useForm();
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [categoryList, setCategoryList] = React.useState<SubmenuTabsType[]>([])
+    const [categoryId, setCategoryId] = React.useState<string>('')
 
     const onReset = () => {
         form.resetFields();
@@ -22,17 +28,40 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
         setIsModalOpen(true);
     }
 
-    const addDownloadDocument = (values : any) => {
-        values["downloadCategoryId"] = props.downloadCategoryId
-        addDocument(values)
+    const addDocument = (values : any) => {
+        
+        addDownloadDocument(props.addUrl, values)
             .then(response => {
                 console.log("added")
                 setIsModalOpen(false)
-                props.onFinish()
+                props.onAddSubmit(categoryId)
             })
             .catch((error) => {
                 message.error(error);
             });
+    }
+
+    const createCategoriesList = ( )=> {
+        let categories : any = []
+
+        if(props.downloadType === DownloadDocumentType.HR_POLICIES)
+            categories = HRPoliciesSubmenu
+
+        if(props.downloadType === DownloadDocumentType.TEMPLATES)
+            categories = TemplatesSubmenu
+
+        for (let item in categories) {
+            if (isNaN(Number(item))) {
+                categoryList.push({
+                    key : item,
+                    value : categories[item]
+                })
+            }
+        }
+    }
+
+    const onCategoryChange = (value: string) => {
+        setCategoryId(value)
     }
 
     const prop: UploadProps = {
@@ -44,6 +73,11 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
         },
         file : ""
     };
+
+
+    React.useEffect(() => {
+        createCategoriesList()
+    }, [])
 
 
     return (
@@ -62,7 +96,7 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                 layout="vertical"
                 name="form_in_modal"
                 initialValues={{ modifier: 'public'}}
-                onFinish={addDownloadDocument}
+                onFinish={addDocument}
                 fields={[
                     {
                         name: ['department'],
@@ -74,7 +108,7 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                 <Form.Item
                     name="name"
                     label="Name"
-                    rules={[{ required: true, message: 'Enter the document name' }]}
+                    rules={[{ required: true, message: 'Enter the Name' }]}
                 >   
                     <Input/>
                 </Form.Item>
@@ -88,16 +122,19 @@ export const AddDownloadDocument = (props: AddDocumentPropsType) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="department"
-                    label="Department"
-                >   
-                    <Select 
-                        mode="multiple"
+                    name="categoryId"
+                    label="Category"
+                    rules={[{ required: true, message: 'Please select the Category!' }]}
+                >
+                    <Select
                         style={{ width: '100%' }}
-                        placeholder="Select the Department(s)"
-                        tokenSeparators={[',']}
-                        options = {props.departmentOptionsList}
+                        placeholder="Please select the Category"
+                        onChange={onCategoryChange}
                         >
+
+                        {categoryList.map((menu) => (
+                            <Option key={menu.value}>{menu.key}</Option>
+                        ))}
                     </Select>
                 </Form.Item>
 

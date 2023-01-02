@@ -1,15 +1,15 @@
-import { ADD_DOWNLOAD_CENTER_DOCUMENT, DELETE_DOWNLOAD_CENTER_DOCUMENT, EDIT_DOWNLOAD_CENTER_DOCUMENT, GET_DOWNLOADS_DEPARTMENT_URL, GET_DOWNLOADS_LIST_URL } from "../constants/urls"
+import {DELETE_DOWNLOAD_CENTER_DOCUMENT, EDIT_DOWNLOAD_CENTER_DOCUMENT, GET_DOWNLOADS_DEPARTMENT_URL, GET_NEW_EMPLOYEE_DOWNLOADS, GET_HR_POLICIES, GET_LEADERS_DOWNLOADS } from "../constants/urls"
 import httpInstance from "../utility/http-client"
 
-export const getDownloadsList = (categoryId : string, departmentId : number = 0, key : string = "", offset: string = '0', size: string = '7') => {
+export const getDownloadsList = (departmentId : number = 0, key : string = "", offset: string = '0', size: string = '7') => {
 
     if(key != "")
-        return httpInstance.get(GET_DOWNLOADS_LIST_URL + categoryId +  "/search?key=" + key + "&offset=" + offset.toString() + "&pageSize=" + size)
+        return httpInstance.get(GET_NEW_EMPLOYEE_DOWNLOADS + "/search?key=" + key + "&offset=" + offset.toString() + "&pageSize=" + size)
     
     else if (departmentId)
-        return httpInstance.get(GET_DOWNLOADS_LIST_URL + categoryId +  "?departmentId=" + departmentId + "&offset=" + offset.toString() + "&pageSize=" + size)
+        return httpInstance.get(GET_NEW_EMPLOYEE_DOWNLOADS +  "?departmentId=" + departmentId + "&offset=" + offset.toString() + "&pageSize=" + size)
     
-    return httpInstance.get(GET_DOWNLOADS_LIST_URL + categoryId + "?offset=" + offset.toString() + "&pageSize=" + size)
+    return httpInstance.get(GET_NEW_EMPLOYEE_DOWNLOADS + "?offset=" + offset.toString() + "&pageSize=" + size)
 }
 
 export const getDepartmentList = () => {
@@ -25,14 +25,31 @@ export const deleteDocument = (id : number) => {
 
 }
 
-export const addDocument = (body : any) => {
-
-    return httpInstance.post(ADD_DOWNLOAD_CENTER_DOCUMENT, body)
-
-}
-
 export const editDocument = (id : number, body : any) => {
 
     return httpInstance.put(EDIT_DOWNLOAD_CENTER_DOCUMENT + id , body)
 
+}
+
+
+export const getDocumentsList = (url : string, key : string = "", offset: string = '0', size: string = '7') => {
+    if(key != "")
+        return httpInstance.get(url + "/search?key=" + key + "&offset=" + offset.toString() + "&pageSize=" + size)
+    return httpInstance.get(url + "?offset=" + offset.toString() + "&pageSize=" + size)
+}
+
+export const getLeadersDownloads = (url : string, offset: string = '0', size: string = '7') => {
+    return httpInstance.get(url + "?offset=" + offset.toString() + "&pageSize=" + size)
+}
+
+export const deleteDownloads = (url : string, id : string) => {
+    return httpInstance.put(url + id, {})
+}
+
+export const addLeadersDownload = (body : any) => {
+    return httpInstance.post(GET_LEADERS_DOWNLOADS + "/add", body)
+}
+
+export const addDownloadDocument = (url : string, body : any) => {
+    return httpInstance.post(url + "/add", body)
 }

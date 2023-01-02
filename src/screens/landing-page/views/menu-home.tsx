@@ -125,6 +125,7 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Downloads",
             key: "downloads",
             icon: <Download />,
+            navigate: "/download-center/home",
             secondaryItems: [
                 {
                     key: "new-employee-downloads",
@@ -134,7 +135,7 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 },
                 {
                     key: "policies",
-                    title: "Policies",
+                    title: "HR Policies",
                     icon: <PolicySvg />,
                     navigate: "/download-center/policies"
                 },
@@ -146,15 +147,9 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                 },
                 {
                     key: "leaders-gallery",
-                    title: "Leaders",
+                    title: "Our Leaders",
                     icon: <LeaderSvg />,
                     navigate: "/download-center/leaders-gallery"
-                },
-                {
-                    key: "logo",
-                    title: "Logo",
-                    icon: <TemplatesSvg />,
-                    navigate: "/download-center/logo"
                 },
             ]
         },
