@@ -28,8 +28,8 @@ export const AddRole = () => {
         <>
             {isLoading ? "Loading" :
                 <div style={{
-                    margin: "auto",
-                }}>
+                    marginLeft:"2em", marginRight: "2em",marginTop: "2em"
+                }} >
                     <AddRoleCard handleShowModel={showModal} />
 
                     <RoleList />
