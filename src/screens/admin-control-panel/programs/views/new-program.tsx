@@ -20,9 +20,7 @@ type editProgramDetails = {
   sequence?: boolean,
   issueCertificate?: boolean,
   skills: any[],
-  skillIds: any[]
   roles: any[]
-  roleIds:any[]
 }
 
 export const NewProgram: React.FC = () => {
@@ -31,7 +29,7 @@ export const NewProgram: React.FC = () => {
   const [courses, setCourses] = React.useState<CourseMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
   const [thumbnailUrl, setThumbnailUrl] = React.useState('')
-  const [program, setProgram] = React.useState<editProgramDetails>({ sequence: true, issueCertificate: false, skills: [], skillIds: [], roles : [], roleIds : [] })
+  const [program, setProgram] = React.useState<editProgramDetails>({ sequence: true, issueCertificate: false, skills: [], roles : [] })
   const [skillDrop,setSkillDrop] = React.useState<boolean>(false)
   const [roleDrop,setRoleDrop] = React.useState<boolean>(false)
   const [dataSkill, setDataSkill] = React.useState<any[]>([])
@@ -160,7 +158,6 @@ export const NewProgram: React.FC = () => {
                         setProgram({
                             ...program,
                             skills: remainingSkills,
-                            skillIds: remainingSkills.length ? remainingSkills.map((skill: { id: number; }) => skill.id) : []
                         });
                     }}
                     onSelect={(e)=>{
@@ -168,7 +165,6 @@ export const NewProgram: React.FC = () => {
                         setProgram({
                             ...program,
                             skills: [{ id: addSkill[0].id, name: addSkill[0].name }].concat(...program.skills),
-                            skillIds: [addSkill[0].id].concat(...program.skillIds)
                         });
                         setSkillDrop(false)
                     }}
@@ -208,16 +204,13 @@ export const NewProgram: React.FC = () => {
                         const remainingRoles = program.roles.filter((selectedRole) => e.indexOf(selectedRole.name)>-1 );
                         setProgram({
                             ...program,
-                            roles: remainingRoles,
-                            roleIds: remainingRoles.length ? remainingRoles.map((role: { id: number; }) => role.id) : []
-                        });
+                            roles: remainingRoles});
                     }}
                     onSelect={(e)=>{
                         const addRole: any[] = dataRole.filter((d)=> d.name==e)
                         setProgram({
                             ...program,
                             roles: [{ id: addRole[0].id, name: addRole[0].name }].concat(...program.roles),
-                            roleIds: [addRole[0].id].concat(...program.roleIds)
                         });
                         setRoleDrop(false)
                     }}
