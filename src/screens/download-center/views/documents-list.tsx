@@ -4,7 +4,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { PolicyDownloadType } from "../../../models/download-center-type";
 import { getDocumentsList } from "../../../service/download-center-service";
 import httpInstance from "../../../utility/http-client";
-import { FileTextTwoTone } from "@ant-design/icons";
+import Icon, { FileTextTwoTone } from "@ant-design/icons";
+import FileSvg from '../../../img/file.svg';
+import { formatBase64 } from "../../../utility/image-utils";
 
 
 
@@ -54,6 +56,7 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
     const searchDownloads = () => {
         if(loading) { return ;}
         setLoading(false);
+        setPageNumber(1)
         getDocumentsList(props.downloadsUrl, props.searchKey)
         .then(response => {
             setDownloadsList(response.data.content)
@@ -80,7 +83,7 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
     }, [props.searchKey])
 
     return (
-        <div className="body-container" id="scrollableDiv">
+        <><div className="body-container" id="scrollableDiv">
             <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}
@@ -93,19 +96,17 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
                     itemLayout="horizontal"
                     dataSource={data}
                     renderItem={(item) => (
-                    <List.Item>
-                        <List.Item.Meta
-                            // avatar={<Avatar src={formatBase64(item.avatar)} onClick={() => downloadDocument(item.key)} style={{cursor:"pointer"}}/>}
-                            avatar={<Avatar icon={<FileTextTwoTone />} onClick={() => downloadDocument(item.key)} style={{cursor:"pointer"}}/>}
-                            title={<span onClick={() => downloadDocument(item.key)} style={{cursor:"pointer"}}>{item.title}</span>}
-                            description={item.description}
-                        />
-                    </List.Item>
-                    )}
-                />
+                        <List.Item>
+                            <List.Item.Meta
+                                // avatar={<Avatar src={formatBase64(item.avatar)} onClick={() => downloadDocument(item.key)} style={{cursor:"pointer"}}/>}
+                                avatar={<Avatar icon={<FileTextTwoTone />} onClick={() => downloadDocument(item.key)} style={{ cursor: "pointer" }} />}
+                                title={<span onClick={() => downloadDocument(item.key)} style={{ cursor: "pointer" }}>{item.title}</span>}
+                                description={item.description} />
+                        </List.Item>
+                    )} />
             </InfiniteScroll>
 
-        </div>
+        </div></>
     )
 
 }

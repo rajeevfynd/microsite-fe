@@ -23,7 +23,7 @@ export const AdminTemplates = () => {
         for (let item in TemplatesSubmenu) {
             if (isNaN(Number(item))) {
                 submenuItems.push({
-                    key : item,
+                    key : item.replace('_', ' '),
                     value : TemplatesSubmenu[item]
                 })
             }
@@ -62,7 +62,7 @@ export const AdminTemplates = () => {
                             size='large'
                             onChange={(e: { target: { value: string; }; }) => searchDownloads(e.target.value)}
                     />
-                    <AddDownloadDocument addUrl={GET_TEMPLATES} downloadType = {DownloadDocumentType.TEMPLATES} onAddSubmit = {onAddSubmit}/>
+                    <AddDownloadDocument addUrl={GET_TEMPLATES} categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES} onAddSubmit = {onAddSubmit}/>
                 </div>
 
                 <Tabs
@@ -75,11 +75,15 @@ export const AdminTemplates = () => {
                     <>
 
                         {submenuItems.map(menu => (
-                            <><Tabs.TabPane tab={menu.key.replace("_", " ")} key={menu.value}>
+                            <><Tabs.TabPane tab={menu.key} key={menu.value}>
                                 {(Number(menu.value) === 1 || Number(menu.value) === 2) && 
-                                    <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} deleteUrl = {deleteUrl}/></div>}
+                                    <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
+                                    searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
+                                    editUrl = {GET_TEMPLATES}/></div>}
                                 {(Number(menu.value) === 3 || Number(menu.value) === 4) && 
-                                <div><AdminDownloadsGallery downloadsUrl={downloadsUrl} deleteUrl = {deleteUrl}/></div>}
+                                <div><AdminDownloadsGallery downloadsUrl={downloadsUrl} deleteUrl = {deleteUrl}
+                                categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES}
+                                editUrl = {GET_TEMPLATES}/></div>}
                             </Tabs.TabPane></>
                         ))}
                     </>

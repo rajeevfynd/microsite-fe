@@ -17,7 +17,7 @@ export const HRPolicies = () => {
         for (let item in HRPoliciesSubmenu) {
             if (isNaN(Number(item))) {
                 submenuItems.push({
-                    key : item,
+                    key : item.replace("_", " "),
                     value : HRPoliciesSubmenu[item]
                 })
             }
@@ -59,12 +59,19 @@ export const HRPolicies = () => {
 
                     <>
                         {submenuItems.map(menu => (
-                            <><Tabs.TabPane tab={menu.key.replace("_", " ")} key={menu.value}>
-                                <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>
+                            <><Tabs.TabPane tab={menu.key} key={menu.value}>
+                                {keyState.length == 0 && 
+                                    <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>
+                                }
                             </Tabs.TabPane></>
                         ))}
                     </>
                 </Tabs>
+
+                {keyState.length > 0 && 
+                    <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>
+                }
+
             </>
         </div>
     )

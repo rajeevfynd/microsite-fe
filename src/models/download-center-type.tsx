@@ -40,6 +40,15 @@ export type DepartmentType = {
 }
 
 
+export type EditPolicyDocumentType = {
+    key : number,
+    documentId : number,
+    thumbnail : string,
+    title: string,
+    description : string,
+    category : number
+}
+
 
 export type AddDocumentPropsType = {
     departmentOptionsList : SelectProps['options'];
@@ -48,10 +57,24 @@ export type AddDocumentPropsType = {
 
 
 export type EditDocumentsPropsType = {
+    downloadUrl : string;
     departmentOptionsList : SelectProps['options'];
     departmentList : DepartmentType[];
     onFinish : any;
     documentDetails : DownloadDocumentType
+}
+
+export type EditLeadersPropsType = {
+    downloadUrl : string;
+    onFinish : any;
+    documentDetails : LeadersDownloadType
+}
+
+export type EditPolicyPropsType = {
+    categoryList : SubmenuTabsType[]
+    downloadUrl : string;
+    onFinish : any;
+    documentDetails : EditPolicyDocumentType
 }
 
 export type SubmenuTabsType = {

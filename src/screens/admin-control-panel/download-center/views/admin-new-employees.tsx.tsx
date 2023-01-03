@@ -10,6 +10,7 @@ import { getDownloadsList } from "../../../../service/download-center-service";
 import httpInstance from "../../../../utility/http-client";
 import { AddDepartment } from "./add-department";
 import { AddNewEmployeeDownloads } from "./add-new-employee-downloads";
+import { EditNewEmployeeDownload } from "./edit-new-employee-downloads";
 import { ShowDeleteConfirm } from "./showDeleteConfirm";
 
 const { Option } = Select;
@@ -119,6 +120,7 @@ export const AdminNewEmployeeDownloads = () => {
           key: 'actions',
           render: (_, record) => (
             <Space size="middle">
+                <EditNewEmployeeDownload downloadUrl = {GET_NEW_EMPLOYEE_DOWNLOADS} departmentOptionsList={departmentOptionsList} departmentList={departmentList} onFinish={handleSubmit} documentDetails={record} />
                 <ShowDeleteConfirm deleteUrl={deleteUrl} id={record.id.toString()} onDeleteConfirm = {handleSubmit}></ShowDeleteConfirm>
             </Space>
           ),

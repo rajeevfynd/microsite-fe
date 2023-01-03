@@ -8,6 +8,7 @@ import { getLeadersDownloads } from "../../../../service/download-center-service
 import httpInstance from "../../../../utility/http-client";
 import { formatBase64 } from "../../../../utility/image-utils";
 import { AddLeadersDownload } from "./add-leaders-download";
+import { EditLeadersDownload } from "./edit-leaders-downloads";
 import { ShowDeleteConfirm } from "./showDeleteConfirm";
 
 
@@ -60,15 +61,6 @@ export const AdminLeadersDownloads = () => {
             setLoading(false);
         });
     }
-    
-
-    const onDeleteConfirm = () => {
-        handleSubmit()
-    }
-
-    const onAddSubmit = () => {
-        handleSubmit()
-    }
 
 
     React.useEffect(() => {
@@ -106,7 +98,7 @@ export const AdminLeadersDownloads = () => {
             }
 
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", paddingBottom: "60px"}}>
-                <AddLeadersDownload onAddSubmit = {onAddSubmit}/>
+                <AddLeadersDownload onAddSubmit = {handleSubmit}/>
             </div>
 
             <InfiniteScroll
@@ -141,8 +133,8 @@ export const AdminLeadersDownloads = () => {
                         <Col span={2}>
                             <div>
                                 <Space size={20}>
-                                    {/* <EditDownloadDocument /> */}
-                                    <ShowDeleteConfirm deleteUrl={deleteUrl} id={leader.id.toString()} onDeleteConfirm = {onDeleteConfirm}></ShowDeleteConfirm>
+                                    <EditLeadersDownload downloadUrl={GET_LEADERS_DOWNLOADS} onFinish={handleSubmit} documentDetails={leader} />
+                                    <ShowDeleteConfirm deleteUrl={deleteUrl} id={leader.id.toString()} onDeleteConfirm = {handleSubmit}/>
                                 </Space>
                             </div>
                         </Col>

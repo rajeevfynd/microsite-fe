@@ -2,14 +2,20 @@ import { List, Avatar, message, Divider, Skeleton, Button, Modal } from "antd"
 import * as React from "react"
 import InfiniteScroll from "react-infinite-scroll-component";
 import { EditFilled, FileTextTwoTone } from "@ant-design/icons";
-import { PolicyDownloadType } from "../../../../models/download-center-type";
+import { PolicyDownloadType, SubmenuTabsType } from "../../../../models/download-center-type";
 import { getDocumentsList } from "../../../../service/download-center-service";
 import httpInstance from "../../../../utility/http-client";
 import { ShowDeleteConfirm } from "./showDeleteConfirm";
+import { EditPolicyTemplates } from "./edit-policy-templates";
+import { HRPoliciesSubmenu } from "../../../../models/enums/hr-policies-submenu";
+import { DownloadDocumentType } from "../../../../models/enums/download-document-type";
+import { TemplatesSubmenu } from "../../../../models/enums/templates-submenu";
+import { formatBase64 } from "../../../../utility/image-utils";
 
 const { confirm } = Modal;
 
-export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : string, deleteUrl : string}) => {
+export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : string, deleteUrl : string, 
+    categoryList : SubmenuTabsType[], downloadType: DownloadDocumentType, editUrl : string}) => {
     const [data, setData] = React.useState<any[]>([])
     const [downloadsList, setDownloadsList] = React.useState<PolicyDownloadType[]>([])
     const [loading, setLoading] = React.useState(false);
@@ -27,9 +33,11 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
                 tempList.push({
                     key : doc.id,
                     documentId : doc.document.id,
-                    avatar : doc.document.thumbnail,
+                    thumbnail : doc.document.thumbnail,
                     title: doc.name,
                     description : doc.description,
+                    category : props.downloadType == DownloadDocumentType.HR_POLICIES ? HRPoliciesSubmenu[doc.category as keyof typeof HRPoliciesSubmenu]
+                                : TemplatesSubmenu[doc.category as keyof typeof TemplatesSubmenu]
                 })
             ))
         setData(tempList)
@@ -56,6 +64,7 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
     const searchDownloads = () => {
         if(loading) { return ;}
         setLoading(false);
+        setPageNumber(1)
         getDocumentsList(props.downloadsUrl, props.searchKey)
         .then(response => {
             setDownloadsList(response.data.content)
@@ -114,11 +123,12 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
                     dataSource={data}
                     renderItem={(item) => (
                     <List.Item
-                        actions={[<Button type="text"><EditFilled /></Button>, 
+                        actions={[
+                        <EditPolicyTemplates categoryList={props.categoryList} downloadUrl={props.editUrl} onFinish={handleSubmit} documentDetails={item} />,
                         <ShowDeleteConfirm deleteUrl={props.deleteUrl} id={item.key} onDeleteConfirm = {handleSubmit}></ShowDeleteConfirm>]}
                     >
                         <List.Item.Meta
-                            // avatar={<Avatar src={formatBase64(item.avatar)} onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}/>}
+                            // avatar={<Avatar src={formatBase64(item.thumbnail)} onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}/>}
                             avatar={<Avatar icon={<FileTextTwoTone />} onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}/>}
                             title={<span onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}>{item.title}</span>}
                             description={item.description}

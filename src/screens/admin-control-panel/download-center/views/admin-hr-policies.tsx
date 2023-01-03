@@ -20,7 +20,7 @@ export const AdminHRPolicies = () => {
         for (let item in HRPoliciesSubmenu) {
             if (isNaN(Number(item))) {
                 submenuItems.push({
-                    key : item,
+                    key : item.replace('_', ' '),
                     value : HRPoliciesSubmenu[item]
                 })
             }
@@ -57,7 +57,7 @@ export const AdminHRPolicies = () => {
                             onChange={searchDownloads}
                     />
 
-                    <AddDownloadDocument addUrl={GET_HR_POLICIES} downloadType={DownloadDocumentType.HR_POLICIES} onAddSubmit = {onAddSubmit}/>
+                    <AddDownloadDocument addUrl={GET_HR_POLICIES} categoryList = {submenuItems} downloadType={DownloadDocumentType.HR_POLICIES} onAddSubmit = {onAddSubmit}/>
                 </div>
 
                 <Tabs
@@ -69,8 +69,9 @@ export const AdminHRPolicies = () => {
 
                     <>
                         {submenuItems.map(menu => (
-                            <><Tabs.TabPane tab={menu.key.replace("_", " ")} key={menu.value}>
-                                <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} deleteUrl = {deleteUrl}/></div>
+                            <><Tabs.TabPane tab={menu.key} key={menu.value}>
+                                <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
+                                deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
                             </Tabs.TabPane></>
                         ))}
                     </>

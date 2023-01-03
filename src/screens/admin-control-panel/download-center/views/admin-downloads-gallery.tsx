@@ -2,13 +2,18 @@ import { Card, Divider, List, message, Skeleton, Space } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { PolicyDownloadType } from '../../../../models/download-center-type';
+import { PolicyDownloadType, SubmenuTabsType } from '../../../../models/download-center-type';
 import { getDocumentsList } from '../../../../service/download-center-service';
 import httpInstance from '../../../../utility/http-client';
 import { formatBase64 } from '../../../../utility/image-utils';
 import { ShowDeleteConfirm } from './showDeleteConfirm';
+import { DownloadDocumentType } from '../../../../models/enums/download-document-type';
+import { EditPolicyTemplates } from './edit-policy-templates';
+import { HRPoliciesSubmenu } from '../../../../models/enums/hr-policies-submenu';
+import { TemplatesSubmenu } from '../../../../models/enums/templates-submenu';
 
-export const AdminDownloadsGallery = (props:{downloadsUrl : string, deleteUrl : string}) => {
+export const AdminDownloadsGallery = (props:{downloadsUrl : string, deleteUrl : string, categoryList : SubmenuTabsType[], 
+    downloadType: DownloadDocumentType, editUrl : string}) => {
     const { Meta } = Card;
 
     const [data, setData] = React.useState<any[]>([])
@@ -32,12 +37,14 @@ export const AdminDownloadsGallery = (props:{downloadsUrl : string, deleteUrl : 
                     thumbnail : doc.document.thumbnail,
                     title: doc.name,
                     description : doc.description,
+                    category : props.downloadType == DownloadDocumentType.HR_POLICIES ? HRPoliciesSubmenu[doc.category as keyof typeof HRPoliciesSubmenu]
+                                : TemplatesSubmenu[doc.category as keyof typeof TemplatesSubmenu]
                 })
             ))
         setData(tempList)
     }
 
-    const onDeleteConfirm = () => {
+    const handleSubmit = () => {
         console.log("onDeleteConfirm")
         setPageNumber(1)
         getDocumentsList(props.downloadsUrl, "")
@@ -112,10 +119,11 @@ export const AdminDownloadsGallery = (props:{downloadsUrl : string, deleteUrl : 
                                     }
                                     actions={[
                                         <>
-                                            <Space size={20}>
+                                            <Space size={'middle'}>
 
                                                 <DownloadOutlined onClick={() => handleImgClick(item.documentId)}></DownloadOutlined>
-                                                <ShowDeleteConfirm deleteUrl={props.deleteUrl} id={item.key} onDeleteConfirm = {onDeleteConfirm}></ShowDeleteConfirm>
+                                                <EditPolicyTemplates categoryList={props.categoryList} downloadUrl={props.editUrl} onFinish={handleSubmit} documentDetails={item} />
+                                                <ShowDeleteConfirm deleteUrl={props.deleteUrl} id={item.key} onDeleteConfirm = {handleSubmit}></ShowDeleteConfirm>
                                             </Space>
                                         </>
                                     ]}

@@ -25,16 +25,11 @@ export const deleteDocument = (id : number) => {
 
 }
 
-export const editDocument = (id : number, body : any) => {
-
-    return httpInstance.put(EDIT_DOWNLOAD_CENTER_DOCUMENT + id , body)
-
-}
 
 
 export const getDocumentsList = (url : string, key : string = "", offset: string = '0', size: string = '7') => {
     if(key != "")
-        return httpInstance.get(url + "/search?key=" + key + "&offset=" + offset.toString() + "&pageSize=" + size)
+        return httpInstance.get(url.substring(0, url.lastIndexOf("/")) + "/search?key=" + key + "&offset=" + offset.toString() + "&pageSize=" + size)
     return httpInstance.get(url + "?offset=" + offset.toString() + "&pageSize=" + size)
 }
 
@@ -52,4 +47,8 @@ export const addLeadersDownload = (body : any) => {
 
 export const addDownloadDocument = (url : string, body : any) => {
     return httpInstance.post(url + "/add", body)
+}
+
+export const editDownloadDocument = (url : string, id : number, body : any) => {
+    return httpInstance.put(url + "/edit/" + id, body)
 }

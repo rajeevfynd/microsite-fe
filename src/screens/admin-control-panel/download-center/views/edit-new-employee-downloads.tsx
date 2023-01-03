@@ -1,13 +1,13 @@
-import { EditTwoTone} from "@ant-design/icons/lib/icons";
+import { EditFilled, EditTwoTone} from "@ant-design/icons/lib/icons";
 import { Button, Col, Divider, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
 import { EditDocumentsPropsType } from "../../../../models/download-center-type";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
-import { editDocument } from "../../../../service/download-center-service";
+import { editDownloadDocument } from "../../../../service/download-center-service";
 
 
-export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
+export const EditNewEmployeeDownload = (props: EditDocumentsPropsType) => {
     const [form] = Form.useForm();
     const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -23,8 +23,8 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
         setIsModalOpen(true);
     }
 
-    const editDownloadDocument = (values : any) => {
-        editDocument(props.documentDetails.id, values)
+    const editDocument = (values : any) => {
+        editDownloadDocument(props.downloadUrl, props.documentDetails.id, values)
             .then(response => {
                 setIsModalOpen(false)
                 props.onFinish()
@@ -52,7 +52,7 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
     return (
         <>
 
-        <EditTwoTone onClick={() => {handleAddQnaClick()}}></EditTwoTone>
+        <EditFilled onClick={() => {handleAddQnaClick()}}></EditFilled>
         <Modal
             destroyOnClose={true}
             open={isModalOpen}
@@ -67,7 +67,7 @@ export const EditDownloadDocument = (props: EditDocumentsPropsType) => {
                 layout="vertical"
                 name="form_in_modal"
                 initialValues={{ modifier: 'public'}}
-                onFinish={editDownloadDocument}
+                onFinish={editDocument}
                 fields={[
 
                     {

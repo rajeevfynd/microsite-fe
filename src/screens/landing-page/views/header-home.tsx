@@ -8,6 +8,7 @@ import { MenuStructure } from './menu-home';
 import { useNavigate } from 'react-router-dom';
 import httpInstance from '../../../utility/http-client';
 import { GET_LOGOUT_REDIRECT_URL } from '../../../constants/urls';
+import DownloadSvg from '../../../img/download.svg';
 
 const HeaderHome = () => {
 
@@ -49,7 +50,7 @@ const HeaderHome = () => {
         .catch((error) => {
           message.error(error);
       });
-      }}>Logout</span>,
+      }} >Logout </span>,
     },
   ];
 

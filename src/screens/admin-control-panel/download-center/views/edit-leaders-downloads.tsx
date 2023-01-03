@@ -1,18 +1,15 @@
-import { Button, Col, Form, Input, message, Modal, Row, Select, Space } from "antd";
+import { EditFilled, EditTwoTone} from "@ant-design/icons/lib/icons";
+import { Button, Col, Divider, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
-import { SubmenuTabsType } from "../../../../models/download-center-type";
-import { DownloadDocumentType } from "../../../../models/enums/download-document-type";
+import { EditDocumentsPropsType, EditLeadersPropsType } from "../../../../models/download-center-type";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
-import { addDownloadDocument } from "../../../../service/download-center-service";
+import { editDownloadDocument } from "../../../../service/download-center-service";
 
-const { Option } = Select;
 
-export const AddDownloadDocument = (props : {addUrl : string, downloadType : DownloadDocumentType, onAddSubmit : any, categoryList : SubmenuTabsType[]}) => {
+export const EditLeadersDownload = (props: EditLeadersPropsType) => {
     const [form] = Form.useForm();
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [categoryList, setCategoryList] = React.useState<SubmenuTabsType[]>([])
-    const [categoryId, setCategoryId] = React.useState<string>('')
 
     const onReset = () => {
         form.resetFields();
@@ -26,21 +23,15 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
         setIsModalOpen(true);
     }
 
-    const addDocument = (values : any) => {
-        
-        addDownloadDocument(props.addUrl, values)
+    const editDocument = (values : any) => {
+        editDownloadDocument(props.downloadUrl, props.documentDetails.id, values)
             .then(response => {
-                console.log("added")
                 setIsModalOpen(false)
-                props.onAddSubmit(categoryId)
+                props.onFinish()
             })
             .catch((error) => {
                 message.error(error);
             });
-    }
-
-    const onCategoryChange = (value: string) => {
-        setCategoryId(value)
     }
 
     const prop: UploadProps = {
@@ -50,36 +41,47 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
         onDone(info: UploadOnDoneParams){
             form.setFieldValue("documentId" , info.documentId)
         },
-        file : ""
+        file : props.documentDetails.document.thumbnail
     };
 
 
     React.useEffect(() => {
-        setCategoryList(props.categoryList)
+        form.setFieldValue("documentId", props.documentDetails.document.id)
     }, [])
-
 
     return (
         <>
-        <Button type="primary" onClick={() => {handleAddQnaClick()}}>Add Document</Button>
 
+        <EditFilled onClick={() => {handleAddQnaClick()}}></EditFilled>
         <Modal
             destroyOnClose={true}
             open={isModalOpen}
-            title={"Add New Document"}
+            title={"Edit Document"}
             footer={null}
             onCancel={handleCancel}
-        >
+            
+        >   
+            
             <Form
                 form={form}
                 layout="vertical"
                 name="form_in_modal"
                 initialValues={{ modifier: 'public'}}
-                onFinish={addDocument}
+                onFinish={editDocument}
                 fields={[
+
                     {
-                        name: ['department'],
-                        value: [],
+                        name: ['name'],
+                        value: props.documentDetails.name,
+                    },
+
+                    {
+                        name: ['description'],
+                        value: props.documentDetails.description,
+                    },
+                    {
+                        name: ['designation'],
+                        value: props.documentDetails.designation,
                     },
                 ]}
             >   
@@ -87,9 +89,17 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
                 <Form.Item
                     name="name"
                     label="Name"
-                    rules={[{ required: true, message: 'Enter the Name' }]}
+                    rules={[{ required: true, message: 'Enter the document name' }]}
                 >   
                     <Input/>
+                </Form.Item>
+
+                <Form.Item
+                    name="designation"
+                    label="Designation"
+                    rules={[{ required: true, message: 'Enter the Designation' }]}
+                >
+                    <Input.TextArea/>
                 </Form.Item>
 
                 <Form.Item
@@ -100,23 +110,6 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
                     <Input.TextArea/>
                 </Form.Item>
 
-                <Form.Item
-                    name="categoryId"
-                    label="Category"
-                    rules={[{ required: true, message: 'Please select the Category!' }]}
-                >
-                    <Select
-                        style={{ width: '100%' }}
-                        placeholder="Please select the Category"
-                        onChange={onCategoryChange}
-                        >
-
-                        {categoryList.map((menu) => (
-                            <Option key={menu.value}>{menu.key}</Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-
                 <Form.Item 
                     name="documentId"
                     label="Document"
@@ -125,6 +118,7 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
                     <Upload {...prop}></Upload>
                 </Form.Item>
 
+                <Divider />
 
                 <Form.Item >
                     <Row>
