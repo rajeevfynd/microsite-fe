@@ -30,29 +30,10 @@
     box-sizing: border-box;
 }
 
-.marquee {
-    /* top: 6em; */
-    text-align: left;
-    position: relative;
-    box-sizing: border-box;
-    animation: marquee 5s linear infinite;
-}
-
 .marquee:hover {
     -moz-animation-play-state: paused;
     -webkit-animation-play-state: paused;
     animation-play-state: paused;
-}
-
-/* Make it move! */
-@keyframes marquee {
-    0% {
-        top: 8em
-    }
-
-    100% {
-        top: -11em
-    }
 }
 
 /* Make it look pretty */

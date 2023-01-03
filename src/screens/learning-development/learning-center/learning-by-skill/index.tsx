@@ -10,11 +10,20 @@ import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
 import { Footer } from 'antd/lib/layout/layout';
 
+type skillDescListType = {
+  id?: number,
+  name?: string,
+  description?: string
+}
+
 export function LearningBySkill() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isMenuItemChanged, setIsMenuItemChanged] = React.useState(false);
   const [buttonStatus, setButtonStatus] = React.useState(true);
   const [skillList, setSkillList] = React.useState([]);
+  const [skillDescList, setSkillDescList] = React.useState<skillDescListType[]>([]);
+  const [currentSkillName,setCurrentSkillName] = React.useState("")
+  const [currentSkillDesc, setCurrentSkillDesc] = React.useState("")
   const [courseList, setCourseList] = React.useState([]);
   const [selectedMenuItem, setSelectedMenuItem] = React.useState([]);
   const [pagination, setPagination] = React.useState({
@@ -38,6 +47,7 @@ export function LearningBySkill() {
         .then((response) => {
           if (!!getFormattedDataForMenuItems(response.data).length) {
             setSkillList(getFormattedDataForMenuItems(response.data));
+            setSkillDescList(response.data)
             setSelectedMenuItem([response.data[0].id]);
           }
           setIsLoading(false);
@@ -90,13 +100,17 @@ export function LearningBySkill() {
 
     setCourseList([]);
     setPagination({ ...pagination, offset: 0 });
+    let name = skillDescList.find(e=>e.id == selectedMenuItem[0])?.name
+    let desc = skillDescList.find(e=>e.id == selectedMenuItem[0])?.description
+    setCurrentSkillName(name)
+    setCurrentSkillDesc(desc)
     setIsMenuItemChanged(!isMenuItemChanged);
   }, [selectedMenuItem]);
 
 
   const addSkill = () => {
     return <Button block style={{ background: "#001529", color: "#f5f5f5" }}>
-      Skills
+      Skills Category
     </Button>
   }
 
@@ -135,6 +149,13 @@ export function LearningBySkill() {
             textAlign: 'center',
             background: '#fff'
           }}>
+
+            <div>
+              <br></br>
+              <h4 style={{fontWeight:"bold", textAlign:"left"}}>{currentSkillName}</h4>
+              <p style={{textAlign:"left"}}>{currentSkillDesc}</p>
+              <br></br>
+            </div>
 
             {courseList.length ? <CourseList courseList={courseList} /> : null}
 

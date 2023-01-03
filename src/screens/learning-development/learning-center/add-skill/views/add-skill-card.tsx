@@ -25,7 +25,7 @@ export const AddSkillCard = (props: any) => {
 
     return (
         < List
-            grid={{ gutter: 16, column: 2 }}
+            grid={{ gutter: 16, column: 3 }}
             dataSource={helperData}
             renderItem={item => (
 
@@ -33,7 +33,7 @@ export const AddSkillCard = (props: any) => {
                     <Card bordered={true}
                         hoverable={true}
                         onClick={() => handleOnClick()}
-                        style={{ height: 150 }}
+                        style={{ height: 110 }}
 
                     >
                         <Row justify='center' >
@@ -43,7 +43,7 @@ export const AddSkillCard = (props: any) => {
                         </Row>
                         <Row justify='center'>
                             <Col>
-                                <PlusCircleOutlined style={{ fontSize: 50 }} />
+                                <PlusCircleOutlined style={{ fontSize: 30 }} />
                             </Col>
                         </Row>
                     </Card>
