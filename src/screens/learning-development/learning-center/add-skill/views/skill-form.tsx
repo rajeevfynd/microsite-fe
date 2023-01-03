@@ -27,8 +27,8 @@ export const SkillForm = (props: any) => {
 
 
 
-    const onFinish = (values: { skillName: string }) => {
-        const { skillName } = values;
+    const onFinish = (values: { skillName: string, description: string }) => {
+        const { skillName, description } = values;
 
         const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
 
@@ -36,8 +36,7 @@ export const SkillForm = (props: any) => {
             setSkill({
                 name: skillName,
                 type: Tagtype.skill,
-                isActive: true,
-                addedBy: 1111
+                description: description
             });
             setButtonStatus(true);
             handleModal(false);
@@ -91,6 +90,12 @@ export const SkillForm = (props: any) => {
                     rules={[{ required: true, message: 'Please enter new skill!' }]}
                 >
                     <Input placeholder="Skill Name" value={skillName} onChange={(event) => handleSkillChange(event)} />
+                </Form.Item>
+
+                <Form.Item
+                    name= "description"
+                >
+                    <Input.TextArea placeholder='Skill Description' />
                 </Form.Item>
 
                 <Form.Item>

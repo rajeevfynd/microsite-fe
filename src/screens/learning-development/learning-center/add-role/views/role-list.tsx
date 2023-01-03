@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
-import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
 import { CourseList } from './course-list';
 import httpInstance from '../../../../../utility/http-client';
 import { CourseSearch } from './course-search';
+import { editTagType } from '../../../../../models/tag-type';
+import { RoleEditForm } from './role-edit-form';
 const { confirm } = Modal;
 
 
@@ -14,6 +16,9 @@ export const RoleList = (props: any) => {
     const [roleList, setRoleList] = React.useState([]);
     const [roleId, setRoleId] = React.useState(null);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [editRole, setEditRole] = React.useState<editTagType>();
+    
     const [courseTagMapping, setCourseTagMapping] = React.useState({
         courseIds: [],
         tagIds: [],
@@ -23,6 +28,19 @@ export const RoleList = (props: any) => {
     const [mappingStatus, setMappingStatus] = React.useState(false);
 
 
+    const showEditModal = (id:number, name:string, description:string) => {
+        const role:editTagType = {
+            tagId:id,
+            tagName:name,
+            tagDescription:description
+        }
+        setEditRole(role)
+        console.log("test")
+        setIsEditModalOpen(true);
+    };
+    const closeEditModel = () => {
+        setIsEditModalOpen(false);
+    };
 
 
     const showModal = () => {
@@ -72,7 +90,7 @@ export const RoleList = (props: any) => {
                 });
         })();
 
-    }, [roleId, mappingStatus])
+    }, [roleId, mappingStatus, isEditModalOpen])
 
 
     React.useEffect(() => {
@@ -138,7 +156,7 @@ export const RoleList = (props: any) => {
             {isLoading ? "Loading" :
                 <> {!!roleList.length ?
                     <List
-                        grid={{ gutter: 16, column: 2 }}
+                        grid={{ gutter: 16, column: 3 }}
                         dataSource={roleList}
                         renderItem={item => (
 
@@ -150,9 +168,17 @@ export const RoleList = (props: any) => {
                                 >
                                     <div><Row style={{ justifyContent: "space-between" }}>
                                         <Col flex={1} ><h5>{item.name}</h5></Col>
+                                        <Col style={{ alignItems: "end" }} >
+                                            <EditOutlined style={{ fontSize: 20 }} onClick={()=>{showEditModal(item.id, item.name, item.description)}}/>
+                                        </Col>
                                         <Col style={{ alignItems: "end" }}>
                                             <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.id, item.name, Tagtype.role)} />
                                         </Col>
+                                    </Row>
+                                    <Row >
+                                        <Col flex={1}> 
+                                            <p>{item.description}</p> 
+                                        </Col> 
                                     </Row>
                                     </div>
                                     <Divider />
@@ -182,6 +208,10 @@ export const RoleList = (props: any) => {
                     <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
                         <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
                         <Divider />
+                    </Modal>
+
+                    <Modal title="Update Skill" open={isEditModalOpen} footer={null} onCancel={closeEditModel} >
+                        <RoleEditForm props={{role:editRole, handleSubmit:closeEditModel}}/>
                     </Modal>
                 </>
             }

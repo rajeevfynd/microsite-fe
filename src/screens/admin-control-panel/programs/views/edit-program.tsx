@@ -79,7 +79,7 @@ export const EditProgram = () => {
       resp.then(resp => {
       if (resp.data) {
         message.success('Program updated successfully');
-        navigate("/admin/programs");
+        navigate("/admin/admin-lnds/programs");
       }
     })
   }

@@ -1,3 +1,6 @@
+@import '~antd/dist/antd.css';
+@import '~antd/dist/antd.dark.css';
+
 .footer-content {
     width: 100%;
     height: min-content;
@@ -10,6 +13,23 @@
     text-align: center;
 }
 
+.dark {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.light {
+    background-color: #ffffff;
+}
+
 .title {
     text-align: left;
 }
+
+/* #root {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+html {
+    background-color: rgba(0, 0, 0, 0);
+}
+*/
