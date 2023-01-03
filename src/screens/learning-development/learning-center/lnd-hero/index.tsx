@@ -1,13 +1,14 @@
 import * as React from 'react'
-import SearchCourses from './views/search-courses'
+import SearchPrograms from './views/search-courses'
 import ScrollablePrograms from './views/program-list'
 import HeroCarousel from './views/hero-carousel'
 
 export const LndHero = () => {
+  const [showBody, setShowBody] = React.useState(true)
   return (
     <>
       <HeroCarousel></HeroCarousel>
-      <SearchCourses />
+      <SearchPrograms />
       <div className='body-container'>
         <ScrollablePrograms {...{ "type": "current", "title":"Enrolled Programs" }} />
         <br></br>
