@@ -22,7 +22,7 @@ export const HomePage = (props: HomePageProps) => {
         <>
             <Row gutter={ROW_GUTTER} style={{padding: "0% 5%"}}>
                 <Col span={6} className="gutter-row">
-                    <Affix offsetTop={120}>
+                    <Affix offsetTop={20}>
                         <Events />
                         <LearningChamps />
                     </Affix>

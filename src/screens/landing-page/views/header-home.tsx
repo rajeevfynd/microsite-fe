@@ -16,6 +16,7 @@ const HeaderHome = () => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [domainId, setDomainId] = React.useState('');
+  const [role, setRole] = React.useState('');
   const [alternateProfilePic, setAlternateProfileUPic] = React.useState('');
   const navigate = useNavigate();
 
@@ -24,9 +25,10 @@ const HeaderHome = () => {
       setFirstName(user.firstName)
       setLastName(user.lastName)
       setDomainId(user.domainId)
+      setRole(user.role)
       setAlternateProfileUPic(user.alternateProfilePicUrl)
     }
-  })
+  }, [])
 
   const items: MenuProps['items'] = [
     {

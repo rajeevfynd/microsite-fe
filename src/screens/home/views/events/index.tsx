@@ -83,9 +83,9 @@ export const Events = () => {
                         learningEvent == undefined && surveyEvent == undefined &&
                         <div
                             className='event-carousel'>
-                            <h6 style={{height:'40px'}}>
+                            <h4 style={{height:'40px'}}>
                                 You are all caught up!
-                            </h6>
+                            </h4>
                             <div style={{margin:'10px'}}>
                                 <CheckCircleOutlined style={{fontSize:'75px', color:'green'}}/>
                              </div>
