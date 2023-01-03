@@ -29,14 +29,6 @@
     box-sizing: border-box;
 }
 
-.marquee {
-    /* top: 6em; */
-    text-align: left;
-    position: relative;
-    box-sizing: border-box;
-    animation: marquee 5s linear infinite;
-}
-
 .marquee:hover {
     -moz-animation-play-state: paused;
     -webkit-animation-play-state: paused;

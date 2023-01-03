@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { List, Button, Modal } from 'antd';
+import { List, Button, Modal, Card, Image } from 'antd';
 import { CourseCard } from '../../../../../components/cards/content-configuration-card';
 import { CourseDetails } from '../../../../../components/course-detail/course-details';
+import Meta from 'antd/lib/card/Meta';
+import { formatBase64 } from '../../../../../utility/image-utils';
+import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
 
 
 export function CourseList(props: { courseList: any }) {
@@ -34,23 +37,30 @@ export function CourseList(props: { courseList: any }) {
                 grid={{ gutter: 16 }}
                 dataSource={courseList}
                 renderItem={({ course }) => (<List.Item key={course.id}>
+                    <Card
+                        style={{ width: 255 }}
+                        hoverable={true}
+                        cover={
+                            < Image style={{
+                                width: 255,
+                                height: 154
+                            }}
+                                alt="image"
+                                src={formatBase64(course.thumbnail)}
+                                fallback={DEFAULT_LND_THUMBNAIL}
+                                preview={false}
+                            />
+                        }
+                        actions={[<Button onClick={()  => handleCourseDetailsClick(course) } type='link' >Go to course</Button>]}
+                        >
 
-                    <CourseCard
-                        key={course.id}
-                        cardStyle={{ width: 255 }}
-                        isHoverable={true}
-                        imageStyle={{
-                            width: 255,
-                            height: 154
-                        }}
-                        imageSource={course.thumbnail}
-                        metaStyle={{ justifyContent: "center", whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-                        title={course.title}
-                        description={course.description}
-                    />
+                        <Meta
+                            style={{ justifyContent: "center", whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                            title={course.title}
+                            description={course.description}
+                        />
 
-
-                    <Button type="primary" block onClick={() => handleCourseDetailsClick(course)}> View Course Details </Button>
+                    </Card >
 
                 </List.Item>
                 )
