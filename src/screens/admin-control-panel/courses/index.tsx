@@ -102,7 +102,7 @@ export const AdminCoursePage = () => {
                                                 />
                                             }
                                             actions={[
-                                                <Button onClick={() => { item.id && navigate(item.id.toString()) }} type='link' > Edit <PencilSquare style={{ margin: '10%' }} /> </Button>
+                                                <Button onClick={() => { item.id && navigate(item.id.toString()) }} type='link' > <PencilSquare style={{ margin: '10%' }} /> </Button>
                                             ]}
                                         >
                                             <Meta

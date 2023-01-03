@@ -12,7 +12,7 @@ export function CourseDetails(props: { course: any }) {
 
     return (
         <>
-            <Card style={{ backgroundColor: "#e6f7ff" }}>
+            <Card >
                 <Row justify='space-between'>
                     <Col>
                         <Row>
@@ -59,17 +59,17 @@ export function CourseDetails(props: { course: any }) {
             </Card>
             <Divider />
             <Row justify="space-between">
-                <Card style={{ textAlign: "center", width: 300, backgroundColor: "#e6f7ff" }} >
+                <Card style={{ textAlign: "center", width: 300 }} >
                     <h5>Minimum Course Coin</h5>
                     <h5><i> {course.minCourseCoin}</i></h5>
                 </Card>
 
-                <Card style={{ textAlign: "center", width: 300, backgroundColor: "#e6f7ff" }}>
+                <Card style={{ textAlign: "center", width: 300 }}>
                     <h5>Course Coin</h5>
                     <h5><i>{course.courseCoin}</i></h5>
                 </Card>
 
-                <Card style={{ textAlign: "center", width: 300, backgroundColor: "#e6f7ff" }}>
+                <Card style={{ textAlign: "center", width: 300 }}>
                     <h5>Career Coin</h5>
                     <h5><i>{course.careerCoin}</i></h5>
                 </Card>

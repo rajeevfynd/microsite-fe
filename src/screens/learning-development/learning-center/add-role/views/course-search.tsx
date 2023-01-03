@@ -8,29 +8,25 @@ const validateStatus = {
     success: 'success'
 }
 
-export const CourseSearch = (props: any) => {
-    const { handleCourseTagMapping, courseTagMapping } = props;
+export const ProgramSearch = (props: any) => {
+    const { handleProgramTagMapping, courseTagMapping } = props;
 
 
     const [buttonStatus, setButtonStatus] = React.useState(true);
-    const [courseSearch, setCourseSearch] = React.useState({
+    const [courseSearch, setProgramSearch] = React.useState({
         keyword: "",
         hasFeedback: false,
         validateStatus: validateStatus.validating,
         options: []
     });
-    const [selectedCourses, setSelectedCourses] = React.useState([]);
-
-
-
-
+    const [selectedPrograms, setSelectedPrograms] = React.useState([]);
 
     React.useEffect(() => {
         // search Api-> get courses by name 
         if (!courseSearch.keyword) return;
 
         if (!!courseSearch.options.length) {
-            setCourseSearch({
+            setProgramSearch({
                 keyword: "",
                 hasFeedback: true,
                 validateStatus: validateStatus.success,
@@ -43,14 +39,14 @@ export const CourseSearch = (props: any) => {
 
         (() => {
 
-            httpInstance.get(`/microsite/course/courses-by-title?title=${courseSearch.keyword}`)
+            httpInstance.get(`/microsite/lnd/programs/programs-by-title?title=${courseSearch.keyword}`)
                 .then((response) => {
 
                     const result = response.data || [];
 
                     if (!result.length) return;
 
-                    setCourseSearch({ ...courseSearch, options: response.data.length ? searchResult(result) : [] });
+                    setProgramSearch({ ...courseSearch, options: response.data.length ? searchResult(result) : [] });
 
                 })
                 .catch((error) => {
@@ -73,36 +69,36 @@ export const CourseSearch = (props: any) => {
     }
 
     const handlePlusIconClick = (course: { id: number; title: string }) => {
-        const newCourse = { id: course.id, title: course.title }
+        const newProgram = { id: course.id, title: course.title }
 
-        if (selectedCourses.length) {
-            const alreadyExists = selectedCourses.find(selectedCourse => selectedCourse.id === newCourse.id);
+        if (selectedPrograms.length) {
+            const alreadyExists = selectedPrograms.find(selectedProgram => selectedProgram.id === newProgram.id);
 
             if (alreadyExists) return;
         }
 
-        setSelectedCourses((selectedCourses: any) => [...selectedCourses, newCourse]);
+        setSelectedPrograms((selectedPrograms: any) => [...selectedPrograms, newProgram]);
 
     }
 
     const handleMinusIconClick = (course: { id: number }) => {
 
         if (course.id) {
-            const newSelectedCourses = selectedCourses.filter((selectedCourse) => selectedCourse.id !== course.id);
-            setSelectedCourses(newSelectedCourses);
+            const newSelectedPrograms = selectedPrograms.filter((selectedProgram) => selectedProgram.id !== course.id);
+            setSelectedPrograms(newSelectedPrograms);
 
-            if (!selectedCourses.length) setButtonStatus(true);
+            if (!selectedPrograms.length) setButtonStatus(true);
         }
     }
 
     React.useEffect(() => {
 
-        if (!selectedCourses.length) {
+        if (!selectedPrograms.length) {
             setButtonStatus(true)
             return;
         }
 
-        setCourseSearch({
+        setProgramSearch({
             keyword: "",
             hasFeedback: true,
             validateStatus: validateStatus.success,
@@ -111,13 +107,14 @@ export const CourseSearch = (props: any) => {
 
         setButtonStatus(false);
 
-    }, [selectedCourses])
+    }, [selectedPrograms])
 
 
     const onFinish = (values: any) => {
-        handleCourseTagMapping({
+        console.log(selectedPrograms)
+        handleProgramTagMapping({
             ...courseTagMapping,
-            courseIds: selectedCourses.map(selectedCourse => selectedCourse.id),
+            programIds: selectedPrograms.map(selectedProgram => selectedProgram.id),
         });
     };
 
@@ -136,11 +133,11 @@ export const CourseSearch = (props: any) => {
 
                 if (!course) {
 
-                    setCourseSearch({ ...courseSearch, keyword: "", hasFeedback: false, options: [] });
+                    setProgramSearch({ ...courseSearch, keyword: "", hasFeedback: false, options: [] });
                 }
 
                 if (stringReg.test(course)) {
-                    setCourseSearch({ ...courseSearch, keyword: course, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
+                    setProgramSearch({ ...courseSearch, keyword: course, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
                 }
                 break;
 
@@ -169,13 +166,13 @@ export const CourseSearch = (props: any) => {
             >
                 <Form.Item
                     name="course"
-                    label="Course Title"
+                    label="Program Title"
                     validateStatus={handleValidationStatus()}
                     hasFeedback={courseSearch.hasFeedback}
                 >
                     <AutoComplete
                         style={{ textAlign: "start" }}
-                        placeholder='Start Typing Course Name or Keyword...'
+                        placeholder='Start Typing Program Name or Keyword...'
                         allowClear
                         options={courseSearch.options}
                         value={courseSearch.keyword}
@@ -183,10 +180,10 @@ export const CourseSearch = (props: any) => {
                 </Form.Item>
 
 
-                {selectedCourses.map((selectedCourse, index) => <>
+                {selectedPrograms.map((selectedProgram, index) => <>
                     <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1} style={{ textAlign: "start" }}><h6>{selectedCourse.title}</h6></Col>
-                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: selectedCourse.id })} /></Col>
+                        <Col flex={1} style={{ textAlign: "start" }}><h6>{selectedProgram.title}</h6></Col>
+                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: selectedProgram.id })} /></Col>
                     </Row>
                 </>
                 )}

@@ -129,7 +129,9 @@ export function validateProgramsCourses(values: CourseMapType[]) {
     description: program.description ? program.description.trim() : program.description,
     flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
     issueCertificate: program.issueCertificate,
-    courses: [...mappedCourses]
+    courses: [...mappedCourses],
+    roleIds: program.roles.map((t:any)=>{return t.id}),
+    skillIds: program.skills.map((t:any)=>{return t.id})
   }) :
     updateProgram({
       thumbnailId: thumbnail,
@@ -137,7 +139,9 @@ export function validateProgramsCourses(values: CourseMapType[]) {
       description: program.description ? program.description.trim() : program.description,
       flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
       issueCertificate: program.issueCertificate,
-      courses: [...mappedCourses]
+      courses: [...mappedCourses],
+      roleIds: program.roles.map((t:any)=>{return t.id}),
+      skillIds: program.skills.map((t:any)=>{return t.id})
     }, id)
   }
 }
@@ -149,5 +153,6 @@ export const setProgram = (body: any) => {
 
 export const updateProgram = (body: any, id: string) => {
     const url = "/microsite/lnd/programs/edit/" + id
+    console.log(body)
     return httpInstance.post(url, body)
   }

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
-import { CourseList } from './course-list';
+import { ProgramList } from './../../add-role/views/course-list';
 import httpInstance from '../../../../../utility/http-client';
-import { CourseSearch } from './course-search';
 import { SkillEditForm } from './skill-edit-form';
 import { editTagType } from '../../../../../models/tag-type';
+import { ProgramSearch } from '../../add-role/views/course-search';
 const { confirm } = Modal;
 
 
@@ -19,7 +19,7 @@ export const SkillList = (props: any) => {
     const [editSkill, setEditSkill] = React.useState<editTagType>();
     
     const [courseTagMapping, setCourseTagMapping] = React.useState({
-        courseIds: [],
+        programIds: [],
         tagIds: [],
         tagType: Tagtype.skill,
         isActive: true
@@ -76,9 +76,10 @@ export const SkillList = (props: any) => {
         //Api -> get tags and courses
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.skill}`)
+            httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.skill}`)
                 .then((response) => {
-                    if (!!response.data.length) {
+                    console.log(response)
+                    if (!!response) {
                         setSkillList(response.data);
                     }
                     setIsLoading(false);
@@ -122,22 +123,22 @@ export const SkillList = (props: any) => {
     React.useEffect(() => {
         // Api-> create course tag mapping
 
-        if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
+        if (!courseTagMapping.tagIds.length || !courseTagMapping.programIds.length) return;
 
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
                 .then((response) => {
 
                     if (response.data) {
-                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
+                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], programIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
 
                     }
                     setIsLoading(false);
-                    message.success('Course successfully Added');
+                    message.success('Program successfully Added');
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -181,13 +182,13 @@ export const SkillList = (props: any) => {
                                     </div>
                                     <Divider />
 
-                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
+                                    <ProgramList programTagList={item.programs} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
 
                                     <Divider />
                                     <Button block>
                                         <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.skill)}>
                                             <Col>
-                                                <p>{"Add Course"}</p>
+                                                <p>{"Add Programs"}</p>
                                             </Col>
                                             <Col>
                                                 <PlusCircleOutlined style={{ fontSize: 20 }} />
@@ -203,8 +204,8 @@ export const SkillList = (props: any) => {
 
                     : null
                 }
-                    <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
+                    <Modal title="Search & Add Programs" visible={isModalOpen} footer={null} onCancel={closeModel}>
+                        <ProgramSearch handleProgramTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
                     </Modal>
 
                     <Modal title="Update Skill" open={isEditModalOpen} footer={null} onCancel={closeEditModel} >

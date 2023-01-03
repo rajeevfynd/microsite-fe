@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
-import { CourseList } from './course-list';
+import { ProgramList } from './course-list';
 import httpInstance from '../../../../../utility/http-client';
-import { CourseSearch } from './course-search';
+import { ProgramSearch } from './course-search';
 import { editTagType } from '../../../../../models/tag-type';
 import { RoleEditForm } from './role-edit-form';
 const { confirm } = Modal;
@@ -20,7 +20,7 @@ export const RoleList = (props: any) => {
     const [editRole, setEditRole] = React.useState<editTagType>();
     
     const [courseTagMapping, setCourseTagMapping] = React.useState({
-        courseIds: [],
+        programIds: [],
         tagIds: [],
         tagType: Tagtype.role,
         isActive: true
@@ -77,7 +77,7 @@ export const RoleList = (props: any) => {
         //Api -> get tags and courses
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.role}`)
+            httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.role}`)
                 .then((response) => {
                     if (!!response.data.length) {
                         setRoleList(response.data);
@@ -123,22 +123,24 @@ export const RoleList = (props: any) => {
     React.useEffect(() => {
         // Api-> create course tag mapping
 
-        if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
+        if (!courseTagMapping.tagIds.length || !courseTagMapping.programIds.length) {
+            return;
+        }
 
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
                 .then((response) => {
 
                     if (response.data) {
-                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
+                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], programIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
 
                     }
                     setIsLoading(false);
-                    message.success('Course successfully Added');
+                    message.success('Program successfully Added');
 
                 })
                 .catch((error) => {
@@ -182,14 +184,15 @@ export const RoleList = (props: any) => {
                                     </Row>
                                     </div>
                                     <Divider />
+                                    {/* {item.programs} */}
 
-                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
+                                    <ProgramList programTagList={item.programs} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
 
                                     <Divider />
                                     <Button block>
                                         <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.role)}>
                                             <Col>
-                                                <p>{"Add Course"}</p>
+                                                <p>{"Add Programs"}</p>
                                             </Col>
                                             <Col>
                                                 <PlusCircleOutlined style={{ fontSize: 20 }} />
@@ -205,8 +208,8 @@ export const RoleList = (props: any) => {
 
                     : null
                 }
-                    <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
+                    <Modal title="Search & Add Programs" visible={isModalOpen} footer={null} onCancel={closeModel}>
+                        <ProgramSearch handleProgramTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
                         <Divider />
                     </Modal>
 
