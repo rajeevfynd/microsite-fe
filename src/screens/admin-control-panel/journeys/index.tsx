@@ -118,8 +118,8 @@ export  const AdminJourneyList = () => {
                     />
                   }
                   actions={[
-                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                    <Button onClick={()=>handleDelete(item.id.toString(), item.title? item.title : '')} type='link' danger> Delete <Trash style={{margin:'5%'}} /> </Button>
+                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > <PencilSquare style={{margin:'5%'}}/> </Button>,
+                    <Button onClick={()=>handleDelete(item.id.toString(), item.title? item.title : '')} type='link' danger> <Trash style={{margin:'5%'}} /> </Button>
                 ]}
                 >
                   <Meta

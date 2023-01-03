@@ -105,7 +105,7 @@ export  const LearningJourneyList = () => {
                   />
                 }
                 actions={[
-                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to journey <ArrowRight /> </Button>
+                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to journey </Button>
                 ]}
               >
                 <Meta

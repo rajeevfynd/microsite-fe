@@ -72,7 +72,7 @@ export const LearningBy = () => {
        <Row >
             <Col span={3}> 
                 <div style={{width:'100%', textAlign:'center'}}>
-                    <h6 style={{padding: '10%'}}>{params.tag?.toUpperCase()} CATEGORY</h6>
+                    <h3 style={{padding: '10%'}}>{params.tag?.toUpperCase()} CATEGORY</h3>
                     <div style={{overflow: 'scroll'}}>
                     {tags.map( (tag) =>
                         <Row key={tag.id}>
@@ -84,7 +84,7 @@ export const LearningBy = () => {
             <Col span={21}>
                 {tags.length > 0 && tags.map( (tag) => tag.id == selected && 
                     <div style={{padding: '10px 50px'}}>
-                        <h4>{tag.name.toUpperCase()}</h4>
+                        <h1>{tag.name.toUpperCase()}</h1>
                         <p>
                             {tag.description}
                         </p>
@@ -129,7 +129,7 @@ export const LearningBy = () => {
                                 />
                             }
                             actions={[
-                                <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.program.id.toString())}}> Go to Program <ArrowRight /> </Button>
+                                <Button type='link' style={{width:'100%'}} onClick={()=>{navigate('/lnd/programs/'+item.program.id.toString())}}> Go to Program </Button>
                             ]}
                         >
                             <Meta

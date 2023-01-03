@@ -105,7 +105,7 @@ export  const ProgramList = () => {
                   />
                 }
                 actions={[
-                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to Program <ArrowRight /> </Button>
+                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to Program </Button>
                 ]}
               >
                 <Meta

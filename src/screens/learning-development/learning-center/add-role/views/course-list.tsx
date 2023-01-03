@@ -52,7 +52,7 @@ export const CourseList = (props: any) => {
 
     return (
         <>
-            {!!courseList.length ? renderCourseList(courseList) : null}
+            {!!courseList ? renderCourseList(courseList) : null}
         </>
     )
 }
