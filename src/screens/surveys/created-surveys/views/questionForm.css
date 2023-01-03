@@ -1,5 +1,4 @@
 .question_form {
-  background-color: #f4f4f9;
   min-height: 80vh;
   height: 100%;
   width: 100%;
@@ -13,7 +12,6 @@
 }
 
 .question_form_top {
-  background-color: white;
   border-top: 8px solid rgb(103, 58, 183);
   border-radius: 8px;
   padding: 25px;
