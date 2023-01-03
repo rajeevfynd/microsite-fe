@@ -16,29 +16,19 @@ import { EditCourse } from "./courses/edit-course";
 import { AddCourse } from "../learning-development/learning-center/add-course";
 import { DownloadTabs } from "./download-center";
 import { AdminLnd } from "./lnd";
+import { ProtectedComponent } from "./../../components/protected/protected-component"
 
 export const AdminRouter = () => {
   return (
     <>
+    <ProtectedComponent>
       <Routes>
         <Route path="/admin-lnds/*" element={<AdminLnd />}></Route>
         <Route
           path="/manage-announcement/*"
           element={<AddAnnouncement></AddAnnouncement>}
         ></Route>
-        {/* <Route
-          path="/edit-carousel/*"
-          element={<EditCarousal></EditCarousal>}
-        ></Route>
-        <Route path="/induction/*" element={<AdminInduction />}></Route>
-        <Route path="/journeys/*" element={<AdminJourneyList />}></Route>
-        <Route path="/journeys/new" element={<NewJourney />} />
-        <Route path="/journeys/:id" element={<EditJourney />} />
-        <Route path="/programs/*" element={<AdminProgramList />}></Route>
-        <Route path="/programs/new" element={<NewProgram />}></Route>
-        <Route path="/programs/:id" element={<EditProgram />}></Route>
-        <Route path="/courses/*" element={<AdminCoursePage />} />
-        <Route path="/courses/:id" element={<EditCourse />} /> */}
+       
         <Route path="/new-survey" element={<NewSurvey />} />
         <Route path="/created-surveys" element={<CreatedSurvey />} />
         <Route path="/created-surveys/edit/:id" element={<NewSurvey />} />
@@ -53,6 +43,7 @@ export const AdminRouter = () => {
           element={<Navigate replace to="/induction/*" />}
         ></Route>
       </Routes>
+      </ProtectedComponent>
     </>
   );
 };

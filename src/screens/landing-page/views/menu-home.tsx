@@ -24,9 +24,11 @@ import CarouselSvg from '../../../img/carousel.svg';
 import DownloadSvg from '../../../img/download.svg';
 import AnnouncementSvg from '../../../img/promotion.svg';
 import ComingSoonSvg from '../../../img/coming-soon.svg';
+import FaqSvg from '../../../img/faq.svg';
 import Sider from 'antd/lib/layout/Sider';
 import { isUserAuthorized } from '../../../service/user-service';
 import { PrimaryMenuItemProps } from "../../../components/menu";
+import { isAdmin } from "../../../utility/user-utils";
 
 function OutsideClick(ref: any) {
     const [isClicked, setIsClicked] = React.useState<boolean>();
@@ -42,6 +44,12 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             icon: <HomeOutlined />,
             navigate: "/home",
             secondaryItems: [
+                {
+                    title: "My Surveys",
+                    key: "surveys",
+                    icon: <SurveySvg />,
+                    navigate: "/survey/my-surveys"
+                },
                 {
                     key: "podcasts",
                     title: "Podcasts",
@@ -103,15 +111,15 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     title: "Programs",
                     icon: <ProgramSvg />,
                     navigate: "/lnd/programs"
+                },
+                {
+                    title: "Faq",
+                    key: "new-emp-faq",
+                    icon: <FaqSvg />,
+                    navigate: "/lnd/new-emp-center/new-emp-faq"
                 }
 
             ]
-        },
-        {
-            title: "My Surveys",
-            key: "surveys",
-            icon: <ListColumns />,
-            navigate: "/survey/my-surveys"
         },
         {
             title: "Downloads",
@@ -154,39 +162,38 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
             title: "Admin Panel",
             key: "admin_panel",
             icon: <Gear />,
+            hasAccess: isAdmin(),
             secondaryItems: [
                 {
                     key: "admin-lnds",
                     title: "LND",
                     icon: <WelcomeSvg />,
-                    navigate: "/admin/admin-lnds"
+                    navigate: "/admin/admin-lnds",
+                    hasAccess: isAdmin(),
                 },
                 {
                     key: "created-surveys",
                     title: "Surveys",
                     icon: <SurveySvg />,
-                    navigate: "/admin/created-surveys"
+                    navigate: "/admin/created-surveys",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-downloads",
                     title: "Downloads",
                     icon: <DownloadSvg />,
-                    navigate: "/admin/downloads"
+                    navigate: "/admin/downloads",
+                    hasAccess: isAdmin()
                 },
                 {
                     key: "admin-announcements",
                     title: "Announcements",
                     icon: <AnnouncementSvg />,
-                    navigate: "/admin/manage-announcement"
+                    navigate: "/admin/manage-announcement",
+                    hasAccess: isAdmin()
                 }
 
             ]
-        },
-        {
-            title: "Faq",
-            key: "new-emp-faq",
-            icon: <QuestionCircleOutlined />,
-            navigate: "/lnd/new-emp-center/new-emp-faq"
         }
     ]
 }
@@ -299,7 +306,7 @@ export default function MenuHome() {
                                 <Menu.Item
                                     key='leaders-gallery'
                                     onClick={() => navigateTo('/download-center/leaders-gallery/')}>
-                                    Leaders' Gallery
+                                    Leader's Gallery
                                 </Menu.Item>
                                 <Menu.Item
                                     key='logo'
@@ -325,7 +332,7 @@ export default function MenuHome() {
                                 <Menu.SubMenu key="admin-download-center" title="Download Center">
                                     <Menu.Item key='admin-new-emp-downloads' onClick={() => navigateTo('/admin/new-employee-downloads')}>New Employee Downloads</Menu.Item>
                                     <Menu.Item key='admin-templates' onClick={() => navigateTo('/admin/templates')}>Templates</Menu.Item>
-                                    <Menu.Item key='admin-leaders-gallery' onClick={() => navigateTo('/admin/leaders-gallery')}>Leaders' Gallery</Menu.Item>
+                                    <Menu.Item key='admin-leaders-gallery' onClick={() => navigateTo('/admin/leaders-gallery')}>Leader's Gallery</Menu.Item>
                                     <Menu.Item key='admin-logo' onClick={() => navigateTo('/admin/logo')}>Logo</Menu.Item>
                                     <Menu.Item key='admin-policies' onClick={() => navigateTo('/admin/policies')}>Frequently Used Policies</Menu.Item>
                                 </Menu.SubMenu>

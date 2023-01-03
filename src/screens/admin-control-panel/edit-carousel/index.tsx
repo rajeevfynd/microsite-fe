@@ -3,8 +3,8 @@ import * as React from 'react';
 import HeroCarousel from '../../learning-development/learning-center/lnd-hero/views/hero-carousel';
 import { editCarouselSlide } from '../../../service/program-service';
 import { UPLOAD_IMG } from '../../../constants/urls';
-import { CourseSearchInput } from '../../../components/search-course-input/search-course-input';
-import { CourseMapType } from '../../../models/journey-details';
+import { SearchInput } from '../../../components/search-input/search-input';
+import { ProgramMapType } from '../../../models/journey-details';
 import { Upload } from "../../../components/upload.component"
 
 
@@ -42,7 +42,7 @@ const EditCarousal = () => {
         }
         const body = {
             "positionValue": Number(active) + 1,
-            "courseHyperlink": form[Number(active)].value,
+            "programId": form[Number(active)].value,
             "imageDocumentId": form[Number(active)].fileId
         }
         const res = await editCarouselSlide(body);
@@ -52,10 +52,10 @@ const EditCarousal = () => {
         setupdate("is_updated " + Number(active) + 1)
     }
 
-    const [courses, setCourse] = React.useState<CourseMapType>()
+    const [program, setProgram] = React.useState<ProgramMapType>()
 
     const handleOnSelect = (e: any) => {
-        setCourse(e.key)
+        setProgram(e.key)
         let updatedForm: carouselFormtype = {
             fileId: form[Number(active)].fileId ? form[Number(active)].fileId : "",
             value: e.key
@@ -67,9 +67,8 @@ const EditCarousal = () => {
     }
 
     return (
-        <>
-            <h2>Edit Carousel</h2>
-            <br></br>
+        <div className='body-container'>
+            <h4>Edit Carousel</h4>
             <Collapse accordion onChange={(e) => { if (e != undefined) { setActive(e.toString()) } }}>
                 <Panel header="Slide 1" key={0}>
                     <Form.Provider
@@ -101,9 +100,9 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item label="Course">
-                                <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
-                                    placeholder='Select Course' style={{ width: 250 }} />
+                            <Form.Item label="Program">
+                                <SearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
+                                    placeholder='Select Program' style={{ width: 250 }} />
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -141,9 +140,9 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item label="Course">
-                                <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
-                                    placeholder='Select Course' style={{ width: 250 }} />
+                            <Form.Item label="Program">
+                                <SearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
+                                    placeholder='Select Program' style={{ width: 250 }} />
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -181,9 +180,9 @@ const EditCarousal = () => {
                                 }}
                                 />
                             </Form.Item>
-                            <Form.Item label="Course">
-                                <CourseSearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
-                                    placeholder='Select Course' style={{ width: 250 }} />
+                            <Form.Item label="Program">
+                                <SearchInput defaultValue={""} onSelect={(e: any) => { handleOnSelect(e) }}
+                                    placeholder='Select Program' style={{ width: 250 }} />
                             </Form.Item>
                             <Form.Item>
                                 <Button htmlType="submit" type="primary">Submit</Button>
@@ -193,14 +192,10 @@ const EditCarousal = () => {
                 </Panel>
             </Collapse>
             <br></br>
-            <h3>Preview</h3>
+            <h4>Preview</h4>
             <HeroCarousel {...{ props: update }}></HeroCarousel>
-        </>
+        </div>
     );
 };
 
 export default EditCarousal;
-
-function onCourseSelectHandler(index: number, e: any, courses: CourseMapType[]): React.SetStateAction<CourseMapType[]> {
-    throw new Error('Function not implemented.');
-}

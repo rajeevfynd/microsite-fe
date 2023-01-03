@@ -15,6 +15,10 @@ export const AddAnnouncement = () => {
     const [updatedprops, setupdatedprops] = React.useState("");
     const [file, setFile] = React.useState("")
     const showModal = () => {
+        if(file === "")
+        {
+            setIsTextActive(true)
+        }
         setIsModalOpen(true);
     };
     const handleCancel = () => {
@@ -67,14 +71,15 @@ export const AddAnnouncement = () => {
     }
 
     return (
-        <>
-            <h3>Manage Annoucements</h3>
+        <div className='body-container'>
+            <h4>Manage Annoucements</h4>
             <Button onClick={showModal} type='primary'><PlusLg style={{marginRight:"5px"}}/>Create Announcement</Button>
-            <Modal title="Create Announcement" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
+            <Modal destroyOnClose={true} title="Create Announcement" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={[]}>
                 <Form
                     form={form}
                     layout="vertical"
                     onFinish={onFinish}
+                    preserve={false}
                 >
                     <Form.Item
                         name="title"
@@ -87,7 +92,7 @@ export const AddAnnouncement = () => {
                     <Form.Item
                         label='Announcement Document'
                     >
-                        <Upload {...prop} />
+                        <Upload {...prop} accept="application/pdf"/>
                     </Form.Item>
                     <Form.Item
                         name="description"
@@ -106,7 +111,7 @@ export const AddAnnouncement = () => {
             <br /><br />
 
             <DeleteAnnouncement {...{ props: updatedprops }} />
-        </>
+        </div>
     )
 
 

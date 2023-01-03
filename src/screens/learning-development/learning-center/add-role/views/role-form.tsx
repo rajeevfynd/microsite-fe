@@ -27,8 +27,8 @@ export const RoleForm = (props: any) => {
 
 
 
-    const onFinish = (values: { roleName: string }) => {
-        const { roleName } = values;
+    const onFinish = (values: { roleName: string, description: string }) => {
+        const { roleName,description } = values;
 
         const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
 
@@ -36,8 +36,7 @@ export const RoleForm = (props: any) => {
             setRole({
                 name: roleName,
                 type: Tagtype.role,
-                isActive: true,
-                addedBy: 1111
+                description: description
             });
             setButtonStatus(true);
             handleModal(false);
@@ -92,6 +91,11 @@ export const RoleForm = (props: any) => {
                     rules={[{ required: true, message: 'Please enter new role!' }]}
                 >
                     <Input placeholder="Role Name" value={roleName} onChange={(event) => handleRoleChange(event)} />
+                </Form.Item>
+                <Form.Item
+                    name= "description"
+                >
+                    <Input.TextArea placeholder='Role Description' />
                 </Form.Item>
 
                 <Form.Item>

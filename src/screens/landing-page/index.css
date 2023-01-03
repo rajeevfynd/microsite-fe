@@ -20,7 +20,11 @@
 .body {
     font-family: 'Nanum Gothic', sans-serif;
     height: 100%;
-    background-color: #ffffff;
+    min-height: 100%;
+}
+
+.content {
+    margin-top: 80px;
 }
 
 .header {
@@ -50,11 +54,6 @@
     align-items: center;
 }
 
-.content {
-    margin-top: 80px;
-    height: 100%;
-}
-
 .menu {
     top: 30%;
     position: absolute;
@@ -76,4 +75,6 @@
     overflow: scroll;
 }
 
-
+.body-container {
+    padding: 20px;
+}

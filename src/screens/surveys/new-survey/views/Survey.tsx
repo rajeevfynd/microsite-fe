@@ -154,11 +154,22 @@ const Survey = () => {
       </>
     );
   };
+
+  const addOption = (i: number) => {
+    handleAddOption(i, 0);
+    handleAddOption(i, 1);
+  };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
       case "SINGLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return radioUI(i);
       case "MULTIPLE_CHOICE":
+        {
+          Survey.questions[i].choices.length == 0 ? addOption(i) : "";
+        }
         return checkBoxUI(i);
       default:
         return <TextArea disabled></TextArea>;
@@ -205,15 +216,18 @@ const Survey = () => {
   /// IMage Upload Code _____________________________________________________
 
   const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    const isJpgOrPng =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/jpg";
     if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
+      message.error("You can only upload JPEG/PNG file!");
     }
-    const isLt2M = file.size / 1024 / 1024 < 1;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error("Image must smaller than 5MB!");
     }
-    return isJpgOrPng && isLt2M;
+    return isJpgOrPng && isLt5M;
   };
   const uploadButton = (
     <>
@@ -250,18 +264,18 @@ const Survey = () => {
     return (
       <>
         <div data-html2canvas-ignore="true">
-          <Upload {...prop} beforeUpload={beforeUpload}>
+          <Upload {...prop} beforeUpload={beforeUpload} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
 
           {edit ? (
             <>
-              <p style={{ color: "red" }}>Upload Image to replace</p>
+              <p>Upload Image to replace</p>
               <Checkbox onChange={(e) => setNewScreenShot(e.target.checked)}>
                 Use New Screen shot
               </Checkbox>
               <br />
-              <p style={{ color: "red" }}> click ok to Skip</p>
+              <p> click ok to Skip</p>
             </>
           ) : (
             <Text type="danger">This can be skiped</Text>
@@ -382,10 +396,12 @@ const Survey = () => {
           openNotificationWithIcon("success", "Changes saved");
         })
         .catch((err) => {
-          openNotificationWithIcon(
-            "error",
-            "Changes are not saved" + err.message
-          );
+          console.log(err.data);
+          if (!err.message) {
+            openNotificationWithIcon("error", "somthing went wrong");
+          } else {
+            openNotificationWithIcon("error", "Changes are not saved");
+          }
           setConfirmLoading(false);
         });
     } else {
@@ -400,7 +416,11 @@ const Survey = () => {
           navigate(`/admin/created-surveys`);
         })
         .catch((err) => {
-          openNotificationWithIcon("error", err.message);
+          if (!err.message) {
+            openNotificationWithIcon("error", "somthing went wrong");
+          } else {
+            openNotificationWithIcon("error", err.message);
+          }
           setConfirmLoading(false);
         });
     }
@@ -433,7 +453,11 @@ const Survey = () => {
       //submitForm();
       submitForm(res.data.id);
     } catch (error) {
-      openNotificationWithIcon("error", error.message);
+      if (!error.message) {
+        openNotificationWithIcon("error", "somthing went wrong");
+      } else {
+        openNotificationWithIcon("error", error.message);
+      }
     }
   };
 

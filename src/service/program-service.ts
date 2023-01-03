@@ -32,7 +32,7 @@ export const getCarouselImageData = (d: carouselFormtype) =>{
 }
 
 export const getCarouselCourse = (d: carouselFormtype) =>{
-    return httpInstance.get('/microsite/course?id='+d.courseHyperlink)
+    return httpInstance.get('/microsite/course?id='+d.programId)
 }
 
 export const getCourseById = (d: string) =>{
@@ -47,7 +47,7 @@ export function getCourses(key:string = '', page:string = '0', size:string = '8'
     return httpInstance.get('/microsite/lnd/programs/course-search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }
 
-export function getCoursesFts(key:string = '', page:string = '0', size:string = '3'){
+export function getCoursesFts(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
@@ -80,22 +80,16 @@ export const processCourses = (courses: ProgramType[], flow: string) => {
 }
 
 export function validateProgramsCourses(values: CourseMapType[]) {
-    let hasDuplicate = false;
-    values.map(v => v.course).sort().sort(
-      (a:string, b:string) => {
-        if (a == b) { hasDuplicate = true; return 1
-      };
-    }
-    )
-    if(hasDuplicate) {
-      message.error('Program should not have duplicate courses')
-      return false
-    }
-    if(!(values.filter(p => p.course == null).length == 0)) {
-      message.error('Empty course field cannot be mapped to a program')
-      return false
-    }
-    return true
+  if(!(values.filter(c => c.course == null).length == 0)) {
+    message.error('Empty course field cannot be mapped to a program')
+    return false
+  }
+  let cids = values.map( v => v.course?.toString() )
+  if(new Set(cids).size != cids.length) {
+    message.error('Program should not have duplicate courses')
+    return false
+  }
+  return true
   }
 
 

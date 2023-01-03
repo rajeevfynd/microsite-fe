@@ -10,11 +10,20 @@ import { Tagtype } from '../../../../constants/tag';
 import { getFormattedDataForMenuItems } from './views/helper';
 import { Footer } from 'antd/lib/layout/layout';
 
+type roleDescListType = {
+  id?: number,
+  name?: string,
+  description?: string
+}
+
 export function LearningByRole() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isMenuItemChanged, setIsMenuItemChanged] = React.useState(false);
   const [buttonStatus, setButtonStatus] = React.useState(true);
   const [roleList, setRoleList] = React.useState([]);
+  const [roleDescList, setRoleDescList] = React.useState<roleDescListType[]>([]);
+  const [currentRoleName,setCurrentRoleName] = React.useState("")
+  const [currentRoleDesc, setCurrentRoleDesc] = React.useState("")
   const [courseList, setCourseList] = React.useState([]);
   const [selectedMenuItem, setSelectedMenuItem] = React.useState([]);
   const [pagination, setPagination] = React.useState({
@@ -38,6 +47,7 @@ export function LearningByRole() {
         .then((response) => {
           if (!!getFormattedDataForMenuItems(response.data).length) {
             setRoleList(getFormattedDataForMenuItems(response.data));
+            setRoleDescList(response.data);
             setSelectedMenuItem([response.data[0].id]);
           }
           setIsLoading(false);
@@ -90,13 +100,17 @@ export function LearningByRole() {
 
     setCourseList([]);
     setPagination({ ...pagination, offset: 0 });
+    let name = roleDescList.find(e=>e.id == selectedMenuItem[0])?.name
+    let desc = roleDescList.find(e=>e.id == selectedMenuItem[0])?.description
+    setCurrentRoleName(name)
+    setCurrentRoleDesc(desc)
     setIsMenuItemChanged(!isMenuItemChanged);
   }, [selectedMenuItem]);
 
 
   const addRole = () => {
     return <Button block style={{ background: "#001529", color: "#f5f5f5" }}>
-      Roles
+      Roles Category
     </Button>
   }
 
@@ -136,7 +150,12 @@ export function LearningByRole() {
             textAlign: 'center',
             background: '#fff'
           }}>
-
+            <div>
+              <br></br>
+              <h4 style={{fontWeight:"bold", textAlign:"left"}}>{currentRoleName}</h4>
+              <p style={{textAlign:"left"}}>{currentRoleDesc}</p>
+              <br></br>
+            </div>
             {courseList.length ? <CourseList courseList={courseList} /> : null}
 
           </Content>
