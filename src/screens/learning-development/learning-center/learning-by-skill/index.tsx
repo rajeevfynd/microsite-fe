@@ -117,12 +117,12 @@ export function LearningBySkill() {
   return (
     <>
       {isLoading ? "Loading" : <Layout hasSider={true} style={{
-        height: '80vh'
+        height: '90vh'
       }}>
         <Sider
           style={{
             overflow: 'auto',
-            height: '80vh',
+            height: '90vh',
             left: 0,
             top: 0,
             bottom: 0,
@@ -139,13 +139,13 @@ export function LearningBySkill() {
         <Layout
           style={{
             background: '#fff',
-            height: '80vh',
+            height: '90vh',
           }}
         >
           <Content style={{
             overflow: 'auto',
             margin: '2px 16px 0',
-            height: '80vh',
+            height: '90vh',
             textAlign: 'center',
             background: '#fff'
           }}>
