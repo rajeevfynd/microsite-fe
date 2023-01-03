@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { AddSkill } from '../../learning-development/learning-center/add-skill';
 import { AddRole } from '../../learning-development/learning-center/add-role';
 import { AddCourse } from '../../learning-development/learning-center/add-course';
+import { ProtectedComponent } from '../../../components/protected/protected-component';
 
 const { Content, Sider } = Layout;
 const items: MenuProps['items'] = [
@@ -101,24 +102,26 @@ export const AdminLnd = () => {
                         height: '90vh',
                         background: '#fff'
                     }}>
-                        <Routes>
-                            <Route path="/edit-carousel/*" element={<EditCarousal></EditCarousal>}></Route>
-                            <Route path="/induction/*" element={<AdminInduction />}></Route>
-                            <Route path="/journeys/*" element={<AdminJourneyList />}></Route>
-                            <Route path="/journeys/new" element={<NewJourney />} />
-                            <Route path="/journeys/:id" element={<EditJourney />} />
-                            <Route path="/programs/*" element={<AdminProgramList />}></Route>
-                            <Route path="/programs/new" element={<NewProgram />}></Route>
-                            <Route path="/programs/:id" element={<EditProgram />}></Route>
-                            <Route path="/courses/*" element={<AdminCoursePage />} />
-                            <Route path="/courses/addCourse" element={<AddCourse />} />
-                            <Route path="/courses/:id" element={<EditCourse />} />
-                            <Route path="/skills/*" element={<AddSkill />}></Route>
-                            <Route path="/roles/*" element={<AddRole />}></Route>
-                        </Routes>
+                        <ProtectedComponent>
+                            <Routes>
+                                <Route path="/edit-carousel/*" element={<EditCarousal></EditCarousal>}></Route>
+                                <Route path="/induction/*" element={<AdminInduction />}></Route>
+                                <Route path="/journeys/*" element={<AdminJourneyList />}></Route>
+                                <Route path="/journeys/new" element={<NewJourney />} />
+                                <Route path="/journeys/:id" element={<EditJourney />} />
+                                <Route path="/programs/*" element={<AdminProgramList />}></Route>
+                                <Route path="/programs/new" element={<NewProgram />}></Route>
+                                <Route path="/programs/:id" element={<EditProgram />}></Route>
+                                <Route path="/courses/*" element={<AdminCoursePage />} />
+                                <Route path="/courses/addCourse" element={<AddCourse />} />
+                                <Route path="/courses/:id" element={<EditCourse />} />
+                                <Route path="/skills/*" element={<AddSkill />}></Route>
+                                <Route path="/roles/*" element={<AddRole />}></Route>
+                            </Routes>
+                        </ProtectedComponent>
                     </Content>
                 </Layout>
-            </Layout >
+            </Layout>
         </>
 
     )
