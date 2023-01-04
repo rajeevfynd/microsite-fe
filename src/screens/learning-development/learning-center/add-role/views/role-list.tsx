@@ -77,7 +77,7 @@ export const RoleList = (props: any) => {
         //Api -> get tags and courses
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.role}`)
+            httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.role}`)
                 .then((response) => {
                     if (!!response.data.length) {
                         setRoleList(response.data);
@@ -128,7 +128,7 @@ export const RoleList = (props: any) => {
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
                 .then((response) => {
 
                     if (response.data) {

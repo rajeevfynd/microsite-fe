@@ -82,7 +82,6 @@ export  const AdminProgramList = () => {
     />
     <Button style={{borderRadius: 5}} onClick={()=>navigate('new')} type='primary'><PlusLg style={{marginRight:"5px"}}/> New Program</Button>
     <div
-      id="scrollableDiv"
       style={{
         width: '100%',
         height: '100%'
@@ -119,8 +118,8 @@ export  const AdminProgramList = () => {
                   />
                 }
                 actions={[
-                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > Edit <PencilSquare style={{margin:'5%'}}/> </Button>,
-                    <Button onClick={()=>handleDelete(item.id.toString(), item.title)} type='link' danger> Delete <Trash style={{margin:'5%'}}/> </Button>
+                    <Button onClick={()=>{navigate(item.id.toString())}} style={{width: '100%'}} type='link' > <PencilSquare style={{margin:'5%'}}/> </Button>,
+                    <Button onClick={()=>handleDelete(item.id.toString(), item.title)} type='link' danger> <Trash style={{margin:'5%'}}/> </Button>
                 ]}
               >
                 <Meta
