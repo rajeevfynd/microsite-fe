@@ -84,6 +84,7 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
                 endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
                 scrollThreshold={1}
+                height={600}
             >
                 <List
                     itemLayout="horizontal"

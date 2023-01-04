@@ -13,7 +13,7 @@ import { TemplatesSubmenu } from "../../../../models/enums/templates-submenu";
 
 
 export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : string, deleteUrl : string, 
-    categoryList : SubmenuTabsType[], downloadType: DownloadDocumentType, editUrl : string}) => {
+    categoryList : SubmenuTabsType[], downloadType: DownloadDocumentType, editUrl : string, addNew : boolean}) => {
     const [data, setData] = React.useState<any[]>([])
     const [downloadsList, setDownloadsList] = React.useState<PolicyDownloadType[]>([])
     const [loading, setLoading] = React.useState(false);
@@ -96,7 +96,7 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
 
     React.useEffect(() => {
         handleSubmit();
-    }, [props.downloadsUrl])
+    }, [props.downloadsUrl, props.addNew])
 
     React.useEffect(() => {
         createDataList()
@@ -115,6 +115,7 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
                 loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
                 endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
+                height={600}
             >
                 <List
                     itemLayout="horizontal"
