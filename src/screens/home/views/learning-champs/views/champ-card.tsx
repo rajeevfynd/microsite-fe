@@ -3,17 +3,8 @@ import * as React from "react";
 
 
 
-export const ChampCard = (props: {
-    champ: {
-        id: number,
-        profilePicture:
-        string,
-        name: string,
-        department: string,
-        score: number
-    };
-}) => {
-    
+export const ChampCard = (props: { champ: any; }) => {
+
     const { champ } = props;
 
 
@@ -36,7 +27,7 @@ export const ChampCard = (props: {
                         </div>
                         <div style={{ display: "flex", flexDirection: "row", }}>
                             <div style={{ width: "100%" }}>
-                                {champ.department}
+                                {champ.department || "3P Marketplace"}
                             </div>
                         </div>
                     </div>
@@ -44,7 +35,7 @@ export const ChampCard = (props: {
                     <div style={{ width: "100%" }}>
                         <div style={{ display: "flex", flexDirection: "row", height: '51px', width: "100%" }}>
                             <div style={{ margin: "auto" }}>
-                                {champ.score}
+                                {champ.count}
                             </div>
                         </div>
                     </div>
