@@ -181,7 +181,7 @@ export const LearningChamps = () => {
             <Card className="home-card">
                 <Meta title={
                     <div>
-                        <h4>Learning Champs</h4>
+                        <h3>Learning Champs</h3>
                     </div>
                 }
                 />

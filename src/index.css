@@ -1,6 +1,18 @@
 @import '~antd/dist/antd.css';
 @import '~antd/dist/antd.dark.css';
 
+.footer-content {
+    width: 100%;
+    height: min-content;
+    background: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 5vh;
+    padding: 1%;
+    text-align: center;
+}
+
 .dark {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -12,12 +24,3 @@
 .title {
     text-align: left;
 }
-
-/* #root {
-    background-color: rgba(0, 0, 0, 0);
-}
-
-html {
-    background-color: rgba(0, 0, 0, 0);
-}
-*/

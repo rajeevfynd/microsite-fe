@@ -30,7 +30,7 @@ export const Feeds = () => {
                 scrollThreshold="20%"
             >
                 <Affix offsetTop={120} className="centered-container" style={{ zIndex: 1, marginTop: "100px", textAlign: "center" }}>
-                    <h3>Communities</h3>
+                    <h2>Communities</h2>
                     <ComingSoonSvg style={{fill: "#5f5f5f", marginTop: "5px"}}/>
                 </Affix>
                 <div className="centered-container blur-effect">

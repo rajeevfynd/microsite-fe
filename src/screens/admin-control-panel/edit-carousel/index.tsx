@@ -68,7 +68,7 @@ const EditCarousal = () => {
 
     return (
         <div className='body-container'>
-            <h4>Edit Carousel</h4>
+            <h3>Edit Carousel</h3>
             <Collapse accordion onChange={(e) => { if (e != undefined) { setActive(e.toString()) } }}>
                 <Panel header="Slide 1" key={0}>
                     <Form.Provider
