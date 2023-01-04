@@ -8,25 +8,25 @@ const validateStatus = {
     success: 'success'
 }
 
-export const CourseSearch = (props: any) => {
-    const { handleCourseTagMapping, courseTagMapping } = props;
+export const ProgramSearch = (props: any) => {
+    const { handleProgramTagMapping, programTagMapping } = props;
 
 
     const [buttonStatus, setButtonStatus] = React.useState(true);
-    const [courseSearch, setCourseSearch] = React.useState({
+    const [programSearch, setProgramSearch] = React.useState({
         keyword: "",
         hasFeedback: false,
         validateStatus: validateStatus.validating,
         options: []
     });
-    const [selectedCourses, setSelectedCourses] = React.useState([]);
+    const [selectedPrograms, setSelectedPrograms] = React.useState([]);
 
     React.useEffect(() => {
-        // search Api-> get courses by name 
-        if (!courseSearch.keyword) return;
+        // search Api-> get programs by name 
+        if (!programSearch.keyword) return;
 
-        if (!!courseSearch.options.length) {
-            setCourseSearch({
+        if (!!programSearch.options.length) {
+            setProgramSearch({
                 keyword: "",
                 hasFeedback: true,
                 validateStatus: validateStatus.success,
@@ -39,14 +39,14 @@ export const CourseSearch = (props: any) => {
 
         (() => {
 
-            httpInstance.get(`/microsite/course/courses-by-title?title=${courseSearch.keyword}`)
+            httpInstance.get(`/microsite/lnd/programs/programs-by-title?title=${programSearch.keyword}`)
                 .then((response) => {
 
                     const result = response.data || [];
 
                     if (!result.length) return;
 
-                    setCourseSearch({ ...courseSearch, options: response.data.length ? searchResult(result) : [] });
+                    setProgramSearch({ ...programSearch, options: response.data.length ? searchResult(result) : [] });
 
                 })
                 .catch((error) => {
@@ -54,51 +54,51 @@ export const CourseSearch = (props: any) => {
                 });
         })();
 
-    }, [courseSearch.keyword])
+    }, [programSearch.keyword])
 
-    const searchResult = (course: { id: any; title: any; }[]) => {
-        return course.map((course: { id: any; title: any; }, index) => {
+    const searchResult = (program: { id: any; title: any; }[]) => {
+        return program.map((program: { id: any; title: any; }, index) => {
             return {
-                value: course.title,
-                label: <Row key={index} style={{ justifyContent: "space-between" }} onClick={() => handlePlusIconClick({ id: course.id, title: course.title })}>
-                    <Col flex={1} style={{ textAlign: "start" }}><p>{course.title}</p></Col>
+                value: program.title,
+                label: <Row key={index} style={{ justifyContent: "space-between" }} onClick={() => handlePlusIconClick({ id: program.id, title: program.title })}>
+                    <Col flex={1} style={{ textAlign: "start" }}><p>{program.title}</p></Col>
                     <Col style={{ alignItems: "end" }} > <PlusCircleOutlined style={{ fontSize: 20 }} /></Col>
                 </Row>
             }
         })
     }
 
-    const handlePlusIconClick = (course: { id: number; title: string }) => {
-        const newCourse = { id: course.id, title: course.title }
+    const handlePlusIconClick = (program: { id: number; title: string }) => {
+        const newProgram = { id: program.id, title: program.title }
 
-        if (selectedCourses.length) {
-            const alreadyExists = selectedCourses.find(selectedCourse => selectedCourse.id === newCourse.id);
+        if (selectedPrograms.length) {
+            const alreadyExists = selectedPrograms.find(selectedProgram => selectedProgram.id === newProgram.id);
 
             if (alreadyExists) return;
         }
 
-        setSelectedCourses((selectedCourses: any) => [...selectedCourses, newCourse]);
+        setSelectedPrograms((selectedPrograms: any) => [...selectedPrograms, newProgram]);
 
     }
 
-    const handleMinusIconClick = (course: { id: number }) => {
+    const handleMinusIconClick = (program: { id: number }) => {
 
-        if (course.id) {
-            const newSelectedCourses = selectedCourses.filter((selectedCourse) => selectedCourse.id !== course.id);
-            setSelectedCourses(newSelectedCourses);
+        if (program.id) {
+            const newSelectedPrograms = selectedPrograms.filter((selectedProgram) => selectedProgram.id !== program.id);
+            setSelectedPrograms(newSelectedPrograms);
 
-            if (!selectedCourses.length) setButtonStatus(true);
+            if (!selectedPrograms.length) setButtonStatus(true);
         }
     }
 
     React.useEffect(() => {
 
-        if (!selectedCourses.length) {
+        if (!selectedPrograms.length) {
             setButtonStatus(true)
             return;
         }
 
-        setCourseSearch({
+        setProgramSearch({
             keyword: "",
             hasFeedback: true,
             validateStatus: validateStatus.success,
@@ -107,13 +107,14 @@ export const CourseSearch = (props: any) => {
 
         setButtonStatus(false);
 
-    }, [selectedCourses])
+    }, [selectedPrograms])
 
 
     const onFinish = (values: any) => {
-        handleCourseTagMapping({
-            ...courseTagMapping,
-            courseIds: selectedCourses.map(selectedCourse => selectedCourse.id),
+        console.log(selectedPrograms)
+        handleProgramTagMapping({
+            ...programTagMapping,
+            programIds: selectedPrograms.map(selectedProgram => selectedProgram.id),
         });
     };
 
@@ -127,16 +128,16 @@ export const CourseSearch = (props: any) => {
         const key = Object.keys(changedValues)[0];
         switch (key) {
 
-            case 'course':
-                const course = changedValues[key].toLowerCase();
+            case 'program':
+                const program = changedValues[key].toLowerCase();
 
-                if (!course) {
+                if (!program) {
 
-                    setCourseSearch({ ...courseSearch, keyword: "", hasFeedback: false, options: [] });
+                    setProgramSearch({ ...programSearch, keyword: "", hasFeedback: false, options: [] });
                 }
 
-                if (stringReg.test(course)) {
-                    setCourseSearch({ ...courseSearch, keyword: course, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
+                if (stringReg.test(program)) {
+                    setProgramSearch({ ...programSearch, keyword: program, hasFeedback: true, validateStatus: validateStatus.validating, options: [] });
                 }
                 break;
 
@@ -147,7 +148,7 @@ export const CourseSearch = (props: any) => {
     };
 
     const handleValidationStatus = () => {
-        return courseSearch.options.length ? "success" : "validating";
+        return programSearch.options.length ? "success" : "validating";
     }
 
     return (
@@ -159,30 +160,30 @@ export const CourseSearch = (props: any) => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 initialValues={{
-                    course: courseSearch.keyword,
+                    program: programSearch.keyword,
                 }}
 
             >
                 <Form.Item
-                    name="course"
-                    label="Course Title"
+                    name="program"
+                    label="Program Title"
                     validateStatus={handleValidationStatus()}
-                    hasFeedback={courseSearch.hasFeedback}
+                    hasFeedback={programSearch.hasFeedback}
                 >
                     <AutoComplete
                         style={{ textAlign: "start" }}
-                        placeholder='Start Typing Course Name or Keyword...'
+                        placeholder='Start Typing Program Name or Keyword...'
                         allowClear
-                        options={courseSearch.options}
-                        value={courseSearch.keyword}
+                        options={programSearch.options}
+                        value={programSearch.keyword}
                     />
                 </Form.Item>
 
 
-                {selectedCourses.map((selectedCourse, index) => <>
+                {selectedPrograms.map((selectedProgram, index) => <>
                     <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1} style={{ textAlign: "start" }}><h6>{selectedCourse.title}</h6></Col>
-                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: selectedCourse.id })} /></Col>
+                        <Col flex={1} style={{ textAlign: "start" }}><h6>{selectedProgram.title}</h6></Col>
+                        <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: selectedProgram.id })} /></Col>
                     </Row>
                 </>
                 )}

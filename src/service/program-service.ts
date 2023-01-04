@@ -51,6 +51,10 @@ export function getCoursesFts(key:string = '', page:string = '0', size:string = 
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
+export function getProgramFts(key:string = '', page:string = '0', size:string = '8'){
+  return httpInstance.get('/microsite/lnd/programs/fts-search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
+}
+
 export const getProgramDetails = (id:string) => {
     return httpInstance.get('/microsite/lnd/programs/details/'+id)
 }
