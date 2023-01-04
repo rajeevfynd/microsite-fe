@@ -48,6 +48,7 @@
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "html2canvas": "^1.4.1",
+    "js-file-download": "^0.4.12",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -59,5 +60,10 @@
     "react-jwt": "^1.1.7",
     "react-player": "^2.10.1",
     "virtualizedtableforantd4": "^1.2.1"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
   }
 }
