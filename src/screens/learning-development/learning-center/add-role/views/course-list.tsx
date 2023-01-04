@@ -5,32 +5,34 @@ import { MinusCircleOutlined } from '@ant-design/icons';
 import httpInstance from '../../../../../utility/http-client';
 
 
-export const CourseList = (props: any) => {
-    const { handleMappingStatus, mappingStatus } = props;
+export const ProgramList = (props: any) => {
+    //console.log(props)
+    const { handleMappingStatus, mappingStatus, programTagList } = props;
 
-    const [courseList, setCourseList] = React.useState([]);
+    const [programList, setProgramList] = React.useState([]);
 
 
 
     React.useEffect(() => {
+        // console.log(programList)
 
-        setCourseList(props.courseList);
+        setProgramList(programTagList);
 
     }, []);
 
-    const handleRemoveCourse = (data: { tagId: number; courseId: number; }) => {
+    const handleRemoveProgram = (data: { tagId: number; programId: number; }) => {
 
-        const { tagId, courseId } = data;
+        const { tagId, programId } = data;
 
 
-        if (!tagId || !courseId) return;
+        if (!tagId || !programId) return;
 
         (() => {
-            httpInstance.delete(`/microsite/course-tag/course-tag-by-course-id-and-tag-id?courseId=${courseId}&tagId=${tagId}`)
+            httpInstance.delete(`/microsite/program-tag/program-tag-by-program-id-and-tag-id?programId=${programId}&tagId=${tagId}`)
                 .then((response) => {
 
                     handleMappingStatus(!mappingStatus);
-                    message.success('Course successfully Removed');
+                    message.success('Program successfully Removed');
                     
                 })
                 .catch((error) => {
@@ -41,18 +43,16 @@ export const CourseList = (props: any) => {
 
     };
 
-    const renderCourseList = (courseList: any[]) => {
-
-        return courseList.map(({ course, tag }, index) => <Row key={index} style={{ justifyContent: "space-between" }}>
-            <Col flex={1} ><h6>{course.title}</h6></Col>
-            <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveCourse({ tagId: tag.id, courseId: course.id })} /></Col>
-        </Row>
-        )
-    }
 
     return (
         <>
-            {!!courseList.length ? renderCourseList(courseList) : null}
+            {programList && programList.length>0 ? programList.map(({program,tag}) => {
+            //    console.log(program.program)
+            return (<Row key={program.id.toString()+tag.id.toString()} style={{ justifyContent: "space-between" }}>
+            <Col flex={1} ><h3>{program.title}</h3></Col>
+            <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveProgram({ tagId: tag.id, programId: program.id })} /></Col>
+        </Row>)
+    }) : null}
         </>
     )
 }

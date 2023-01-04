@@ -13,12 +13,12 @@ export const SkillForm = (props: any) => {
 
 
     function handleSkillChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const skillName = event.target.value;
+        const newSkillName = event.target.value;
 
         const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
 
-        if (reg.test(skillName)) {
-            setSkillName(skillName);
+        if (reg.test(newSkillName)) {
+            setSkillName(newSkillName);
             setButtonStatus(false);
         } else {
             setButtonStatus(true);
@@ -27,8 +27,8 @@ export const SkillForm = (props: any) => {
 
 
 
-    const onFinish = (values: { skillName: string }) => {
-        const { skillName } = values;
+    const onFinish = (values: { skillName: string, description: string }) => {
+        const { skillName, description } = values;
 
         const reg = new RegExp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*");
 
@@ -36,8 +36,7 @@ export const SkillForm = (props: any) => {
             setSkill({
                 name: skillName,
                 type: Tagtype.skill,
-                isActive: true,
-                addedBy: 1111
+                description: description
             });
             setButtonStatus(true);
             handleModal(false);
@@ -86,11 +85,14 @@ export const SkillForm = (props: any) => {
                 onFinishFailed={onFinishFailed}
 
             >
+                <Form.Item name='skillName'>
+                    <Input placeholder='Skill Name' onChange={(event) => handleSkillChange(event)} value={skillName} />
+                </Form.Item>
+
                 <Form.Item
-                    name="skillName"
-                    rules={[{ required: true, message: 'Please enter new skill!' }]}
+                    name= "description"
                 >
-                    <Input placeholder="Skill Name" value={skillName} onChange={(event) => handleSkillChange(event)} />
+                    <Input.TextArea placeholder='Skill Description' />
                 </Form.Item>
 
                 <Form.Item>

@@ -1,51 +1,38 @@
-import Input from 'antd/lib/input';
-import { SearchOutlined } from '@ant-design/icons'
 import * as React from 'react';
-import { CourseListType } from '../../../../../models/course-type';
-import { getCoursesFts } from '../../../../../service/program-service';
+import { Program } from '../../../../../models/course-type';
+import { getProgramFts } from '../../../../../service/program-service';
 import { Button, Card, Divider, Image, List, Modal, Spin } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { ArrowRight } from 'react-bootstrap-icons';
 import './index.css'
-import { CourseDetails } from '../../../../../components/course-detail/course-details';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { debounce } from '../../../../../utility/debounce-utils';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../../constants/string-constants';
 import { formatBase64 } from '../../../../../utility/image-utils';
 import { ShadowSearchInput } from '../../../../../components/shadow-input-text';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const SearchCourses = () => {
+const SearchPrograms = () => {
     const [load, setLoad] = React.useState(false)
-    const [courses, setCourses] = React.useState<CourseListType[]>([])
+    const [programs, setPrograms] = React.useState<Program[]>([])
     const [page, setPage] = React.useState(0)
     const [hasMore, setHasMore ] = React.useState(false)
     const [keyState, setKeyState] = React.useState(' ')
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [courseDetails, setCourseDetails] = React.useState({});
+    const { id } = useParams<string>();
+    const navigate = useNavigate();
     let key = ''
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
 
-    const closeModel = () => {
-        setIsModalOpen(false);
-    };
-
-
-    const handleCourseDetailsClick = (course: any) => {
-
-        setCourseDetails(course);
-
-        showModal();
+    const handleProgramDetailsClick = (program: any) => {
+        console.log(program)
+        navigate('/lnd/programs/'+program.id)
     }
 
     const loadMoreData = () => {
         if (load) { return; }
         setLoad(false);
-        getCoursesFts(keyState, page.toString()).then(
+        getProgramFts(keyState, page.toString()).then(
             resp => {
-                setCourses([...courses, ...resp.data.content])
+                setPrograms([...programs, ...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(page + 1)
                 setLoad(false)
@@ -53,13 +40,13 @@ const SearchCourses = () => {
         )
     };
 
-    const searchCourses = () => {
+    const searchPrograms = () => {
         setKeyState(key)
         if (load) { return; }
         setLoad(false);
-        getCoursesFts(key).then(
+        getProgramFts(key).then(
             resp => {
-                setCourses([...resp.data.content])
+                setPrograms([...resp.data.content])
                 setHasMore(!resp.data.last)
                 setPage(1)
                 setLoad(false)
@@ -73,7 +60,7 @@ const SearchCourses = () => {
 
     const searchKey = (str: string) => {
         key = str
-        debounce(searchCourses, 500)
+        debounce(searchPrograms, 500)
     }
 
     return (
@@ -81,15 +68,15 @@ const SearchCourses = () => {
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
             <ShadowSearchInput 
                 size='large' 
-                placeholder='Search Courses...'
+                placeholder='Search Programs...'
                 onChange={(e:string) => {searchKey(e);} } 
             />
             </div>
             
-            {courses.length != 0 &&
+            {programs.length != 0 &&
 
                 <InfiniteScroll
-                    dataLength={courses.length}
+                    dataLength={programs.length}
                     next={loadMoreData}
                     hasMore = {hasMore}
                     loader={<>&nbsp; <Spin size="large" /></>}
@@ -99,7 +86,7 @@ const SearchCourses = () => {
                     <div><List
                     grid={{ gutter: 10, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 4}}
                     style={{ padding: "1%" }}
-                    dataSource={courses}
+                    dataSource={programs}
                     renderItem={item => (
                         <List.Item key={item.title}>
                             <Card
@@ -120,7 +107,7 @@ const SearchCourses = () => {
                                         />
                                     }
                                     actions={[
-                                        <Button onClick={()  => handleCourseDetailsClick(item) } type='link' >Go to course</Button>
+                                        <Button onClick={()  => handleProgramDetailsClick(item) } type='link' >Go to program</Button>
                                     ]}
                                 >
                                     <Meta
@@ -132,16 +119,7 @@ const SearchCourses = () => {
                         </List.Item>
                     )} /></div></InfiniteScroll>
             }
-            <Modal
-                title="Course Details"
-                visible={isModalOpen}
-                footer={null}
-                onCancel={closeModel}
-                width={1000}
-                style={{ top: 100 }}>
-                <CourseDetails course={courseDetails} />
-            </Modal>
         </>
     )
 }
-export default SearchCourses;
+export default SearchPrograms;

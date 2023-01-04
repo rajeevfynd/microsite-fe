@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
-import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
-import { CourseList } from './course-list';
+import { ProgramList } from './../../add-role/views/course-list';
 import httpInstance from '../../../../../utility/http-client';
-import { CourseSearch } from './course-search';
+import { SkillEditForm } from './skill-edit-form';
+import { editTagType } from '../../../../../models/tag-type';
+import { ProgramSearch } from '../../add-role/views/course-search';
 const { confirm } = Modal;
-
 
 
 export const SkillList = (props: any) => {
@@ -14,8 +15,11 @@ export const SkillList = (props: any) => {
     const [skillList, setSkillList] = React.useState([]);
     const [skillId, setSkillId] = React.useState(null);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [courseTagMapping, setCourseTagMapping] = React.useState({
-        courseIds: [],
+    const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+    const [editSkill, setEditSkill] = React.useState<editTagType>();
+    
+    const [programTagMapping, setProgramTagMapping] = React.useState({
+        programIds: [],
         tagIds: [],
         tagType: Tagtype.skill,
         isActive: true
@@ -23,6 +27,19 @@ export const SkillList = (props: any) => {
     const [mappingStatus, setMappingStatus] = React.useState(false);
 
 
+    const showEditModal = (id:number, name:string, description:string) => {
+        const skill:editTagType = {
+            tagId:id,
+            tagName:name,
+            tagDescription:description
+        }
+        setEditSkill(skill)
+        console.log("test")
+        setIsEditModalOpen(true);
+    };
+    const closeEditModel = () => {
+        setIsEditModalOpen(false);
+    };
 
 
     const showModal = () => {
@@ -37,7 +54,7 @@ export const SkillList = (props: any) => {
 
     const showConfirm = (skillId: number, skillName: string, skillType: string) => {
         confirm({
-            title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Course"}? `,
+            title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Program"}? `,
             icon: <ExclamationCircleOutlined />,
             onOk() {
                 setSkillId(skillId);
@@ -48,20 +65,21 @@ export const SkillList = (props: any) => {
         });
     };
 
-    const handleAddCourseModel = (tagId: number, tagType: string) => {
+    const handleAddProgramModel = (tagId: number, tagType: string) => {
 
-        setCourseTagMapping({ ...courseTagMapping, tagIds: [tagId], tagType: tagType });
+        setProgramTagMapping({ ...programTagMapping, tagIds: [tagId], tagType: tagType });
         showModal()
 
     };
 
     React.useEffect(() => {
-        //Api -> get tags and courses
+        //Api -> get tags and programs
         (() => {
             setIsLoading(true);
-            httpInstance.get(`/microsite/tag/tags-and-courses-by-tag-type/?tagType=${Tagtype.skill}`)
+            httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.skill}`)
                 .then((response) => {
-                    if (!!response.data.length) {
+                    console.log(response)
+                    if (!!response) {
                         setSkillList(response.data);
                     }
                     setIsLoading(false);
@@ -72,7 +90,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [skillId, mappingStatus])
+    }, [skillId, mappingStatus,isEditModalOpen])
 
 
     React.useEffect(() => {
@@ -103,24 +121,24 @@ export const SkillList = (props: any) => {
 
 
     React.useEffect(() => {
-        // Api-> create course tag mapping
+        // Api-> create programs tag mapping
 
-        if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
+        if (!programTagMapping.tagIds.length || !programTagMapping.programIds.length) return;
 
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/course-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, programTagMapping)
                 .then((response) => {
 
                     if (response.data) {
-                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
+                        setProgramTagMapping({ ...programTagMapping, tagIds: [], programIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
 
                     }
                     setIsLoading(false);
-                    message.success('Course successfully Added');
+                    message.success('Program successfully Added');
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -128,7 +146,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [courseTagMapping])
+    }, [programTagMapping])
 
 
     return (
@@ -137,7 +155,7 @@ export const SkillList = (props: any) => {
             {isLoading ? "Loading" :
                 <> {!!skillList.length ?
                     <List
-                        grid={{ gutter: 16, column: 2 }}
+                        grid={{ gutter: 16, column: 3 }}
                         dataSource={skillList}
                         renderItem={item => (
 
@@ -149,20 +167,28 @@ export const SkillList = (props: any) => {
                                 >
                                     <div><Row style={{ justifyContent: "space-between" }}>
                                         <Col flex={1} ><h5>{item.name}</h5></Col>
+                                        <Col style={{ alignItems: "end" }} >
+                                            <EditOutlined style={{ fontSize: 20 }} onClick={()=>{showEditModal(item.id, item.name, item.description)}}/>
+                                        </Col>
                                         <Col style={{ alignItems: "end" }}>
                                             <DeleteOutlined style={{ fontSize: 20 }} onClick={() => showConfirm(item.id, item.name, Tagtype.skill)} />
                                         </Col>
-                                    </Row>
+                                        </Row>
+                                        <Row >
+                                            <Col flex={1}> 
+                                                <p>{item.description}</p> 
+                                            </Col> 
+                                        </Row>
                                     </div>
                                     <Divider />
 
-                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
+                                    <ProgramList programTagList={item.programs} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
 
                                     <Divider />
                                     <Button block>
-                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.skill)}>
+                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddProgramModel(item.id, Tagtype.skill)}>
                                             <Col>
-                                                <p>{"Add Course"}</p>
+                                                <p>{"Add Programs"}</p>
                                             </Col>
                                             <Col>
                                                 <PlusCircleOutlined style={{ fontSize: 20 }} />
@@ -178,9 +204,12 @@ export const SkillList = (props: any) => {
 
                     : null
                 }
-                    <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
-                        <Divider />
+                    <Modal title="Search & Add Programs" visible={isModalOpen} footer={null} onCancel={closeModel}>
+                        <ProgramSearch handleProgramTagMapping={setProgramTagMapping} programTagMapping={programTagMapping} />
+                    </Modal>
+
+                    <Modal title="Update Skill" open={isEditModalOpen} footer={null} onCancel={closeEditModel} >
+                        <SkillEditForm props={{skill:editSkill, handleSubmit:closeEditModel}}/>
                     </Modal>
                 </>
             }

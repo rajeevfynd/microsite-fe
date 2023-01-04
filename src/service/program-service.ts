@@ -32,7 +32,7 @@ export const getCarouselImageData = (d: carouselFormtype) =>{
 }
 
 export const getCarouselCourse = (d: carouselFormtype) =>{
-    return httpInstance.get('/microsite/course?id='+d.courseHyperlink)
+    return httpInstance.get('/microsite/course?id='+d.programId)
 }
 
 export const getCourseById = (d: string) =>{
@@ -49,6 +49,10 @@ export function getCourses(key:string = '', page:string = '0', size:string = '8'
 
 export function getCoursesFts(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/course/search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
+}
+
+export function getProgramFts(key:string = '', page:string = '0', size:string = '8'){
+  return httpInstance.get('/microsite/lnd/programs/fts-search?keyword='+key.toString()+'&offset='+page.toString()+'&pageSize='+size)
 }
 
 export const getProgramDetails = (id:string) => {
@@ -125,7 +129,9 @@ export function validateProgramsCourses(values: CourseMapType[]) {
     description: program.description ? program.description.trim() : program.description,
     flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
     issueCertificate: program.issueCertificate,
-    courses: [...mappedCourses]
+    courses: [...mappedCourses],
+    roleIds: program.roles.map((t:any)=>{return t.id}),
+    skillIds: program.skills.map((t:any)=>{return t.id})
   }) :
     updateProgram({
       thumbnailId: thumbnail,
@@ -133,7 +139,9 @@ export function validateProgramsCourses(values: CourseMapType[]) {
       description: program.description ? program.description.trim() : program.description,
       flow: program.sequence ? Flow.SEQUENCE : Flow.NON_SEQUENCE,
       issueCertificate: program.issueCertificate,
-      courses: [...mappedCourses]
+      courses: [...mappedCourses],
+      roleIds: program.roles.map((t:any)=>{return t.id}),
+      skillIds: program.skills.map((t:any)=>{return t.id})
     }, id)
   }
 }
@@ -145,5 +153,6 @@ export const setProgram = (body: any) => {
 
 export const updateProgram = (body: any, id: string) => {
     const url = "/microsite/lnd/programs/edit/" + id
+    console.log(body)
     return httpInstance.post(url, body)
   }

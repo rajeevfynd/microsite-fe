@@ -30,12 +30,12 @@ function AnnouncementModal(props: announcementType) {
         setdoc(resp.data.url);
     }
     return (<>
-        <div>
+        <div >
             <div>
                 <a onClick={showModal} style={{ display: 'flex', flexDirection: "column" }}>
-                    <h6 style={{ fontWeight: '540' }} className='inline'>
+                    <h3 style={{ fontWeight: '540' }} className='inline'>
                         {props.title}
-                    </h6>
+                    </h3>
                     <Typography.Text disabled style={{ fontSize: "12px" }}>{moment(props.createdAt).format("DD MMM, YYYY")}</Typography.Text>
                 </a>
             </div>

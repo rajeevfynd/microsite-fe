@@ -31,7 +31,7 @@ function Programs (props: Program){
         />
       }
       actions={[
-        <Button type='link' style={{width:'100%'}} onClick={()=>{navigate('/lnd/programs/'+props.id.toString())}}> Go to Program <ArrowRight /> </Button>
+        <Button type='link' style={{width:'100%'}} onClick={()=>{navigate('/lnd/programs/'+props.id.toString())}}> Go to Program </Button>
       ]}
     >
       <Meta

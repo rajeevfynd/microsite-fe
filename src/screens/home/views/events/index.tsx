@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseDetails } from '../../../../components/course-detail/course-details';
 import { DEFAULT_LND_THUMBNAIL } from '../../../../constants/string-constants';
-import { LearningEvent } from '../../../../models/enums/learning-events';
 import { getLearningEvents } from '../../../../service/event-service';
 import { getCourseById } from '../../../../service/program-service';
 import { getSurveyEvent } from '../../../../service/survey-service';
@@ -15,7 +14,6 @@ type LearningEventType = {
     id : string,
     title : string,
     thumbnail : string,
-    type : LearningEvent
 }
 
 type SurveyEventType = {
@@ -31,25 +29,6 @@ export const Events = () => {
     const [courseDetails, setCourseDetails] = React.useState({});
     const [learningEvent, setLearningEvent] = React.useState<LearningEventType>()
     const [surveyEvent, setSurveyEvent] = React.useState<SurveyEventType>()
-
-    const handleLearningEvent = () => {
-        if(learningEvent){
-            if(learningEvent.type == LearningEvent.JOURNEY){
-                navigate('/lnd/learning-journey/'+learningEvent.id)
-           }
-           else if(learningEvent.type == LearningEvent.PROGRAM){
-                navigate('/lnd/programs/'+learningEvent.id)
-           }
-           else if(learningEvent.type == LearningEvent.COURSE){
-                getCourseById(learningEvent.id).then( res =>
-                    {
-                        setCourseDetails(res.data)
-                        setIsModalOpen(true)
-                    }
-                )
-            }
-        }
-    }
 
     React.useEffect( ()=>{
         getLearningEvents().then( res=> {
@@ -77,9 +56,9 @@ export const Events = () => {
                         <div
                             className='event-carousel'
                         >
-                            <h6 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 "{surveyEvent.surveyTitle}" is due
-                            </h6>
+                            </h3>
                             <Image src={formatBase64(surveyEvent.imgUrl)} className='event-img' preview={false} height='80px' width='80px'/>
                             <div>
                                 <Button onClick={()=>navigate('/survey/submit/survey/'+surveyEvent.id+'/2')} type='link' className='event-link'>Go to Survey </Button>
@@ -91,22 +70,22 @@ export const Events = () => {
                         <div
                             className='event-carousel'
                         >
-                            <h6 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
-                            </h6>
+                            </h3>
                             <Image src={formatBase64(learningEvent.thumbnail)} className='event-img' preview={false} height='80px' width='80px' fallback={DEFAULT_LND_THUMBNAIL} />
                             <div>
-                                <Button onClick={handleLearningEvent} type='link' className='event-link'>Go to {learningEvent.type.toLowerCase()} </Button>
+                                <Button onClick={()=>{navigate('/lnd/programs/'+learningEvent.id)}} type='link' className='event-link'>Go to program</Button>
                              </div>
                         </div>
                     }
                     {
-                        learningEvent == undefined &&
+                        learningEvent == undefined && surveyEvent == undefined &&
                         <div
                             className='event-carousel'>
-                            <h6 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 You are all caught up!
-                            </h6>
+                            </h3>
                             <div style={{margin:'10px'}}>
                                 <CheckCircleOutlined style={{fontSize:'75px', color:'green'}}/>
                              </div>
