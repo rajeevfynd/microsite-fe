@@ -4,26 +4,17 @@ import { ChampCard } from "./champ-card";
 
 
 
-export const ChampsList = (props: {
-    data: {
-        id: number,
-        profilePicture: string,
-        name: string,
-        department: string,
-        score: number
-    }[];
-}
-) => {
+export const ChampsList = (props: { data: any; }) => {
     const { data } = props;
 
-
+    console.log(data);
 
     return (
         <div>
             <List
                 dataSource={data}
-                renderItem={item => (
-                    <List.Item key={item.id} style={{ borderBottom: "0px", padding: "5px", }}>
+                renderItem={(item, index) => (
+                    <List.Item key={index + 1} style={{ borderBottom: "0px", padding: "5px", }}>
                         <ChampCard champ={item} />
                     </List.Item>
                 )

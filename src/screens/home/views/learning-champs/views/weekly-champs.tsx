@@ -8,9 +8,7 @@ import { Champs } from "../constant";
 
 
 
-export const WeeklyChamps = (props: {
-    data: { id: number, profilePicture: string, name: string, department: string, score: number }[];
-}) => {
+export const WeeklyChamps = (props: { data: any; }) => {
 
     const { data } = props;
 
@@ -34,7 +32,7 @@ export const WeeklyChamps = (props: {
         <>
             <ChampsTitle title={Champs.weeklyChamps} />
 
-            <ChampsList data={data.slice(0, 3)} />
+            <ChampsList data={data.WEEKLY_CHAMP.slice(0, 3)} />
 
             <SeeAllButton handleSeeAllClick={handleSeeAllClick} />
 
@@ -45,7 +43,7 @@ export const WeeklyChamps = (props: {
                 onCancel={closeModel}
                 width={500}
             >
-                <ChampsPopup data={data} />
+                <ChampsPopup data={data.WEEKLY_CHAMP} />
             </Modal>
         </>
     )

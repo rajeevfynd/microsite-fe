@@ -8,15 +8,7 @@ import { Champs } from '../constant';
 
 
 
-export const TopChamps = (props: {
-    data: {
-        id: number,
-        profilePicture: string,
-        name: string,
-        department: string,
-        score: number
-    }[];
-}) => {
+export const TopChamps = (props: { data: any; }) => {
 
     const { data } = props;
 
@@ -36,11 +28,13 @@ export const TopChamps = (props: {
         showModal();
     }
 
+
+
     return (
         <>
             <ChampsTitle title={Champs.topChamps} />
 
-            <ChampsList data={data.slice(0, 2)} />
+            <ChampsList data={data.TOP_CHAMP.slice(0, 2)} />
 
             <SeeAllButton handleSeeAllClick={handleSeeAllClick} />
 
@@ -51,7 +45,7 @@ export const TopChamps = (props: {
                 onCancel={closeModel}
                 width={500}
             >
-                <ChampsPopup data={data} />
+                <ChampsPopup data={data.TOP_CHAMP} />
             </Modal>
         </>
     )

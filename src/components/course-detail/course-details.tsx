@@ -1,14 +1,26 @@
 import * as React from 'react';
-import { List, Button, Modal, Row, Col, Image, Divider } from 'antd';
+import { Button, Row, Col, Image, Divider } from 'antd';
 import Card from 'antd/lib/card/Card';
 import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
 import { formatBase64 } from '../../utility/image-utils';
+import httpInstance from '../../utility/http-client';
 
 
 export function CourseDetails(props: { course: any }) {
 
     const { course } = props;
 
+    React.useEffect(() => {
+        (() => {
+            httpInstance.put(`/microsite/user-course?courseId=${course.id}`, {})
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })();
+    }, [course]);
 
     return (
         <>
@@ -21,7 +33,7 @@ export function CourseDetails(props: { course: any }) {
                                     width={400}
                                     height={200}
                                     src={formatBase64(course.thumbnail)}
-                                    fallback={DEFAULT_LND_THUMBNAIL} 
+                                    fallback={DEFAULT_LND_THUMBNAIL}
                                     preview={false}
                                 />
                             </Col>
@@ -44,7 +56,7 @@ export function CourseDetails(props: { course: any }) {
                         </Row>
 
                         <Row style={{ textAlign: "justify", overflow: "scroll" }}>
-                            <Row style={{marginRight:"10px"}}>
+                            <Row style={{ marginRight: "10px" }}>
                                 <Col style={{ width: 400, height: 200 }}>
                                     <> <i> {course.description}</i></>
                                 </Col>

@@ -3,15 +3,7 @@ import { ChampsList } from "./champs-list";
 
 
 
-export const ChampsPopup = (props: {
-    data: {
-        id: number,
-        profilePicture: string,
-        name: string,
-        department: string,
-        score: number
-    }[];
-}) => {
+export const ChampsPopup = (props: { data: any; }) => {
 
     const { data } = props;
 
