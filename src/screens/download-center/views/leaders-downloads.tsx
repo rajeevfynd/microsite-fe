@@ -1,5 +1,7 @@
-import { Row, Col, Image, Button, message, Result, Typography, Divider, Skeleton } from "antd"
+import Icon, { DownloadOutlined } from "@ant-design/icons"
+import { Row, Col, Image, Button, message, Result, Typography, Divider, Skeleton, Card } from "antd"
 import * as React from "react"
+import { Meta } from "react-bootstrap-icons"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { DEFAULT_LND_THUMBNAIL } from "../../../constants/string-constants"
 import { GET_LEADERS_DOWNLOADS } from "../../../constants/urls"
@@ -43,7 +45,9 @@ export const LeadersDownloads = () => {
 
     const css = `
         .download-btn {
-          width: 90%;
+          width: 100%;
+          height: 100%;
+        //   background-color : white;
         }
         `
 
@@ -73,16 +77,21 @@ export const LeadersDownloads = () => {
             >
                 {leadersList && leadersList.map(leader => (
                     <>
-                        <Row gutter={30}>
-                        <Col span={5} style={{height:320}}>
-                            <div className="wrapper">
-                                <Image
-                                    src={formatBase64(leader.document.thumbnail)}
-                                    fallback={DEFAULT_LND_THUMBNAIL}
-                                    width={'90%'}
-                                    preview={false}
-                                />
-                                <Button className="download-btn" onClick={() => downloadDocument(leader.document.id)}>Click to download</Button>
+                        <Row>
+                        <Col span={5}>
+                            <div style={{marginBottom : 30}}>
+
+                                <Card
+                                    hoverable
+                                    style={{ width: 300}}
+                                    cover={<img src={formatBase64(leader.document.thumbnail)}/>}
+                                    type="inner"
+                                >
+                                    <Button className="download-btn" type="text" onClick={() => downloadDocument(leader.document.id)}>
+                                        Click to download
+                                    </Button>
+                                </Card>
+
                             </div>
                         </Col>
                         <Col span={16}>

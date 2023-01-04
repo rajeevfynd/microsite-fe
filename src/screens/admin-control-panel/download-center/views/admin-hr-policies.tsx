@@ -14,6 +14,7 @@ export const AdminHRPolicies = () => {
     const [downloadsUrl, setDownloadsUrl] = React.useState<string>("")
     const [keyState, setKeyState] = React.useState<string>('')
     const [deleteUrl, setDeleteUrl] = React.useState<string>('')
+    const [addNew, setAddNew] = React.useState<boolean>(false)
 
 
     const createSubmenuList = ( )=> {
@@ -35,8 +36,8 @@ export const AdminHRPolicies = () => {
         setKeyState(key)
       }
 
-    const onAddSubmit = (categoryId : string) => {
-        setDownloadsUrl(GET_HR_POLICIES + "/" + categoryId)
+    const onAddSubmit = () => {
+        setAddNew(!addNew)
     }
 
 
@@ -72,7 +73,8 @@ export const AdminHRPolicies = () => {
                             <><Tabs.TabPane tab={menu.key} key={menu.value}>
                                 {keyState.length == 0 && 
                                     <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
-                                    deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
+                                    deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}
+                                    addNew = {addNew}/></div>
                                 }
                             </Tabs.TabPane></>
                         ))}
@@ -83,7 +85,8 @@ export const AdminHRPolicies = () => {
                     <div>
                         Search Results
                         <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
-                            deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
+                            deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}
+                            addNew = {addNew}/></div>
                     </div>
                 }
             </>
