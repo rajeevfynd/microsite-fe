@@ -9,6 +9,9 @@ import {
   Typography,
   Input,
   Card,
+  Row,
+  Col,
+  Divider,
 } from "antd";
 import html2canvas from "html2canvas";
 
@@ -22,6 +25,7 @@ import {
   UploadOutlined,
   AlignLeftOutlined,
   CheckSquareTwoTone,
+  PlusCircleTwoTone,
 } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import RadioUi from "./options/RadioUI";
@@ -82,9 +86,9 @@ const Survey = () => {
     });
   };
 
-  const handleAddOption = (i: number, j: number) => {
+  const handleAddOption = (i: number) => {
     let temp = Survey;
-    temp.questions[i].choices.splice(j + 1, 0, { id: "", choiceText: "" });
+    temp.questions[i].choices.push({ id: "", choiceText: "" });
     setSurvey({ ...temp });
   };
 
@@ -117,15 +121,27 @@ const Survey = () => {
       <>
         <div className="form-check ">
           {Survey.questions[i].choices.map((op, j) => (
-            <RadioUi
-              i={i}
-              j={j}
-              optionText={op.choiceText}
-              handleDeleteOption={handleDeleteOption}
-              handleAddOption={handleAddOption}
-              handleOPtionIn={handleChoiceText}
-            />
+            <>
+              <RadioUi
+                i={i}
+                j={j}
+                optionText={op.choiceText}
+                handleDeleteOption={handleDeleteOption}
+                handleOPtionIn={handleChoiceText}
+              />
+            </>
           ))}
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
+            <Radio
+              disabled
+            />
+            <Button
+              type="text"
+              onClick={(e) => handleAddOption(i)}
+            >
+              Add Option
+            </Button>
+          </div>
         </div>
       </>
     );
@@ -158,8 +174,8 @@ const Survey = () => {
   };
 
   const addOption = (i: number) => {
-    handleAddOption(i, 0);
-    handleAddOption(i, 1);
+    handleAddOption(i);
+    handleAddOption(i);
   };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
@@ -518,29 +534,26 @@ const Survey = () => {
                           borderLeft: "4px solid rgb(66, 90, 245)",
                         }}
                       >
-                        <Row className="row">
-                          <div className="col-6">
-                            <div className="input-group ">
-                              <Input
-                                key={index}
-                                id="validationCustom01"
-                                type="text"
-                                className="form-control"
-                                placeholder="Question"
-                                aria-label="questionText"
-                                name="questionText"
-                                aria-describedby="basic-addon1"
-                                value={question.questionText}
-                                onChange={(e) => handleQuestionText(e, index)}
-                                required
-                              />
-                            </div>
-                          </div>
+                        <div>
 
-                          <div
-                            className="col-4"
-                            data-html2canvas-ignore="true"
-                          >
+                        </div>
+                        <Row className="row" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                          <Col span={17}>
+                            <Input
+                              key={index}
+                              id="validationCustom01"
+                              type="text"
+                              className="form-control"
+                              placeholder="Question"
+                              aria-label="questionText"
+                              name="questionText"
+                              aria-describedby="basic-addon1"
+                              value={question.questionText}
+                              onChange={(e) => handleQuestionText(e, index)}
+                              required
+                            />
+                          </Col>
+                          <Col span={6}>
                             <Select
                               defaultValue={
                                 question.questionType.length < 1
@@ -562,23 +575,19 @@ const Survey = () => {
                                 <AlignLeftOutlined /> Paragraph
                               </Option>
                             </Select>
-                          </div>
-
-                          <div className="col-2">
-                            <div
-                              style={{ position: "absolute", float: "right" }}
-                            >
-                              <DeleteOutlined
-                                data-html2canvas-ignore="true"
-                                style={{ color: "red" }}
-                                onClick={(e) => DeleteQuestion(e, index)}
-                              />
-                            </div>
-                          </div>
+                          </Col>
                         </Row>
-
-                        <div>
+                        <Row style={{ marginTop: "10px" }}>
                           {handleSwitch(question.questionType, index)}
+                        </Row>
+                        <Divider />
+                        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "flex-end" }}>
+                          <Button
+                            shape="circle"
+                            type="primary"
+                            icon={<DeleteOutlined />}
+                            onClick={(e) => DeleteQuestion(e, index)}
+                            danger />
                         </div>
                       </Card>
                       <br />
@@ -599,13 +608,14 @@ const Survey = () => {
                     style={{ float: "right" }}
                     data-html2canvas-ignore="true"
                   >
-                    <button
+                    <Button
                       disabled={disableSubmit}
-                      type="submit"
+                      htmlType="submit"
+                      type="primary"
                       className="btn btn-primary"
                     >
                       {params.id ? "Save the Changes" : "Submit"}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
