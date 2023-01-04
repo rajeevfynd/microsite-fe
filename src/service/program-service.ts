@@ -39,6 +39,10 @@ export const getCourseById = (d: string) =>{
     return httpInstance.get('/microsite/course?id='+d)
 }
 
+export const deleteCourseById = (id: string) =>{
+  return httpInstance.delete(`/microsite/course?id=${id}`);
+}
+
 export function getPrograms(key:string = '', page:string = '0', size:string = '8'){
     return httpInstance.get('/microsite/lnd/programs/search?key='+key.toString()+'&page='+page.toString()+'&size='+size)
 }

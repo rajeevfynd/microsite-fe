@@ -1,4 +1,5 @@
-import { Button, Card, Image, List, Result, Skeleton, Typography } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Card, Image, List, message, Modal, Result, Skeleton, Typography } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import * as React from 'react';
 import { PencilSquare, PlusLg, Trash } from 'react-bootstrap-icons';
@@ -7,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShadowSearchInput } from '../../../components/shadow-input-text';
 import { DEFAULT_LND_THUMBNAIL } from '../../../constants/string-constants';
 import { CourseListType } from '../../../models/course-type';
-import { getCourses } from '../../../service/program-service';
+import { deleteCourseById, deleteProgram, getCourses } from '../../../service/program-service';
 import { debounce } from '../../../utility/debounce-utils';
 import { formatBase64 } from '../../../utility/image-utils';
 import './index.css';
@@ -37,7 +38,7 @@ export const AdminCoursePage = () => {
     };
 
     const searchCourses = () => {
-        setKeyState(key)
+        setKeyState(key);
         if (load) { return; }
         setLoad(false);
         getCourses(key).then(
@@ -59,6 +60,28 @@ export const AdminCoursePage = () => {
         key = str
         debounce(searchCourses, 500)
     }
+
+    const handleDelete = (id: string, title: string) => {
+        Modal.confirm({
+          title: 'Confirm',
+          icon: <ExclamationCircleOutlined />,
+          content: 'Are you sure you want to delete '+title,
+          okText: 'Yes',
+          cancelText: 'No',
+          onOk() {
+            deleteCourseById(id)
+            .then( res => { 
+                if(res.data.isActive === false) { 
+                    message.success(`${title} Successfully Deleted`);
+                     searchCourses(); 
+                }
+            }) 
+            .catch(error =>{
+                message.error(`Something Went Wrong Please Try After Sometime`); 
+            })
+          }
+        });
+      };
 
     return (
         <>
@@ -102,7 +125,9 @@ export const AdminCoursePage = () => {
                                                 />
                                             }
                                             actions={[
-                                                <Button onClick={() => { item.id && navigate(item.id.toString()) }} type='link' > <PencilSquare style={{ margin: '10%' }} /> </Button>
+                                                <Button onClick={() => { item.id && navigate(item.id.toString()) }} type='link' > <PencilSquare style={{ margin: '5%' }} /> </Button>,
+                                                <Button onClick={()=>handleDelete(item.id.toString(), item.title)} type='link' danger> <Trash style={{margin:'5%'}}/> </Button>
+            
                                             ]}
                                         >
                                             <Meta
