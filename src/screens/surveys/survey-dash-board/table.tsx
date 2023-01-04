@@ -5,11 +5,7 @@ import { useState } from "react";
 import { getDasboardTable } from "../../../service/survey-service";
 import { Space, Spin, Table, TableProps, Tag } from "antd";
 import { FilterValue } from "antd/es/table/interface";
-import { useParams } from "react-router-dom";
 import moment from "moment";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { string } from "prop-types";
-import { type } from "os";
 
 interface TableParams {
   filters?: Record<string, FilterValue>;
@@ -114,7 +110,6 @@ const DasboardTable = () => {
           value: "pending",
         },
       ],
-      //onFilter: (value: any, record) => record.status.includes(value),
       onFilter: (value: any, record) => record.status.indexOf(value) === 0,
     },
 
@@ -138,7 +133,7 @@ const DasboardTable = () => {
   // rowSelection object indicates the need for row selection
   const loadMore = () => {
     console.log("Load MOre is called,", pageNumber);
-    getDasboardTable("1", pageNumber)
+    getDasboardTable("2", pageNumber)
       .then((res) => {
         setData([...tableData, ...res.data.content]);
         setHasMore(!res.data.last);
@@ -160,7 +155,7 @@ const DasboardTable = () => {
   };
   React.useEffect(() => {
     !initialLoad &&
-      getDasboardTable("1", pageNumber)
+      getDasboardTable("2", pageNumber)
         .then((res) => {
           console.log("Inside use Effect");
           setData(res.data.content);

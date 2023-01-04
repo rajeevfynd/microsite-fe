@@ -24,8 +24,12 @@ import axios, {
 } from "axios";
 import * as React from "react";
 import DasboardTable from "./table";
-import { config } from "dotenv";
 import { useParams } from "react-router";
+
+type columnType = {
+  column: string;
+  value: string;
+};
 
 const { Title } = Typography;
 
@@ -38,7 +42,20 @@ function SurveyDashBoard() {
   const placementChange = (e: RadioChangeEvent) => {
     SetPlacement(e.target.value);
   };
-  const;
+  const searchDto = {
+    column: "survey",
+    value: "2",
+  };
+
+  const [status, setStatus] = React.useState({
+    column: "",
+    value: "",
+  });
+
+  const [pickDate, setPickDate] = React.useState({
+    column: "expireDate",
+    value: "",
+  });
 
   const { RangePicker } = DatePicker;
 
@@ -49,10 +66,20 @@ function SurveyDashBoard() {
   };
 
   const handleOk = () => {
+    var searchArray: columnType[] = [searchDto];
+    if (status.column !== "") {
+      searchArray.push(status);
+    }
+    if (pickDate.value !== "") {
+      searchArray.push(pickDate);
+    }
+    console.log("Before data sent", searchArray);
     let config: AxiosRequestConfig = {
       method: "POST",
       url: "/microsite/surveys/export-to-excel",
-      data: searchDto,
+      data: {
+        searchRequestDto: searchArray,
+      },
       responseType: "blob",
       handlerEnabled: false,
     };
@@ -61,8 +88,6 @@ function SurveyDashBoard() {
         console.log(res);
         console.log(typeof res.data);
         console.log(res.data);
-
-        //downloadFile(res.data, "survey.xlsx");
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement("a");
         link.href = url;
@@ -74,37 +99,20 @@ function SurveyDashBoard() {
     setIsModalOpen(false);
   };
 
-  const downloadFile = (data: BlobPart, name = "Survey.xlsx") => {
-    console.log("Inside download file", data);
-    const blob = new Blob([data]);
-
-    const href = URL.createObjectURL(blob);
-
-    const a = Object.assign(document.createElement("a"), {
-      href,
-      style: "display:none",
-      download: name,
-    });
-    console.log("Blob data", blob);
-    document.body.appendChild(a);
-
-    a.click();
-    URL.revokeObjectURL(href);
-    a.remove();
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   const onChangeSelect = (value: string) => {
     console.log(`selected ${value}`);
+    let newStatus = { column: value, value: "" };
+    setStatus(newStatus);
   };
   return (
     <>
-      <div className="container">
+      <div className="container" style={{ padding: "20px" }}>
         <Title>Dash Board</Title>
-        <Title level={2}>Survey 1</Title>
+        <Title level={2}>Survey {params.id}</Title>
         <Card style={{ width: "100%" }}>
           <Row gutter={16}>
             <Col span={8}>
@@ -143,7 +151,17 @@ function SurveyDashBoard() {
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <RangePicker placement={placement} />
+            <RangePicker
+              placement={placement}
+              onChange={(value, dateString) => {
+                console.log("Value", value);
+                console.log("Date range selected ", dateString);
+                setPickDate({
+                  column: "expireDate",
+                  value: dateString.toString(),
+                });
+              }}
+            />
             <Select
               showSearch
               placeholder="Select status"
@@ -155,15 +173,15 @@ function SurveyDashBoard() {
               }
               options={[
                 {
-                  value: "submitted",
+                  value: "Submitted",
                   label: "submitted",
                 },
                 {
-                  value: "pending",
+                  value: "Pending",
                   label: "pending",
                 },
                 {
-                  value: "expired",
+                  value: "Expired",
                   label: "expired",
                 },
               ]}
@@ -172,8 +190,8 @@ function SurveyDashBoard() {
         </span>
 
         <br></br>
-        <DasboardTable />
       </div>
+      <DasboardTable />
     </>
   );
 }
