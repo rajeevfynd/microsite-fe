@@ -49,7 +49,7 @@ export const ProgramList = (props: any) => {
             {programList && programList.length>0 ? programList.map(({program,tag}) => {
             //    console.log(program.program)
             return (<Row key={program.id.toString()+tag.id.toString()} style={{ justifyContent: "space-between" }}>
-            <Col flex={1} ><h6>{program.title}</h6></Col>
+            <Col flex={1} ><h3>{program.title}</h3></Col>
             <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveProgram({ tagId: tag.id, programId: program.id })} /></Col>
         </Row>)
     }) : null}
