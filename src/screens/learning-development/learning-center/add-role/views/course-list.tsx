@@ -9,7 +9,7 @@ export const ProgramList = (props: any) => {
     //console.log(props)
     const { handleMappingStatus, mappingStatus, programTagList } = props;
 
-    const [courseList, setProgramList] = React.useState([]);
+    const [programList, setProgramList] = React.useState([]);
 
 
 
@@ -20,15 +20,15 @@ export const ProgramList = (props: any) => {
 
     }, []);
 
-    const handleRemoveProgram = (data: { tagId: number; courseId: number; }) => {
+    const handleRemoveProgram = (data: { tagId: number; programId: number; }) => {
 
-        const { tagId, courseId } = data;
+        const { tagId, programId } = data;
 
 
-        if (!tagId || !courseId) return;
+        if (!tagId || !programId) return;
 
         (() => {
-            httpInstance.delete(`/microsite/program-tag/program-tag-by-program-id-and-tag-id?programId=${courseId}&tagId=${tagId}`)
+            httpInstance.delete(`/microsite/program-tag/program-tag-by-program-id-and-tag-id?programId=${programId}&tagId=${tagId}`)
                 .then((response) => {
 
                     handleMappingStatus(!mappingStatus);
@@ -46,11 +46,11 @@ export const ProgramList = (props: any) => {
 
     return (
         <>
-            {courseList && courseList.length>0 ? courseList.map(({program,tag}) => {
+            {programList && programList.length>0 ? programList.map(({program,tag}) => {
             //    console.log(program.program)
             return (<Row key={program.id.toString()+tag.id.toString()} style={{ justifyContent: "space-between" }}>
             <Col flex={1} ><h6>{program.title}</h6></Col>
-            <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveProgram({ tagId: tag.id, courseId: program.id })} /></Col>
+            <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveProgram({ tagId: tag.id, programId: program.id })} /></Col>
         </Row>)
     }) : null}
         </>

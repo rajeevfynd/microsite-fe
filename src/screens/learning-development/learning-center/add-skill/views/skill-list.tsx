@@ -18,7 +18,7 @@ export const SkillList = (props: any) => {
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [editSkill, setEditSkill] = React.useState<editTagType>();
     
-    const [courseTagMapping, setCourseTagMapping] = React.useState({
+    const [programTagMapping, setProgramTagMapping] = React.useState({
         programIds: [],
         tagIds: [],
         tagType: Tagtype.skill,
@@ -54,7 +54,7 @@ export const SkillList = (props: any) => {
 
     const showConfirm = (skillId: number, skillName: string, skillType: string) => {
         confirm({
-            title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Course"}? `,
+            title: `Do you Want to delete this "${skillName}" ${skillType === "SKILL" ? "Skill" : "Program"}? `,
             icon: <ExclamationCircleOutlined />,
             onOk() {
                 setSkillId(skillId);
@@ -65,15 +65,15 @@ export const SkillList = (props: any) => {
         });
     };
 
-    const handleAddCourseModel = (tagId: number, tagType: string) => {
+    const handleAddProgramModel = (tagId: number, tagType: string) => {
 
-        setCourseTagMapping({ ...courseTagMapping, tagIds: [tagId], tagType: tagType });
+        setProgramTagMapping({ ...programTagMapping, tagIds: [tagId], tagType: tagType });
         showModal()
 
     };
 
     React.useEffect(() => {
-        //Api -> get tags and courses
+        //Api -> get tags and programs
         (() => {
             setIsLoading(true);
             httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.skill}`)
@@ -121,18 +121,18 @@ export const SkillList = (props: any) => {
 
 
     React.useEffect(() => {
-        // Api-> create course tag mapping
+        // Api-> create programs tag mapping
 
-        if (!courseTagMapping.tagIds.length || !courseTagMapping.programIds.length) return;
+        if (!programTagMapping.tagIds.length || !programTagMapping.programIds.length) return;
 
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, programTagMapping)
                 .then((response) => {
 
                     if (response.data) {
-                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], programIds: [] })
+                        setProgramTagMapping({ ...programTagMapping, tagIds: [], programIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
 
@@ -146,7 +146,7 @@ export const SkillList = (props: any) => {
                 });
         })();
 
-    }, [courseTagMapping])
+    }, [programTagMapping])
 
 
     return (
@@ -186,7 +186,7 @@ export const SkillList = (props: any) => {
 
                                     <Divider />
                                     <Button block>
-                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.skill)}>
+                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddProgramModel(item.id, Tagtype.skill)}>
                                             <Col>
                                                 <p>{"Add Programs"}</p>
                                             </Col>
@@ -205,7 +205,7 @@ export const SkillList = (props: any) => {
                     : null
                 }
                     <Modal title="Search & Add Programs" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <ProgramSearch handleProgramTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
+                        <ProgramSearch handleProgramTagMapping={setProgramTagMapping} programTagMapping={programTagMapping} />
                     </Modal>
 
                     <Modal title="Update Skill" open={isEditModalOpen} footer={null} onCancel={closeEditModel} >
