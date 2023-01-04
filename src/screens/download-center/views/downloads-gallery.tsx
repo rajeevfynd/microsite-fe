@@ -1,93 +1,121 @@
-import { Card, Col, message, Modal, Row, SelectProps, Space } from 'antd'
+import { Card, Divider, List, message, Skeleton, Space } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
-import { Content } from 'antd/lib/layout/layout';
-import { DownloadListPropsType, DownloadDocumentType } from '../../../models/download-center-type';
-import { getDownloadsList } from '../../../service/download-center-service';
+import { PolicyDownloadType } from '../../../models/download-center-type';
+import { downloadDocument, getDocumentsList } from '../../../service/download-center-service';
 import httpInstance from '../../../utility/http-client';
 import { formatBase64 } from '../../../utility/image-utils';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-export const DownloadsGallery = (props:{downloadListProps: DownloadListPropsType}) => {
-    const { downloadListProps} = props;
+export const DownloadsGallery = (props:{downloadsUrl : string, searchKey : string}) => {
     const { Meta } = Card;
 
-    const { confirm } = Modal;
+    const [data, setData] = React.useState<any[]>([])
+    const [downloadsList, setDownloadsList] = React.useState<PolicyDownloadType[]>([])
+    const [loading, setLoading] = React.useState(false);
+    const [pageNumber,setPageNumber ] = React.useState<number>(0)
+    const [hasMore, setHasMore] = React.useState<boolean>(false)
 
-    const [leadersList, setLeadersList] = React.useState<DownloadDocumentType[]>()
-    const [downloadCategoryList, setDownloadCategoryList] = React.useState<SelectProps['options']>([])
 
-    const handleImgClick = async (documentId : number) => {
-        let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
-        window.open(docUrl.data.url, '_blank').focus();
+    const createDataList = () => {
+        let tempList : any[] = []
+            downloadsList.map(doc => (
+                tempList.push({
+                    id : doc.id,
+                    documentId : doc.document.id,
+                    thumbnail : doc.document.thumbnail,
+                    title: doc.name,
+                    description : doc.description,
+                })
+            ))
+        setData(tempList)
     }
 
-    const css = `
-    .leaders-gallery {
-        margin-top : 50px
-    }
-        `
-
-
-      const getDownloadsGallery = () => {
-        getDownloadsList(downloadListProps.categoryId)
+    const loadMoreData = () => {
+        console.log("loadMoreData")
+        if (loading) {
+            return;
+          }
+        setLoading(true);
+        console.log(loading)
+        getDocumentsList(props.downloadsUrl, "", pageNumber.toString())
             .then(response => {
-                setLeadersList(response.data.content)
+                setDownloadsList([...downloadsList , ...response.data.content])
+                setHasMore(!response.data.last)
+                setLoading(false);
             })
             .catch((error) => {
                 message.error(error);
+                setLoading(false);
             });
+        setLoading(false);
+        setPageNumber(pageNumber + 1);
     }
 
 
     React.useEffect(() => {
-        getDownloadsGallery();
+        loadMoreData();
     }, [])
+
+    React.useEffect(() => {
+        createDataList()
+    }, [downloadsList])
 
 
     return (
         <>
-        <style>
-            {css}
-        </style>
-        
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: '25px' }}>
-            <h3>{props.downloadListProps.title}</h3>
-        </div>
 
-        <Row className='body-container'>
-            <Content className='leaders-gallery'>
-                <Row gutter={[{xs : 8, sm : 16, md : 24, lg : 32}, 60]}>
-                    
-                    {leadersList != undefined && leadersList.map((leader) => (
-                        <Col>
-                        <Card
-                            style={{ width: 300 }}
-                            hoverable
-                            cover={
-                                
-                                <img 
-                                onClick={() => handleImgClick(leader.document.id)} 
-                                src={formatBase64(leader.document.thumbnail)}/>
-                            }
-                            actions={[
-                                <>
-                                    <Space size={20}>
+            {props.searchKey.length <= 0 && 
 
-                                        <DownloadOutlined onClick={() => handleImgClick(leader.document.id)}></DownloadOutlined>
-                                    </Space>
-                                </>
-                            ]}
-                            >
-                            <Meta
-                                title= {leader.name}
-                                description={leader.description}
-                            />
-                        </Card>
-                    </Col>
-                    ))}
-                </Row>
-            </Content>
-        </Row>
+                <div className='body-container' id="scrollableDiv">
+                    <InfiniteScroll
+                        dataLength={data.length}
+                        next={loadMoreData}
+                        hasMore={hasMore}
+                        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+                        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                        scrollableTarget="scrollableDiv"
+                        scrollThreshold={1}
+                        height={600}
+                    >
+
+
+                        <List
+                            grid={{gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 4}}
+                            dataSource={data}
+                            renderItem={(item) => (
+                            <List.Item>
+                                <Card style={{ width: 300 }}
+                                            hoverable
+                                            cover={
+                                                
+                                                <img 
+                                                onClick={() => downloadDocument(item.documentId)} 
+                                                src={formatBase64(item.thumbnail)}/>
+                                            }
+                                            actions={[
+                                                <>
+                                                    <Space size={20}>
+
+                                                        <DownloadOutlined onClick={() => downloadDocument(item.documentId)}></DownloadOutlined>
+                                                    </Space>
+                                                </>
+                                            ]}
+                                    >
+                                            <Meta
+                                                title= {item.title}
+                                                description={item.description}
+                                            />
+                                </Card>
+                            </List.Item>
+                            )}
+                            
+                        />   
+
+                    </InfiniteScroll>
+                </div>
+
+            }
         </>
     )
 
