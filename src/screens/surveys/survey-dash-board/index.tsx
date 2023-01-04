@@ -25,6 +25,7 @@ import axios, {
 import * as React from "react";
 import DasboardTable from "./table";
 import { config } from "dotenv";
+import { useParams } from "react-router";
 
 const { Title } = Typography;
 
@@ -32,17 +33,12 @@ function SurveyDashBoard() {
   const [placement, SetPlacement] =
     React.useState<DatePickerProps["placement"]>("topLeft");
 
+  const params = useParams();
+
   const placementChange = (e: RadioChangeEvent) => {
     SetPlacement(e.target.value);
   };
-  const searchDto = {
-    searchRequestDto: [
-      {
-        column: "survey",
-        value: "1",
-      },
-    ],
-  };
+  const;
 
   const { RangePicker } = DatePicker;
 
@@ -73,24 +69,6 @@ function SurveyDashBoard() {
         link.setAttribute("download", `survey.xlsx`);
         document.body.appendChild(link);
         link.click();
-
-        // const url = window.URL.createObjectURL(
-        //   new Blob([res.data], { type: "octet-stream" })
-        // );
-
-        // const link = document.createElement("a");
-
-        // link.href = url;
-
-        // link.setAttribute("download", `${Date.now()}.xlsx`);
-
-        // document.body.appendChild(link);
-
-        // link.click();
-
-        // link.remove();
-
-        // fs.writeFileSynce("Survey.xls",res.data);
       })
       .catch((err) => console.log(err.message));
     setIsModalOpen(false);
@@ -160,7 +138,7 @@ function SurveyDashBoard() {
             Export as Excel
           </Button>
           <Modal
-            title="Aplly filters"
+            title="Apply filters"
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
