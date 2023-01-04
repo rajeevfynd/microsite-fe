@@ -10,8 +10,8 @@
     text-align: center;
 }
 
-#scrollableDiv{
-    height: 60vh;
+#scrollableTagDiv{
+    height: 70vh;
     overflow: auto;
     padding: 0 16px;
   }

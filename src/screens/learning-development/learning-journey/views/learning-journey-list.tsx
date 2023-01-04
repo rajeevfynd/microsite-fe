@@ -68,7 +68,6 @@ export  const LearningJourneyList = () => {
         onChange={(e:string) => {searchKey(e);} } 
     />
     <div
-      id="scrollableDiv"
       style={{
         width: '100%',
         height: '100%'
@@ -106,7 +105,7 @@ export  const LearningJourneyList = () => {
                   />
                 }
                 actions={[
-                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to journey <ArrowRight /> </Button>
+                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to journey </Button>
                 ]}
               >
                 <Meta

@@ -68,7 +68,6 @@ export  const ProgramList = () => {
         onChange={(e:string) => {searchKey(e);} } 
     />
     <div
-      id="scrollableDiv"
       style={{
         width: '100%',
         height: '100%'
@@ -106,7 +105,7 @@ export  const ProgramList = () => {
                   />
                 }
                 actions={[
-                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to Program <ArrowRight /> </Button>
+                  <Button type='link' style={{width:'100%'}} onClick={()=>{navigate(item.id.toString())}}> Go to Program </Button>
                 ]}
               >
                 <Meta

@@ -21,10 +21,6 @@ export const CourseSearch = (props: any) => {
     });
     const [selectedCourses, setSelectedCourses] = React.useState([]);
 
-
-
-
-
     React.useEffect(() => {
         // search Api-> get courses by name 
         if (!courseSearch.keyword) return;
