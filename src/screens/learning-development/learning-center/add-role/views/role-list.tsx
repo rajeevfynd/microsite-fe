@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Col, Row, Card, List, Divider, Button, Modal, Tag, message, } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import { Tagtype } from '../../../../../constants/tag';
-import { CourseList } from './course-list';
+import { ProgramList } from './course-list';
 import httpInstance from '../../../../../utility/http-client';
-import { CourseSearch } from './course-search';
+import { ProgramSearch } from './course-search';
 import { editTagType } from '../../../../../models/tag-type';
 import { RoleEditForm } from './role-edit-form';
 const { confirm } = Modal;
@@ -19,8 +19,8 @@ export const RoleList = (props: any) => {
     const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
     const [editRole, setEditRole] = React.useState<editTagType>();
     
-    const [courseTagMapping, setCourseTagMapping] = React.useState({
-        courseIds: [],
+    const [programTagMapping, setProgramTagMapping] = React.useState({
+        programIds: [],
         tagIds: [],
         tagType: Tagtype.role,
         isActive: true
@@ -55,7 +55,7 @@ export const RoleList = (props: any) => {
 
     const showConfirm = (roleId: number, roleName: string, roleType: string) => {
         confirm({
-            title: `Do you Want to delete this "${roleName}" ${roleType === "ROLE" ? "Role" : "Course"}? `,
+            title: `Do you Want to delete this "${roleName}" ${roleType === "ROLE" ? "Role" : "Program"}? `,
             icon: <ExclamationCircleOutlined />,
             onOk() {
                 setRoleId(roleId);
@@ -66,15 +66,15 @@ export const RoleList = (props: any) => {
         });
     };
 
-    const handleAddCourseModel = (tagId: number, tagType: string) => {
+    const handleAddProgramModel = (tagId: number, tagType: string) => {
 
-        setCourseTagMapping({ ...courseTagMapping, tagIds: [tagId], tagType: tagType });
+        setProgramTagMapping({ ...programTagMapping, tagIds: [tagId], tagType: tagType });
         showModal()
 
     };
 
     React.useEffect(() => {
-        //Api -> get tags and courses
+        //Api -> get tags and program
         (() => {
             setIsLoading(true);
             httpInstance.get(`/microsite/tag/tags-and-programs-by-tag-type/?tagType=${Tagtype.role}`)
@@ -121,24 +121,26 @@ export const RoleList = (props: any) => {
 
 
     React.useEffect(() => {
-        // Api-> create course tag mapping
+        // Api-> create program tag mapping
 
-        if (!courseTagMapping.tagIds.length || !courseTagMapping.courseIds.length) return;
+        if (!programTagMapping.tagIds.length || !programTagMapping.programIds.length) {
+            return;
+        }
 
         (() => {
             setIsLoading(true);
 
-            httpInstance.post(`/microsite/program-tag/`, courseTagMapping)
+            httpInstance.post(`/microsite/program-tag/`, programTagMapping)
                 .then((response) => {
 
                     if (response.data) {
-                        setCourseTagMapping({ ...courseTagMapping, tagIds: [], courseIds: [] })
+                        setProgramTagMapping({ ...programTagMapping, tagIds: [], programIds: [] })
                         setIsModalOpen(false);
                         setMappingStatus(!mappingStatus);
 
                     }
                     setIsLoading(false);
-                    message.success('Course successfully Added');
+                    message.success('Program successfully Added');
 
                 })
                 .catch((error) => {
@@ -147,7 +149,7 @@ export const RoleList = (props: any) => {
                 });
         })();
 
-    }, [courseTagMapping])
+    }, [programTagMapping])
 
 
     return (
@@ -182,14 +184,15 @@ export const RoleList = (props: any) => {
                                     </Row>
                                     </div>
                                     <Divider />
+                                    {/* {item.programs} */}
 
-                                    <CourseList courseList={item.courses} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
+                                    <ProgramList programTagList={item.programs} handleMappingStatus={setMappingStatus} mappingStatus={mappingStatus} />
 
                                     <Divider />
                                     <Button block>
-                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddCourseModel(item.id, Tagtype.role)}>
+                                        <Row justify="center" style={{ columnGap: 10 }} onClick={() => handleAddProgramModel(item.id, Tagtype.role)}>
                                             <Col>
-                                                <p>{"Add Course"}</p>
+                                                <p>{"Add Programs"}</p>
                                             </Col>
                                             <Col>
                                                 <PlusCircleOutlined style={{ fontSize: 20 }} />
@@ -205,8 +208,8 @@ export const RoleList = (props: any) => {
 
                     : null
                 }
-                    <Modal title="Search & Add Courses" visible={isModalOpen} footer={null} onCancel={closeModel}>
-                        <CourseSearch handleCourseTagMapping={setCourseTagMapping} courseTagMapping={courseTagMapping} />
+                    <Modal title="Search & Add Programs" visible={isModalOpen} footer={null} onCancel={closeModel}>
+                        <ProgramSearch handleProgramTagMapping={setProgramTagMapping} programTagMapping={programTagMapping} />
                         <Divider />
                     </Modal>
 
