@@ -16,3 +16,11 @@ export const isAdmin = () => {
     } 
     return false
 }
+
+export const isSuperAdmin = () => {
+    const user = getUser();
+    if(user){
+        return user.role == Role.SUPER_ADMIN
+    }
+    return false
+}

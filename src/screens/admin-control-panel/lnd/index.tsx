@@ -92,15 +92,13 @@ export const AdminLnd = () => {
 
                 <Layout
                     style={{
-                        background: '#fff',
                         height: '90vh',
                     }}
                 >
                     <Content style={{
                         overflow: 'auto',
                         margin: '0px 0px 0',
-                        height: '90vh',
-                        background: '#fff'
+                        height: '90vh'
                     }}>
                         <ProtectedComponent>
                             <Routes>

@@ -35,17 +35,6 @@
     animation-play-state: paused;
 }
 
-/* Make it move! */
-@keyframes marquee {
-    0% {
-        top: 6em
-    }
-
-    100% {
-        top: -11em
-    }
-}
-
 /* Make it look pretty */
 .microsoft .marquee {
     margin: 0;

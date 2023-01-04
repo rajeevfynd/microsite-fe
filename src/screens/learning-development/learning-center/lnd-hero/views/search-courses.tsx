@@ -120,7 +120,7 @@ const SearchCourses = () => {
                                         />
                                     }
                                     actions={[
-                                        <Button onClick={()  => handleCourseDetailsClick(item) } type='link' >Go to course</Button>
+                                        <Button onClick={()  => handleCourseDetailsClick(item) } type='link' >Show course</Button>
                                     ]}
                                 >
                                     <Meta
