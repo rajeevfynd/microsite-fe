@@ -18,7 +18,6 @@ import {
   assigneModelData,
   UserType,
 } from "../../../models/survey";
-import "../new-survey/views/questionForm.css";
 import { useNavigate } from "react-router-dom";
 import {
   assignSurveyToUserId,

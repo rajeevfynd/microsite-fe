@@ -8,7 +8,6 @@ import {
   getSurveyById,
   submitSurvey,
 } from "../../../../service/survey-service";
-import "../../new-survey/views/questionForm.css";
 const Survey = () => {
   const params = useParams();
   const navigate = useNavigate();

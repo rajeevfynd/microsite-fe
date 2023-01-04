@@ -7,6 +7,8 @@ import {
   Radio,
   Checkbox,
   Typography,
+  Input,
+  Card,
 } from "antd";
 import html2canvas from "html2canvas";
 
@@ -43,7 +45,7 @@ const Survey = () => {
   type NotificationType = "success" | "info" | "warning" | "error";
   const { Option } = Select;
   const params = useParams();
-  const [surveyTitle, setSurveyTitle] = React.useState("");
+  const [surveyTitle, setSurveyTitle] = React.useState("Untitled Form");
   const [description, setDescription] = React.useState("");
   const [edit, setEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -440,7 +442,7 @@ const Survey = () => {
       setEdit(true);
     } else {
       setDescription("");
-      setSurveyTitle("");
+      setSurveyTitle("Untitled Form");
       setSurvey({ questions: [newQuestion] });
       setEdit(false);
     }
@@ -482,110 +484,103 @@ const Survey = () => {
             <div className="question_form" id="TakeScreenShot">
               <br></br>
 
-              <div className="section">
+              <div className="section dark">
                 <div className="question_title_section">
                   <div className="question_form_top">
-                    <input
+                    <Input
                       type="text"
                       name="surveyTitle"
                       className="question_form_top_name"
-                      style={{ color: "black" }}
-                      placeholder="Survey Title"
                       value={surveyTitle}
                       onChange={(e) => setSurveyTitle(e.target.value)}
+                      defaultValue="Untitled form"
                       required
-                    ></input>
+                    />
 
-                    <input
+                    <Input
                       type="text"
-                      className="question_form_top_desc "
-                      style={{ color: "black" }}
+                      className="question_form_top_desc"
                       placeholder="Survey description"
                       name="description"
                       value={description}
                       required
                       onChange={(e) => setDescription(e.target.value)}
-                    ></input>
-                    <div className="valid-feedback">Looks good!</div>
+                    />
                   </div>
                 </div>
 
                 <div className="container" style={{ paddingTop: "10px" }}>
                   {Survey.questions.map((question, index) => (
                     <div key={question.id}>
-                      <div
-                        className="card"
+                      <Card
+                        className="question-card"
                         style={{
                           borderLeft: "4px solid rgb(66, 90, 245)",
                         }}
                       >
-                        <div className="card-header">
-                          <div className="row">
-                            <div className="col-6">
-                              <div className="input-group ">
-                                <input
-                                  key={index}
-                                  id="validationCustom01"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Question"
-                                  aria-label="questionText"
-                                  name="questionText"
-                                  aria-describedby="basic-addon1"
-                                  value={question.questionText}
-                                  onChange={(e) => handleQuestionText(e, index)}
-                                  required
-                                />
-                              </div>
+                        <Row className="row">
+                          <div className="col-6">
+                            <div className="input-group ">
+                              <Input
+                                key={index}
+                                id="validationCustom01"
+                                type="text"
+                                className="form-control"
+                                placeholder="Question"
+                                aria-label="questionText"
+                                name="questionText"
+                                aria-describedby="basic-addon1"
+                                value={question.questionText}
+                                onChange={(e) => handleQuestionText(e, index)}
+                                required
+                              />
                             </div>
+                          </div>
 
-                            <div
-                              className="col-4"
-                              data-html2canvas-ignore="true"
+                          <div
+                            className="col-4"
+                            data-html2canvas-ignore="true"
+                          >
+                            <Select
+                              defaultValue={
+                                question.questionType.length < 1
+                                  ? "TextArea"
+                                  : question.questionType
+                              }
+                              onChange={(e) => handleSelect(e, index)}
                             >
-                              <Select
-                                defaultValue={
-                                  question.questionType.length < 1
-                                    ? "TextArea"
-                                    : question.questionType
-                                }
-                                onChange={(e) => handleSelect(e, index)}
-                              >
-                                <Option value="SINGLE_CHOICE">
-                                  <Radio />
-                                  SINGLE CHOICE
-                                </Option>
+                              <Option value="SINGLE_CHOICE">
+                                <Radio />
+                                SINGLE CHOICE
+                              </Option>
 
-                                <Option value="MULTIPLE_CHOICE">
-                                  <CheckSquareTwoTone /> MULTIPLE CHOICE
-                                </Option>
+                              <Option value="MULTIPLE_CHOICE">
+                                <CheckSquareTwoTone /> MULTIPLE CHOICE
+                              </Option>
 
-                                <Option value="SMALL_TEXT">
-                                  <AlignLeftOutlined /> Paragraph
-                                </Option>
-                              </Select>
-                            </div>
+                              <Option value="SMALL_TEXT">
+                                <AlignLeftOutlined /> Paragraph
+                              </Option>
+                            </Select>
+                          </div>
 
-                            <div className="col-2">
-                              <div
-                                style={{ position: "absolute", float: "right" }}
-                              >
-                                <DeleteOutlined
-                                  data-html2canvas-ignore="true"
-                                  style={{ color: "red" }}
-                                  onClick={(e) => DeleteQuestion(e, index)}
-                                />
-                              </div>
+                          <div className="col-2">
+                            <div
+                              style={{ position: "absolute", float: "right" }}
+                            >
+                              <DeleteOutlined
+                                data-html2canvas-ignore="true"
+                                style={{ color: "red" }}
+                                onClick={(e) => DeleteQuestion(e, index)}
+                              />
                             </div>
                           </div>
-                        </div>
+                        </Row>
 
-                        <div className="card-body">
-                          <div>
-                            {handleSwitch(question.questionType, index)}
-                          </div>
+                        <div>
+                          {handleSwitch(question.questionType, index)}
                         </div>
-                      </div>
+                      </Card>
                       <br />
                     </div>
                   ))}

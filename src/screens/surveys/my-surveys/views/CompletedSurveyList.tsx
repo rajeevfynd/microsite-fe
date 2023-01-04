@@ -2,7 +2,6 @@ import { notification, Space, Card, Empty } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import "../../new-survey/views/questionForm.css";
 import { getSurveysByStatus } from "../../../../service/survey-service";
 import Meta from "antd/lib/card/Meta";
 import { formatBase64 } from "../../../../utility/image-utils";

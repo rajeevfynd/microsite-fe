@@ -4,7 +4,7 @@ import MySurveys from "./my-surveys";
 import ResponseSurvey from "./my-surveys/views/ResponseSurvey";
 import Survey from "./my-surveys/views/Survey";
 import SurveyDashBoard from "./survey-dash-board";
-import "./new-survey/views/questionForm.css";
+import "./index.css"
 
 function Surveys() {
   return (

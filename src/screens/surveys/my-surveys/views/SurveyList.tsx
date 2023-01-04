@@ -2,7 +2,6 @@ import { Collapse, Typography, notification, Space, Card, Empty } from "antd";
 import { EditTwoTone, InfoCircleFilled, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import "../../new-survey/views/questionForm.css";
 import {
   getSurveysByStatus,
   getImage,
