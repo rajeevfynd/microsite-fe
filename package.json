@@ -48,7 +48,7 @@
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "html2canvas": "^1.4.1",
-    "js-file-download": "^0.4.12",
+    "jwt-decode": "^3.1.2",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -57,7 +57,6 @@
     "react-dom": "^18.2.0",
     "react-drag-listview": "^0.2.1",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-jwt": "^1.1.7",
     "react-player": "^2.10.1",
     "virtualizedtableforantd4": "^1.2.1"
   },
