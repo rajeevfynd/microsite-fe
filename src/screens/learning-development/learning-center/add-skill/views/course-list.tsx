@@ -8,12 +8,12 @@ import httpInstance from '../../../../../utility/http-client';
 export const CourseList = (props: any) => {
     const { handleMappingStatus, mappingStatus } = props;
 
-    const [courseList, setCourseList] = React.useState([]);
+    const [courseList, setCourseList] = React.useState<any[]>([]);
 
 
 
     React.useEffect(() => {
-
+        console.log(courseList.length)
         setCourseList(props.courseList);
 
     }, []);
@@ -26,7 +26,7 @@ export const CourseList = (props: any) => {
         if (!tagId || !courseId) return;
 
         (() => {
-            httpInstance.delete(`/microsite/course-tag/course-tag-by-course-id-and-tag-id?courseId=${courseId}&tagId=${tagId}`)
+            httpInstance.delete(`/microsite/program-tag/program-tag-by-course-id-and-tag-id?programId=${courseId}&tagId=${tagId}`)
                 .then((response) => {
 
                     handleMappingStatus(!mappingStatus);
@@ -52,7 +52,7 @@ export const CourseList = (props: any) => {
 
     return (
         <>
-            {!!courseList.length ? renderCourseList(courseList) : null}
+            {!!courseList ? renderCourseList(courseList) : null}
         </>
     )
 }

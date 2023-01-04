@@ -13,12 +13,17 @@ import { UploadProps } from '../../../../models/upload-props';
 import { Upload } from '../../../../components/upload.component';
 import ReactDragListView from "react-drag-listview";
 import { arrayMove } from '../../../../utility/array-utils';
+import { Tagtype } from '../../../../constants/tag';
+import httpInstance from '../../../../utility/http-client';
 
 type editProgramDetails = {
+  id?: string,
   title?: string,
   description?: string,
   sequence?: boolean,
-  issueCertificate?: boolean
+  issueCertificate?: boolean,
+  skills: any[],
+  roles: any[]
 }
 
 export const EditProgram = () => {
@@ -27,7 +32,11 @@ export const EditProgram = () => {
   const [courses, setCourses] = React.useState<CourseMapType[]>([])
   const [thumbnail, setThumbnail] = React.useState('')
   const [thumbnailUrl, setThumbnailUrl] = React.useState('');
-  const [program, setProgram] = React.useState<editProgramDetails>({})
+  const [program, setProgram] = React.useState<editProgramDetails>({ sequence: true, issueCertificate: false, skills: [], roles : []})
+  const [skillDrop,setSkillDrop] = React.useState<boolean>(false)
+  const [roleDrop,setRoleDrop] = React.useState<boolean>(false)
+  const [dataSkill, setDataSkill] = React.useState<any[]>([])
+  const [dataRole, setDataRole] = React.useState<any[]>([])
   const { Option } = Select;
 
   React.useEffect(() => {
@@ -43,8 +52,11 @@ export const EditProgram = () => {
       title: data.title,
       description: data.description,
       sequence: data.flow == Flow.SEQUENCE,
-      issueCertificate: data.issueCertificate
+      issueCertificate: data.issueCertificate,
+      skills: [...data.tags.filter( (tag:any) => tag.type == Tagtype.skill)],
+      roles: [...data.tags.filter( (tag:any) => tag.type == Tagtype.role)],
     })
+    console.log(data.tags.filter( (tag:any) => tag.type == Tagtype.skill))
     setThumbnailUrl(data.thumbnail);
     setThumbnail(data.thumbnailId);
   }
@@ -73,10 +85,7 @@ export const EditProgram = () => {
   }
   else{
     setProgram({
-      title: '',
-      description: program.description,
-      sequence: program.sequence,
-      issueCertificate: program.issueCertificate
+      ...program,title: ''
     })
   }
   };
@@ -125,10 +134,7 @@ export const EditProgram = () => {
             Title<span style={{color: 'red'}}>* { program.title != undefined && program.title.trim() == '' && <>Title Cannot be Blank</>}</span>
             <Input value={program.title} onChange={(e) => {
               setProgram({
-                title: e.target.value,
-                description: program.description,
-                sequence: program.sequence,
-                issueCertificate: program.issueCertificate
+                ...program, title: e.target.value
               })
             }} />
           </Form.Item>
@@ -137,10 +143,7 @@ export const EditProgram = () => {
             Description
             <Input.TextArea value={program.description} onChange={(e) => {
               setProgram({
-                title: program.title,
-                description: e.target.value,
-                sequence: program.sequence,
-                issueCertificate: program.issueCertificate
+                ...program, description: e.target.value
               })
             }} />
           </Form.Item>
@@ -148,10 +151,7 @@ export const EditProgram = () => {
           <Form.Item>
             Sequencial <Switch checked={program.sequence} onClick={() => {
               setProgram({
-                title: program.title,
-                description: program.description,
-                sequence: !program.sequence,
-                issueCertificate: program.issueCertificate
+                ...program, sequence: !program.sequence
               })
             }} />
           </Form.Item>
@@ -159,13 +159,108 @@ export const EditProgram = () => {
           <Form.Item>
             Issue Certificate <Switch checked={program.issueCertificate} onClick={() => {
               setProgram({
-                title: program.title,
-                description: program.description,
-                sequence: program.sequence,
+                ...program,
                 issueCertificate: !program.issueCertificate
               })
             }} />
           </Form.Item>
+
+          <Form.Item
+            >
+                Skills
+                <Select
+                    mode="multiple"
+                    showSearch
+                    onSearch={(e) => {
+                        setSkillDrop(e!='')
+                        httpInstance.get(`/microsite/tag/tags-by-name/?tagType=SKILL&name=${e}`)
+                            .then((response) => {
+                                const result = response.data || [];
+                                if (!result.length) return;
+                                let skills: any[] = []
+                                result.forEach((d:any) => skills.push({id:d.id, name: d.name}))
+                                setDataSkill(skills)
+                            })
+                            .catch((error) => {
+                                window.alert(`${error.message}`);
+                            });
+                    }}
+                    allowClear
+                    value = {program.skills.map((t)=>{return t.name})}
+                    style={{ width: '100%' }}
+                    placeholder='Start Typing Skill Name or Keyword...'
+                    open= {skillDrop}
+                    onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
+                        setSkillDrop(e.target.value!='')
+                    }}
+                    onChange={(e)=>{
+                        const remainingSkills = program.skills.filter((selectedSkill) => e.indexOf(selectedSkill.name)>-1 );
+                        setProgram({
+                            ...program,
+                            skills: remainingSkills
+                        });
+                    }}
+                    onSelect={(e)=>{
+                        const addSkill: any [] = dataSkill.filter((d)=> d.name==e)
+                        setProgram({
+                            ...program,
+                            skills: [...program.skills,{ id: addSkill[0].id, name: addSkill[0].name }]
+                        });
+                        setSkillDrop(false)
+                    }}
+                >
+                    {dataSkill.map( d => { return (<Option key={d.name}>{d.name}</Option>)})}
+                    </Select>
+
+            </Form.Item>
+
+            <Form.Item>
+                Roles
+                <Select
+                    mode="multiple"
+                    showSearch
+                    onSearch={(e) => {
+                        setRoleDrop(e!='')
+                        httpInstance.get(`/microsite/tag/tags-by-name/?tagType=ROLE&name=${e}`)
+                            .then((response) => {
+                                const result = response.data || [];
+                                if (!result.length) return;
+                                let roles: any[] = []
+                                result.forEach((d:any) => roles.push({id:d.id, name: d.name}))
+                                setDataRole(roles)
+                            })
+                            .catch((error) => {
+                                window.alert(`${error.message}`);
+                            });
+                    }}
+                    allowClear
+                    value = {program.roles.map((t)=>{return t.name})}
+                    style={{ width: '100%' }}
+                    placeholder='Start Typing Role Name or Keyword...'
+                    open= {roleDrop}
+                    onFocus = {(e: React.FocusEvent<HTMLInputElement, Element>)=>{
+                        setRoleDrop(e.target.value!='')
+                    }}
+                    onChange={(e)=>{
+                        const remainingRoles = program.roles.filter((selectedRole) => e.indexOf(selectedRole.name)>-1 );
+                        setProgram({
+                            ...program,
+                            roles: remainingRoles,
+                        });
+                    }}
+                    onSelect={(e)=>{
+                        const addRole: any[] = dataRole.filter((d)=> d.name==e)
+                        setProgram({
+                            ...program,
+                            roles: [...program.roles,{ id: addRole[0].id, name: addRole[0].name }]
+                        });
+                        setRoleDrop(false)
+                    }}
+                >
+                    {dataRole.map( d => { return (<Option key={d.name}>{d.name}</Option>)})}
+                    </Select>
+
+            </Form.Item>
 
           <Form.Item >
             Courses
