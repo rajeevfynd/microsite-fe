@@ -30,7 +30,7 @@ export const BirthDays = () => {
     return (
         <>
             <Card className="home-card">
-                <Meta title={<div><h4>Today's Birthday</h4></div>} />
+                <Meta title={<div><h3>Today's Birthday</h3></div>} />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Typography.Text disabled style={{ fontSize: "12px", width: '60%' }}>Click to wish them</Typography.Text>
                     <div style={{ width: '100%' }} >

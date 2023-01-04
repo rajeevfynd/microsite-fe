@@ -56,9 +56,9 @@ export const Events = () => {
                         <div
                             className='event-carousel'
                         >
-                            <h6 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 "{surveyEvent.surveyTitle}" is due
-                            </h6>
+                            </h3>
                             <Image src={formatBase64(surveyEvent.imgUrl)} className='event-img' preview={false} height='80px' width='80px'/>
                             <div>
                                 <Button onClick={()=>navigate('/survey/submit/survey/'+surveyEvent.id+'/2')} type='link' className='event-link'>Go to Survey </Button>
@@ -70,9 +70,9 @@ export const Events = () => {
                         <div
                             className='event-carousel'
                         >
-                            <h6 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 Continue learning "{learningEvent.title}"
-                            </h6>
+                            </h3>
                             <Image src={formatBase64(learningEvent.thumbnail)} className='event-img' preview={false} height='80px' width='80px' fallback={DEFAULT_LND_THUMBNAIL} />
                             <div>
                                 <Button onClick={()=>{navigate('/lnd/programs/'+learningEvent.id)}} type='link' className='event-link'>Go to program</Button>
@@ -83,9 +83,9 @@ export const Events = () => {
                         learningEvent == undefined && surveyEvent == undefined &&
                         <div
                             className='event-carousel'>
-                            <h4 style={{height:'40px'}}>
+                            <h3 style={{height:'40px'}}>
                                 You are all caught up!
-                            </h4>
+                            </h3>
                             <div style={{margin:'10px'}}>
                                 <CheckCircleOutlined style={{fontSize:'75px', color:'green'}}/>
                              </div>

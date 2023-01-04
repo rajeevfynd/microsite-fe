@@ -42,7 +42,7 @@ export const Announcement = () => {
         {marqueeStyle}
     </style>
         <Card className="home-card" >
-            <Meta title={<div style={{ paddingBottom: '10px' }}><h4>Announcements & News</h4></div>} />
+            <Meta title={<div style={{ paddingBottom: '10px' }}><h3>Announcements & News</h3></div>} />
             <div className="microsoft announcement-container">
                 <body className="marquee dark">
                     {announcements.map(({ title, description, documentId, createdAt }) => (<AnnouncementModal{...{ title, description, documentId, createdAt }}></AnnouncementModal>))}
