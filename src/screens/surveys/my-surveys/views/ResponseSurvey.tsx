@@ -7,6 +7,8 @@ import {
   getSurveyById,
   getSurveyResponseById,
 } from "../../../../service/survey-service";
+import Title from "antd/lib/typography/Title";
+import { Card } from "antd";
 const ResponseSurvey = () => {
   const params = useParams();
 
@@ -51,7 +53,8 @@ const ResponseSurvey = () => {
     return (
       <>
         <div className="form-check">
-          {survey.questions[i].choices.map((op: { choiceText: string }) => (
+          <ResRadioUi answer={answer[0]} choice={survey.questions[i].choices} />
+          {/* {survey.questions[i].choices.map((op: { choiceText: string }) => (
             <div>
               <ResRadioUi
                 key={i}
@@ -61,7 +64,7 @@ const ResponseSurvey = () => {
                 radioAnswer={answer[0] == op.choiceText ? true : false}
               />
             </div>
-          ))}
+          ))} */}
         </div>
       </>
     );
@@ -118,27 +121,27 @@ const ResponseSurvey = () => {
         <form>
           <div className="question_form">
             <br></br>
-            <div className="section">
+            <div className="section dark">
               <div className="question_title_section">
                 <div className="question_form_top">
-                  {/* Title of the Survey*/}
-                  <h1>{survey.surveyTitle}</h1>
+                  <Title>{survey.surveyTitle}</Title>
+
                   <p>{survey.description}</p>
                 </div>
               </div>
               <div className="container" style={{ paddingTop: "10px" }}>
-                {survey.questions.map((q, i) => (
+                {survey.questions.map((question, index) => (
                   <>
-                    <div
-                      className="card"
-                      style={{
-                        borderLeft: "4px solid rgb(66, 90, 245)",
-                      }}
-                    >
-                      <div className="card-header">{q.questionText}</div>
-                      <div className="card-body">
-                        {handleSwitch(q.questionType, i)}
-                      </div>
+                    <div key={question.id}>
+                      <Card
+                        title={question.questionText}
+                        className="question-card"
+                        style={{
+                          borderLeft: "4px solid rgb(66, 90, 245)",
+                        }}
+                      >
+                        {handleSwitch(question.questionType, index)}
+                      </Card>
                     </div>
                     <br></br>
                   </>

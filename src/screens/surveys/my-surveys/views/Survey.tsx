@@ -8,6 +8,8 @@ import {
   getSurveyById,
   submitSurvey,
 } from "../../../../service/survey-service";
+import Title from "antd/lib/typography/Title";
+import { Button, Card } from "antd";
 const Survey = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -57,18 +59,26 @@ const Survey = () => {
       <>
         <div className="form-check">
           <div>
-            {survey.questions[i].choices.map(
-              (op: { choiceText: string }, j) => (
-                <RadioUi
-                  key={j}
-                  optionText={op.choiceText}
-                  handleRadioResponse={handleRadioResponse}
-                  qId={survey.questions[i].id}
-                />
-              )
-            )}
+            <RadioUi
+              handleRadioResponse={handleRadioResponse}
+              qId={survey.questions[i].id}
+              choice={survey.questions[i].choices}
+            />
           </div>
         </div>
+      </>
+    );
+  };
+  const checkBoxUI = (i: number) => {
+    return (
+      <>
+        {
+          <CheckBoxUi
+            choice={survey.questions[i].choices}
+            qId={survey.questions[i].id}
+            handleCheckBoxResponse={handleCheckBoxResponse}
+          />
+        }
       </>
     );
   };
@@ -85,19 +95,7 @@ const Survey = () => {
     }
     // setResponse(temp);
   };
-  const checkBoxUI = (i: number) => {
-    return (
-      <>
-        {
-          <CheckBoxUi
-            choice={survey.questions[i].choices}
-            qId={survey.questions[i].id}
-            handleCheckBoxResponse={handleCheckBoxResponse}
-          />
-        }
-      </>
-    );
-  };
+
   const handleTextArea = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     i: number,
@@ -161,37 +159,41 @@ const Survey = () => {
         <form>
           <div className="question_form">
             <br></br>
-            <div className="section">
+            <div className="section dark">
               <div className="question_title_section">
                 <div className="question_form_top">
                   {/* Title of the Survey*/}
-                  <h1>{survey.surveyTitle}</h1>
+                  <Title>{survey.surveyTitle}</Title>
+
                   <p>{survey.description}</p>
                 </div>
               </div>
               <div className="container" style={{ paddingTop: "10px" }}>
                 {survey.questions.map((question, index) => (
                   <>
-                    <div
-                      key={question.id}
-                      className="card"
-                      style={{
-                        borderLeft: "4px solid rgb(66, 90, 245)",
-                      }}
-                    >
-                      <div className="card-header">{question.questionText}</div>
-                      <div className="card-body">
+                    <div key={question.id}>
+                      <Card
+                        title={question.questionText}
+                        className="question-card"
+                        style={{
+                          borderLeft: "4px solid rgb(66, 90, 245)",
+                        }}
+                      >
                         {handleSwitch(question.questionType, index)}
-                      </div>
+                      </Card>
                     </div>
                     <br></br>
                   </>
                 ))}
               </div>
-              <div className="btn btn-primary" onClick={handleSubmit}>
+              <Button type="primary" onClick={handleSubmit}>
                 {" "}
                 Submit
-              </div>
+              </Button>
+              {/* <div className="btn btn-primary" onClick={handleSubmit}>
+                {" "}
+                Submit
+              </div> */}
             </div>
           </div>
         </form>

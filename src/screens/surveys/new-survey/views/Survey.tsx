@@ -116,6 +116,17 @@ const Survey = () => {
     }
   };
 
+  const handleSelect = (value: string, i: number) => {
+    let tempQuestion = Survey.questions[i];
+    tempQuestion = { ...tempQuestion, questionType: value };
+    let tempSurveys = [
+      ...Survey.questions.slice(0, i),
+      tempQuestion,
+      ...Survey.questions.slice(i + 1, Survey.questions.length),
+    ];
+    setSurvey({ ...Survey, questions: tempSurveys });
+  };
+
   const radioUI = (i: number) => {
     return (
       <>
@@ -131,14 +142,16 @@ const Survey = () => {
               />
             </>
           ))}
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
-            <Radio
-              disabled
-            />
-            <Button
-              type="text"
-              onClick={(e) => handleAddOption(i)}
-            >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Radio disabled />
+            <Button type="text" onClick={(e) => handleAddOption(i)}>
               Add Option
             </Button>
           </div>
@@ -146,29 +159,61 @@ const Survey = () => {
       </>
     );
   };
-  const handleSelect = (value: string, i: number) => {
-    let tempQuestion = Survey.questions[i];
-    tempQuestion = { ...tempQuestion, questionType: value };
-    let tempSurveys = [
-      ...Survey.questions.slice(0, i),
-      tempQuestion,
-      ...Survey.questions.slice(i + 1, Survey.questions.length),
-    ];
-    setSurvey({ ...Survey, questions: tempSurveys });
-  };
+
   const checkBoxUI = (i: number) => {
     return (
       <>
-        {Survey.questions[i].choices.map((op, j) => (
-          <CheckBoxUi
-            i={i}
-            j={j}
-            optionText={op.choiceText}
-            handleDeleteOption={handleDeleteOption}
-            handleAddOption={handleAddOption}
-            handleOPtionIn={handleChoiceText}
-          />
-        ))}
+        <div className="form-check ">
+          {Survey.questions[i].choices.map((op, j) => (
+            <>
+              <CheckBoxUi
+                i={i}
+                j={j}
+                optionText={op.choiceText}
+                handleDeleteOption={handleDeleteOption}
+                handleOPtionIn={handleChoiceText}
+              />
+            </>
+          ))}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Checkbox disabled />
+            <Button type="text" onClick={(e) => handleAddOption(i)}>
+              Add Option
+            </Button>
+          </div>
+        </div>
+        {/* <div>
+          {Survey.questions[i].choices.map((op, j) => (
+            <CheckBoxUi
+              i={i}
+              j={j}
+              optionText={op.choiceText}
+              handleDeleteOption={handleDeleteOption}
+              handleAddOption={handleAddOption}
+              handleOPtionIn={handleChoiceText}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Radio disabled />
+          <Button type="text" onClick={(e) => handleAddOption(i)}>
+            Add Option
+          </Button>
+        </div> */}
       </>
     );
   };
@@ -534,11 +579,9 @@ const Survey = () => {
                           borderLeft: "4px solid rgb(66, 90, 245)",
                         }}
                       >
-                        <div>
-
-                        </div>
-                        <Row className="row" gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                          <Col span={17}>
+                        <div></div>
+                        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                          <Col span={16}>
                             <Input
                               key={index}
                               id="validationCustom01"
@@ -568,7 +611,8 @@ const Survey = () => {
                               </Option>
 
                               <Option value="MULTIPLE_CHOICE">
-                                <CheckSquareTwoTone /> MULTIPLE CHOICE
+                                <CheckSquareTwoTone />
+                                MULTIPLE CHOICE
                               </Option>
 
                               <Option value="SMALL_TEXT">
@@ -581,13 +625,20 @@ const Survey = () => {
                           {handleSwitch(question.questionType, index)}
                         </Row>
                         <Divider />
-                        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "flex-end" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-end",
+                            justifyContent: "flex-end",
+                          }}
+                        >
                           <Button
                             shape="circle"
                             type="primary"
                             icon={<DeleteOutlined />}
                             onClick={(e) => DeleteQuestion(e, index)}
-                            danger />
+                            danger
+                          />
                         </div>
                       </Card>
                       <br />

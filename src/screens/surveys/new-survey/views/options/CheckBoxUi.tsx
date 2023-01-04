@@ -1,13 +1,12 @@
 import * as React from "react";
-import { Input, Checkbox } from "antd";
-import { PlusCircleTwoTone, CloseCircleFilled } from "@ant-design/icons";
+import { Input, Checkbox, Button, Radio } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 type propsType = {
   i: number;
   j: number;
   optionText: string;
   handleDeleteOption(i: number, j: number): void;
-  handleAddOption(i: number, j: number): void;
   handleOPtionIn(
     e: React.ChangeEvent<HTMLInputElement>,
     i: number,
@@ -17,8 +16,37 @@ type propsType = {
 const CheckBoxUi = (props: propsType) => {
   const handleCheckBox = () => {};
   return (
-    <div>
-      <div className="row">
+    <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <Checkbox disabled>
+          <Input
+            placeholder="Enter option"
+            value={props.optionText}
+            required
+            onChange={(e) => props.handleOPtionIn(e, props.i, props.j)}
+          />
+        </Checkbox>
+
+        <Button
+          shape="circle"
+          type="text"
+          icon={<CloseCircleOutlined />}
+          onClick={(e) => props.handleDeleteOption(props.i, props.j)}
+        />
+      </div>
+      <br />
+    </>
+  );
+
+  {
+    /* <div className="row">
         <div className="col-6">
           <Checkbox onChange={handleCheckBox} disabled={true}>
             {" "}
@@ -44,9 +72,9 @@ const CheckBoxUi = (props: propsType) => {
           </span>
         </div>
       </div>
-      <br />
-    </div>
-  );
+      <br /> */
+  }
+  //</div>
 };
 
 export default CheckBoxUi;

@@ -1,4 +1,4 @@
-import { notification, Space, Card, Empty } from "antd";
+import { notification, Space, Card, Empty, List } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -48,43 +48,55 @@ function CompletedSurveyList() {
     getSurveys();
   }, []);
   return (
-    <div>
-      <div className="question_form">
-        <div className="container">
-          <div className="row">
-            {isLoading ? (
-              <h3>Loading...</h3>
-            ) : Surveys.length === 0 ? (
-              <Empty description={<span>No Surveys</span>} />
-            ) : (
-              Surveys.map((i) => (
-                <div className="col-lg-3">
-                  <Card
-                    hoverable
-                    style={{ width: 200, margin: "1em" }}
-                    cover={
-                      <img
-                        alt="example"
-                        src={formatBase64(i.imgUrl)}
-                      />
-                    }
-                    actions={[
-                      <InfoCircleFilled
-                        onClick={(e) =>
-                          navigate(`/survey/assignee/response/${i.id}/${i.id}`)
-                        }
-                      />,
-                    ]}
-                  >
-                    <Meta title={i.surveyTitle} />
-                  </Card>
-                </div>
-              ))
+    <>
+      {isLoading ? (
+        <h3>Loading...</h3>
+      ) : Surveys.length === 0 ? (
+        <Empty description={<span>No Surveys</span>} />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            padding: "0% 3%",
+          }}
+        >
+          <List
+            grid={{ gutter: 1, xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 5 }}
+            style={{ width: "100%" }}
+            dataSource={Surveys}
+            renderItem={(item) => (
+              <List.Item key={item.surveyTitle}>
+                <Card
+                  hoverable
+                  style={{
+                    width: "250px",
+                  }}
+                  cover={<img src={formatBase64(item.imgUrl)} />}
+                  actions={[
+                    <InfoCircleFilled
+                      onClick={(e) =>
+                        navigate(
+                          `/survey/assignee/response/${item.id}/${item.id}`
+                        )
+                      }
+                    />,
+                  ]}
+                >
+                  {" "}
+                  <Meta
+                    title={item.surveyTitle}
+                    description={item.description}
+                  />
+                </Card>
+              </List.Item>
             )}
-          </div>
+          />
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

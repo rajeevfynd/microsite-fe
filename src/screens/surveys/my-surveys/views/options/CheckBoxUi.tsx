@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input, Checkbox } from "antd";
+import { Checkbox } from "antd";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
 
 interface choiceprops {
@@ -25,12 +25,17 @@ const CheckBoxUi: React.FC<choiceprops> = ({
       <Checkbox.Group onChange={onChange}>
         {choice.map((c, i) => (
           <>
-            <div className="row">
-              <div className="col-6">
-                <Checkbox value={c.choiceText}>{c.choiceText}</Checkbox>
-              </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              {" "}
+              <Checkbox value={c.choiceText}>{c.choiceText}</Checkbox>
             </div>
-            <br />
           </>
         ))}
       </Checkbox.Group>
