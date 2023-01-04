@@ -90,6 +90,7 @@ export const AddNewEmployeeDownloads = (props: AddDocumentPropsType) => {
                 <Form.Item
                     name="department"
                     label="Department"
+                    rules={[{ required: true, message: 'Choose a department!' }]}
                 >   
                     <Select 
                         mode="multiple"

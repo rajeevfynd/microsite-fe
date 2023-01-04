@@ -19,7 +19,7 @@ export const EditNewEmployeeDownload = (props: EditDocumentsPropsType) => {
         setIsModalOpen(false);
     };
 
-    const handleAddQnaClick = () => {
+    const handleSubmitClick = () => {
         setIsModalOpen(true);
     }
 
@@ -52,7 +52,7 @@ export const EditNewEmployeeDownload = (props: EditDocumentsPropsType) => {
     return (
         <>
 
-        <EditFilled onClick={() => {handleAddQnaClick()}}></EditFilled>
+        <EditFilled onClick={() => {handleSubmitClick()}}></EditFilled>
         <Modal
             destroyOnClose={true}
             open={isModalOpen}

@@ -2,12 +2,12 @@ import { Card, Divider, List, message, Skeleton, Space } from 'antd'
 import * as React from 'react'
 import {DownloadOutlined} from '@ant-design/icons';
 import { PolicyDownloadType } from '../../../models/download-center-type';
-import { getDocumentsList } from '../../../service/download-center-service';
+import { downloadDocument, getDocumentsList } from '../../../service/download-center-service';
 import httpInstance from '../../../utility/http-client';
 import { formatBase64 } from '../../../utility/image-utils';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
+export const DownloadsGallery = (props:{downloadsUrl : string, searchKey : string}) => {
     const { Meta } = Card;
 
     const [data, setData] = React.useState<any[]>([])
@@ -15,11 +15,6 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
     const [loading, setLoading] = React.useState(false);
     const [pageNumber,setPageNumber ] = React.useState<number>(0)
     const [hasMore, setHasMore] = React.useState<boolean>(false)
-
-    const handleImgClick = async (documentId : number) => {
-        let docUrl = await httpInstance.get("/microsite/document/download/" + documentId)
-        window.open(docUrl.data.url, '_blank')?.focus();
-    }
 
 
     const createDataList = () => {
@@ -37,6 +32,7 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
     }
 
     const loadMoreData = () => {
+        console.log("loadMoreData")
         if (loading) {
             return;
           }
@@ -69,53 +65,57 @@ export const DownloadsGallery = (props:{downloadsUrl : string,}) => {
     return (
         <>
 
-        <div className='body-container' id="scrollableDiv">
-            <InfiniteScroll
-                dataLength={data.length}
-                next={loadMoreData}
-                hasMore={hasMore}
-                loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-                scrollableTarget="scrollableDiv"
-            >
+            {props.searchKey.length <= 0 && 
+
+                <div className='body-container' id="scrollableDiv">
+                    <InfiniteScroll
+                        dataLength={data.length}
+                        next={loadMoreData}
+                        hasMore={hasMore}
+                        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+                        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                        scrollableTarget="scrollableDiv"
+                        scrollThreshold={1}
+                        height={600}
+                    >
 
 
-                <List
-                    grid={{gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 3}}
-                    dataSource={data}
-                    renderItem={(item) => (
-                    <List.Item>
-                        <Card style={{ width: 300 }}
-                                    hoverable
-                                    cover={
-                                        
-                                        <img 
-                                        onClick={() => handleImgClick(item.documentId)} 
-                                        src={formatBase64(item.thumbnail)}/>
-                                    }
-                                    actions={[
-                                        <>
-                                            <Space size={20}>
+                        <List
+                            grid={{gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 4}}
+                            dataSource={data}
+                            renderItem={(item) => (
+                            <List.Item>
+                                <Card style={{ width: 300 }}
+                                            hoverable
+                                            cover={
+                                                
+                                                <img 
+                                                onClick={() => downloadDocument(item.documentId)} 
+                                                src={formatBase64(item.thumbnail)}/>
+                                            }
+                                            actions={[
+                                                <>
+                                                    <Space size={20}>
 
-                                                <DownloadOutlined onClick={() => handleImgClick(item.documentId)}></DownloadOutlined>
-                                            </Space>
-                                        </>
-                                    ]}
-                            >
-                                    <Meta
-                                        title= {item.title}
-                                        description={item.description}
-                                    />
-                        </Card>
-                    </List.Item>
-                    )}
-                    
-                />   
+                                                        <DownloadOutlined onClick={() => downloadDocument(item.documentId)}></DownloadOutlined>
+                                                    </Space>
+                                                </>
+                                            ]}
+                                    >
+                                            <Meta
+                                                title= {item.title}
+                                                description={item.description}
+                                            />
+                                </Card>
+                            </List.Item>
+                            )}
+                            
+                        />   
 
+                    </InfiniteScroll>
+                </div>
 
-
-            </InfiniteScroll>
-        </div>
+            }
         </>
     )
 

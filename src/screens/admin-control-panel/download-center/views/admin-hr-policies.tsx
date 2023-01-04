@@ -70,12 +70,22 @@ export const AdminHRPolicies = () => {
                     <>
                         {submenuItems.map(menu => (
                             <><Tabs.TabPane tab={menu.key} key={menu.value}>
-                                <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
-                                deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
+                                {keyState.length == 0 && 
+                                    <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
+                                    deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
+                                }
                             </Tabs.TabPane></>
                         ))}
                     </>
                 </Tabs>
+
+                {keyState.length > 0 && 
+                    <div>
+                        Search Results
+                        <div><AdminDocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState} editUrl = {GET_HR_POLICIES}
+                            deleteUrl = {deleteUrl} categoryList = {submenuItems} downloadType = {DownloadDocumentType.HR_POLICIES}/></div>
+                    </div>
+                }
             </>
         </div>
     )

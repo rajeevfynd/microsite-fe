@@ -40,8 +40,6 @@ export const AdminTemplates = () => {
     };
 
     const onAddSubmit = (categoryId : string) => {
-        console.log("onAddSubmit")
-        console.log(categoryId)
         setDownloadsUrl(GET_TEMPLATES + "/" + categoryId)
     }
 
@@ -60,7 +58,7 @@ export const AdminTemplates = () => {
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <ShadowSearchInput placeholder='Type in the document title you are looking for...'
                             size='large'
-                            onChange={(e: { target: { value: string; }; }) => searchDownloads(e.target.value)}
+                            onChange={searchDownloads}
                     />
                     <AddDownloadDocument addUrl={GET_TEMPLATES} categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES} onAddSubmit = {onAddSubmit}/>
                 </div>
@@ -76,18 +74,30 @@ export const AdminTemplates = () => {
 
                         {submenuItems.map(menu => (
                             <><Tabs.TabPane tab={menu.key} key={menu.value}>
-                                {(Number(menu.value) === 1 || Number(menu.value) === 2) && 
-                                    <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
-                                    searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
-                                    editUrl = {GET_TEMPLATES}/></div>}
-                                {(Number(menu.value) === 3 || Number(menu.value) === 4) && 
-                                <div><AdminDownloadsGallery downloadsUrl={downloadsUrl} deleteUrl = {deleteUrl}
-                                categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES}
-                                editUrl = {GET_TEMPLATES}/></div>}
+
+                                {keyState.length == 0 && 
+                                    (Number(menu.value) === 1 || Number(menu.value) === 2) && 
+                                        <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
+                                        searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
+                                        editUrl = {GET_TEMPLATES}/></div>}
+                                    {(Number(menu.value) === 3 || Number(menu.value) === 4) && 
+                                    <div><AdminDownloadsGallery downloadsUrl={downloadsUrl} deleteUrl = {deleteUrl}
+                                    categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES} searchKey = {keyState}
+                                    editUrl = {GET_TEMPLATES}/></div>
+                                }
                             </Tabs.TabPane></>
                         ))}
                     </>
                 </Tabs>
+
+                {keyState.length > 0 && 
+                    <div>
+                        Search Results
+                        <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
+                            searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
+                            editUrl = {GET_TEMPLATES}/></div>
+                    </div>
+                }
             </>
         </div>
     )

@@ -1,8 +1,8 @@
-import { EditFilled, EditTwoTone} from "@ant-design/icons/lib/icons";
+import { EditFilled} from "@ant-design/icons/lib/icons";
 import { Button, Col, Divider, Form, Input, message, Modal, Row, Select, Space } from "antd";
 import * as React from "react";
 import { Upload } from "../../../../components/upload.component";
-import { EditDocumentsPropsType, EditLeadersPropsType, EditPolicyPropsType, SubmenuTabsType } from "../../../../models/download-center-type";
+import { EditPolicyPropsType, SubmenuTabsType } from "../../../../models/download-center-type";
 import { UploadOnDoneParams, UploadProps } from "../../../../models/upload-props";
 import { editDownloadDocument } from "../../../../service/download-center-service";
 
@@ -22,7 +22,7 @@ export const EditPolicyTemplates = (props: EditPolicyPropsType) => {
         setIsModalOpen(false);
     };
 
-    const handleAddQnaClick = () => {
+    const handleSubmitClick = () => {
         setIsModalOpen(true);
     }
 
@@ -63,7 +63,8 @@ export const EditPolicyTemplates = (props: EditPolicyPropsType) => {
     return (
         <>
 
-        <EditFilled onClick={() => {handleAddQnaClick()}}></EditFilled>
+        <Button type="text" onClick={() => {handleSubmitClick()}}><EditFilled /></Button>
+        
         <Modal
             destroyOnClose={true}
             open={isModalOpen}

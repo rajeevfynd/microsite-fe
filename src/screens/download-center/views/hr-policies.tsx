@@ -69,7 +69,10 @@ export const HRPolicies = () => {
                 </Tabs>
 
                 {keyState.length > 0 && 
-                    <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>
+                    <div>
+                        Search Results
+                        <DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/>
+                    </div>
                 }
 
             </>

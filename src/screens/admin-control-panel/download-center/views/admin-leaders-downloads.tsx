@@ -4,8 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { DEFAULT_LND_THUMBNAIL } from "../../../../constants/string-constants";
 import { GET_LEADERS_DOWNLOADS } from "../../../../constants/urls";
 import { LeadersDownloadType } from "../../../../models/download-center-type";
-import { getLeadersDownloads } from "../../../../service/download-center-service";
-import httpInstance from "../../../../utility/http-client";
+import { downloadDocument, getLeadersDownloads } from "../../../../service/download-center-service";
 import { formatBase64 } from "../../../../utility/image-utils";
 import { AddLeadersDownload } from "./add-leaders-download";
 import { EditLeadersDownload } from "./edit-leaders-downloads";
@@ -22,11 +21,6 @@ export const AdminLeadersDownloads = () => {
     const [hasMore, setHasMore] = React.useState<boolean>(false)
     const [deleteUrl, setDeleteUrl] = React.useState<string>('')
 
-
-    const downloadDocument =  async (documentId : number) => {
-        let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
-        window.open(docUrl.data.url, '_blank')?.focus();
-    }
 
 
     const loadMoreData = () => {
@@ -69,14 +63,7 @@ export const AdminLeadersDownloads = () => {
     }, [])
 
     const css = `
-    .wrapper {
-        position: relative;
-        }
         .download-btn {
-          position: absolute; /* becomes a layer */
-          left: 0; /* relative to its parent wrapper */
-          bottom:0; /* relative to its parent wrapper */
-          z-index: 2;
           width: 90%;
         }
         `
@@ -111,13 +98,14 @@ export const AdminLeadersDownloads = () => {
             >
                 {leadersList && leadersList.map(leader => (
                     <>
-                        <Row >
+                        <Row gutter={30}>
                         <Col span={5} style={{height:320}}>
-                            <div className="wrapper">
+                            <div>
                                 <Image
                                     src={formatBase64(leader.document.thumbnail)}
                                     fallback={DEFAULT_LND_THUMBNAIL}
                                     width={'90%'}
+                                    height={'90%'}
                                     preview={false}
                                 />
                                 <Button className="download-btn" onClick={() => downloadDocument(leader.document.id)}>Click to download</Button>
@@ -145,8 +133,6 @@ export const AdminLeadersDownloads = () => {
 
 
             </InfiniteScroll>
-
-
             
         </div>
     )

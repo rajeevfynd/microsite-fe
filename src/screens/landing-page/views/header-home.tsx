@@ -8,7 +8,6 @@ import { MenuStructure } from './menu-home';
 import { useNavigate } from 'react-router-dom';
 import httpInstance from '../../../utility/http-client';
 import { GET_LOGOUT_REDIRECT_URL } from '../../../constants/urls';
-import DownloadSvg from '../../../img/download.svg';
 
 const HeaderHome = () => {
 
@@ -16,7 +15,6 @@ const HeaderHome = () => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [domainId, setDomainId] = React.useState('');
-  const [role, setRole] = React.useState('');
   const [alternateProfilePic, setAlternateProfileUPic] = React.useState('');
   const navigate = useNavigate();
 
@@ -25,10 +23,9 @@ const HeaderHome = () => {
       setFirstName(user.firstName)
       setLastName(user.lastName)
       setDomainId(user.domainId)
-      setRole(user.role)
       setAlternateProfileUPic(user.alternateProfilePicUrl)
     }
-  }, [])
+  })
 
   const items: MenuProps['items'] = [
     {
@@ -52,7 +49,7 @@ const HeaderHome = () => {
         .catch((error) => {
           message.error(error);
       });
-      }} >Logout </span>,
+      }}>Logout</span>,
     },
   ];
 

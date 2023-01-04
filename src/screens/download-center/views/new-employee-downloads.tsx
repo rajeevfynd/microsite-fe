@@ -5,7 +5,7 @@ import * as React from "react";
 import { useVT } from "virtualizedtableforantd4";
 import { GET_DOWNLOADS_DEPARTMENT_URL } from "../../../constants/urls";
 import { DownloadDocumentType, DepartmentType } from "../../../models/download-center-type";
-import { getDownloadsList } from "../../../service/download-center-service";
+import { downloadDocument, getDownloadsList } from "../../../service/download-center-service";
 import httpInstance from "../../../utility/http-client";
 
 
@@ -57,12 +57,6 @@ export const NewEmployeeDownloads = () => {
 
     function getDownloads(key:string = ''){
         return getDownloadsList(department, key.toString())
-    }
-
-
-    const downloadDocument =  async (documentId : number) => {
-        let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
-        window.open(docUrl.data.url, '_blank')?.focus();
     }
 
 

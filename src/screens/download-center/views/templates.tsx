@@ -1,4 +1,4 @@
-import { message, Tabs } from "antd";
+import { Tabs } from "antd";
 import * as React from "react"
 import { ShadowSearchInput } from "../../../components/shadow-input-text";
 import { GET_TEMPLATES } from "../../../constants/urls";
@@ -48,7 +48,7 @@ export const TemplatesDownload = () => {
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <ShadowSearchInput placeholder='Type in the document title you are looking for...'
                             size='large'
-                            onChange={(e: { target: { value: string; }; }) => searchDownloads(e.target.value)}
+                            onChange={searchDownloads}
                     />
                 </div>
 
@@ -66,11 +66,19 @@ export const TemplatesDownload = () => {
                                 {(Number(menu.value) === 1 || Number(menu.value) === 2) && 
                                     <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>}
                                 {(Number(menu.value) === 3 || Number(menu.value) === 4) && 
-                                <div><DownloadsGallery downloadsUrl={downloadsUrl}/></div>}
+                                <div><DownloadsGallery downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>}
                             </Tabs.TabPane></>
                         ))}
                     </>
                 </Tabs>
+
+
+                {keyState.length > 0 && 
+                    <div>
+                        Search Results
+                        <div><DocumentsList downloadsUrl={downloadsUrl} searchKey = {keyState}/></div>
+                    </div>
+                }
             </>
         </div>
     )

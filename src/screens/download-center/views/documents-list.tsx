@@ -2,11 +2,8 @@ import { List, Avatar, message, Divider, Skeleton } from "antd"
 import * as React from "react"
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PolicyDownloadType } from "../../../models/download-center-type";
-import { getDocumentsList } from "../../../service/download-center-service";
-import httpInstance from "../../../utility/http-client";
-import Icon, { FileTextTwoTone } from "@ant-design/icons";
-import FileSvg from '../../../img/file.svg';
-import { formatBase64 } from "../../../utility/image-utils";
+import { downloadDocument, getDocumentsList } from "../../../service/download-center-service";
+import { FileTextTwoTone } from "@ant-design/icons";
 
 
 
@@ -16,11 +13,6 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
     const [loading, setLoading] = React.useState(false);
     const [pageNumber,setPageNumber ] = React.useState<number>(0)
     const [hasMore, setHasMore] = React.useState<boolean>(false)
-
-    const downloadDocument =  async (documentId : number) => {
-        let docUrl = (await httpInstance.get("/microsite/document/download/" + documentId))
-        window.open(docUrl.data.url, '_blank')?.focus();
-    }
 
     const createDataList = () => {
         let tempList : any[] = []
@@ -91,6 +83,7 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
                 loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
                 endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
+                scrollThreshold={1}
             >
                 <List
                     itemLayout="horizontal"
@@ -98,7 +91,6 @@ export const DocumentsList = (props : {downloadsUrl : string, searchKey : string
                     renderItem={(item) => (
                         <List.Item>
                             <List.Item.Meta
-                                // avatar={<Avatar src={formatBase64(item.avatar)} onClick={() => downloadDocument(item.key)} style={{cursor:"pointer"}}/>}
                                 avatar={<Avatar icon={<FileTextTwoTone />} onClick={() => downloadDocument(item.key)} style={{ cursor: "pointer" }} />}
                                 title={<span onClick={() => downloadDocument(item.key)} style={{ cursor: "pointer" }}>{item.title}</span>}
                                 description={item.description} />

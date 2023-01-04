@@ -1,7 +1,7 @@
-import { List, Avatar, message, Divider, Skeleton, Button, Modal } from "antd"
+import { List, Avatar, message, Divider, Skeleton, Modal } from "antd"
 import * as React from "react"
 import InfiniteScroll from "react-infinite-scroll-component";
-import { EditFilled, FileTextTwoTone } from "@ant-design/icons";
+import { FileTextTwoTone } from "@ant-design/icons";
 import { PolicyDownloadType, SubmenuTabsType } from "../../../../models/download-center-type";
 import { getDocumentsList } from "../../../../service/download-center-service";
 import httpInstance from "../../../../utility/http-client";
@@ -10,9 +10,7 @@ import { EditPolicyTemplates } from "./edit-policy-templates";
 import { HRPoliciesSubmenu } from "../../../../models/enums/hr-policies-submenu";
 import { DownloadDocumentType } from "../../../../models/enums/download-document-type";
 import { TemplatesSubmenu } from "../../../../models/enums/templates-submenu";
-import { formatBase64 } from "../../../../utility/image-utils";
 
-const { confirm } = Modal;
 
 export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : string, deleteUrl : string, 
     categoryList : SubmenuTabsType[], downloadType: DownloadDocumentType, editUrl : string}) => {
@@ -128,7 +126,6 @@ export const AdminDocumentsList = (props : {downloadsUrl : string, searchKey : s
                         <ShowDeleteConfirm deleteUrl={props.deleteUrl} id={item.key} onDeleteConfirm = {handleSubmit}></ShowDeleteConfirm>]}
                     >
                         <List.Item.Meta
-                            // avatar={<Avatar src={formatBase64(item.thumbnail)} onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}/>}
                             avatar={<Avatar icon={<FileTextTwoTone />} onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}/>}
                             title={<span onClick={() => downloadDocument(item.documentId)} style={{cursor:"pointer"}}>{item.title}</span>}
                             description={item.description}
