@@ -15,7 +15,7 @@ export const AdminTemplates = () => {
     const [downloadsUrl, setDownloadsUrl] = React.useState<string>("")
     const [keyState, setKeyState] = React.useState('')
     const [deleteUrl, setDeleteUrl] = React.useState<string>('')
-
+    const [addNew, setAddNew] = React.useState<boolean>(false)
 
 
 
@@ -79,7 +79,7 @@ export const AdminTemplates = () => {
                                     (Number(menu.value) === 1 || Number(menu.value) === 2) && 
                                         <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
                                         searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
-                                        editUrl = {GET_TEMPLATES}/></div>}
+                                        editUrl = {GET_TEMPLATES} addNew = {addNew}/></div>}
                                     {(Number(menu.value) === 3 || Number(menu.value) === 4) && 
                                     <div><AdminDownloadsGallery downloadsUrl={downloadsUrl} deleteUrl = {deleteUrl}
                                     categoryList = {submenuItems} downloadType = {DownloadDocumentType.TEMPLATES} searchKey = {keyState}
@@ -95,7 +95,7 @@ export const AdminTemplates = () => {
                         Search Results
                         <div><AdminDocumentsList downloadsUrl={downloadsUrl} categoryList = {submenuItems} 
                             searchKey = {keyState} deleteUrl = {deleteUrl} downloadType = {DownloadDocumentType.TEMPLATES}
-                            editUrl = {GET_TEMPLATES}/></div>
+                            editUrl = {GET_TEMPLATES} addNew = {addNew}/></div>
                     </div>
                 }
             </>
