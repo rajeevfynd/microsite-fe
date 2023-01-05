@@ -140,7 +140,7 @@ export const EditJourney = () => {
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={journey.sequence} onClick={() => {
+            Sequential <Switch checked={journey.sequence} onClick={() => {
               setJourney({
                 title: journey.title,
                 description: journey.description,

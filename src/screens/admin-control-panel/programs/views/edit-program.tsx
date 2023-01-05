@@ -149,7 +149,7 @@ export const EditProgram = () => {
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={program.sequence} onClick={() => {
+            Sequential <Switch checked={program.sequence} onClick={() => {
               setProgram({
                 ...program, sequence: !program.sequence
               })

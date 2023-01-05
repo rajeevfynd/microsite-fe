@@ -1,10 +1,12 @@
-import { Image, Row, Col, Progress, List } from 'antd'
+import { Image, Row, Col, Progress, Card } from 'antd'
 import * as React from 'react'
-import { PatchCheckFill,  Clock, ArrowRight } from 'react-bootstrap-icons'
+import { PatchCheckFill } from 'react-bootstrap-icons'
 import { Link } from 'react-router-dom'
 import { JourneyDetailPropsType } from '../../models/journey-details'
 import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants'
 import { formatBase64 } from '../../utility/image-utils'
+import { ArrowRightOutlined } from '@ant-design/icons'
+import { Flow } from '../../models/enums/flow'
 
 export const JourneyDetail = (props: JourneyDetailPropsType) => {
 
@@ -30,51 +32,36 @@ export const JourneyDetail = (props: JourneyDetailPropsType) => {
                 </Col>
               </Row>
         </div>
-        <div style={{padding:'0 50px'}}>
-            <List
-                itemLayout="horizontal"
-                dataSource={props.details.programs}
-                renderItem={item => (
-
-                    <List.Item
-                        extra={
-                            <div style={{height:100, width:150}}>
-                            <Image
-                                width={'80%'}
-                                height={'100%'}
-                                fallback={DEFAULT_LND_THUMBNAIL}
-                                src={formatBase64(item.program.thumbnail)}
-                                preview={false}
-                            /></div>}
-                    >
-                        <List.Item.Meta
-                            title= {
-                                <div>
-                                    {item.program.title}
-                                    <span className='certified'>{item.status == 'COMPLETED' && <PatchCheckFill color='green'/> }</span>
-                                </div>
-                            }
-                            description={
-                                <>
-                                    <p style={{width : "90%"}}>
-                                        {item.program.description}
-                                    </p>  
+        <div style={{padding:'30px 100px'}}>
+            {props.details.programs.map( item => {
+                return <Card>
+                            <Row>
+                                <Col span={20}>
                                     <p>
-                                        {props.details.flow == 'NON_SEQUENCE' && <>
-                                            <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>
-                                        </>}
-                                        {props.details.flow == 'SEQUENCE' && <>
-                                            {item.isActive && <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRight/> Go to Program </Link>}
-                                        </>}
-                                        
+                                        {item.program.title}
+                                        <span className='certified'>{item.status == 'COMPLETED' && <PatchCheckFill color='green'/> }</span>
                                     </p>
-                                </>
-                                
-                            }
-                        />
-                    </List.Item>
-                )}
-            />
+                                    <p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width:'90%', height:'20px'}}>
+                                        {item.program.description}
+                                    </p>
+                                    <p>{ ( props.details.flow == Flow.NON_SEQUENCE || (props.details.flow == Flow.SEQUENCE && item.isActive) ) && 
+                                            <Link className='link' to={'/lnd/programs/'+item.program.id}><ArrowRightOutlined/> Go to Program </Link>
+                                    }</p>
+
+                                </Col>
+                                <Col span={4}>
+                                <Image
+                                    width={'80%'}
+                                    height={100}
+                                    alt="logo"
+                                    src={formatBase64(item.program.thumbnail)}
+                                    fallback={DEFAULT_LND_THUMBNAIL}
+                                    preview={false}
+                                />
+                                </Col>
+                            </Row>
+                </Card>
+            })}
         </div>
     </>
   )
