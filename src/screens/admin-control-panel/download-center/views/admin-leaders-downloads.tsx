@@ -1,4 +1,4 @@
-import { Row, Col, Image, Button, message, Result, Typography, Divider, Skeleton, Space } from "antd"
+import { Row, Col, Image, Button, message, Result, Typography, Divider, Skeleton, Space, Card } from "antd"
 import * as React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { DEFAULT_LND_THUMBNAIL } from "../../../../constants/string-constants";
@@ -98,19 +98,22 @@ export const AdminLeadersDownloads = () => {
             >
                 {leadersList && leadersList.map(leader => (
                     <>
-                        <Row gutter={30}>
-                        <Col span={5} style={{height:320}}>
-                            <div>
-                                <Image
-                                    src={formatBase64(leader.document.thumbnail)}
-                                    fallback={DEFAULT_LND_THUMBNAIL}
-                                    width={'90%'}
-                                    height={'90%'}
-                                    preview={false}
-                                />
-                                <Button className="download-btn" onClick={() => downloadDocument(leader.document.id)}>Click to download</Button>
+                        <Row>
+                        <Col span={5}>
+                            <div style={{marginBottom : 30}}>
+                                <Card
+                                    hoverable
+                                    style={{ width: 300}}
+                                    cover={<img src={formatBase64(leader.document.thumbnail)}/>}
+                                    type="inner"
+                                >
+                                    <Button className="download-btn" type="text" onClick={() => downloadDocument(leader.document.id)}>
+                                        Click to download
+                                    </Button>
+                                </Card>
                             </div>
                         </Col>
+
                         <Col span={17}>
                             <div>
                             <h5>{leader.name}</h5>

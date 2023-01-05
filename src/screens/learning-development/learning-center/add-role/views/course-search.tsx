@@ -182,7 +182,7 @@ export const ProgramSearch = (props: any) => {
 
                 {selectedPrograms.map((selectedProgram, index) => <>
                     <Row key={index} style={{ justifyContent: "space-between" }}>
-                        <Col flex={1} style={{ textAlign: "start" }}><h6>{selectedProgram.title}</h6></Col>
+                        <Col flex={1} style={{ textAlign: "start" }}><h4>{selectedProgram.title}</h4></Col>
                         <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleMinusIconClick({ id: selectedProgram.id })} /></Col>
                     </Row>
                 </>

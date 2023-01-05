@@ -44,7 +44,7 @@ export const CourseList = (props: any) => {
     const renderCourseList = (courseList: any[]) => {
 
         return courseList.map(({ course, tag }, index) => <Row key={index} style={{ justifyContent: "space-between" }}>
-            <Col flex={1} ><h6>{course.title}</h6></Col>
+            <Col flex={1} ><h3>{course.title}</h3></Col>
             <Col style={{ alignItems: "end" }}> <MinusCircleOutlined style={{ fontSize: 20 }} onClick={() => handleRemoveCourse({ tagId: tag.id, courseId: course.id })} /></Col>
         </Row>
         )

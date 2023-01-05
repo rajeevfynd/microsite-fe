@@ -32,7 +32,7 @@ export const AddDownloadDocument = (props : {addUrl : string, downloadType : Dow
             .then(response => {
                 console.log("added")
                 setIsModalOpen(false)
-                props.onAddSubmit(categoryId)
+                props.onAddSubmit()
             })
             .catch((error) => {
                 message.error(error);
