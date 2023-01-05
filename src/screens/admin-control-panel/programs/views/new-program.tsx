@@ -111,7 +111,7 @@ export const NewProgram: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={program.sequence} defaultChecked onChange={(e) => {
+            Sequential <Switch checked={program.sequence} defaultChecked onChange={(e) => {
               setProgram({
                 ...program, sequence: !program.sequence,
               })

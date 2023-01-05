@@ -5,7 +5,7 @@ import { DEFAULT_LND_THUMBNAIL } from '../../constants/string-constants';
 import { formatBase64 } from '../../utility/image-utils';
 
 
-export function CourseDetails(props: { course: any }) {
+export function CourseDetails(props: { course: any, disable?: boolean }) {
 
     const { course } = props;
 
@@ -28,7 +28,7 @@ export function CourseDetails(props: { course: any }) {
                         </Row>
                         <Row>
                             <Col style={{ width: 400 }}>
-                                <Button block type="primary" href={course.rruDeepLink} target="_blank" rel="noopener noreferrer"> Start Course </Button>
+                                <Button block type="primary" href={course.rruDeepLink} target="_blank" rel="noopener noreferrer" disabled={props.disable}>Go to Course </Button>
                             </Col>
                         </Row>
 

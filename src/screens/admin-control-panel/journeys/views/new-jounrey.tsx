@@ -111,7 +111,7 @@ export const NewJourney: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={journey.sequence} defaultChecked onChange={(e) => {
+            Sequential <Switch checked={journey.sequence} defaultChecked onChange={(e) => {
               setJourney({
                 id: journey.id,
                 title: journey.title,
