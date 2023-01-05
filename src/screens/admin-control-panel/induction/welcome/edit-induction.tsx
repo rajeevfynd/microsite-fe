@@ -138,7 +138,7 @@ export const EditInduction = () => {
           </Form.Item>
 
           <Form.Item>
-            Sequencial <Switch checked={journey.sequence} onClick={() => {
+            Sequential <Switch checked={journey.sequence} onClick={() => {
               setJourney({
                 id: journey.id,
                 title: journey.title,
