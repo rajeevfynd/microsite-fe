@@ -1,21 +1,42 @@
-import { Input } from "antd";
+import { Input, Radio, RadioChangeEvent } from "antd";
 import * as React from "react";
 type radioProps = {
-  optionText: string;
+  choice: Choice[];
   qId: string;
   handleRadioResponse(qId: string, answer: string): void;
 };
 
+interface Choice {
+  choiceText: string;
+}
+
 const RadioUi = (props: radioProps) => {
   const [value, setValue] = React.useState(false);
-  const handleChange = (e: { target: { value: any } }) => {
-    props.handleRadioResponse(props.qId, props.optionText);
-    setValue(!value);
+
+  const onChange = (e: RadioChangeEvent) => {
+    console.log("radio checked", e.target.value);
+    props.handleRadioResponse(props.qId, e.target.value);
+    setValue(e.target.value);
   };
   return (
-    <div>
-      <>
-        <div className="row">
+    <>
+      <div>
+        <Radio.Group onChange={onChange} value={value}>
+          {props.choice.map((c, i) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Radio value={c.choiceText}> {c.choiceText}</Radio>
+            </div>
+          ))}
+        </Radio.Group>
+      </div>
+
+      {/* <div className="row">
           <div className="col-6">
             <input
               id={props.qId}
@@ -27,12 +48,10 @@ const RadioUi = (props: radioProps) => {
             <label className="form-check-label" htmlFor={props.optionText}>
               {props.optionText}
             </label>
-            {/* <label htmlFor="html">HTML</label><br></br> */}
+           
           </div>
-        </div>
-        <br />
-      </>
-    </div>
+        </div> */}
+    </>
   );
 };
 

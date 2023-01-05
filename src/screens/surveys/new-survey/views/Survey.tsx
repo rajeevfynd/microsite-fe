@@ -7,6 +7,11 @@ import {
   Radio,
   Checkbox,
   Typography,
+  Input,
+  Card,
+  Row,
+  Col,
+  Divider,
 } from "antd";
 import html2canvas from "html2canvas";
 
@@ -20,6 +25,7 @@ import {
   UploadOutlined,
   AlignLeftOutlined,
   CheckSquareTwoTone,
+  PlusCircleTwoTone,
 } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import RadioUi from "./options/RadioUI";
@@ -43,7 +49,7 @@ const Survey = () => {
   type NotificationType = "success" | "info" | "warning" | "error";
   const { Option } = Select;
   const params = useParams();
-  const [surveyTitle, setSurveyTitle] = React.useState("");
+  const [surveyTitle, setSurveyTitle] = React.useState("Untitled Form");
   const [description, setDescription] = React.useState("");
   const [edit, setEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -80,9 +86,9 @@ const Survey = () => {
     });
   };
 
-  const handleAddOption = (i: number, j: number) => {
+  const handleAddOption = (i: number) => {
     let temp = Survey;
-    temp.questions[i].choices.splice(j + 1, 0, { id: "", choiceText: "" });
+    temp.questions[i].choices.push({ id: "", choiceText: "" });
     setSurvey({ ...temp });
   };
 
@@ -110,24 +116,6 @@ const Survey = () => {
     }
   };
 
-  const radioUI = (i: number) => {
-    return (
-      <>
-        <div className="form-check ">
-          {Survey.questions[i].choices.map((op, j) => (
-            <RadioUi
-              i={i}
-              j={j}
-              optionText={op.choiceText}
-              handleDeleteOption={handleDeleteOption}
-              handleAddOption={handleAddOption}
-              handleOPtionIn={handleChoiceText}
-            />
-          ))}
-        </div>
-      </>
-    );
-  };
   const handleSelect = (value: string, i: number) => {
     let tempQuestion = Survey.questions[i];
     tempQuestion = { ...tempQuestion, questionType: value };
@@ -138,26 +126,101 @@ const Survey = () => {
     ];
     setSurvey({ ...Survey, questions: tempSurveys });
   };
+
+  const radioUI = (i: number) => {
+    return (
+      <>
+        <div className="form-check ">
+          {Survey.questions[i].choices.map((op, j) => (
+            <>
+              <RadioUi
+                i={i}
+                j={j}
+                optionText={op.choiceText}
+                handleDeleteOption={handleDeleteOption}
+                handleOPtionIn={handleChoiceText}
+              />
+            </>
+          ))}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Radio disabled />
+            <Button type="text" onClick={(e) => handleAddOption(i)}>
+              Add Option
+            </Button>
+          </div>
+        </div>
+      </>
+    );
+  };
+
   const checkBoxUI = (i: number) => {
     return (
       <>
-        {Survey.questions[i].choices.map((op, j) => (
-          <CheckBoxUi
-            i={i}
-            j={j}
-            optionText={op.choiceText}
-            handleDeleteOption={handleDeleteOption}
-            handleAddOption={handleAddOption}
-            handleOPtionIn={handleChoiceText}
-          />
-        ))}
+        <div className="form-check ">
+          {Survey.questions[i].choices.map((op, j) => (
+            <>
+              <CheckBoxUi
+                i={i}
+                j={j}
+                optionText={op.choiceText}
+                handleDeleteOption={handleDeleteOption}
+                handleOPtionIn={handleChoiceText}
+              />
+            </>
+          ))}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Checkbox disabled />
+            <Button type="text" onClick={(e) => handleAddOption(i)}>
+              Add Option
+            </Button>
+          </div>
+        </div>
+        {/* <div>
+          {Survey.questions[i].choices.map((op, j) => (
+            <CheckBoxUi
+              i={i}
+              j={j}
+              optionText={op.choiceText}
+              handleDeleteOption={handleDeleteOption}
+              handleAddOption={handleAddOption}
+              handleOPtionIn={handleChoiceText}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Radio disabled />
+          <Button type="text" onClick={(e) => handleAddOption(i)}>
+            Add Option
+          </Button>
+        </div> */}
       </>
     );
   };
 
   const addOption = (i: number) => {
-    handleAddOption(i, 0);
-    handleAddOption(i, 1);
+    handleAddOption(i);
+    handleAddOption(i);
   };
   const handleSwitch = (questionType: string, i: number) => {
     switch (questionType) {
@@ -440,7 +503,7 @@ const Survey = () => {
       setEdit(true);
     } else {
       setDescription("");
-      setSurveyTitle("");
+      setSurveyTitle("Untitled Form");
       setSurvey({ questions: [newQuestion] });
       setEdit(false);
     }
@@ -482,110 +545,102 @@ const Survey = () => {
             <div className="question_form" id="TakeScreenShot">
               <br></br>
 
-              <div className="section">
+              <div className="section dark">
                 <div className="question_title_section">
                   <div className="question_form_top">
-                    <input
+                    <Input
                       type="text"
                       name="surveyTitle"
                       className="question_form_top_name"
-                      style={{ color: "black" }}
-                      placeholder="Survey Title"
                       value={surveyTitle}
                       onChange={(e) => setSurveyTitle(e.target.value)}
+                      defaultValue="Untitled form"
                       required
-                    ></input>
+                    />
 
-                    <input
+                    <Input
                       type="text"
-                      className="question_form_top_desc "
-                      style={{ color: "black" }}
+                      className="question_form_top_desc"
                       placeholder="Survey description"
                       name="description"
                       value={description}
                       required
                       onChange={(e) => setDescription(e.target.value)}
-                    ></input>
-                    <div className="valid-feedback">Looks good!</div>
+                    />
                   </div>
                 </div>
 
                 <div className="container" style={{ paddingTop: "10px" }}>
                   {Survey.questions.map((question, index) => (
                     <div key={question.id}>
-                      <div
-                        className="card"
+                      <Card
+                        className="question-card"
                         style={{
                           borderLeft: "4px solid rgb(66, 90, 245)",
                         }}
                       >
-                        <div className="card-header">
-                          <div className="row">
-                            <div className="col-6">
-                              <div className="input-group ">
-                                <input
-                                  key={index}
-                                  id="validationCustom01"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Question"
-                                  aria-label="questionText"
-                                  name="questionText"
-                                  aria-describedby="basic-addon1"
-                                  value={question.questionText}
-                                  onChange={(e) => handleQuestionText(e, index)}
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div
-                              className="col-4"
-                              data-html2canvas-ignore="true"
+                        <div></div>
+                        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                          <Col span={16}>
+                            <Input
+                              key={index}
+                              id="validationCustom01"
+                              type="text"
+                              className="form-control"
+                              placeholder="Question"
+                              aria-label="questionText"
+                              name="questionText"
+                              aria-describedby="basic-addon1"
+                              value={question.questionText}
+                              onChange={(e) => handleQuestionText(e, index)}
+                              required
+                            />
+                          </Col>
+                          <Col span={6}>
+                            <Select
+                              defaultValue={
+                                question.questionType.length < 1
+                                  ? "TextArea"
+                                  : question.questionType
+                              }
+                              onChange={(e) => handleSelect(e, index)}
                             >
-                              <Select
-                                defaultValue={
-                                  question.questionType.length < 1
-                                    ? "TextArea"
-                                    : question.questionType
-                                }
-                                onChange={(e) => handleSelect(e, index)}
-                              >
-                                <Option value="SINGLE_CHOICE">
-                                  <Radio />
-                                  SINGLE CHOICE
-                                </Option>
+                              <Option value="SINGLE_CHOICE">
+                                <Radio />
+                                SINGLE CHOICE
+                              </Option>
 
-                                <Option value="MULTIPLE_CHOICE">
-                                  <CheckSquareTwoTone /> MULTIPLE CHOICE
-                                </Option>
+                              <Option value="MULTIPLE_CHOICE">
+                                <CheckSquareTwoTone />
+                                MULTIPLE CHOICE
+                              </Option>
 
-                                <Option value="SMALL_TEXT">
-                                  <AlignLeftOutlined /> Paragraph
-                                </Option>
-                              </Select>
-                            </div>
-
-                            <div className="col-2">
-                              <div
-                                style={{ position: "absolute", float: "right" }}
-                              >
-                                <DeleteOutlined
-                                  data-html2canvas-ignore="true"
-                                  style={{ color: "red" }}
-                                  onClick={(e) => DeleteQuestion(e, index)}
-                                />
-                              </div>
-                            </div>
-                          </div>
+                              <Option value="SMALL_TEXT">
+                                <AlignLeftOutlined /> Paragraph
+                              </Option>
+                            </Select>
+                          </Col>
+                        </Row>
+                        <Row style={{ marginTop: "10px" }}>
+                          {handleSwitch(question.questionType, index)}
+                        </Row>
+                        <Divider />
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-end",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <Button
+                            shape="circle"
+                            type="primary"
+                            icon={<DeleteOutlined />}
+                            onClick={(e) => DeleteQuestion(e, index)}
+                            danger
+                          />
                         </div>
-
-                        <div className="card-body">
-                          <div>
-                            {handleSwitch(question.questionType, index)}
-                          </div>
-                        </div>
-                      </div>
+                      </Card>
                       <br />
                     </div>
                   ))}
@@ -604,13 +659,14 @@ const Survey = () => {
                     style={{ float: "right" }}
                     data-html2canvas-ignore="true"
                   >
-                    <button
+                    <Button
                       disabled={disableSubmit}
-                      type="submit"
+                      htmlType="submit"
+                      type="primary"
                       className="btn btn-primary"
                     >
                       {params.id ? "Save the Changes" : "Submit"}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

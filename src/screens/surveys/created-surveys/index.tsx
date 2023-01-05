@@ -1,24 +1,8 @@
-import {
-  Form,
-  Button,
-  Card,
-  List,
-  Spin,
-  Modal,
-  Input,
-  DatePicker,
-  Cascader,
-} from "antd";
+import { Form, Button, Card, List, Spin, Modal, DatePicker } from "antd";
 import Meta from "antd/lib/card/Meta";
 import * as React from "react";
 import { ShadowSearchInput } from "../../../components/shadow-input-text";
-import {
-  SurveyDto,
-  AssigneeSurveyDto,
-  assigneModelData,
-  UserType,
-} from "../../../models/survey";
-import "../new-survey/views/questionForm.css";
+import { SurveyDto, assigneModelData, UserType } from "../../../models/survey";
 import { useNavigate } from "react-router-dom";
 import {
   assignSurveyToUserId,

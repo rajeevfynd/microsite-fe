@@ -1,20 +1,38 @@
-import { Input } from "antd";
+import { Input, Radio, RadioChangeEvent } from "antd";
 import * as React from "react";
 type radioProps = {
-  i: number;
-  optionText: string;
-  qId: string;
-  radioAnswer: boolean;
+  choice: Choice[];
+  answer: string;
 };
 
+interface Choice {
+  choiceText: string;
+}
+
 const ResRadioUi = (props: radioProps) => {
+  const [value, setValue] = React.useState(props.answer);
   const handleChange = (e: { target: { value: any } }) => {
     console.log(e.target.value);
-    console.log(props.optionText);
   };
   return (
     <div>
-      <>
+      <div>
+        <Radio.Group value={value}>
+          {props.choice.map((c, i) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Radio value={c.choiceText}> {c.choiceText}</Radio>
+            </div>
+          ))}
+        </Radio.Group>
+      </div>
+
+      {/* <>
         <div className="row">
           <div className="col-6">
             <input
@@ -30,7 +48,7 @@ const ResRadioUi = (props: radioProps) => {
           </div>
         </div>
         <br />
-      </>
+      </> */}
     </div>
   );
 };
