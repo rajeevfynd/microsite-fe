@@ -31,6 +31,7 @@ export type ProgramDetailType = {
     progress?: number
     courses?: any[]
     flow?: string
+    tags?: any[]
 }
 export type ProgramMapType = {
     program: string |null,

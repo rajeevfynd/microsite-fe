@@ -101,18 +101,6 @@ export const MenuStructure = (navigate: NavigateFunction): PrimaryMenuItemProps[
                     navigate: "/lnd/learning-center/role"
                 },
                 {
-                    key: "journeys",
-                    title: "Journeys",
-                    icon: <JourneySvg />,
-                    navigate: "/lnd/learning-journey"
-                },
-                {
-                    key: "programs",
-                    title: "Programs",
-                    icon: <ProgramSvg />,
-                    navigate: "/lnd/programs"
-                },
-                {
                     title: "Faq",
                     key: "new-emp-faq",
                     icon: <FaqSvg />,
